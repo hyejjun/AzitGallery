@@ -20,6 +20,6 @@ module.exports = class NftImg extends Sequelize.Model{
         })
     }
     static associate(db){
-        db.NftImg.belongsTo(db.ItemDetail,{foreignKey:'id',targetKey:'item_datail_idx'})
+        db.NftImg.belongsTo(db.ItemDetail,{foreignKey:'id',targetKey:'item_detail_idx'})
     }
 }

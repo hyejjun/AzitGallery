@@ -12,15 +12,8 @@ import { RootState } from "../../reducers"
 import axios from 'axios'
 import {url} from '../../saga/url'
 
-const AddItemComponent = ({
-    // n, ifSell, extension, sellToggle, extensionToggle, ifAgreed,
-    // handleTxtChange, handleSubmit, handleConfirm,
-    // fileChange, fileBase, handleCurrency, deleteFile, 
-    // resetState, handleItemType, handleTags, deleteItem,
-    // color, size, handleKeyPress, colorVal, sizeVal,
-    }) => {
-
-            // 남은 NTF 등록 횟수 -> 느낌상 삭제해야 할 컴포넌트 같음
+const AddItemComponent = () => {
+    // 남은 NTF 등록 횟수 -> 느낌상 삭제해야 할 컴포넌트 같음
     const [n, setN] = useState<number>(10)
     // 즉판/경매 여부(하위 컴포넌트로 옮겨도 무방할 느낌)
     const [ifSell, setifSell] = useState<boolean>(true)
@@ -256,10 +249,10 @@ const AddItemComponent = ({
     const handleSubmit = async () => { 
         let data = {}
         if(ifSell == true){
-            data = {price, currency, name, desc, itemType, color, size}
+            data = {ifSell, price, currency, name, desc, itemType, color, size}
             sendDataToServer([data,file])
         } else{
-            data = {name, desc, aucPrice, currency, aucTime, extension, itemType, color, size}
+            data = {ifSell, name, desc, aucPrice, currency, aucTime, extension, itemType, color, size}
             sendDataToServer([data,file])
         }
     }
@@ -412,7 +405,7 @@ const AddItemComponent = ({
                     <SmallTitle>
                         색상 및 사이즈
                     </SmallTitle>
-                    <DescText>엔터를 누르면 자동으로 입력되며 띄어쓰기는 불가합니다.</DescText>
+                    <DescText>엔터를 누르면 자동으로 입력되며 띄어쓰기는 불가합니다(각 항목당 30자 이내).</DescText>
                     <SmallerTitle>색상</SmallerTitle>
                     <InputBox
                         onChange = {(e)=>handleTags(e,"color")}

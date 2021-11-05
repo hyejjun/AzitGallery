@@ -9,7 +9,8 @@ module.exports = class ItemInfo extends Sequelize.Model{
             item_info_idx:{
                 type:Sequelize.INTEGER,
                 allowNull:false,
-                primaryKey:true
+                primaryKey:true,
+                autoIncrement: true,
             },
             description:{
                 type:Sequelize.TEXT,
@@ -21,10 +22,7 @@ module.exports = class ItemInfo extends Sequelize.Model{
                 type:Sequelize.DATE,
                 defaultValue:Sequelize.NOW
             },
-            product_status:{
-                type:Sequelize.STRING,
-            },
-            sell_type:{
+            sell_type:{ // 0: 직판, 1: 경매
                 type:Sequelize.BOOLEAN
             },
         },{
