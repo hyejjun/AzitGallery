@@ -12,6 +12,7 @@ module.exports = class User extends Sequelize.Model{
             },
             name:{
                 type:Sequelize.STRING(30),
+                defaultValue : 'aaaaaaaaaa'
             },
             kaikas_address:{
                 type:Sequelize.STRING(100),

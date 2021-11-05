@@ -31,7 +31,15 @@ let send_shipinfo = async (req,res)=>{
     
 }
 
+
+let get_deliveryinfo = async (req,res)=>{
+    // item id 도 필요함
+    const {selectDeliveryCompany, deliveryNum} = req.body
+    console.log(req.body);
+}
+
 module.exports = {
     get_shipinfo,
-    send_shipinfo
+    send_shipinfo,
+    get_deliveryinfo
 }

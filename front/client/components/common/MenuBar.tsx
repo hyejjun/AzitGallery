@@ -11,9 +11,11 @@ import Btn from './Btn';
 
 
 const MenuBar = () => {
+    
     const [loginState, setLoginState] = useState<boolean>(false)
     const [flag, setFlag] = useState<boolean>(false)
     const [Login, setLogin] = useState<boolean>(false)
+
     const loginClick = () => {
         loginState ? setLoginState(false) : setLoginState(true);
         setLogin(true)

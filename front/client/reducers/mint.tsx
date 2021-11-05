@@ -28,9 +28,10 @@ export const MINT_NFT_RETURN  = "MINT_NFT_RETURN" as const;
 export const KIP_TOKEN_SUCCESS = "KIP_TOKEN_SUCCESS" as const;
 export const KIP_SWAP_REQUEST = "KIP_SWAP_REQUEST" as const;
 
-export const MintNFT_REQUEST = () => {
+export const MintNFT_REQUEST = (data) => {
     return{
         type:MINT_NFT_SUCCESS,
+        data:data,
     }
 }
 

@@ -8,8 +8,7 @@ module.exports = class Order extends Sequelize.Model{
         return super.init({ 
             price:{
                 type:Sequelize.INTEGER(30),
-                allowNull:false,
-                primaryKey:true
+                defaultValue:2
             },
             order_date:{
                 type:Sequelize.STRING(30),
@@ -19,7 +18,6 @@ module.exports = class Order extends Sequelize.Model{
             },
             receiver_address:{
                 type:Sequelize.TEXT,
-                allowNull:false,
             },
             receiver_contact:{
                 type:Sequelize.INTEGER,

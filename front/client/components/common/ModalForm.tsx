@@ -16,7 +16,8 @@ const FormWrapper = Styled.div`
     z-index:999;
     box-sizing:border-box;
     width:350px;
-    height:220px;
+    height : auto;
+    min-height:220px;
     border-radius:3%;
     box-shadow: 0 4px 10px rgb(0 0 0 / 20%);
     display:${(props)=>(props.flag?"block":'none')};

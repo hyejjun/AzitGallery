@@ -2,8 +2,8 @@ import axios from 'axios';
 import {all,put,takeEvery,takeLatest,fork,call} from "redux-saga/effects";
 
 
-function* MintNftSaga(){
-    const result = yield call(axios.post,`http://localhost:4000/mint/mintnft`)
+function* MintNftSaga(action){
+    const result = yield call(axios.post,`http://localhost:4000/mint/mintnft`,JSON.stringify(action.data))
 
     yield put({
         type:'MINT_NFT_RETURN',

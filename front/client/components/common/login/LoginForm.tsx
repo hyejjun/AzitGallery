@@ -27,7 +27,7 @@ const LoginForm = (props) =>{
     // 카이카스 로그인 
       const wallet = await window.klaytn.enable()
       const klaytnAddress = window.klaytn.selectedAddress
-      if( wallet != undefined){
+      if( klaytnAddress != undefined){
         let AddressArr = []
         AddressArr.push(klaytnAddress)
         setKaikasAddress(AddressArr)

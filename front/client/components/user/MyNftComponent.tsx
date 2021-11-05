@@ -7,9 +7,11 @@ import Notselled from './NotSelled'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from "../../reducers"
 import {UserState} from "../../reducers/user"
+import { KipSwap_REQUEST } from "../../reducers/mint";
 
 const MyNftComponent = () => {
 
+    const dispatch = useDispatch()
     const [tabBtn, settabBtn] = useState<number>(1);
     const user:UserState = useSelector((state:RootState) => state.user);
     console.log(user.UserAddress)
@@ -35,6 +37,28 @@ const MyNftComponent = () => {
         
     },[])
 
+    const FROMklayToEPI = () => {
+        window.caver.klay
+        .sendTransaction({
+          type: 'VALUE_TRANSFER',
+          from: window.klaytn.selectedAddress,
+          to: '0x5F5c71c26C985dB9CEcc4ba280534F75fdb54220',
+          value: window.caver.utils.toPeb('1', 'KLAY'),
+          gas: 8000000
+        })
+        .once('transactionHash', transactionHash => {
+          console.log('txHash', transactionHash)
+        })
+        .once('receipt', receipt => {
+          console.log('receipt', receipt)
+        })
+        .once('error', error => {
+          console.log('error', error)
+        })
+
+        dispatch(KipSwap_REQUEST())
+    }
+
 
     return(
         <>  
@@ -43,8 +67,8 @@ const MyNftComponent = () => {
                 <MyIMG> <img alt="이미지" /> </MyIMG>
                 <MyName onClick = {test}>원금회복</MyName>
                 <MyAddress>{user.UserAddress}</MyAddress>
+                <MySwap onClick = {FROMklayToEPI}>klay에서 EPI로 토큰 스왑</MySwap>
                 <Link href = "/user/user"><AStyle><MyProfile>프로필 편집</MyProfile></AStyle></Link>
-
             </MyInfo>
             <MyNft>
                 <Header>
@@ -112,8 +136,18 @@ const MyIMG = Styled.div`
 
 const MyAddress = Styled.div`
     color:#bbb;
+
+    margin-bottom:20px;
+`
+
+const MySwap = Styled.div`
+    color:#bbb;
     text-align:center;
     margin-bottom:20px;
+    margin-top:20px;
+    &:hover{
+        color:black;
+    }
 `
 
 const MyName = Styled.div`

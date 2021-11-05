@@ -2,6 +2,10 @@ import Styled from 'styled-components'
 import React, { useState } from 'react'
 import Link from 'next/link'
 import Alert from '@mui/material/Alert';
+import Waybill from '../view/Waybill';
+import useInput from '../../hooks/useInput';
+import { useDispatch } from 'react-redux';
+import { deliveryInfo_REQUEST } from '../../reducers/ship';
 
 const Selled = () => {
 
@@ -37,7 +41,7 @@ const Selled = () => {
             Like: 5,
             alert: '신고하기'
         },
-        
+
     ]);
 
     // @ 배송 등록 후, 판매된 NFT 리스트들
@@ -72,10 +76,42 @@ const Selled = () => {
         },
     ]);
 
+    // @ 배송등록하기
+    const dispatch = useDispatch()
+
+    const [deliveryForm, setDeliveryForm] = useState<boolean>(false)
+
+    const setDelivery = () => {
+        setDeliveryForm(prev => !prev)
+
+        if(selectDeliveryCompany && deliveryNum !== ''){
+            dispatch(deliveryInfo_REQUEST(deliveryInfo))
+        }
+        setDeliveryCompany('')
+        setDeliveryNum('')
+    }
+
+    // @ 배송 관련 정보들
+    const [selectDeliveryCompany, setDeliveryCompany] = useState<string>('')
+    const deliveryCompnay = (e) => {
+        setDeliveryCompany(e.target.value)
+    }
+    const [deliveryNum, setDeliveryNum] = useState<string>('')
+    const onChangeDeliveryNum = (e) => {
+        setDeliveryNum(e.target.value)
+    }
+
+    // @ 나중에 item id 도 보내줘야함
+    const deliveryInfo = {
+        selectDeliveryCompany,
+        deliveryNum
+    }
 
     const nameList: JSX.Element[] = Arr.map((ele) =>
         <NFTFourList>
-            <Alert severity="error">배송 등록 전!</Alert>
+            <Alert severity="error">
+                <a className="deliverySet" onClick={setDelivery}>배송 등록 하기!</a>
+            </Alert>
             <NFT>
                 <NFTImg>
                     <div><img /></div>
@@ -133,6 +169,12 @@ const Selled = () => {
 
     return (
         <>
+            {
+                deliveryForm
+                    ? <Waybill setClose={setDelivery} deliveryCompnay={deliveryCompnay} deliveryNum={deliveryNum} onChangeDeliveryNum={onChangeDeliveryNum} />
+                    : <></>
+            }
+
             <NonCompleted>{nameList}</NonCompleted>
             <div>{compeltedList}</div>
         </>
@@ -152,6 +194,16 @@ const NFTFourList = Styled.ul`
     list-style:none;
     margin-right:18px;
     margin-left:11px;
+
+    .deliverySet{
+        text-decoration: underline;
+        background: #f4f491;
+        cursor : pointer;
+    }
+
+    .MuiPaper-root{
+        cursor : default;
+    }
     
 `
 const NFT = Styled.li`

@@ -30,7 +30,7 @@ const Order = (props) => {
         .sendTransaction({
           type: 'VALUE_TRANSFER',
           from: window.klaytn.selectedAddress,
-          to: '0x6EE16198C57833ca659dEeb83B1e583AA8A74Ce6',
+          to: '0xadbEC8669bbfBd1481aaD736f98De590d37b26Ce',
           value: window.caver.utils.toPeb('1', 'KLAY'),
           gas: 8000000
         })

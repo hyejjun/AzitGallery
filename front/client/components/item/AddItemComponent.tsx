@@ -302,7 +302,8 @@ const AddItemComponent = ({
     const mint = useSelector((state:RootState) => state.mint);
     const [nftCreateState,setnftCreateState] = useState<boolean>(false);
     const createNftCh = () => {
-        dispatch(MintNFT_REQUEST())
+        const data = {color:color, size:size}
+        dispatch(MintNFT_REQUEST(data))
         if(handleConfirm() === true){
             setnftCreateState(prev=>!prev)
         }
@@ -319,7 +320,7 @@ const AddItemComponent = ({
     }
 
     const test = () => {
-        dispatch(MintNFT_REQUEST())
+     
     }
 
     const ColorBar = () => {

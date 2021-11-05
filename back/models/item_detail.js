@@ -7,7 +7,7 @@ module.exports = class ItemDetail extends Sequelize.Model{
         return super.init({ 
             item_detail_idx:{
                 type:Sequelize.INTEGER(30),
-                allowNull:false,
+                allowNull:true,
                 primaryKey:true
             },
             size:{

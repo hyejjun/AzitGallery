@@ -4,42 +4,22 @@ import Link from 'next/link'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import { SellerAdmin_REQUEST } from '../../reducers/user'
+import { SellerAdminWait_REQUEST } from '../../reducers/user'
 import { RootState } from "../../reducers"
 import { useSelector, useDispatch } from 'react-redux'
-import { KipSwap_REQUEST } from "../../reducers/mint";
 
 const User = () => {
     const dispatch = useDispatch()
-    const User = useSelector((state:RootState) => state.user);
+    const user = useSelector((state:RootState) => state.user);
 
     const SellerAdmin = () => {
         alert('인증을 위해서 이메일을 확인해주세요')
-        dispatch(SellerAdmin_REQUEST(User.UserAddress))
+        // dispatch(SellerAdminWait_REQUEST(user.UserAddress))
+        dispatch(SellerAdmin_REQUEST(user.UserAddress))
+      
     }
-    const user = useSelector((state:RootState) => state.user);
-    console.log(user);
 
-    const FROMklayToEPI = () => {
-        window.caver.klay
-        .sendTransaction({
-          type: 'VALUE_TRANSFER',
-          from: window.klaytn.selectedAddress,
-          to: '0x6EE16198C57833ca659dEeb83B1e583AA8A74Ce6',
-          value: window.caver.utils.toPeb('1', 'KLAY'),
-          gas: 8000000
-        })
-        .once('transactionHash', transactionHash => {
-          console.log('txHash', transactionHash)
-        })
-        .once('receipt', receipt => {
-          console.log('receipt', receipt)
-        })
-        .once('error', error => {
-          console.log('error', error)
-        })
 
-        dispatch(KipSwap_REQUEST())
-    }
     return(
         <UserWrapper>
             <div>
@@ -75,7 +55,6 @@ const User = () => {
                             <p>&nbsp;{/*email account*/}algml9603@mgail.com</p>
                         </li>
                         <li onClick = {SellerAdmin}>판매 신청</li>
-                        <li onClick = {FROMklayToEPI}>klay에서 EPI로 토큰 스왑</li>
                         <li>
                             <button><Link href="/user/edit"><a>프로필편집</a></Link></button>
                             <button>회원탈퇴</button>
@@ -201,6 +180,10 @@ const UserWrapper = Styled.div`
         color: #e1f0ff;
     }
 
+    div>span>ul>li:nth-child(4) {
+        color:black;
+        font-weight:bold;
+    }
     /* ul{
         margin-left:80px;
     }

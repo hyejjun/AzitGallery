@@ -30,11 +30,11 @@ const approvecomponent = () => {
             if(result){
                 alert("인증되었습니다");
                 document.querySelector(`.${ArrID}`).innerHTML = '승인됨'
-                dispatch(SellerAdminAccess_REQUEST(ele.name))
+                dispatch(SellerAdminAccess_REQUEST(ele.kaikas_address))
             }else{
                 alert("반려되었습니다");
                 document.querySelector(`.${ArrID}`).innerHTML = '반려됨'
-                dispatch(SellerAdminDeny_REQUEST(ele.name))
+                dispatch(SellerAdminDeny_REQUEST(ele.kaikas_address))
             }
             console.log(ele.id)
         }
@@ -42,7 +42,7 @@ const approvecomponent = () => {
         return(
             <tr>
                 <td>{ele.name}</td>
-                <td>{ele.kaikasAddress}</td>
+                <td>{ele.kaikas_address}</td>
                 {
                     ele.kycAuthorized == 3 
                     ? <td className = {ele.id}>승인됨</td>
