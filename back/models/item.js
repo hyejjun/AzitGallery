@@ -14,10 +14,6 @@ module.exports = class Item extends Sequelize.Model{
                 type:Sequelize.INTEGER,
                 primaryKey:true,
             },
-            gender:{
-                type:Sequelize.STRING,
-                comment:'남 / 여 / 남녀공용'
-            },
             item_code:{
                 type:Sequelize.STRING(100),
             }

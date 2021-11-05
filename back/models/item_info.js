@@ -22,8 +22,9 @@ module.exports = class ItemInfo extends Sequelize.Model{
                 type:Sequelize.DATE,
                 defaultValue:Sequelize.NOW
             },
-            sell_type:{ // 0: 직판, 1: 경매
-                type:Sequelize.BOOLEAN
+            sell_type:{
+                type:Sequelize.BOOLEAN,
+                comment:'false->즉판 true=>경매'
             },
         },{
             sequelize,

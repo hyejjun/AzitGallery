@@ -12,6 +12,10 @@ module.exports = class LikeList extends Sequelize.Model{
             item_code:{
                 type:Sequelize.STRING(100),
             },
+            like_date:{
+                type:Sequelize.DATE,
+                defaultValue:sequelize.literal('now()'),
+            }
         },{
             sequelize,
             timestamps:false,

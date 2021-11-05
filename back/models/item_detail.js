@@ -32,7 +32,7 @@ module.exports = class ItemDetail extends Sequelize.Model{
                 type:Sequelize.STRING(100),
                 comment:'item_info에서 받은 item_code + size와 color별 index'
             },
-            product_status:{ // 품절, 판매중
+            product_status:{
                 type:Sequelize.STRING,
             },
         },{
@@ -48,6 +48,6 @@ module.exports = class ItemDetail extends Sequelize.Model{
     }
     static associate(db){
         db.ItemDetail.belongsTo(db.ItemInfo,{foreignKey:'item_info_idx',targetKey:'item_info_idx'})
-        db.ItemDetail.hasMany(db.NftImg,{foreignKey:'id',sourceKey:'item_detail_idx'})
+        db.ItemDetail.hasMany(db.NftImg,{foreignKey:'nft_img_idx',sourceKey:'item_detail_idx'})
     }
 }
