@@ -3,37 +3,39 @@ import {all,put,takeLatest,fork,call} from "redux-saga/effects";
 import {url} from './url'
 
 /* 구매자 :  배송 정보 입력하기 */
-function shipAPI(data){
-    return axios.post (`${url}/ship/shipinfo`,data)
+function directDealAPI(){
+    return axios.get (`${url}/view/directdeal`)
 }
 
-function* shipInfo(action){  
-    const result = yield call(shipAPI, action.data)
+function* directDealView(){  
+    const result = yield call(directDealAPI)
+    console.log(result);
+    
 }
 
-function* reqShip(){
-    yield takeLatest('SHIPINFO_INSERT_REQUEST',shipInfo)
+function* reqDirectDealView(){
+    yield takeLatest('DIRECTDEAL_VIEW_REQUEST',directDealView)
 }
 
 
  /* 판매자 : 운송장 등록하기 */
-function deliveryAPI(data){
-    return axios.post (`${url}/ship/deliveryinfo`,data)
+function auctionViewAPI(){
+    return axios.get (`${url}/view/auction`)
 }
 
-function* deliveryInfo(action){
-    const result = yield call(deliveryAPI, action.data)
+function* auctionView(){
+    const result = yield call(auctionViewAPI)
 }
 
-function* reqDelivery(){
-    yield takeLatest('DELIVERYINFO_INSERT_REQUEST',deliveryInfo)
+function* reqAuctionView(){
+    yield takeLatest('AUCTION_VIEW_REQUEST',auctionView)
 }
 
 
 
-export default function* shipSaga(){
+export default function* viewSaga(){
     yield all([
-        fork(reqShip),
-        fork(reqDelivery)
+        fork(reqDirectDealView),
+        fork(reqAuctionView)
     ])
 }

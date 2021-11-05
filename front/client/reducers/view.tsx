@@ -1,7 +1,7 @@
 import { AnyAction } from 'redux'
 import { HYDRATE } from 'next-redux-wrapper';
 
-export interface ShipState {
+export interface ViewState {
     loadding: boolean;
     data: Array<string | number | Object>;
     payload: {};
@@ -10,7 +10,7 @@ export interface ShipState {
     verify: number;
 }
 
-export const initialState: ShipState = {
+export const initialState: ViewState = {
     loadding: false,
     data: [],
     payload: {},
@@ -74,7 +74,7 @@ export const auctionView_ERROR = () => {
 
 
 
-type ShipAction =
+type ViewAction =
     | ReturnType<typeof directDealView_REQUEST>
     | ReturnType<typeof directDealView_SUCCESS>
     | ReturnType<typeof directDealView_ERROR>
@@ -82,7 +82,7 @@ type ShipAction =
     | ReturnType<typeof auctionView_SUCCESS>
     | ReturnType<typeof auctionView_ERROR>
 
-const reducer = (state: ShipState = initialState, action: ShipAction) => {
+const reducer = (state: ViewState = initialState, action: ViewAction) => {
     switch (action.type) {
         /* 즉시 판매 view 가져오기 */
         case DIRECTDEAL_VIEW_REQUEST:
