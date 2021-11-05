@@ -2,14 +2,14 @@ const express = require('express')
 const router = express.Router()
 const controller = require('./user.controller')
 
-router.post('/selleradmin', controller.Seller_Admin)
+router.post('/selleradmin', controller.seller_admin)
 
 
-router.post('/signup',controller.Signup_post)
+router.post('/signup',controller.signup_post)
 
-router.post('/addressdbcheck',controller.Address_Db_check)
+router.post('/addressdbcheck',controller.address_db_check)
 
-router.get('/userlist',controller.Userlist_get)
+router.get('/userlist',controller.userlist_get)
 
 router.post('/selleradminaccess',controller.selleradmin_access)
 

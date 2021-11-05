@@ -26,10 +26,7 @@ module.exports = class User extends Sequelize.Model{
             },
             join_date:{
                 type:Sequelize.DATE,
-                defaultValue:sequelize.literal('now()'),
-                // get(){
-                //     return moment(this.getDataValue('date')).format('YYYY-MM-DD')
-                // }     
+                defaultValue:sequelize.literal('now()'),   
             },
             email : {
                 type : Sequelize.STRING(100),

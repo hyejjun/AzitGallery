@@ -130,7 +130,7 @@ const AddItemComponent = ({
                 </SectionWrapper>
                 <SectionWrapper>
                     <SmallTitle>
-                        색상 및 사이즈
+                        색상 및 사이즈`
                     </SmallTitle>
                     <DescText>엔터를 누르면 자동으로 입력되며 띄어쓰기는 불가합니다.</DescText>
                     <SmallerTitle>색상</SmallerTitle>

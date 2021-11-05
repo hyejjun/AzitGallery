@@ -12,21 +12,22 @@ module.exports = class DirectDeal extends Sequelize.Model{
                 type:Sequelize.STRING(100),
             },
             price:{
-                type:Sequelize.STRING(20),
+                type:Sequelize.INTEGER,
             },
             start_date:{
                 type:Sequelize.DATE,
-                defaultValue:Sequelize.NOW,
-                get:function(){
-                    return moment(this.getDataValue('date')).format('YYYY-MM-DD-hh-mm-dd')
-                }     
-            }               
+                defaultValue:sequelize.literal('now()'),
+     
+            },
+            currency:{
+                type:Sequelize.STRING(30)
+            }             
         },{
             sequelize,
-            timestamps:true,
+            timestamps:false,
             modelName:'Direct_deal',
             tableName:'direct_deal',
-            paranoid:true,
+            paranoid:false,
             charset:'utf8',
             collate:'utf8_general_ci'
         })

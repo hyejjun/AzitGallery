@@ -10,7 +10,7 @@ module.exports = class ItemDetail extends Sequelize.Model{
                 allowNull:false,
                 //primaryKey:true
             },
-            item_datail_idx:{
+            item_detail_idx:{
                 type:Sequelize.INTEGER,
                 allowNull:false,
                 primaryKey:true
@@ -22,9 +22,8 @@ module.exports = class ItemDetail extends Sequelize.Model{
                 type:Sequelize.STRING(30),
             },
             nft:{
-                type:Sequelize.TEXT,
+                type:Sequelize.STRING(255),
                 allowNull:false,
-                unique:true
             },
             qty:{
                 type:Sequelize.INTEGER,
@@ -32,6 +31,9 @@ module.exports = class ItemDetail extends Sequelize.Model{
             item_code:{
                 type:Sequelize.STRING(100),
                 comment:'item_info에서 받은 item_code + size와 color별 index'
+            },
+            product_status:{
+                type:Sequelize.STRING,
             },
         },{
             sequelize,
@@ -46,6 +48,6 @@ module.exports = class ItemDetail extends Sequelize.Model{
     }
     static associate(db){
         db.ItemDetail.belongsTo(db.ItemInfo,{foreignKey:'item_info_idx',targetKey:'item_info_idx'})
-        db.ItemDetail.hasMany(db.NftImg,{foreignKey:'id',sourceKey:'item_datail_idx'})
+        db.ItemDetail.hasMany(db.NftImg,{foreignKey:'nft_img_idx',sourceKey:'item_detail_idx'})
     }
 }

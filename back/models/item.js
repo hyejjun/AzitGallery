@@ -15,18 +15,6 @@ module.exports = class Item extends Sequelize.Model{
                 primaryKey:true,
                 autoIncrement:true
             },
-            gender:{
-                type:Sequelize.STRING,
-                comment:'남 / 여 / 남녀공용'
-            },
-            season:{
-                type:Sequelize.INTEGER,
-                comment:'계절 // 봄, 여름, 가을, 겨울'
-            },
-            age:{
-                type:Sequelize.INTEGER,
-                comment:'0:0~10/1:10~20/2:20~30/3:30~40/4:40~'
-            },
             item_code:{
                 type:Sequelize.STRING(100),
             }

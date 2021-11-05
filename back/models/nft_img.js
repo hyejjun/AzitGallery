@@ -5,6 +5,9 @@ const moment = require('moment')
 module.exports = class NftImg extends Sequelize.Model{
     static init(sequelize){
         return super.init({
+            nft_img_idx:{
+                type:Sequelize.INTEGER,
+            },
             nft_img:{
                 type:Sequelize.TEXT,
             }
@@ -20,6 +23,6 @@ module.exports = class NftImg extends Sequelize.Model{
         })
     }
     static associate(db){
-        db.NftImg.belongsTo(db.ItemDetail,{foreignKey:'id',targetKey:'item_datail_idx'})
+        db.NftImg.belongsTo(db.ItemDetail,{foreignKey:'nft_img_idx',targetKey:'item_detail_idx'})
     }
 }

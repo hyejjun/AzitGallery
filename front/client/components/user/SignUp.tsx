@@ -361,6 +361,7 @@ const Css = Styled.div`
 .btnBlur{
     background-color: #e1f0ff;
     color: #1e73fa;
+    
 }
 
 .signUpBtn{

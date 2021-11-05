@@ -9,7 +9,7 @@ const { User, Seller } = require('../../models')
 
 /* 이메일 보내기 */
 
-let Seller_Admin = async (req,res) => {
+let seller_admin = async (req,res) => {
     console.log('왓다')
     let transporter = nodemailer.createTransport({
         service: 'Gmail',
@@ -44,7 +44,7 @@ let Seller_Admin = async (req,res) => {
 
 
 
-// let Signup_post = async (req,res) => {
+// let signup_post = async (req,res) => {
 //     console.log('this is body')
 //     let key = Object.keys(req.body)
 //     let keyObject = JSON.parse(key)
@@ -72,7 +72,7 @@ let Seller_Admin = async (req,res) => {
 
 /* 회원가입 */
 
-let Signup_post = async (req,res) => {
+let signup_post = async (req,res) => {
     
     console.log('this is body')
     let key = Object.keys(req.body)
@@ -97,7 +97,7 @@ let Signup_post = async (req,res) => {
 
 /* 이미 회원가입 했는지, 아니면 새로운 회원인지 */
 
-let Address_Db_check = async (req,res) => {
+let address_db_check = async (req,res) => {
     
     console.log('this is db check')
     let key = Object.keys(req.body)
@@ -125,7 +125,7 @@ let Address_Db_check = async (req,res) => {
 
 /* 모든 회원들 정보를 불러오기 */
 
-let Userlist_get = async (req,res) => {
+let userlist_get = async (req,res) => {
 
     let result = await Seller.findAll({})
   
@@ -181,11 +181,11 @@ let selleradmin_wait = async (req,res) => {
 }
 
 module.exports = {
-    Seller_Admin,
-    // AddUser,
-    Signup_post,
-    Address_Db_check,
-    Userlist_get,
+    seller_admin,
+    // adduser,
+    signup_post,
+    address_db_check,
+    userlist_get,
     selleradmin_access,
     selleradmin_deny,
     selleradmin_wait

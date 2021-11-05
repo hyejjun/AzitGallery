@@ -19,6 +19,9 @@ module.exports = class AuctionHistory extends Sequelize.Model{
             bid_price:{
                 type:Sequelize.STRING(20),
             },
+            currency:{
+                type:Sequelize.STRING(30)
+            },
             start_price:{
                 type:Sequelize.STRING(20),
             }           
