@@ -32,9 +32,10 @@ export const AUCTION_VIEW_ERROR = "AUCTION_VIEW_ERROR" as const;
 
 
 /* 즉시 판매 view 가져오기 */
-export const directDealView_REQUEST = () => {
+export const directDealView_REQUEST = (idx) => {
     return {
         type: DIRECTDEAL_VIEW_REQUEST,
+        idx
     }
 }
 
@@ -88,6 +89,7 @@ const reducer = (state: ViewState = initialState, action: ViewAction) => {
         case DIRECTDEAL_VIEW_REQUEST:
             return {
                 ...state,
+                directIdx : action.idx
             }
         case DIRECTDEAL_VIEW_SUCCESS:
             return {

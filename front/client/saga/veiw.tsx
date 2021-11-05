@@ -3,13 +3,13 @@ import {all,put,takeLatest,fork,call} from "redux-saga/effects";
 import {url} from './url'
 
 /* 즉시 판매 view 가져오기 */
-function directDealAPI(){
-    return axios.get (`${url}/view/directdeal`)
+function directDealAPI(idx){
+    return axios.post (`${url}/view/directdeal`,JSON.stringify(idx))
 }
 
-function* directDealView(){  
-    const result = yield call(directDealAPI)
-    console.log(result);
+function* directDealView(action){      
+    const result = yield call(directDealAPI, action.idx)
+    // console.log("back 에서 온 데이터",result);
     
 }
 
