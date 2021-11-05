@@ -2,7 +2,7 @@ import axios from 'axios';
 import {all,put,takeLatest,fork,call} from "redux-saga/effects";
 import {url} from './url'
 
-/* 구매자 :  배송 정보 입력하기 */
+/* 즉시 판매 view 가져오기 */
 function directDealAPI(){
     return axios.get (`${url}/view/directdeal`)
 }
@@ -18,7 +18,7 @@ function* reqDirectDealView(){
 }
 
 
- /* 판매자 : 운송장 등록하기 */
+/* 경매 view 가져오기 */
 function auctionViewAPI(){
     return axios.get (`${url}/view/auction`)
 }

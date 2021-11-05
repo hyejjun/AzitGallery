@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const controller = require('./ship.controller')
+const controller = require('./view.controller')
 
 router.get('/directdeal', controller.get_directdeal_view)
 router.get('/auction', controller.get_auction_view)
