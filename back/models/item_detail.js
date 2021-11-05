@@ -5,27 +5,34 @@ const moment = require('moment')
 module.exports = class ItemDetail extends Sequelize.Model{
     static init(sequelize){
         return super.init({ 
-            item_detail_idx:{
-                type:Sequelize.INTEGER(30),
-                allowNull:true,
+            item_info_idx:{
+                type:Sequelize.INTEGER,
+                allowNull:false,
+                //primaryKey:true
+            },
+            item_datail_idx:{
+                type:Sequelize.INTEGER,
+                allowNull:false,
                 primaryKey:true
             },
             size:{
                 type:Sequelize.STRING(30),
             },
             color:{
-                type:Sequelize.INTEGER,
+                type:Sequelize.STRING(30),
             },
             nft:{
                 type:Sequelize.TEXT,
                 allowNull:false,
+                unique:true
             },
             qty:{
                 type:Sequelize.INTEGER,
             },
             item_code:{
-                type:Sequelize.STRING,
-            }
+                type:Sequelize.STRING(100),
+                comment:'item_info에서 받은 item_code + size와 color별 index'
+            },
         },{
             sequelize,
             timestamps:false,
@@ -36,5 +43,9 @@ module.exports = class ItemDetail extends Sequelize.Model{
             charset:'utf8',
             collate:'utf8_general_ci'
         })
+    }
+    static associate(db){
+        db.ItemDetail.belongsTo(db.ItemInfo,{foreignKey:'item_info_idx',targetKey:'item_info_idx'})
+        db.ItemDetail.hasMany(db.NftImg,{foreignKey:'id',sourceKey:'item_datail_idx'})
     }
 }

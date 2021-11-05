@@ -9,7 +9,7 @@ module.exports = class ItemImg extends Sequelize.Model{
                 type:Sequelize.INTEGER,
                 allowNull:false
             },
-            item_img:{
+            item_img_link:{
                 type:Sequelize.TEXT,
             }
         },{
@@ -17,10 +17,13 @@ module.exports = class ItemImg extends Sequelize.Model{
             timestamps:false,
             underscored:false,
             paranoid:false,
-            modelName:'ItemImg',
+            modelName:'Item_img',
             tableName:'item_img',
             charset:'utf8',
             collate:'utf8_general_ci'
         })
+    }
+    static associate(db){
+        db.ItemImg.belongsTo(db.ItemInfo,{foreignKey:'item_info_idx',targetKey:'item_info_idx'})
     }
 }

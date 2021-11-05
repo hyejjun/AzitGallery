@@ -7,7 +7,7 @@ module.exports = class ItemInfo extends Sequelize.Model{
     static init(sequelize){
         return super.init({ 
             item_info_idx:{
-                type:Sequelize.INTEGER(30),
+                type:Sequelize.INTEGER,
                 allowNull:false,
                 primaryKey:true
             },
@@ -16,10 +16,6 @@ module.exports = class ItemInfo extends Sequelize.Model{
             },
             title:{
                 type:Sequelize.STRING,
-            },
-            item_img_idx:{
-                type:Sequelize.INTEGER,
-                allowNull:false,
             },
             registered_at:{
                 type:Sequelize.DATE,
@@ -30,7 +26,7 @@ module.exports = class ItemInfo extends Sequelize.Model{
             },
             sell_type:{
                 type:Sequelize.BOOLEAN
-            }
+            },
         },{
             sequelize,
             timestamps:false,
@@ -41,5 +37,12 @@ module.exports = class ItemInfo extends Sequelize.Model{
             charset:'utf8',
             collate:'utf8_general_ci'
         })
+    }
+    static associate(db){
+        db.ItemInfo.belongsTo(db.Item,{foreignKey:'item_info_idx',targetKey:'item_id'}),
+        db.ItemInfo.hasMany(db.ItemImg,{foreignKey:'item_info_idx',sourceKey:'item_info_idx'}),
+        db.ItemInfo.hasMany(db.DirectDeal,{foreignKey:'direct_deal_idx',sourceKey:'item_info_idx'}),
+        db.ItemInfo.hasMany(db.ItemDetail,{foreignKey:'item_info_idx',sourceKey:'item_info_idx'}),
+        db.ItemInfo.hasMany(db.Auction,{foreignKey:'auction_idx',sourceKey:'item_info_idx'})
     }
 }

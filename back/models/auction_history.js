@@ -3,7 +3,7 @@ const Sequelize = require('sequelize')
 module.exports = class AuctionHistory extends Sequelize.Model{
     static init(sequelize){
         return super.init({
-            auction_idx:{
+            auc_history_idx:{
                 type:Sequelize.INTEGER,
             },
             bidder:{
@@ -25,14 +25,14 @@ module.exports = class AuctionHistory extends Sequelize.Model{
         },{
             sequelize,
             timestamps:true,
-            modelName:'AuctionHistory',
-            tableName:'auctionhistory',
+            modelName:'Auction_history',
+            tableName:'auction_history',
             paranoid:true,
             charset:'utf8',
             collate:'utf8_general_ci'
         })
     }
     static associate(db){
-
+       db.AuctionHistory.belongsTo(db.Auction,{foreignKey:'auc_history_idx',targetKey:'auction_idx'})
     }
 }

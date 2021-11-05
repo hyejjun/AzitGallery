@@ -8,13 +8,14 @@ module.exports = class Auction extends Sequelize.Model{
             },
             end_date:{
                 type:Sequelize.DATE,
+
             },
             if_extended:{
                 type:Sequelize.BOOLEAN,
             },
             start_date:{
                 type:Sequelize.DATE,    
-            }           
+            },  
         },{
             sequelize,
             timestamps:true,
@@ -26,6 +27,7 @@ module.exports = class Auction extends Sequelize.Model{
         })
     }
     static associate(db){
-
+        db.Auction.belongsTo(db.ItemInfo,{foreignKey:'auction_idx',targetKey:'item_info_idx'})
+        db.Auction.hasMany(db.AuctionHistory,{foreignKey:'auc_history_idx',sourceKey:'auction_idx'})
     }
 }

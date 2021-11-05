@@ -15,6 +15,10 @@ module.exports = class Seller extends Sequelize.Model{
             },
             email_validation:{
                 type:Sequelize.BOOLEAN,
+            },
+            brand_name:{
+                type:Sequelize.STRING
+
             }
         },{
             sequelize,
@@ -27,6 +31,7 @@ module.exports = class Seller extends Sequelize.Model{
         })
     }
     static associate(db){
-
+        db.Seller.belongsTo(db.User,{foreignKey:'user_idx',targetKey:'user_idx'}),
+        db.Seller.hasMany(db.BuyerList,{foreignKey:'sender_idx',sourceKey:'user_idx'})
     }
 }

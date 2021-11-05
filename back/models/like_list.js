@@ -10,7 +10,7 @@ module.exports = class LikeList extends Sequelize.Model{
                 allowNull:false
             },
             item_code:{
-                type:Sequelize.INTEGER,
+                type:Sequelize.STRING(100),
             },
         },{
             sequelize,
@@ -22,5 +22,8 @@ module.exports = class LikeList extends Sequelize.Model{
             charset:'utf8',
             collate:'utf8_general_ci'
         })
+    }
+    static associate(db){
+        db.LikeList.belongsTo(db.User,{foreignKey:'user_idx',targetKey:'user_idx'})
     }
 }

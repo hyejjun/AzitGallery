@@ -8,11 +8,12 @@ module.exports = class Item extends Sequelize.Model{
             creator:{
                 type:Sequelize.INTEGER(30),
                 allowNull:false,
-                comment:'useridx'
+                comment:'useridx',
             },
             item_id:{
-                type:Sequelize.STRING(30),
-                primaryKey:true
+                type:Sequelize.INTEGER,
+                primaryKey:true,
+                autoIncrement:true
             },
             gender:{
                 type:Sequelize.STRING,
@@ -27,7 +28,7 @@ module.exports = class Item extends Sequelize.Model{
                 comment:'0:0~10/1:10~20/2:20~30/3:30~40/4:40~'
             },
             item_code:{
-                type:Sequelize.STRING,
+                type:Sequelize.STRING(100),
             }
         },{
             sequelize,
@@ -39,5 +40,10 @@ module.exports = class Item extends Sequelize.Model{
             charset:'utf8',
             collate:'utf8_general_ci'
         })
+    }
+    static associate(db){
+        db.Item.belongsTo(db.User,{foreignKey:'creator',targetKey:'user_idx'}),
+        db.Item.belongsTo(db.Category,{foreignKey:'item_id',targetKey:'id'})
+        db.Item.hasOne(db.ItemInfo,{foreignKey:'item_info_idx',sourceKey:'item_id'})
     }
 }

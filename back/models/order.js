@@ -3,12 +3,12 @@ const moment = require('moment')
 const { STRING } = require('sequelize')
 
 // 추후 상품id 추가할 것
-module.exports = class Order extends Sequelize.Model{
+module.exports = class Orders extends Sequelize.Model{
     static init(sequelize){
         return super.init({ 
-            price:{
+            total_price:{
                 type:Sequelize.INTEGER(30),
-                defaultValue:2
+                allowNull:false,
             },
             order_date:{
                 type:Sequelize.STRING(30),
@@ -24,17 +24,15 @@ module.exports = class Order extends Sequelize.Model{
             },
             order_num:{
                 type:Sequelize.INTEGER,
+                primaryKey:true
             },
-            total_order_state:{
-                type:Sequelize.INTEGER,
-                comment:'전체 배송상황 0:일부상품배송중 /1:전체상품배송완료'
-            },
-            input_opt:{
-                type:Sequelize.INTEGER,
-                comment:'배송품 수령처 0:직접 1:문앞 2:무인택배함 3:기타'
+            final_order_state:{
+                type:Sequelize.BOOLEAN,
+                comment:'true -> 전체 배송완료시'
             },
             memo:{
-                type:Sequelize.TEXT
+                type:Sequelize.TEXT,
+                comment:'배송품 수령지 등에 대한 정보 '
             }
 
         },{
@@ -42,10 +40,13 @@ module.exports = class Order extends Sequelize.Model{
             timestamps:false,
             underscored:false,
             paranoid:false,
-            modelName:'Order',
+            modelName:'Orders',
             tableName:'order',
             charset:'utf8',
             collate:'utf8_general_ci'
         })
+    }
+    static associate(db){
+        db.Orders.hasMany(db.OrderDetail,{foreignKey:'order_detail_id',sourceKey:'order_num'})
     }
 }

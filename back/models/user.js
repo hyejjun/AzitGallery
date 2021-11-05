@@ -8,31 +8,33 @@ module.exports = class User extends Sequelize.Model{
                 type:Sequelize.INTEGER,
                 autoIncrement:true,
                 primaryKey:true,
-                unique:true
             },
-            name:{
+            nick_name:{
                 type:Sequelize.STRING(30),
-                defaultValue : 'aaaaaaaaaa'
+                unique:true
             },
             kaikas_address:{
                 type:Sequelize.STRING(100),
+                unique:true
             },
             contact : {
                 type : Sequelize.STRING(100),
+                unique:true
             },
             address : {
                 type : Sequelize.STRING(100),
             },
             join_date:{
                 type:Sequelize.DATE,
-                defaultValue:Sequelize.NOW,
-                get:function(){
-                    return moment(this.getDataValue('date')).format('YYYY-MM-DD-hh-mm-dd')
-                }     
+                defaultValue:sequelize.literal('now()'),
+                // get(){
+                //     return moment(this.getDataValue('date')).format('YYYY-MM-DD')
+                // }     
             },
             email : {
                 type : Sequelize.STRING(100),
-            }
+                unique:true
+            },
         },{
             sequelize,
             timestamps:false,
@@ -44,6 +46,8 @@ module.exports = class User extends Sequelize.Model{
         })
     }
     static associate(db){
-
+        db.User.hasMany(db.Item,{foreignKey:'creator',sorceKey:'user_idx'}),
+        db.User.hasOne(db.Seller,{foreignKey:'user_idx',sourceKey:'user_idx'}),
+        db.User.hasMany(db.LikeList,{foreignKey:'user_idx',sourceKey:'user_idx'})
     }
 }
