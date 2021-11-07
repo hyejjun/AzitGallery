@@ -13,6 +13,7 @@ module.exports = class Item extends Sequelize.Model{
             item_id:{
                 type:Sequelize.INTEGER,
                 primaryKey:true,
+                autoIncrement: true,
             },
             item_code:{
                 type:Sequelize.STRING(100),

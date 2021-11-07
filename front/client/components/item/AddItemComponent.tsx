@@ -265,6 +265,7 @@ const AddItemComponent = () => {
             // data[1]의 파일들을 s3에 각각 올리고 업로드 주소값을 받아 배열에 넣는다
             let fileArray = data[1].map(async (items)=>{
                 const response = await fetch(`${url}/item/uploadpics`)
+                console.log(response,'response')
                 const { link } = await response.json()
                 await fetch(link, {
                     method: "PUT",
@@ -312,8 +313,10 @@ const AddItemComponent = () => {
         setnftCreateState(false)
     }
 
-    const test = () => {
-     
+
+    const testValue = () => {
+        let data = {ifSell: true, price: '1000', currency: 'won', name:'123', desc:'123', itemType:'female', color:['red','yellow'], size:['s','m','l']}
+        sendDataToServer([data,file])
     }
 
     const ColorBar = () => {
@@ -362,7 +365,7 @@ const AddItemComponent = () => {
                 /> :<></> }
             {cancelNft ? < CancelNft flag={cancelNft} closeBtn={closeBtn}/> :<></>}
             <TopWrapper> 
-                <BigTitle onClick = {test}>
+                <BigTitle onClick = {testValue}>
                     새로운 NFT 발행하기
                 </BigTitle>
                 <SectionWrapper>

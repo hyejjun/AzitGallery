@@ -10,7 +10,6 @@ module.exports = class ItemInfo extends Sequelize.Model{
                 type:Sequelize.INTEGER,
                 allowNull:false,
                 primaryKey:true,
-                autoIncrement: true,
             },
             description:{
                 type:Sequelize.TEXT,
