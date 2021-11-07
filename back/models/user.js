@@ -32,10 +32,6 @@ module.exports = class User extends Sequelize.Model{
                 type : Sequelize.STRING(100),
                 unique:true
             },
-            user_code:{
-                type:Sequelize.INTEGER,
-                allowNull:false
-            }
         },{
             sequelize,
             timestamps:false,
