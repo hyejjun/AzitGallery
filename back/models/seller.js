@@ -18,7 +18,6 @@ module.exports = class Seller extends Sequelize.Model{
             },
             brand_name:{
                 type:Sequelize.STRING
-
             }
         },{
             sequelize,

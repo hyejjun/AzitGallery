@@ -3,8 +3,13 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Category from '../common/Category'
 import { ItemListCSS } from './ItemListCSS'
+import { Itemlist_REQUEST } from '../../reducers/list'
+import { PlusItemlist_REQUEST } from '../../reducers/list'
+import { useSelector, useDispatch } from 'react-redux'
+import { RootState } from "../../reducers"
 
 const ItemListSell = (props) => {
+
     const {
         PictureNumberNotice,
         SelectBox,
@@ -25,6 +30,8 @@ const ItemListSell = (props) => {
     } = ItemListCSS
 
     const { gender, List, handlegender, handleList } = props.CategoryState
+    const dispatch = useDispatch()
+    const list = useSelector((state:RootState) => state.list);
     let [loading, setLoading] = useState<boolean>(false)
 
     let [count,setCount] = useState<number>(0)
@@ -40,7 +47,7 @@ const ItemListSell = (props) => {
     const [Arr, setArr] = React.useState<ArrEle[]>([
         {
             id: 1,
-            subject: 'adsfds',
+            subject: 'dsfa',
             artist: 'daminal',
             Like: 0,
             alert: '신고하기',
@@ -151,37 +158,19 @@ const ItemListSell = (props) => {
     </React.Fragment>
     );
 
-    const handleClick = (): void => {
-        setArr(
-            Arr.concat(        
-                {
-                    id: 9,
-                    subject: 'adsg',
-                    artist: 'daminal',
-                    Like: 5,
-                    alert: '신고하기',
-                    url:`/sell/1`
-                },
-                {
-                    id: 10,
-                    subject: 'asdgsdg',
-                    artist: 'daminal',
-                    Like: 5,
-                    alert: '신고하기',
-                    url:`/sell/1`
-                },
-                {
-                    id: 11,
-                    subject: 'adsg',
-                    artist: 'daminal',
-                    Like: 5,
-                    alert: '신고하기',
-                    url:`/sell/1`
-                },
-            ),
-        );
-      };
+    const handleClick = () => {
+
+        dispatch(PlusItemlist_REQUEST(list.listlength))
+        setArr(list.itemList)
+        console.log('dispatch?')
+    };
+
     useEffect(() => {
+        dispatch(Itemlist_REQUEST())
+        setArr(list.itemList)
+    },[])
+    useEffect(() => {
+       
         let cnt0: number = 0;
         
         function counterFn() {

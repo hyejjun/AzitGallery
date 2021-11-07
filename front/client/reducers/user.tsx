@@ -57,6 +57,10 @@ export const SIGNUP_POST_REQUEST = "SIGNUP_POST_REQUEST" as const;
 export const SIGNUP_POST_SUCCESS = "SIGNUP_POST_SUCCESS" as const;
 export const SIGNUP_POST_ERROR = "SIGNUP_POST_ERROR" as const;
 
+export const NICKNAME_POST_REQUEST = "NICKNAME_POST_REQUEST" as const;
+export const NICKNAME_POST_SUCCESS = "NICKNAME_POST_SUCCESS" as const;
+export const NICKNAME_POST_ERROR = "NICKNAME_POST_ERROR" as const;
+
 export const USER_LIST_REQUEST = "USER_LIST_REQUEST" as const;
 export const USER_LIST_SUCCESS = "USER_LIST_SUCCESS" as const;
 export const USER_LIST_ERROR = "USER_LIST_ERROR" as const;
@@ -143,6 +147,28 @@ export const SignUp_ERROR = (data) => {
     }
 }
 
+/* signup nickname chk succ */
+export const Nickname_REQUEST = (data) => {
+    return {
+        type: NICKNAME_POST_REQUEST,
+        data
+    }
+}
+
+export const Nickname_SUCCESS = (data) => {
+    return {
+        type: NICKNAME_POST_SUCCESS,
+        data
+    }
+}
+
+export const Nickname_ERROR = (data) => {
+    return {
+        type: NICKNAME_POST_ERROR,
+        data
+    }
+}
+
 
 /* user list req */
 export const Userlist_REQUEST = () => {
@@ -217,6 +243,10 @@ type UserAction =
     | ReturnType<typeof SignUp_REQUEST>
     | ReturnType<typeof SignUp_SUCCESS>
     | ReturnType<typeof SignUp_ERROR>
+
+    | ReturnType<typeof Nickname_REQUEST>
+    | ReturnType<typeof Nickname_SUCCESS>
+    | ReturnType<typeof Nickname_ERROR>
 
     | ReturnType<typeof Userlist_REQUEST>
     | ReturnType<typeof UserList_SUCCESS>
@@ -329,6 +359,19 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
                 signupBool: false
             }
 
+        /* 회원가입 닉네임 중복체크 */
+        case NICKNAME_POST_REQUEST:
+            return {
+                ...state,
+            }
+        case NICKNAME_POST_SUCCESS:
+            return {
+                ...state,
+            }
+        case NICKNAME_POST_ERROR:
+            return {
+                ...state,
+            }
         /* User list req */
         case USER_LIST_REQUEST:
             return {

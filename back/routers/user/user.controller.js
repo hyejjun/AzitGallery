@@ -78,7 +78,7 @@ let signup_post = async (req,res) => {
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
     console.log(keyObject)
-    let name = keyObject.NickName
+    let nick_name = keyObject.NickName
     let kaikas_address = keyObject.Address
     let email = keyObject.Email
     let join_date = new Date()
@@ -86,11 +86,11 @@ let signup_post = async (req,res) => {
     let address = '일단 비움'
     let kycAuthorized = 0
 
-    console.log(keyObject.NickName)
-    console.log(keyObject.Address)
+    console.log(keyObject.NickName,"222")
+    console.log(keyObject.Address,)
     console.log(keyObject.Email)
 
-    let result = await User.create({name,kaikas_address,contact,address,join_date,email})
+    let result = await User.create({nick_name,kaikas_address,contact,address,join_date,email})
     console.log(result)
 
 }
@@ -98,8 +98,8 @@ let signup_post = async (req,res) => {
 /* 이미 회원가입 했는지, 아니면 새로운 회원인지 */
 
 let address_db_check = async (req,res) => {
-    
-    console.log('this is db check')
+    console.log(req.body,"3333333")
+    console.log('this is db check',"2222222")
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
     console.log(keyObject)
@@ -120,6 +120,11 @@ let address_db_check = async (req,res) => {
         res.json(data)
     }
     console.log(result)
+
+}
+
+let nickname_check = async(req,res) => {
+    console.log()
 
 }
 
@@ -173,10 +178,11 @@ let selleradmin_wait = async (req,res) => {
     let key = Object.keys(req.body)
     const keyObject = JSON.parse(key)
     console.log(keyObject)
-    const name = 0
+    const name = 1
     let admin_approval = 1
     let email_validation = true
-    let result = await Seller.create({user_idx:name,seller_code:keyObject,admin_approval,email_validation})
+    let brand_name = 'NULL'
+    let result = await Seller.create({user_idx:name,seller_code:keyObject,admin_approval,email_validation,brand_name})
 
 }
 
@@ -185,6 +191,7 @@ module.exports = {
     // adduser,
     signup_post,
     address_db_check,
+    nickname_check,
     userlist_get,
     selleradmin_access,
     selleradmin_deny,

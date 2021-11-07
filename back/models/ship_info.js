@@ -17,6 +17,9 @@ module.exports = class ShipInfo extends Sequelize.Model{
             item_delivery_state:{
                 type:Sequelize.STRING(20),      // 배송준비중, 배송중, 배송완료
             },
+            order_detail_num:{
+                type:Sequelize.INTEGER,
+            }
 
         },{
             sequelize,
@@ -29,7 +32,7 @@ module.exports = class ShipInfo extends Sequelize.Model{
         })
     }
     static associate(db){
-        db.ShipInfo.belongsTo(db.OrderDetail,{foreignKey:'order_num',targetKey:'order_detail_id'})
+        db.ShipInfo.belongsTo(db.Orders,{foreignKey:'order_num',targetKey:'order_num'})
 
     }
 }

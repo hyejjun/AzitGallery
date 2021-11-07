@@ -3,6 +3,7 @@ import user from './user'
 import mint from './mint'
 import ship from './ship'
 import type from './type'
+import list from './list'
 import reducer from './user'
 import {initialState} from './user'
 import {AnyAction} from 'redux';
@@ -13,6 +14,7 @@ import {UserState} from '../reducers/user'
 import {MintState} from '../reducers/mint'
 import {ShipState} from './ship'
 import { TypeState } from './type'
+import { ListState } from '../reducers/list'
 import {Reducer} from 'redux'
 
 const persistConfig = {
@@ -26,11 +28,12 @@ export interface State {
     mint:MintState,
     ship:ShipState,
     type:TypeState,
+    list:ListState
 
 }
 
 const combinedReducers = combineReducers({
-    user, mint, ship, type,
+    user, mint, ship, type, list
 })
 
 export const rootReducer:Reducer<State,AnyAction> = (state,action) => {

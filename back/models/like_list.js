@@ -1,7 +1,6 @@
 const Sequelize = require('sequelize')
 const moment = require('moment')
 
-// 추후 상품id 추가할 것
 module.exports = class LikeList extends Sequelize.Model{
     static init(sequelize){
         return super.init({ 

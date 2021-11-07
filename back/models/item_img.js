@@ -24,6 +24,6 @@ module.exports = class ItemImg extends Sequelize.Model{
         })
     }
     static associate(db){
-        db.ItemImg.belongsTo(db.ItemInfo,{foreignKey:'item_info_idx',targetKey:'item_info_idx'})
+        db.ItemImg.belongsTo(db.ItemInfo,{foreignKey:'item_id',targetKey:'item_id'})
     }
 }

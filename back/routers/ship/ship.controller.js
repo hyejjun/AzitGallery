@@ -1,30 +1,23 @@
-const {Deliver} = require('../../models')
+const {Orders, OrderDetail, ShipInfo} = require('../../models')
 
 let get_shipinfo = async (req,res)=>{
-    console.log(req)
-    let result 
-    let {orderer,receiver,phoneNum,address,postNumber,addressDetail,memo,inputStatus} = req.body
+
+    const {orderer,receiver,phoneNum,address,postNumber,addressDetail,memo,inputStatus} = req.body
     let buyerAddress = address+addressDetail
-    try{
-        await Deliver.create({
-            orderer,receiver,phoneNum,buyerAddress,phoneNum,postNum:postNumber,memo,inputStatus
+
+       let result =  await Orders.create({
+            total_price:55500,buyer:orderer,receiver:receiver,receiver_address:buyerAddress,receiver_contact:phoneNum,order_num:1,final_order_state:true,memo:memo
         })
-        let shipdata = await Deliver.findAll({where:{postNum:postNumber}})
-        result = {
-            result:'OK',
-            msg:'배송정보입력 성공',
-            shipdata
-        }
-        console.log(result.shipdata)
-        res.json(result)
-    }catch(e){
-        console.log(e)
-        result = {
-            result:'FAIL',
-            mas:'배송정보입력 실패'
-        }
-        res.json(result)
-    }   
+ 
+        console.log(result)
+        await OrderDetail.create({
+            size:'55500',color:'orderer',order_qty:45,shipper_idx:45,item_code:'phoneNum',price:1
+        })
+
+        await ShipInfo.create({
+            delivery_company:'55500',post_num:'orderer',order_num:1,item_delivery_state:'배송 중'
+        })
+
 }
 
 let send_shipinfo = async (req,res)=>{

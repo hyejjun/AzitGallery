@@ -33,12 +33,12 @@ function* reqLogin(){
 
 /* 이메일 인증 */
 
-function sellerAdminAPI(action):any {
+function sellerAdminAPI(action) {
     return axios.post(`http://localhost:4000/user/selleradmin`)
 }
 
 function* sellerAdminSaga(action){
-    const result = yield call(sellerAdminAPI(action))     
+    const result = yield call(sellerAdminAPI,action)     
 
     
 }
@@ -56,7 +56,7 @@ function sellerWaitAPI(action):any {
 }
 
 function* sellerWaitSaga(action){
-    const result = yield call(sellerWaitAPI(action))     
+    const result = yield call(sellerWaitAPI,action)     
 
     
 }
@@ -67,12 +67,12 @@ function* reqWaitEmail(){
 
 
 /* 회원 가입 post */
-function signupAPI(action):any {
+function signupAPI(action) {
     return axios.post(`http://localhost:4000/user/signup`,JSON.stringify(action.data))
 }
 
 function* signupSaga(action){
-    const result = yield call(signupAPI(action))
+    const result = yield call(signupAPI,action)
 
 }
 
@@ -80,10 +80,26 @@ function* reqSignup(){
     yield takeLatest('SIGNUP_POST_REQUEST',signupSaga)
 }
 
+/* 회원가입 nickname 중복체크 */
+
+function nicknameAPI(action):any {
+    return axios.post(`http://localhost:4000/user/nicknamechk`,JSON.stringify(action.data))
+}
+
+function* nicknameSaga(action){
+    const result = yield call(nicknameAPI(action))
+
+}
+
+function* reqNickname(){
+    yield takeLatest('SIGNUP_POST_REQUEST',nicknameSaga)
+}
+
+
 
 /* 관리자 페이지 user list req */
 
-function userListAPI():any {
+function userListAPI() {
     return axios.get(`http://localhost:4000/user/userlist`)
 }
 
@@ -111,7 +127,7 @@ function adminAccessAPI(action):any {
 }
 
 function* sellerAdminAccessSaga(action){
-    const result = yield call(adminAccessAPI(action))
+    const result = yield call(adminAccessAPI,action)
     
 
 }
@@ -122,12 +138,12 @@ function* reqSellerAdminAccess(){
 
 /* 관리자 페이지 user list req */
 
-function adminDenyAPI(action):any {
+function adminDenyAPI(action) {
     return axios.post(`http://localhost:4000/user/selleradmindeny`,JSON.stringify(action.data))
 }
 
 function* sellerAdminDenySaga(action){
-    const result = yield call(adminDenyAPI(action))
+    const result = yield call(adminDenyAPI,action)
    
 
 }

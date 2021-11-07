@@ -2,7 +2,7 @@ import React, { useState} from "react";
 import Styled from 'styled-components'
 import CloseIcon from '@mui/icons-material/Close';
 import Link from 'next/link'
-import { KipToken_SUCCESS } from "../../../reducers/mint";
+import { KipToken_REQUEST } from "../../../reducers/mint";
 import { useSelector, useDispatch } from 'react-redux'
 
 declare global {
@@ -47,7 +47,7 @@ const Order = (props) => {
     }
     const Purchase = () => {
 
-        dispatch(KipToken_SUCCESS())
+        dispatch(KipToken_REQUEST())
         alert('EPI로 거래되셨습니다!')
     }
     

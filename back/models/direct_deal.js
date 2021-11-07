@@ -8,16 +8,12 @@ module.exports = class DirectDeal extends Sequelize.Model{
                 primaryKey:true,
                 unique:true
             },
-            item_code : {
-                type:Sequelize.STRING(100),
-            },
             price:{
                 type:Sequelize.INTEGER,
             },
             start_date:{
                 type:Sequelize.DATE,
                 defaultValue:sequelize.literal('now()'),
-     
             },
             currency:{
                 type:Sequelize.STRING(30)
@@ -33,6 +29,6 @@ module.exports = class DirectDeal extends Sequelize.Model{
         })
     }
     static associate(db){
-        db.DirectDeal.belongsTo(db.ItemInfo,{foreignKey:'direct_deal_idx',targetKey:'item_info_idx'})
+        db.DirectDeal.belongsTo(db.ItemInfo,{foreignKey:'direct_deal_idx',targetKey:'item_id'})
     }
 }
