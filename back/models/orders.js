@@ -37,7 +37,6 @@ module.exports = class Orders extends Sequelize.Model{
                 type:Sequelize.STRING(50),
                 comment:'배송품 수령지 등에 대한 정보 '
             }
-
         },{
             sequelize,
             timestamps:false,

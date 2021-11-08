@@ -1,7 +1,7 @@
 # category에 값 넣기
-INSERT INTO category(main_category_code,category_name) VALUES(CONCAT(0,1),'상의');
-INSERT INTO category(main_category_code,category_name) VALUES(CONCAT(0,2),'하의');
-INSERT INTO category(main_category_code,category_name) VALUES(CONCAT(0,3),'잡화');
+INSERT INTO category(main_category_code,category_name) VALUES(CONCAT(0,5),'여성복');
+INSERT INTO category(main_category_code,category_name) VALUES(CONCAT(0,6),'남성복');
+INSERT INTO category(main_category_code,category_name) VALUES(CONCAT(0,7),'아동복');
 INSERT INTO category(main_category_code,category_name) VALUES(CONCAT(0,4),'신발');
 
 # sub_category에 값 넣기
@@ -30,9 +30,11 @@ VALUES('mihee4','address4',0400000000,'homeaddress4','email4@naver.com');
 ## item_info랑direct_deal 한번에 값 넣기
 begin; 
 insert INTO item_info(creator,item_code,description,title,sell_type,category_id)
-VALUES(1,CONCAT(UNIX_TIMESTAMP(NOW()),101),'편안하게 입으세요3','여성 티셔츠3',0,1);
+VALUES(1,CONCAT(UNIX_TIMESTAMP(NOW())),'편안하게 입으세요3','여성 티셔츠3',0,1);
 # insert into item_detail select * from (select (select max(a.nft_idx)+1 from item_detail as a),(select max(a.item_id) from item_info as a),if((select a.item_detail_idx from item_detail as a),(select max(a.item_detail_idx)+1 from item_detail as a),1),'L','black','nfttt',5,CONCAT(UNIX_TIMESTAMP(NOW()),101),0 ) as item_detail;
 # insert into item_detail select * from (select (select last_insert_id(),(select max(a.item_id) from item_info as a),if((select a.item_detail_idx from item_detail as a),(select max(a.item_detail_idx)+1 from item_detail as a),1),'L','black','nfttt',5,CONCAT(UNIX_TIMESTAMP(NOW()),101),0 ) as item_detail;
+//밑에 item_detail 값 넣기 진짜...!
+insert into item_detail select * from (select (select max(a.nft_idx)+1 from item_detail as a),(select max(a.item_id) from item_info as a),if((select max(a.item_detail_idx) from item_detail as a),(select max(a.item_detail_idx)+1 from item_detail as a),1),'m','black','nftfasfddftt',5,CONCAT(1636359080,10103),0 ) as item_detail;
 insert into direct_deal(direct_deal_idx,price,currency) 
 values((select max(a.item_id) from item_info as a),3000,3000);
 commit;
@@ -46,6 +48,52 @@ insert INTO item_info(creator,item_code,description,title,sell_type,category_id)
 insert into auction(auction_idx,end_date,if_extended) values((select max(a.item_id) from item_info as a),'2021-11-20',1);
 insert into auction_history (auc_history_idx,bidder,bid_price,currency) values((select max(a.auction_idx) from auction as a),'1',3000,3000);
 commit;
+
+
+# 특정 유저가 구매한 제품
+// 최근발행순  
+select b.item_code,d.registered_at 
+from orders as a 
+join order_detail 
+as b on a.order_num=b.order_num 
+join item_detail as c 
+on b.item_code=c.item_code 
+join item_info as d 
+on d.item_id=
+(select distinct item_info_idx 
+from item_detail 
+where left(item_code,13)=1636335206101) 
+where a.buyer=2 
+order by registered_at;
+
+
+
+select b.item_code 
+from orders as a 
+join order_detail as b 
+on a.order_num = b.order_num 
+join item_detail as c 
+on b.item_code=c.item_code 
+where a.buyer=2;
+// 좋아요 순
+
+# 내가 발행한 제품 중 판매된 제품 
+select a.item_code, d.item_delivery_state, d.post_num, d.delivery_company 
+from item_detail as a 
+join item_info as b 
+join order_detail as c 
+on a.item_code=c.item_code 
+join ship_info as d 
+on c.order_detail_num=d.order_detail_num 
+where a.product_status=1 and b.creator=1;
+
+# 내가 발행한 제품 중 미판매된 제품
+ select b.item_code 
+ from item_info as a 
+ join item_detail as b 
+ on a.item_id=b.item_info_idx 
+ where a.creator=1 and b.product_status=0;
+
 
 
 
