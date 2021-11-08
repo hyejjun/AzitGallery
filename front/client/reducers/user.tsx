@@ -15,6 +15,7 @@ export interface UserState {
     signupBool: boolean;
     userList: Array<any>;
     loginBool: boolean;
+    nicknameChkBool: boolean;
 }
 
 export const initialState: UserState = {
@@ -28,7 +29,8 @@ export const initialState: UserState = {
     Email: '',
     signupBool: false,
     userList: [],
-    loginBool: false
+    loginBool: false,
+    nicknameChkBool:false
 };
 
 
@@ -367,10 +369,13 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
         case NICKNAME_POST_SUCCESS:
             return {
                 ...state,
+                nicknameChkBool: true
+
             }
         case NICKNAME_POST_ERROR:
             return {
                 ...state,
+                nicknameChkBool: false
             }
         /* User list req */
         case USER_LIST_REQUEST:
