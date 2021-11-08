@@ -80,6 +80,19 @@ function* reqSignup(){
     yield takeLatest('SIGNUP_POST_REQUEST',signupSaga)
 }
 
+/* 회원가입 nickname 중복 체크 */ 
+function nicknameAPI(action):any {
+    return axios.post(`http://localhost:4000/user/nicknamechk`,JSON.stringify(action.data))
+}
+
+function* nicknameSaga(action){
+    const result = yield call(signupAPI(action))
+
+}
+
+function* reqNickname(){
+    yield takeLatest('SIGNUP_POST_REQUEST',signupSaga)
+}
 
 /* 관리자 페이지 user list req */
 
