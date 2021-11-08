@@ -7,6 +7,7 @@ import useInput from '../../hooks/useInput'
 import SucJoin from './SucJoin'
 import { useSelector, useDispatch } from 'react-redux'
 import { SignUp_REQUEST } from "../../reducers/user"
+import { Nickname_REQUEST } from "../../reducers/user"
 import { Userlist_REQUEST } from "../../reducers/user"
 import { setUncaughtExceptionCaptureCallback } from 'process'
 import Router from 'next/router'
@@ -20,6 +21,7 @@ const SignUp = () => {
     const [nickErr, setNickErr] = useState<boolean>(true); 
     const [nickLength3Err, setNickLength3Err] = useState<boolean>(false); 
     const [nickSignErr, setNickSignErr] = useState<boolean>(false); 
+    const [nickOverlapErr, setnickOverlapErr] = useState<boolean>(false); 
 
     const [emailErr, setEmailErr] = useState<boolean>(true); 
     const [email2Err, setEmail2Err] = useState<boolean>(true)
@@ -27,7 +29,7 @@ const SignUp = () => {
     const [checked2,setChecked2] = useState<boolean>(false);
     const [checked3,setChecked3] = useState<boolean>(false);
 
-    const user = useSelector((state:RootState) => state.user);
+    const User = useSelector((state:RootState) => state.user);
 
     const nickChk1 = e => {
         const value = e.target.value;
@@ -80,6 +82,7 @@ const SignUp = () => {
 
     const [joinState,setJoinState] = useState<boolean>(false)
     const sucJoin = () => {
+
         if(nickErr === true || 
             nickLength3Err === true || 
             nickSignErr === true ||
@@ -97,15 +100,25 @@ const SignUp = () => {
         if(checked1 !== true || checked2 !== true || checked3 !== true){
             // alert("필수 동의사항에 체크해주세요.")
         }
+        
+        if(User.nicknameChkBool != false){
+            // alert("사용중인 닉네임입니다.")
+            setnickOverlapErr(true)
+        }else{
+            // alert("사용가능한 닉네임입니다.")
+            setnickOverlapErr(false)
+        }
 
         let data = {
             NickName:nickName,
-            Address:user.UserAddress,
+            Address:User.UserAddress,
             Email:email,
             
         }
         dispatch(SignUp_REQUEST(data))
         dispatch(Userlist_REQUEST())
+        dispatch(Nickname_REQUEST(data))
+        console.log(data, "55555");
     }
 
 
@@ -117,32 +130,7 @@ const SignUp = () => {
                     <div className="signUpContainer">
                         <form>
                             <div className="title">회원가입</div>
-                            <div className="image5">
-                            <div className="image4 textCenter">
-                            <div className="image3">
-                            <div className="image2 textCenter">
-                            <div className="image1 textCenter">
-                            <div>
-                            <svg width="120" height="120" 
-                            viewBox="0 0 120 120" 
-                            fill="none" 
-                            xmlns="http://www.w3.org/2000/svg">
-                                <circle cx="60" cy="60" r="60" fill="white" fillOpacity="0.8" className="circle"></circle>
-                                <path fillRule="evenodd" clipRule="evenodd" 
-                                d="M57 50C56.6656 50 56.3534 50.1671 56.1679 50.4453L54.4648 
-                                53H51C50.2044 53 49.4413 53.3161 48.8787 53.8787C48.3161 
-                                54.4413 48 55.2044 48 56V67C48 67.7957 48.3161 68.5587 48.8787 
-                                69.1213C49.4413 69.6839 50.2043 70 51 70H69C69.7957 70 70.5587 69.6839 71.1213 69.1213C71.6839 68.5587 72 67.7957 72 67V56C72 55.2043 71.6839 54.4413 71.1213 53.8787C70.5587 53.3161 69.7957 53 69 53H65.5352L63.8321 50.4453C63.6466 50.1671 63.3344 50 63 50H57ZM55.8321 54.5547L57.5352 52H62.4648L64.1679 54.5547C64.3534 54.8329 64.6656 55 65 55H69C69.2652 55 69.5196 55.1054 69.7071 55.2929C69.8946 55.4804 70 55.7348 70 56V67C70 67.2652 69.8946 67.5196 69.7071 67.7071C69.5196 67.8946 69.2652 68 69 68H51C50.7348 68 50.4804 67.8946 50.2929 67.7071C50.1054 67.5196 50 67.2652 50 67V56C50 55.7348 50.1054 55.4804 50.2929 55.2929C50.4804 55.1054 50.7348 55 51 55H55C55.3344 55 55.6466 54.8329 55.8321 54.5547ZM57 61C57 59.3431 58.3431 58 60 58C61.6569 58 63 59.3431 63 61C63 62.6569 61.6569 64 60 64C58.3431 64 57 62.6569 57 61ZM60 56C57.2386 56 55 58.2386 55 61C55 63.7614 57.2386 66 60 66C62.7614 66 65 63.7614 65 61C65 58.2386 62.7614 56 60 56Z" 
-                                fill="#141E28"></path>
-                            </svg>
-                            </div>
-                            </div>
-                            <input type="file" accept="image/*" className="imageUp"/>
-
-                            </div>
-                            </div>
-                            </div>
-                            </div>
+                           
 
                             <table className="marginTop width100">
                                 <tbody>
@@ -167,6 +155,7 @@ const SignUp = () => {
                                             { nickErr ? <div className="error">닉네임을 입력해주세요.</div> : <></>}
                                             { nickLength3Err ? <div className="error">닉네임을 3자 이상, 20글자 이하로 입력해주세요.</div> : <></>}                                           
                                             { nickSignErr ? <div className="error">닉네임은 한글, 영문 대소문자, 숫자, 특수기호(_),(-),(.)만 입력 가능합니다.</div> : <></>}
+                                            { nickOverlapErr ? <div className="error">사용중인 닉네임입니다.</div> : <></> } 
                                         </td>
                                     </tr>
 
@@ -181,7 +170,7 @@ const SignUp = () => {
                                     </tr>
                                     <tr>
                                         <td>
-                                            <input type="text" className="InputBox" readOnly value={user.UserAddress} />
+                                            <input type="text" className="InputBox" readOnly value={User.UserAddress} />
                                         </td>
                                     </tr>
                                     <tr>
@@ -208,7 +197,7 @@ const SignUp = () => {
                                             <div>
                                                 <div className="mBottom">
                                                     <label className="chkFont"><input type="checkbox" checked={checked1} onChange={handleChecked1} id="agree1" /> 만 19세 이상입니다.</label>
-                                                    { checked1 ? <> </> : <div className="error">KrafterSpace는 만 19세 이상만 이용 가능합니다.</div>} 
+                                                    { checked1 ? <> </> : <div className="error">AzitGallery는 만 19세 이상만 이용 가능합니다.</div>} 
                                                 </div>
                                             </div>
                                         </td>
