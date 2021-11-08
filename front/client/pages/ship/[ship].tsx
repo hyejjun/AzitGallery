@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-
-import Shippingform from '../components/shipping/shippingform'
+import {useRouter} from 'next/router'
+import Shippingform from '../../components/shipping/shippingform'
 
 
 const Ship = () => {  
-
+  const router = useRouter()
+  const {view} = router.query // 카테고리 이름
   return (
     <div className="container">
       <div>

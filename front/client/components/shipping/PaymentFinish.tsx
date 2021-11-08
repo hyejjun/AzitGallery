@@ -2,7 +2,7 @@ import Styled from 'styled-components'
 import React, { useState } from 'react'
 import Link from 'next/link';
 import DeliveryImg from './DeliveryImg';
-import DeliveryForm from './DeliveryForm';
+import DeliveryForm from './deliveryForm';
 import OrderInfo from './OrderInfo'
 import DeliveryInfo from './DeliveryInfo';
 import ProductInfo from './ProductInfo';

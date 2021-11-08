@@ -13,6 +13,8 @@ module.exports = class ShipInfo extends Sequelize.Model{
             },
             order_num:{
                 type:Sequelize.INTEGER,
+                autoIncrement:true,
+                primaryKey:true,
             },
             item_delivery_state:{
                 type:Sequelize.STRING(20),      // 배송준비중, 배송중, 배송완료
@@ -20,7 +22,6 @@ module.exports = class ShipInfo extends Sequelize.Model{
             order_detail_num:{
                 type:Sequelize.INTEGER,
             }
-
         },{
             sequelize,
             timestamps:false,
