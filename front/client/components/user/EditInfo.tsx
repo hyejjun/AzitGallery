@@ -9,11 +9,13 @@ import { RootState } from "../../reducers"
 import { useSelector, useDispatch } from 'react-redux';
 
 const EditInfo = () => {
+        const dispatch = useDispatch()
+    const user = useSelector((state:RootState) => state.user)
     // @ useSelector 로 닉네임과 이메일 가져옴
     // const user:State = useSelector((state:RootState) => state.user); 이런식으로
     // 가라데이터
-    const currentNickName = '안녕'
-    const currentEmail = 'hello@gmail.com'
+    const currentNickName = user.NickName
+    const currentEmail = user.Email
 
     // @ 닉네임
     const [nickName, setNickname] = useInput(currentNickName)
@@ -32,6 +34,8 @@ const EditInfo = () => {
         alert('수정 되었습니다')
         Router.push('/user/user')
     }
+
+
 
 
     return (

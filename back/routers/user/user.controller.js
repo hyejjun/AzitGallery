@@ -35,8 +35,6 @@ let seller_admin = async (req,res) => {
         }
         transporter.close();
     })
-
-
 }
 
 
@@ -73,26 +71,16 @@ let seller_admin = async (req,res) => {
 /* 회원가입 */
 
 let signup_post = async (req,res) => {
-    
-    console.log('this is body')
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
-    console.log(keyObject)
+    console.log(keyObject,'keyobject')
     let nick_name = keyObject.NickName
     let kaikas_address = keyObject.Address
     let email = keyObject.Email
     let join_date = new Date()
     let contact = '일단 비움'
     let address = '일단 비움'
-    let kycAuthorized = 0
-
-    console.log(keyObject.NickName,"222")
-    console.log(keyObject.Address,)
-    console.log(keyObject.Email)
-
     let result = await User.create({nick_name,kaikas_address,contact,address,join_date,email})
-    console.log(result)
-
 }
 
 /* 이미 회원가입 했는지, 아니면 새로운 회원인지 */
@@ -186,6 +174,17 @@ let selleradmin_wait = async (req,res) => {
 
 }
 
+let user_info = async (req,res) => {
+
+    let key = Object.keys(req.body)
+    let keyObject = JSON.parse(key)
+    console.log(keyObject,'user_info')
+    let result = await User.findAll({where:{kaikas_address:'address4'}})
+    res.json(result[0])
+
+
+}
+
 module.exports = {
     seller_admin,
     // adduser,
@@ -195,5 +194,6 @@ module.exports = {
     userlist_get,
     selleradmin_access,
     selleradmin_deny,
-    selleradmin_wait
+    selleradmin_wait,
+    user_info
 }
