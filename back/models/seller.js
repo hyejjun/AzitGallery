@@ -7,9 +7,6 @@ module.exports = class Seller extends Sequelize.Model{
             user_idx:{
                 type:Sequelize.INTEGER,
             },
-            seller_code:{
-                type:Sequelize.STRING(200),
-            },
             admin_approval:{
                 type:Sequelize.INTEGER,     // 1: 신청 2: 승인 3: 반려
             },
