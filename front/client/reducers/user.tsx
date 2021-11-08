@@ -15,6 +15,7 @@ export interface UserState {
     signupBool: boolean;
     userList: Array<any>;
     loginBool: boolean;
+    userInfo:{};
 }
 
 export const initialState: UserState = {
@@ -28,7 +29,8 @@ export const initialState: UserState = {
     Email: '',
     signupBool: false,
     userList: [],
-    loginBool: false
+    loginBool: false,
+    userInfo:{},
 };
 
 
@@ -65,6 +67,9 @@ export const USER_LIST_REQUEST = "USER_LIST_REQUEST" as const;
 export const USER_LIST_SUCCESS = "USER_LIST_SUCCESS" as const;
 export const USER_LIST_ERROR = "USER_LIST_ERROR" as const;
 
+export const USER_INFO_REQUEST = "USER_INFO_REQUEST" as const;
+export const USER_INFO_SUCCESS = "USER_INFO_SUCCESS" as const;
+export const USER_INFO_ERROR = "USER_INFO_ERROR" as const;
 
 /* User Login req */
 export const UserLogin_REQUEST = (UserAddress) => {
@@ -231,6 +236,29 @@ export const SellerAdminDeny_ERROR = () => {
     }
 }
 
+/* userinfo req */
+export const UserInfo_REQUEST = (data) => {
+    return {
+        type: USER_INFO_REQUEST,
+        data:data
+    }
+}
+
+export const UserInfo_SUCCESS = (userInfo) => {
+    return {
+        type: USER_INFO_SUCCESS,
+        data:userInfo
+    }
+}
+
+export const UserInfo_ERROR = () => {
+    return {
+        type: USER_INFO_ERROR,
+    }
+}
+
+
+
 type UserAction =
     | ReturnType<typeof UserLogin_REQUEST>
     | ReturnType<typeof UserLogin_SUCCESS>
@@ -263,6 +291,10 @@ type UserAction =
     | ReturnType<typeof SellerAdminWait_REQUEST>
     | ReturnType<typeof SellerAdminWait_SUCCESS>
     | ReturnType<typeof SellerAdminWait_ERROR>
+
+    | ReturnType<typeof UserInfo_REQUEST>
+    | ReturnType<typeof UserInfo_SUCCESS>
+    | ReturnType<typeof UserInfo_ERROR>
 
 const reducer = (state: UserState = initialState, action: UserAction) => {
     switch (action.type) {
@@ -386,6 +418,24 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
             return {
                 ...state,
             }
+        case USER_INFO_REQUEST:
+            return {
+                ...state,
+                data: action.data
+            }
+        case USER_INFO_SUCCESS: 
+            return {
+                ...state,
+                NickName:action.data.nick_name,
+                Address:action.data.kaikas_address,
+                Email:action.data.email
+            }
+        case USER_INFO_ERROR: 
+            return {
+                ...state,
+            
+            }      
+
         default:
             return state;
     }
