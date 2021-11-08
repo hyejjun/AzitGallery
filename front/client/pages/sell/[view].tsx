@@ -4,7 +4,7 @@ import NFTdetail from '../../components/view/sell/NFTdetail'
 import {useRouter} from 'next/router'
 
 
-const View = () => {
+const View = ({children}) => {
 
     const router = useRouter()
     const {view} = router.query // 카테고리 이름

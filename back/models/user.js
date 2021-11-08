@@ -19,7 +19,6 @@ module.exports = class User extends Sequelize.Model{
             },
             contact : {
                 type : Sequelize.STRING(100),
-                unique:true
             },
             address : {
                 type : Sequelize.STRING(100),
