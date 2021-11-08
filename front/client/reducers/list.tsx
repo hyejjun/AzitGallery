@@ -6,11 +6,15 @@ import {HYDRATE} from 'next-redux-wrapper';
 export interface ListState {
     itemList: Array<any>;
     listlength: number;
+    auctionList: Array<any>;
+    auctionlength: number;
 }
 
 export const initialState : ListState = {
     itemList: [],
     listlength: 3,
+    auctionList: [],
+    auctionlength: 3
 };
 
 
@@ -23,6 +27,20 @@ export const PLUS_ITEM_LIST_REQUEST = "PLUS_ITEM_LIST_REQUEST" as const;
 export const PLUS_ITEM_LIST_SUCCESS = "PLUS_ITEM_LIST_SUCCESS" as const;
 export const PLUS_ITEM_LIST_ERROR = "PLUS_ITEM_LIST_ERROR" as const;
 
+export const ITEM_AUCTION_REQUEST = "ITEM_AUCTION_REQUEST" as const;
+export const ITEM_AUCTION_SUCCESS = "ITEM_AUCTION_SUCCESS" as const;
+export const ITEM_AUCTION_ERROR = "ITEM_AUCTION_ERROR" as const;
+
+export const PLUS_AUCTION_LIST_REQUEST = "PLUS_AUCTION_LIST_REQUEST" as const;
+export const PLUS_AUCTION_LIST_SUCCESS = "PLUS_AUCTION_LIST_SUCCESS" as const;
+export const PLUS_AUCTION_LIST_ERROR = "PLUS_AUCTION_LIST_ERROR" as const;
+
+
+export const SET_QUERY_REQUEST = "SET_QUERY_REQUEST" as const;
+export const SET_QUERY_SUCCESS = "SET_QUERY_SUCCESS" as const;
+export const SET_QUERY_ERROR = "SET_QUERY_ERROR" as const;
+
+/* 판매 */
 export const Itemlist_REQUEST = () => {
     return {
         type: ITEM_LIST_REQUEST,
@@ -66,6 +84,76 @@ export const PlusItemlist_ERROR = () => {
     }
 }
 
+/* 경매 */
+
+export const ItemAuction_REQUEST = () => {
+    return {
+        type: ITEM_AUCTION_REQUEST,
+  
+    }
+}
+
+export const ItemAuction_SUCCESS = (data) => {
+    console.log(data)
+    return {
+        type: ITEM_AUCTION_SUCCESS,
+        data: data
+    }
+}
+
+export const ItemAuction_ERROR = () => {
+    return {
+        type: ITEM_AUCTION_ERROR,
+    }
+}
+
+export const PlusAuctionlist_REQUEST = (data) => {
+    return {
+        type: PLUS_AUCTION_LIST_REQUEST,
+        data:data
+    }
+}
+
+export const PlusAuctionlist_SUCCESS = (data,Pluslength) => {
+    console.log(data)
+    return {
+        type: PLUS_AUCTION_LIST_SUCCESS,
+        data: data,
+        Pluslength: Pluslength
+    }
+}
+
+export const PlusAuctionlist_ERROR = () => {
+    return {
+        type: PLUS_AUCTION_LIST_ERROR,
+    }
+}
+
+
+/* query에 해당하는 상품만 */
+
+export const SetQuery_REQUEST = (data) => {
+    return {
+        type: SET_QUERY_REQUEST,
+        data: data
+    }
+}
+
+export const SetQuery_SUCCESS = (data) => {
+    console.log(data)
+    return {
+        type: SET_QUERY_SUCCESS,
+
+    }
+}
+
+export const SetQuery_ERROR = () => {
+    return {
+        type: SET_QUERY_ERROR,
+    }
+}
+
+
 type ListAction = 
 | ReturnType<typeof Itemlist_REQUEST>
 | ReturnType<typeof Itemlist_SUCCESS>
@@ -74,6 +162,18 @@ type ListAction =
 | ReturnType<typeof PlusItemlist_REQUEST>
 | ReturnType<typeof PlusItemlist_SUCCESS>
 | ReturnType<typeof PlusItemlist_ERROR>
+
+| ReturnType<typeof ItemAuction_REQUEST>
+| ReturnType<typeof ItemAuction_SUCCESS>
+| ReturnType<typeof ItemAuction_ERROR>
+
+| ReturnType<typeof PlusAuctionlist_REQUEST>
+| ReturnType<typeof PlusAuctionlist_SUCCESS>
+| ReturnType<typeof PlusAuctionlist_ERROR>
+
+| ReturnType<typeof SetQuery_REQUEST>
+| ReturnType<typeof SetQuery_SUCCESS>
+| ReturnType<typeof SetQuery_ERROR>
 
 const reducer = (state:ListState=initialState, action:ListAction) => {
     switch (action.type){
@@ -105,6 +205,54 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
             }
           
         case PLUS_ITEM_LIST_ERROR:
+            return{
+                ...state,
+            }
+            case ITEM_LIST_REQUEST:
+            return{
+                ...state,
+         
+            }
+        case ITEM_AUCTION_REQUEST:
+            return{
+                ...state,
+         
+            }
+        case ITEM_AUCTION_SUCCESS:
+            return{
+                ...state,
+                auctionList: action.data
+            }
+        case ITEM_AUCTION_ERROR:
+            return{
+                ...state,
+            }
+        case PLUS_AUCTION_LIST_REQUEST:
+            return{
+                ...state,
+         
+            }
+        case PLUS_AUCTION_LIST_SUCCESS:
+            console.log(action.Pluslength)
+            return{
+                ...state,
+                auctionitemList: action.data,
+                auctionlength: action.Pluslength
+            }
+        case PLUS_AUCTION_LIST_ERROR:
+            return{
+                ...state,
+            }   
+        case SET_QUERY_REQUEST:
+            return{
+                ...state,
+            }
+        case SET_QUERY_SUCCESS:
+            return{
+                ...state,
+         
+            }
+        case SET_QUERY_ERROR:
             return{
                 ...state,
             }

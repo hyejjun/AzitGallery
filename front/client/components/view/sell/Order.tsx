@@ -4,6 +4,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import Link from 'next/link'
 import { KipToken_REQUEST } from "../../../reducers/mint";
 import { useSelector, useDispatch } from 'react-redux'
+import router from "next/router";
 
 declare global {
     interface Window {
@@ -15,11 +16,11 @@ declare global {
 const Order = (props) => {
     const dispatch = useDispatch()
     const [checked, setChecked] = useState<boolean>(false);
-
     const checkAgreement = (checkedState) => {
         setChecked(checkedState)
     }
-
+    const shipquery = 6
+    const shipurl = `/ship/${shipquery}`
     const unCheckedClick = () => {
         alert('동의란을 확인해주세요')
     }
@@ -49,6 +50,9 @@ const Order = (props) => {
 
         dispatch(KipToken_REQUEST())
         alert('EPI로 거래되셨습니다!')
+        console.log(JSON.stringify(window.location.href).split('ell/')[1].replace("\"", ""))
+        let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
+        window.location.href = `/ship/${params}`
     }
     
     return (
@@ -81,22 +85,18 @@ const Order = (props) => {
                             <label htmlFor="agreementBuy">
                                 By checking this box, I agree to 회사명's <span>Tearms of Service</span>
                             </label>
-                            <Link href = "/ship"><a>
                                 <Payment onClick = {Klaytn}>
                                     klaytn으로 결제
                                 </Payment>
-                            </a></Link>
-                            <Link href = "/ship"><a>
                                 <Payment onClick = {Purchase}>
                                     EPI(자체 토큰)으로 결제
                                 </Payment>
-                            </a></Link>
                         </div>
                     </OrderContent>
                     <OrderBtn>
                         {
                             checked 
-                            ? <Link href = "/ship"><a><button>Checkout</button></a></Link>
+                            ? <button onClick = {Purchase}>Checkout</button>
                             : <button className="unChecked" onClick={unCheckedClick}>Checkout</button>
 
                         }

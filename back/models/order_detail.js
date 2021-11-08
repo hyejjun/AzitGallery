@@ -27,10 +27,11 @@ module.exports = class OrderDetail extends Sequelize.Model{
                 type:Sequelize.INTEGER,
                 comment:'상품당가격'
             },
-            order_detail_num:{
+            order_num:{
                 type:Sequelize.INTEGER,
-
-            }
+                autoIncrement:true,
+                primaryKey:true,
+            },
         },{
             sequelize,
             timestamps:false,
@@ -43,7 +44,7 @@ module.exports = class OrderDetail extends Sequelize.Model{
         })
     }
     static associate(db){
-        db.OrderDetail.belongsTo(db.Orders,{foreignKey:'order_num',targetKey:'order_num'}),
+        db.OrderDetail.hasMany(db.Orders,{foreignKey:'order_num',targetKey:'order_num'}),
         db.OrderDetail.belongsTo(db.ItemInfo,{foreignKey:'item_id',targetKey:'item_id'})
     }
 }
