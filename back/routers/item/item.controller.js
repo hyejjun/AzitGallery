@@ -1,4 +1,4 @@
-const { sequelize, ItemInfo, Item, ItemDetail, ItemImg, } = require('../../models/index')
+const { sequelize, User, ItemInfo, ItemDetail, ItemImg, Auction, DirectDeal, AuctionHistory} = require('../../models/index')
 const { generate_url } = require('../../s3')
 const express = require('express')
 
@@ -15,100 +15,131 @@ const get_uploaded_pics = async (req, res) => {
 }
 
 const upload_data = async (req, res) => {
-    console.log("여기2 =======",req.body)
     // 나중에는 creator 도 가져와야함..
     const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, aucTime, extension} = req.body[0]
     const imagesLink = req.body[1]
     let sell_type
-    console.log(ifSell, price, currency, name, desc, itemType, color, size, aucPrice, aucTime, extension)
-    console.log(imagesLink)
-    
+
+    console.log(typeof ifSell,  // bool
+        typeof price, // str
+        typeof currency, // str
+        typeof name,  //str
+        typeof desc,  //str
+        typeof itemType, // str
+        typeof color, //obj
+        typeof size,  // obj
+        typeof aucPrice, //str
+        typeof aucTime,  //str
+        typeof extension // undef
+    )
+
+    console.log(Number(aucPrice),aucPrice,'asd')
+
     ifSell == true ? sell_type = false : sell_type = true
-    
+
+    // user_idx 받아오기
+    let get_user_id = await User.findOne({
+        where: {
+            user_idx:1// from req.body
+    }})
+
+    // 일반구매일 때
     if(ifSell == true){
-        // 일반구매일 때
-
-        // item 추가시
-        /*
-        대분류: item 중분류:item_info 소분류: item_detail
-        item table: 상품의 큰 정보를 넣는다. color 등에 따라 디테일이 달라질 수 있음
-        creator: user_idx넣는다. // user_idx랑 엮임
-        item_id: category의 idx랑 엮이지만 item_id가 더 하위 개념, category id는 하나, item_id는 여러개가 붙을 수 있음
-        item_id: item_info_idx 랑 엮이지만 item_id가 더 상위 개념 item_id는 하나, item_info_idx는 여러개가 붙을 수 있음
-        gender: gender 받아온거 넣는다
-        item_code: 어디서 받아옴?
-        
-        item_info table: 경매테이블과 엮임.
-        item_info_idx: item_detail 테이블과 엮임
-        description, title, reg, sell_type: 대충 정보
-    
-        item_detail table: 아이템의 디테일을 넣는다.
-        item_detail:idx: nft_img_idx랑 엮임.
-        item_info_idx: item_info 테이블의 인덱스와 엮임.
-        size, color: 사이즈와 컬러별로 for문돌려서 하나씩 만들어줌
-        nft: 이것들을 바탕으로 코드를 만들어 줄 것임.
-        
-        */
-
-        // item table에 우선 추가
-       let add_to_item = await Item.create({
-           creator: 1, // 나중에 로그인 정보 가져오게 하기
-           item_code: itemType,
-       })
 
        // 받은 id로 item_info table에 추가
        let add_to_item_info = await ItemInfo.create({
-           item_info_idx: add_to_item.dataValues.item_id,
-           description: desc,
-           title: name,
-           sell_type
+            creator: get_user_id.dataValues.user_idx, 
+            item_code: Number(`${new Date().getTime()}101`), // 임시로
+            description: desc,
+            title: name,
+            sell_type,
+            category_id: 1, // // 임시로
        })
 
-       for(let i = 0; i<add_to_item_info.length; i++){
+       // direct deal에 추가하기
+       let add_to_direct_deal = await DirectDeal.create({
+            direct_deal_idx: add_to_item_info.dataValues.item_id,
+            price: Number(price),
+            currency
+       })
+
+       // 다시 생각해보기
+       for(let i = 0; i<imagesLink.length; i++){
+           console.log('asd')
            let add_to_item_img = await ItemImg.create({
-               item_img_idx: add_to_item.dataValues.item_id,
+               item_img_idx: add_to_item_info.dataValues.item_id,
                item_img_link: imagesLink[i]
            })
        }
-
+       
+       // 색과 사이즈 별로 넣기
        for(let i = 0; i<color.length; i++){
            for(let j = 0; j<size.length; j++){
                 let add_to_item_detail = await ItemDetail.create({
-                    item_info_idx: add_to_item.dataValues.item_id,
-                    item_detail_idx: 1 ,//auto_increment 아닌가
+                    item_detail_idx: i*size.length+j+1,  
+                    item_info_idx: add_to_item_info.dataValues.item_id,
                     size:size[j],
                     color: color[i],
-                    nft:`${i}${j}${i+j}${color[i]}`, //임시로
+                    nft:`${Number(`${new Date().getTime()}101`)}${i}${j}${color[i]}`, // 임시로
                     qty:1 , //임시로
-                    item_code:`${i}${j}${i+j}${color[i]}`, //임시로
+                    item_code:`${add_to_item_info.dataValues.item_code}${color[i]}${j}`, // 임시로
                     product_status:'ready' //임시로
                 })    
            }
-       }
-
-               
+       }           
     } else{
         //경매일 때
-        let addToItemInfo = 
-        
-        
-        await ItemInfo.create({
+        // 받은 id로 item_info table에 추가
+       let add_to_item_info = await ItemInfo.create({
+            creator: get_user_id.dataValues.user_idx, 
+            item_code: Number(`${new Date().getTime()}101`), // 임시로
             description: desc,
             title: name,
-            sell_type
-        }).then(()=>{
-            console.log(addToItemInfo)
+            sell_type,
+            category_id: 1,// 임시로
         })
+
+        for(let i = 0; i<imagesLink.length; i++){
+            let add_to_item_img = await ItemImg.create({
+                item_img_idx: add_to_item_info.dataValues.item_id,
+                item_img_link: imagesLink[i]
+            })
+        }
+
+        // 경매 테이블에 데이터 넣기...
+        // 경매는 디테일 테이블이 아니라 아이템인포 테이블로 한다
+        
+        let add_to_auction = await Auction.create({
+            auction_idx: add_to_item_info.dataValues.item_id,
+            end_date: aucTime,
+            if_extended: extension,
+        })
+
+        // 경매 히스토리 최상단에도 넣어주어야 함
+        let add_to_auction_history = await AuctionHistory.create({
+            auc_history_idx: add_to_item_info.dataValues.item_id,
+            bidder: get_user_id.dataValues.user_idx,
+            bid_price: Number(aucPrice),
+            currency
+        })
+
+        // 색과 사이즈 별로 넣기
+        for(let i = 0; i<color.length; i++){
+            for(let j = 0; j<size.length; j++){
+                let add_to_item_detail = await ItemDetail.create({
+                    item_detail_idx: i*size.length+j+1,  // item_detail_idx 넣기
+                    item_info_idx: add_to_item_info.dataValues.item_id,
+                    size:size[j],
+                    color: color[i],
+                    nft:`${Number(`${new Date().getTime()}101`)}${i}${j}${color[i]}`, //임시로
+                    qty:1 , //임시로
+                    item_code:`${add_to_item_info.dataValues.item_code}${color[i]}${j}`, //임시로
+                    product_status:'ready' //임시로
+                })    
+            }
+        }           
+
     }
-
-
-
-
-
-
-
-
-
 
 
     // let result = {};

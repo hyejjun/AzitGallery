@@ -62,18 +62,22 @@ const AddItemComponent = () => {
             if(isNaN(value)!==false){
                 alert('숫자만 입력해주세요.')
                 // 이유는 모르지만 value로 적으면 작동하지 않음(이하 나오는 경우도 동일)
-                e.target.value=price
+                e.target.value=''
+                console.log(price)
+                setPrice('')
             }else {
             setPrice(value)
             }
         } else if(item == "name"){
             setName(value)
         } else if(item == "desc"){
-            setDesc(value)
+            setDesc(value)  
         } else if(item == "aucPrice"){
             if(isNaN(value)!==false){
                 alert('숫자만 입력해주세요.')
-                e.target.value=price
+                e.target.value=''
+                console.log(price)
+                setPrice('')
             }
             setAucPrice(value)
         } else if(item == "aucTime"){
@@ -183,14 +187,22 @@ const AddItemComponent = () => {
                 alert('특수문자나 띄어쓰기 없이 입력해 주세요.')
                 e.target.value = colorVal
             } else{
-                setColorVal(value)
+                if(value.length>30){
+                    alert('30자 이상 입력할 수 없습니다.')
+                } else{
+                    setColorVal(value)
+                }
             }
         } else if(item == 'size'){
             if(handleChk(value) === false){
                 alert('특수문자나 띄어쓰기 없이 입력해 주세요.')
                 e.target.value = sizeVal
             } else{
-                setSizeVal(value)
+                if(value.length>30){
+                    alert('30자 이상 입력할 수 없습니다.')
+                } else{
+                    setSizeVal(value)
+                }
             }
         }
     }
@@ -314,11 +326,6 @@ const AddItemComponent = () => {
     }
 
 
-    const testValue = () => {
-        let data = {ifSell: true, price: '1000', currency: 'won', name:'123', desc:'123', itemType:'female', color:['red','yellow'], size:['s','m','l']}
-        sendDataToServer([data,file])
-    }
-
     const ColorBar = () => {
         return (
             <BarWrapper>
@@ -365,7 +372,7 @@ const AddItemComponent = () => {
                 /> :<></> }
             {cancelNft ? < CancelNft flag={cancelNft} closeBtn={closeBtn}/> :<></>}
             <TopWrapper> 
-                <BigTitle onClick = {testValue}>
+                <BigTitle onClick = {handleSubmit}>
                     새로운 NFT 발행하기
                 </BigTitle>
                 <SectionWrapper>
