@@ -19,4 +19,6 @@ router.post('/selleradmindeny',controller.selleradmin_deny)
 
 router.post('/selleradminwait',controller.selleradmin_wait)
 
+router.post('/userinfo',controller.user_info)
+
 module.exports = router

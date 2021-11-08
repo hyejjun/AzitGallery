@@ -5,27 +5,36 @@ INSERT INTO category(main_category_code,category_name) VALUES(CONCAT(0,3),'잡�
 INSERT INTO category(main_category_code,category_name) VALUES(CONCAT(0,4),'신발');
 
 # sub_category에 값 넣기
-INSERT INTO sub_category (main_category_idx,item_code,sub_category_code,sub_category_name) VALUES(1,CONCAT((SELECT main_category_code FROM category WHERE category.id=1),0,1),01,'티셔츠');
-INSERT INTO sub_category (main_category_idx,item_code,sub_category_code,sub_category_name) VALUES(1,CONCAT((SELECT main_category_code FROM category WHERE category.id=1),0,2),02,'블라우스');
-INSERT INTO sub_category (main_category_idx,item_code,sub_category_code,sub_category_name) VALUES(1,CONCAT((SELECT main_category_code FROM category WHERE category.id=1),0,3),03,'셔츠');
-INSERT INTO sub_category (main_category_idx,item_code,sub_category_code,sub_category_name) VALUES(1,CONCAT((SELECT main_category_code FROM category WHERE category.id=1),0,4),04,'니트');
+INSERT INTO sub_category (main_category_idx,item_code,sub_category_code,sub_category_name) 
+VALUES(1,CONCAT((SELECT main_category_code FROM category WHERE category.id=1),0,1),01,'티셔츠');
+INSERT INTO sub_category (main_category_idx,item_code,sub_category_code,sub_category_name) 
+VALUES(1,CONCAT((SELECT main_category_code FROM category WHERE category.id=1),0,2),02,'블라우스');
+INSERT INTO sub_category (main_category_idx,item_code,sub_category_code,sub_category_name) 
+VALUES(1,CONCAT((SELECT main_category_code FROM category WHERE category.id=1),0,3),03,'셔츠');
+INSERT INTO sub_category (main_category_idx,item_code,sub_category_code,sub_category_name) 
+VALUES(1,CONCAT((SELECT main_category_code FROM category WHERE category.id=1),0,4),04,'니트');
+
 
 # user에 값 넣기
-INSERT INTO user(nick_name,kaikas_address,contact,address,email,user_code)
-VALUES('mihee','address1',0100000000,'homeaddress1','email@naver.com',UNIX_TIMESTAMP(NOW()));
-INSERT INTO user(nick_name,kaikas_address,contact,address,email,user_code)
-VALUES('mihee2','address2',0200000000,'homeaddress2','email2@naver.com',UNIX_TIMESTAMP(NOW()));
-INSERT INTO user(nick_name,kaikas_address,contact,address,email,user_code)
-VALUES('mihee3','address3',0300000000,'homeaddress3','email3@naver.com',UNIX_TIMESTAMP(NOW()));
-INSERT INTO user(nick_name,kaikas_address,contact,address,email,user_code)
-VALUES('mihee4','address4',0400000000,'homeaddress4','email4@naver.com',UNIX_TIMESTAMP(NOW()));
+INSERT INTO user(nick_name,kaikas_address,contact,address,email)
+VALUES('mihee','address1',0100000000,'homeaddress1','email@naver.com');
+INSERT INTO user(nick_name,kaikas_address,contact,address,email)
+VALUES('mihee2','address2',0200000000,'homeaddress2','email2@naver.com');
+INSERT INTO user(nick_name,kaikas_address,contact,address,email)
+VALUES('mihee3','address3',0300000000,'homeaddress3','email3@naver.com');
+INSERT INTO user(nick_name,kaikas_address,contact,address,email)
+VALUES('mihee4','address4',0400000000,'homeaddress4','email4@naver.com');
+
+
 
 ## item_info랑direct_deal 한번에 값 넣기
 begin; 
-insert INTO item_info(creator,item_code,description,title,sell_type,category_id) VALUES(1,CONCAT(UNIX_TIMESTAMP(NOW()),101),'편안하게 입으세요3','여성 티셔츠3',0,1);
+insert INTO item_info(creator,item_code,description,title,sell_type,category_id)
+VALUES(1,CONCAT(UNIX_TIMESTAMP(NOW()),101),'편안하게 입으세요3','여성 티셔츠3',0,1);
 # insert into item_detail select * from (select (select max(a.nft_idx)+1 from item_detail as a),(select max(a.item_id) from item_info as a),if((select a.item_detail_idx from item_detail as a),(select max(a.item_detail_idx)+1 from item_detail as a),1),'L','black','nfttt',5,CONCAT(UNIX_TIMESTAMP(NOW()),101),0 ) as item_detail;
 # insert into item_detail select * from (select (select last_insert_id(),(select max(a.item_id) from item_info as a),if((select a.item_detail_idx from item_detail as a),(select max(a.item_detail_idx)+1 from item_detail as a),1),'L','black','nfttt',5,CONCAT(UNIX_TIMESTAMP(NOW()),101),0 ) as item_detail;
-insert into direct_deal(direct_deal_idx,price,currency) values((select max(a.item_id) from item_info as a),3000,3000);
+insert into direct_deal(direct_deal_idx,price,currency) 
+values((select max(a.item_id) from item_info as a),3000,3000);
 commit;
 
 ## item_detail은 size랑 color 때문에 아예 따로 넣어야 할 듯...

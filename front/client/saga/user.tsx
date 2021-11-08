@@ -1,5 +1,6 @@
 
 
+import { ContactlessOutlined } from '@mui/icons-material';
 import axios from 'axios';
 import {all,put,takeEvery,takeLatest,fork,call} from "redux-saga/effects";
 
@@ -142,7 +143,6 @@ function adminAccessAPI(action):any {
 function* sellerAdminAccessSaga(action){
     const result = yield call(adminAccessAPI,action)
     
-
 }
 
 function* reqSellerAdminAccess(){
@@ -157,12 +157,26 @@ function adminDenyAPI(action) {
 
 function* sellerAdminDenySaga(action){
     const result = yield call(adminDenyAPI,action)
-   
-
 }
 
 function* reqSellerAdminDeny(){
     yield takeLatest('SELLER_ADMIN_DENY_REQUEST',sellerAdminDenySaga)
+}
+
+/* user/uesr페이지 user info req */
+function userInfoAPI(action):any{
+    return axios.post(`http://localhost:4000/user/userinfo`,JSON.stringify(action.data))
+}
+
+function* userInfoSaga(action){
+    const userinfo = yield call(userInfoAPI,action)
+    yield put({
+        type:'USER_INFO_SUCCESS',
+        data:userinfo.data
+    })
+}
+function* reqUesrInfo(){
+    yield takeLatest('USER_INFO_REQUEST',userInfoSaga)
 }
 
 export default function* userSaga(){
@@ -174,6 +188,11 @@ export default function* userSaga(){
         fork(reqSellerAdminAccess),
         fork(reqSellerAdminDeny),
         fork(reqWaitEmail),
+<<<<<<< HEAD
         fork(reqNickname)
+=======
+        fork(reqUesrInfo),
+        fork(reqNickname) 
+>>>>>>> 4cf2aad7c35cb59826ac7ecd5fa5aeef39f3efb0
     ])
 }
