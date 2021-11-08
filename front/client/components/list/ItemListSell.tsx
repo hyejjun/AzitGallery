@@ -7,6 +7,7 @@ import { Itemlist_REQUEST } from '../../reducers/list'
 import { PlusItemlist_REQUEST } from '../../reducers/list'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from "../../reducers"
+import { SetQuery_REQUEST } from "../../reducers/list"
 
 const ItemListSell = (props) => {
 
@@ -123,6 +124,7 @@ const ItemListSell = (props) => {
       ]);
 
 
+
     const nameList: any = Arr.map((ele) =>
     <React.Fragment key={ele.id}>
         <NFTFourList>
@@ -138,7 +140,7 @@ const ItemListSell = (props) => {
                 <Line></Line>
                 <NFTOne>
                     <NFTOneList>
-                        <Link href = '/sell/view'><AStyle><NFTSubject>{ele.subject}</NFTSubject></AStyle></Link>     
+                        <Link href = {ele.url}><AStyle><NFTSubject>{ele.subject}</NFTSubject></AStyle></Link>     
                         <NFTartist>{ele.artist}</NFTartist>
                     </NFTOneList>
                     <NFTOneImg>

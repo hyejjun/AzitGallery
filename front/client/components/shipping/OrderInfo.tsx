@@ -1,6 +1,20 @@
-import DeliveryForm from "./DeliveryForm";
+import { useSelector, useDispatch} from "react-redux";
+import { useEffect } from "react";
+import DeliveryForm from "./deliveryForm";
+import { delivery_customer_REQUEST } from "../../reducers/ship"
+import { RootState } from "../../reducers"
 
 const OrderInfo = () => {
+    const User = useSelector((state:RootState) => state.user);
+    const Ship = useSelector((state:RootState) => state.ship);
+    const dispatch = useDispatch()
+    const useridx = {
+        useridx:User.UserAddress
+    }
+    useEffect(()=>{ 
+        dispatch(delivery_customer_REQUEST(useridx))
+    },[])
+
     return(
         <>
             <DeliveryForm>
@@ -10,30 +24,30 @@ const OrderInfo = () => {
                         <tbody>
                             <tr>
                                 <td>주문하신 분</td>
-                                <td>김서영</td>
+                                <td>{Ship.DeliveryArr[0].buyer}</td>
                             </tr>
                             <tr>
                                 <td>받으시는 분</td>
-                                <td>김서영</td>
+                                <td>{Ship.DeliveryArr[0].receiver}</td>
                             </tr>
                             <tr>
                                 <td>배송주소</td>
                                 <td>
-                                    (06565) 서울특별시 사당로 29다길 메롱
+                                    {Ship.DeliveryArr[0].receiver_address}
                                 </td>
                             </tr>
                             <tr>
                                 <td>휴대번호</td>
                                 <td>
-                                    010-6618-2614
+                                    {Ship.DeliveryArr[0].receiver_contact}
                                 </td>
                             </tr>
                             <tr>
                                 <td>배송메세지</td>
                                 <td>
-                                    출입방법: 자유 출입 가능
+                                    {Ship.DeliveryArr[0].memo}
                                 </td>
-                            </tr>
+                            </tr> 
                         </tbody>
                     </table>
 
