@@ -22,9 +22,15 @@ function selectCategoryAPI(data){
 }
 
 function* selectCategory(action){
-    console.log(action.data);
+    
     
     const result = yield call(selectCategoryAPI, action.data)
+    console.log('saga')
+    yield put({
+        type:'ITEM_GENDER_SUCCESS',
+        data:result.data.ARR
+        
+    })
 }
 
 function* reqSelectCategory(){
@@ -54,9 +60,13 @@ function sortTypeAPI(data){
 }
 
 function* sortType(action){
-    // console.log(action.data);
-    
+    console.log('되는 건가?')
     const result = yield call(sortTypeAPI, action.data)
+        yield put({
+        type:'ITEM_RECENT_SUCCESS',
+        data:result.data.ARR
+        
+    })
 }
 
 function* reqSortType(){
