@@ -10,4 +10,6 @@ router.post('/plusauction', controller.plus_auction_get)
 
 router.post('/queryitem', controller.query_item_post)
 
+router.post('/mynftall',controller.my_nft_all_post)
+
 module.exports = router
