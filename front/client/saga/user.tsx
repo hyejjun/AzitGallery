@@ -89,11 +89,24 @@ function nicknameAPI(action):any {
 
 function* nicknameSaga(action){
     const result = yield call(nicknameAPI(action))
+    console.log(result, "===1====");
+   
+    if(result.data.nicknameChkBool == true){
+        yield put({
+            type:'NICKNAME_POST_SUCCESS',
+      
+        })
+    }else{
+        yield put({
+            type:'NICKNAME_POST_ERROR',
+        
+        })
+    }
 
 }
 
 function* reqNickname(){
-    yield takeLatest('SIGNUP_POST_REQUEST',nicknameSaga)
+    yield takeLatest('NICKNAME_POST_REQUEST',nicknameSaga)
 }
 
 
@@ -175,7 +188,11 @@ export default function* userSaga(){
         fork(reqSellerAdminAccess),
         fork(reqSellerAdminDeny),
         fork(reqWaitEmail),
+<<<<<<< HEAD
+        fork(reqNickname)
+=======
         fork(reqUesrInfo),
         fork(reqNickname) 
+>>>>>>> 4cf2aad7c35cb59826ac7ecd5fa5aeef39f3efb0
     ])
 }
