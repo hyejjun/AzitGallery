@@ -118,16 +118,16 @@ let nickname_check = async(req,res) => {
     let keyObject = JSON.parse(key)
 
     let nick_name = keyObject.NickName
-    let result = await User.findAll({where:nick_name})
+    let result = await User.findAll({where:{nick_name}})
 
-    if(result.length != 0){
+    if(result.length == 0){
         let data = {
-            nicknameChkBoolean:true
+            nicknameChkBool:true
         }
         res.json(data)
     }else{
         let data = {
-            nicknameChkBoolean:false
+            nicknameChkBool:false
         }
         res.json(data)
     }
@@ -135,8 +135,6 @@ let nickname_check = async(req,res) => {
     
     // if()
     console.log(result,"33333")
-    console.log(keyObject,"444444")
-    console.log(nick_name,"55555")
 }
 
 /* 모든 회원들 정보를 불러오기 */

@@ -31,7 +31,7 @@ export const initialState: UserState = {
     signupBool: false,
     userList: [],
     loginBool: false,
-    nicknameChkBool:false,
+    nicknameChkBool: false,
     userInfo:{},
 };
 
@@ -162,17 +162,19 @@ export const Nickname_REQUEST = (data) => {
     }
 }
 
-export const Nickname_SUCCESS = (data) => {
+export const Nickname_SUCCESS = () => {
+
     return {
+        
         type: NICKNAME_POST_SUCCESS,
-        data
+        
     }
 }
 
-export const Nickname_ERROR = (data) => {
+export const Nickname_ERROR = () => {
     return {
         type: NICKNAME_POST_ERROR,
-        data
+        
     }
 }
 
@@ -399,12 +401,14 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
                 ...state,
             }
         case NICKNAME_POST_SUCCESS:
+            console.log(action.type,"====3====")
             return {
                 ...state,
                 nicknameChkBool: true
 
             }
         case NICKNAME_POST_ERROR:
+            console.log(action.type,"====4====")
             return {
                 ...state,
                 nicknameChkBool: false
