@@ -44,15 +44,12 @@ const ItemList = () => {
 
     // @ 성별 탭
     const [genderTab, setGenderTab] = useState<boolean>(false);
-    const [List, setList] = useState<boolean>(false);
     const [list2,setlist] = useState<Array<any>>([])
     const genderTabOpen = () => {
         setGenderTab(prev => !prev)
     }
 
-    const handleList = () => {
-        setList(prev => !prev)
-    }
+
 
     // @ 0 미선택 1 여성복 2 남성복 3 아동복
     const [genderSelect, setGenderSelect] = useState<number>(0);
@@ -68,9 +65,7 @@ const ItemList = () => {
 
     const CategoryState = {
         genderTab,
-        List,
         genderTabOpen,
-        handleList,
         genderSelect,
         selectGender,
         GenderList,

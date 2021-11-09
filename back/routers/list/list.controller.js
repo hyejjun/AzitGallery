@@ -104,26 +104,26 @@ let my_nft_all_post = async (req,res) => {
     let keyObject = JSON.parse(key)
     console.log(keyObject)
 
-    connection.connect()
-    connection.query(` 
-        select b.item_code,d.registered_at 
-        from orders as a 
-        join order_detail as b 
-        on a.order_num=b.order_num 
-        join item_detail as c 
-        on b.item_code=c.item_code 
-        join item_info as d 
-        on d.item_id=(select distinct item_info_idx 
-            from item_detail 
-            where left(item_code,13)=1636335206101) 
-            where a.buyer=2 order by registered_at
-    `,(error,result)=>{
-    if(error){
-            console.log(error)
-        }else{
-            console.log('sug')
-        }
-    })
+    // connection.connect()
+    // connection.query(` 
+    //     select b.item_code,d.registered_at 
+    //     from orders as a 
+    //     join order_detail as b 
+    //     on a.order_num=b.order_num 
+    //     join item_detail as c 
+    //     on b.item_code=c.item_code 
+    //     join item_info as d 
+    //     on d.item_id=(select distinct item_info_idx 
+    //         from item_detail 
+    //         where left(item_code,13)=1636335206101) 
+    //         where a.buyer=2 order by registered_at
+    // `,(error,result)=>{
+    // if(error){
+    //         console.log(error)
+    //     }else{
+    //         console.log('sug')
+    //     }
+    // })
     //connection.query(`insert into category(main_category,_code,category_name) values('test','tset)`)
 
 }

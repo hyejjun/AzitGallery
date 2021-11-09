@@ -32,8 +32,7 @@ let get_category = async (req,res)=>{
 
     console.log(genderSelect)
 
-    if(genderSelect == 1){
-        let result = await ItemInfo.findAll({where:{category_id:1}})
+        let result = await ItemInfo.findAll({where:{category_id:genderSelect,sell_type:false}})
         let ARR = []
         for(let i=0; i<result.length; i++){
             ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url: `/auction/${result[i].item_id}`})
@@ -44,33 +43,6 @@ let get_category = async (req,res)=>{
         }
     
         res.json(data)
-    } else if (genderSelect == 2){
-        let result2 = await ItemInfo.findAll({where:{category_id:2}})
-        let ARR = []
-        for(let i=0; i<result2.length; i++){
-            ARR.push({id:result2[i].item_id,subject:result2[i].description, artist:result2[i].title, Like:5, alert:result2[i].item_code, url: `/auction/${result2[i].item_id}`})
-        }
-        console.log(ARR)
-        let data = {
-            ARR:ARR
-        }
-    
-        res.json(data)
-    } else if (genderSelect == 3){
-        let result3 = await ItemInfo.findAll({where:{category_id:3}})
-        let ARR = []
-        for(let i=0; i<result3.length; i++){
-            ARR.push({id:result3[i].item_id,subject:result3[i].description, artist:result3[i].title, Like:5, alert:result3[i].item_code, url: `/auction/${result3[i].item_id}`})
-        }
-        console.log(ARR)
-        let data = {
-            ARR:ARR
-        }
-    
-        res.json(data)
-    } else {
-
-    }
 
 }
 

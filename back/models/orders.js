@@ -11,7 +11,8 @@ module.exports = class Orders extends Sequelize.Model{
                 allowNull:false,
             },
             order_date:{
-                type:Sequelize.STRING(30),
+                type:Sequelize.DATE,
+                defaultValue:sequelize.literal('now()'),
             },
             buyer:{
                 type:Sequelize.STRING(30),
