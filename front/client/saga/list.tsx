@@ -1,6 +1,5 @@
 import axios from 'axios';
 import {all,put,takeEvery,takeLatest,fork,call} from "redux-saga/effects";
-import { Json } from 'sequelize/types/lib/utils';
 
 /* 일반 */
 
@@ -100,6 +99,26 @@ function* reqqueryitem(){
     yield takeLatest('SET_QUERY_REQUEST',queryitemSaga)
 }
 
+
+function getmynftAPI(data){
+    console.log(data,'getmynftapi')
+    return axios.post(`http://localhost:4000/list/mynftall`,JSON.stringify(data.data))
+}
+
+function* getmynftSaga(data){    
+    const result = yield call(getmynftAPI,data)
+    yield put({
+        type:'MY_NFT_ALL_SUCCESS',
+        //data:result,
+        data:result
+    })
+}
+
+function* reqmynftall(){
+    console.log('datareq_saga')
+    yield takeLatest('MY_NFT_ALL_REQUEST',getmynftSaga)
+}
+
 export default function* MintSaga(){
         yield all([
             fork(reqlistitem),
@@ -107,6 +126,6 @@ export default function* MintSaga(){
             fork(reqauctionitem),
             fork(reqplusauctionitem),
             fork(reqqueryitem),
+            fork(reqmynftall)
         ])
-
 }

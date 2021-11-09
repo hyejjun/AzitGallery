@@ -14,7 +14,7 @@ export const initialState : ListState = {
     itemList: [],
     listlength: 3,
     auctionList: [],
-    auctionlength: 3
+    auctionlength: 3,
 };
 
 
@@ -49,6 +49,13 @@ export const ITEM_GENDER_ERROR = "ITEM_GENDER_ERROR" as const;
 export const ITEM_RECENT_REQUEST = "ITEM_RECENT_REQUEST" as const;
 export const ITEM_RECENT_SUCCESS = "ITEM_RECENT_SUCCESS" as const;
 export const ITEM_RECENT_ERROR = "ITEM_RECENT_ERROR" as const;
+
+export const MY_NFT_ALL_REQUEST = "MY_NFT_ALL_REQUEST" as const;
+export const MY_NFT_ALL_SUCCESS = "MY_NFT_ALL_SUCCESS" as const;
+export const MY_NFT_ALL_ERROR = "MY_NFT_ALL_ERROR" as const;
+
+
+
 
 /* 판매 */
 export const Itemlist_REQUEST = () => {
@@ -163,6 +170,27 @@ export const SetQuery_ERROR = () => {
     }
 }
 
+export const myNft_all_REQUEST = (data:string) => {
+    return {
+        type: MY_NFT_ALL_REQUEST,
+        data: data
+    }
+}
+
+export const myNft_all_SUCCESS = (data) => {
+    return {
+        type:MY_NFT_ALL_SUCCESS,
+        data:data
+    }
+}
+
+export const myNft_all_ERROR = () => {
+    return {
+        type:MY_NFT_ALL_ERROR
+    }
+}
+
+
 
 /* query에 해당하는 상품만 */
 
@@ -230,6 +258,7 @@ type ListAction =
 | ReturnType<typeof SetQuery_SUCCESS>
 | ReturnType<typeof SetQuery_ERROR>
 
+<<<<<<< HEAD
 | ReturnType<typeof ItemGender_REQUEST>
 | ReturnType<typeof ItemGender_SUCCESS>
 | ReturnType<typeof ItemGender_ERROR>
@@ -237,6 +266,11 @@ type ListAction =
 | ReturnType<typeof ItemRecent_REQUEST>
 | ReturnType<typeof ItemRecent_SUCCESS>
 | ReturnType<typeof ItemRecent_ERROR>
+=======
+| ReturnType<typeof myNft_all_REQUEST>
+| ReturnType<typeof myNft_all_SUCCESS>
+| ReturnType<typeof myNft_all_ERROR>
+>>>>>>> 74272c5e0b7358b56852bbd14905b3d313fdb22c
 
 const reducer = (state:ListState=initialState, action:ListAction) => {
     switch (action.type){
@@ -260,7 +294,7 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
          
             }
         case PLUS_ITEM_LIST_SUCCESS:
-            console.log(action.Pluslength)
+            //console.log(action.Pluslength)
             return{
                 ...state,
                 itemList: action.data,
@@ -318,6 +352,7 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
             return{
                 ...state,
             }
+<<<<<<< HEAD
         case ITEM_GENDER_REQUEST:
             return{
                 ...state,
@@ -349,6 +384,23 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
             return{
                 ...state,
             }
+=======
+        case MY_NFT_ALL_REQUEST:
+            return{
+                ...state,
+                data:action.data
+            }
+        case MY_NFT_ALL_SUCCESS:
+            return{
+                ...state,
+                itemList: action.data               
+            }
+        case MY_NFT_ALL_ERROR:
+            return{
+                ...state
+            }
+            
+>>>>>>> 74272c5e0b7358b56852bbd14905b3d313fdb22c
         default:
             return state;
     }

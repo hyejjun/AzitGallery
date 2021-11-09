@@ -65,8 +65,6 @@ insert into item_info (item_info_idx, description, title, registered_at, sell_ty
 
 insert into category (main_category_code, category_name) values (10, 'dds');
 
-insert into item (creator, item_id, item_code) values (1, 10,'item_code');
-
 insert into item_info (item_info_idx, description, title, registered_at, sell_type) values (10, '기능성 옷10', 'tmd 스웨터', now(), true);
 
 
