@@ -15,11 +15,8 @@ export interface UserState {
     signupBool: boolean;
     userList: Array<any>;
     loginBool: boolean;
-<<<<<<< HEAD
     nicknameChkBool: boolean;
-=======
     userInfo:{};
->>>>>>> 4cf2aad7c35cb59826ac7ecd5fa5aeef39f3efb0
 }
 
 export const initialState: UserState = {
@@ -34,11 +31,8 @@ export const initialState: UserState = {
     signupBool: false,
     userList: [],
     loginBool: false,
-<<<<<<< HEAD
-    nicknameChkBool:false
-=======
+    nicknameChkBool:false,
     userInfo:{},
->>>>>>> 4cf2aad7c35cb59826ac7ecd5fa5aeef39f3efb0
 };
 
 
