@@ -42,6 +42,14 @@ module.exports = class ItemInfo extends Sequelize.Model{
                 comment:'해당 상품 조회수',
                 allowNull:false,
                 defaultValue:0,
+            },
+            size:{
+                tpye:Sequelize.STRING(255),
+                defaultValue:'미정',
+            },
+            color:{
+                tpye:Sequelize.STRING(255),
+                defaultValue:'미정'
             }
         },{
             sequelize,
