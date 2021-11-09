@@ -72,6 +72,9 @@ insert into category (main_category_code, category_name) values (11, 'dds');
 insert into item (creator, item_id, item_code) values (1, 11,'item_code');
 
 insert into item_info (item_info_idx, description, title, registered_at, sell_type) values (11, '기능성 옷11', 'tmd 스웨터', now(), true);
+<<<<<<< HEAD
+=======
 
 inset user(user_idx,nick_name,kaikas_address,contact,address,join_date,email) values (10,"hi","ddddd","wwwww","ddd","asddw");
 
+>>>>>>> 11b2ee5c683162632b7abde0dc0c831d21e55852
