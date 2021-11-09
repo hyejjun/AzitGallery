@@ -8,29 +8,26 @@ module.exports = class AuctionHistory extends Sequelize.Model{
             },
             bidder:{
                 type:Sequelize.STRING(20),
+                allowNull:false
             },
             bid_date:{
                 type:Sequelize.DATE,
-                defaultValue:Sequelize.NOW,
-                get:function(){
-                    return moment(this.getDataValue('date')).format('YYYY-MM-DD-hh-mm-dd')
-                }                
+                defaultValue:sequelize.literal('now()'),               
             },
             bid_price:{
                 type:Sequelize.STRING(20),
+                allowNull:false
             },
             currency:{
-                type:Sequelize.STRING(30)
-            },
-            start_price:{
-                type:Sequelize.STRING(20),
-            }           
+                type:Sequelize.STRING(30),
+                allowNull:false
+            },          
         },{
             sequelize,
-            timestamps:true,
+            timestamps:false,
             modelName:'Auction_history',
             tableName:'auction_history',
-            paranoid:true,
+            paranoid:false,
             charset:'utf8',
             collate:'utf8_general_ci'
         })

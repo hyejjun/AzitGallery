@@ -1,6 +1,7 @@
-import DeliveryForm from "./DeliveryForm";
+import DeliveryForm from "./deliveryForm";
 
 const DeliveryInfo = () => {
+    
     return(
         <>
             <DeliveryForm>

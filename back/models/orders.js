@@ -14,27 +14,28 @@ module.exports = class Orders extends Sequelize.Model{
                 type:Sequelize.STRING(30),
             },
             buyer:{
-                type:Sequelize.INTEGER,
+                type:Sequelize.STRING(30),
             },
             receiver:{
                 type:Sequelize.STRING(30),
             },
             receiver_address:{
-                type:Sequelize.TEXT,
+                type:Sequelize.STRING(50),
             },
             receiver_contact:{
                 type:Sequelize.INTEGER,
             },
             order_num:{
                 type:Sequelize.INTEGER,
-                primaryKey:true
+                autoIncrement:true,
+                primaryKey:true,
             },
             final_order_state:{
                 type:Sequelize.BOOLEAN,
                 comment:'true -> 전체 배송완료시'
             },
             memo:{
-                type:Sequelize.TEXT,
+                type:Sequelize.STRING(50),
                 comment:'배송품 수령지 등에 대한 정보 '
             }
 
@@ -44,12 +45,14 @@ module.exports = class Orders extends Sequelize.Model{
             underscored:false,
             paranoid:false,
             modelName:'Orders',
-            tableName:'order',
+            tableName:'orders',
             charset:'utf8',
             collate:'utf8_general_ci'
         })
     }
     static associate(db){
-        db.Orders.hasMany(db.OrderDetail,{foreignKey:'order_detail_id',sourceKey:'order_num'})
+        db.Orders.belongsTo(db.OrderDetail,{foreignKey:'order_num',sourceKey:'order_num'}),
+        db.Orders.belongsTo(db.User,{foreignKey:'user_idx',targetKey:'user_idx'}),
+        db.Orders.hasMany(db.ShipInfo,{foreignKey:'order_num',sourceKey:'order_num'})
     }
 }

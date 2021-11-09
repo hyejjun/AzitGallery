@@ -8,6 +8,7 @@ import { TextField } from '@mui/material';
 import Button from '@mui/material/Button';
 import { useSelector, useDispatch } from 'react-redux'
 import { shipInfo_REQUEST } from '../../reducers/ship';
+import { RootState } from "../../reducers"
 
 const Shippingfrom = () => {
     interface shipEle {
@@ -23,7 +24,7 @@ const Shippingfrom = () => {
 
     // @ 주소 찾는 창
     const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false)
-
+    const User = useSelector((state:RootState) => state.user);
     // @ 팝업창 열기
     const openPostCode = () => {
         setIsPopupOpen(true)
@@ -60,24 +61,36 @@ const Shippingfrom = () => {
     const handleClickRadioButton = (radioBtnName) => {
         setInputStatus(radioBtnName)  
     }
-
+  
     const dispatch = useDispatch()
-
+    let UserAddress = User.UserAddress
     // @ dispatch 할 때 보내줄 data 들
-    const shippingData = {
-        orderer,
-        receiver,
-        phoneNum,
-        address,
-        postNumber,
-        addressDetail,
-        memo,
-        inputStatus
-    }
 
     const handelSubmit = ()=>{
+        const params = JSON.stringify(window.location.href).split('ip/')[1].replace("\"", "")
+        
+        const shippingData = {
+            orderer,
+            receiver,
+            phoneNum,
+            address,
+            postNumber,
+            addressDetail,
+            memo,
+            inputStatus,
+            UserAddress,
+            params
+        }
+    
         // 여기서 dispatch로 날리고
+    
         dispatch(shipInfo_REQUEST(shippingData))
+        console.log(UserAddress)
+
+        
+        console.log(params)
+        window.location.href = `/paymentend/${params}`
+
     }
     
     return (
@@ -148,11 +161,10 @@ const Shippingfrom = () => {
                     </tbody>
                 </Table>
                 <ShipSubmit>
-                    <Link href="/paymentend"><a>
+
                         <Button variant="outlined" size="large" onClick={handelSubmit}>
                             주문 완료
                         </Button>
-                    </a></Link>
                 </ShipSubmit>
             </ShipWrap>
         </>

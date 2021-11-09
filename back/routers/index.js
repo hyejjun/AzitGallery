@@ -7,6 +7,7 @@ const shipRouter = require('./ship/index')
 const itemRouter = require('./item/index')
 const typeRouter = require('./type/index')
 const viewRouter = require('./view/index')
+const listRouter = require('./list/index')
 
 router.use('/', mainRouter)
 router.use('/user', userRouter)
@@ -15,5 +16,6 @@ router.use('/ship',shipRouter)
 router.use('/item',itemRouter)
 router.use('/type',typeRouter)
 router.use('/view',viewRouter)
+router.use('/list',listRouter)
 
 module.exports = router

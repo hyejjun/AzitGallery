@@ -27,6 +27,7 @@
     "mysql2": "^2.3.2",
     "nodemailer": "^6.7.0",
     "nodemailer-smtp-transport": "^2.7.4",
+    "nodemon": "^2.0.14",
     "nunjucks": "^3.2.3",
     "path": "^0.12.7",
     "sequelize": "^6.7.0",
