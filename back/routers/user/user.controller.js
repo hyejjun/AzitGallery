@@ -210,7 +210,7 @@ let user_info = async (req,res) => {
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
     console.log(keyObject,'user_info')
-    let result = await User.findAll({where:{kaikas_address:'address4'}})
+    let result = await User.findAll({where:{kaikas_address:keyObject}})
     res.json(result[0])
 
 

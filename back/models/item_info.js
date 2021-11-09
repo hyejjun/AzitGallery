@@ -44,13 +44,17 @@ module.exports = class ItemInfo extends Sequelize.Model{
                 defaultValue:0,
             },
             size:{
-                tpye:Sequelize.STRING(255),
+                type:Sequelize.STRING(255),
                 defaultValue:'미정',
             },
             color:{
-                tpye:Sequelize.STRING(255),
+                type:Sequelize.STRING(255),
                 defaultValue:'미정'
-            }
+            },
+            product_status:{
+                type:Sequelize.STRING,
+                comment:'현재 판매 중 인지 여부'
+            },
         },{
             sequelize,
             timestamps:false,

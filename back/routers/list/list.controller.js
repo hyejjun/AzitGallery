@@ -1,5 +1,5 @@
 const {ItemInfo} = require('../../models');
-const mysql = require('mysql')
+const mysql = require('mysql2/promise')
 const connection = require('../pool')
 
 /* 일반 상품 */
@@ -102,28 +102,28 @@ let query_item_post =  async (req,res) => {
 let my_nft_all_post = async (req,res) => {
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
-    console.log(keyObject)
+    console.log(keyObject,'ny')
 
     connection.connect()
-    connection.query(` 
-        select b.item_code,d.registered_at 
-        from orders as a 
-        join order_detail as b 
-        on a.order_num=b.order_num 
-        join item_detail as c 
-        on b.item_code=c.item_code 
-        join item_info as d 
-        on d.item_id=(select distinct item_info_idx 
-            from item_detail 
-            where left(item_code,13)=1636335206101) 
-            where a.buyer=2 order by registered_at
+    // 구매한 nft
+
+
+    connection.query(`
+        
+        select a.final_order_state,b.item_code,b.size,b.size, c.title,c.creator,c.item_hits 
+        from orders as a join order_detail as b 
+        on a.order_num=b.order_num join item_info as c 
+        on c.item_code=substring(b.item_code,1,13) join user as d on a.buyer=d.user_idx where d.kaikas_address=${keyObject};
     `,(error,result)=>{
+        // 나중에 실제 적용시에는 
     if(error){
             console.log(error)
         }else{
-            console.log('sug')
+            console.log(result)
+            res.json(result)
         }
     })
+
     //connection.query(`insert into category(main_category,_code,category_name) values('test','tset)`)
 
 }

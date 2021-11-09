@@ -107,6 +107,7 @@ function getmynftAPI(data){
 
 function* getmynftSaga(data){    
     const result = yield call(getmynftAPI,data)
+    console.log(result)
     yield put({
         type:'MY_NFT_ALL_SUCCESS',
         //data:result,
