@@ -8,6 +8,9 @@ export interface ViewState {
     error: string;
     UserAddress: string;
     verify: number;
+    nick_name, title, description: string;
+    directView: {};
+
 }
 
 export const initialState: ViewState = {
@@ -17,6 +20,10 @@ export const initialState: ViewState = {
     error: '',
     UserAddress: 'kaikasAddress',
     verify: 200,
+    nick_name : '',
+    title : '',
+    description : '',
+    directView: {},
 };
 
 /* 즉시 판매 view 가져오기 */
@@ -39,9 +46,10 @@ export const directDealView_REQUEST = (idx) => {
     }
 }
 
-export const directDealView_SUCCESS = () => {
+export const directDealView_SUCCESS = (list) => {
     return {
         type: DIRECTDEAL_VIEW_SUCCESS,
+        list
     }
 }
 
@@ -89,12 +97,20 @@ const reducer = (state: ViewState = initialState, action: ViewAction) => {
         case DIRECTDEAL_VIEW_REQUEST:
             return {
                 ...state,
-                directIdx : action.idx
+                directIdx: action.idx
             }
         case DIRECTDEAL_VIEW_SUCCESS:
+            console.log("리듀서 === ", action.list);
+
             return {
                 ...state,
+                directView: action.list,
+                nick_name : action.list.nick_name,
+                title : action.list.title,
+                description : action.list.description,
             }
+
+
         case DIRECTDEAL_VIEW_ERROR:
             return {
                 ...state,

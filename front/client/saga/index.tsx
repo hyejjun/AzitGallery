@@ -3,7 +3,7 @@ import userSaga from './user'
 import mintSaga from './mint'
 import shipSaga from './ship'
 import typeSaga from './type'
-import viewSaga from './veiw'
+import viewSaga from './view'
 import listSaga from './list'
 
 export default function* rootSaga(){
