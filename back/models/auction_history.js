@@ -8,7 +8,7 @@ module.exports = class AuctionHistory extends Sequelize.Model{
             },
             bidder:{
                 type:Sequelize.STRING(20),
-                allowNull:false
+                allowNull:false,
             },
             bid_date:{
                 type:Sequelize.DATE,

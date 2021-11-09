@@ -259,6 +259,7 @@ const AddItemComponent = () => {
 
     // 최종 밸류 submit, nft 팝업에서 예 누른 이후
     const handleSubmit = async () => { 
+        console.log('이 시점에 handlesubmit')
         let data = {}
         if(ifSell == true){
             data = {ifSell, price, currency, name, desc, itemType, color, size}
@@ -308,7 +309,8 @@ const AddItemComponent = () => {
     const mint = useSelector((state:RootState) => state.mint);
     const [nftCreateState,setnftCreateState] = useState<boolean>(false);
     const createNftCh = () => {
-        const data = {name:name, color:color, size:size}
+        const data = {name:'insert', color:color, size:size}
+        console.log('이 시점에 nft발행')
         dispatch(MintNFT_REQUEST(data))
         if(handleConfirm() === true){
             setnftCreateState(prev=>!prev)

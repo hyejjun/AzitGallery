@@ -17,23 +17,9 @@ const get_uploaded_pics = async (req, res) => {
 const upload_data = async (req, res) => {
     // 나중에는 creator 도 가져와야함..
     const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, aucTime, extension} = req.body[0]
+    //      bool    str    str       str   str    str      obj     obj   str       str      bool
     const imagesLink = req.body[1]
     let sell_type
-
-    console.log(typeof ifSell,  // bool
-        typeof price, // str
-        typeof currency, // str
-        typeof name,  //str
-        typeof desc,  //str
-        typeof itemType, // str
-        typeof color, //obj
-        typeof size,  // obj
-        typeof aucPrice, //str
-        typeof aucTime,  //str
-        typeof extension // undef
-    )
-
-    console.log(Number(aucPrice),aucPrice,'asd')
 
     ifSell == true ? sell_type = false : sell_type = true
 
@@ -44,8 +30,7 @@ const upload_data = async (req, res) => {
     }})
 
     // 일반구매일 때
-    if(ifSell == true){
-
+    if(ifSell == true && get_user_id.length !== 0){
        // 받은 id로 item_info table에 추가
        let add_to_item_info = await ItemInfo.create({
             creator: get_user_id.dataValues.user_idx, 
@@ -86,8 +71,14 @@ const upload_data = async (req, res) => {
                     product_status:'ready' //임시로
                 })    
            }
-       }           
-    } else{
+       }      
+       
+       res.send({
+        success: true,
+        msg: 'item 등록 성공'
+    })
+    
+    } else if( ifSell == false && get_user_id.length !== 0){
         //경매일 때
         // 받은 id로 item_info table에 추가
        let add_to_item_info = await ItemInfo.create({
@@ -137,29 +128,20 @@ const upload_data = async (req, res) => {
                     product_status:'ready' //임시로
                 })    
             }
-        }           
+        }   
+        
+        res.send({
+            success: true,
+            msg: 'item 등록 성공'
+        })
 
+    } else{
+        // get_user_id가 없는 경우. 다른 경우가 있다면 
+        res.send({
+            success: false,
+            msg: '존재하지 않는 유저입니다. 로그인 상태를 다시 확인해주세요.'
+        })
     }
-
-
-    // let result = {};
-    // try {
-    //     await Board.create({ creator: 'youki', title: name, price})
-    //     result = {
-    //         result: 'OK',
-    //         msg: 'NFT 성공'
-    //     }
-    //     let resu =  await Board.findAndCountAll({})
-    //     await Like.create({likeBoardIdx:resu.count})
-    // } catch (error) {
-    //     console.log(error)
-    //     result = {
-    //         result: 'Fail',
-    //         msg: 'NFT 실패..'
-    //     }
-    // }
-    // res.json(result)
-    res.send({zzz:'zzz'})
 }
 
 

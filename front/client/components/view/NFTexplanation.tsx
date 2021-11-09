@@ -11,12 +11,12 @@ const NFTexplanation = () => {
                         <li>만든이</li>
                     </ul>
                 </span>
-                <span>
+                {/* <span>
                     <ul>
                         <li>Owned by</li>
                         <li>소유자</li>
                     </ul>
-                </span>
+                </span> */}
             </NFTOwner>
             <NFTExplain>
                 <p>설명</p>

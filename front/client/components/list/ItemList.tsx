@@ -15,12 +15,12 @@ const ItemList = () => {
 
     // @ 판매 경매 선택 버튼
     const [tabBtn, settabBtn] = useState<number>(1);
+
     // @ 주문이 들어오면 state를 바꿔줌; useEffect로 알람 띄울 것
     const [notiOn, setNotiOn] = useState<boolean>(false)
 
     const notiHandler = async () => {
         let {data} = await axios.post(`${url}/sendnoti`,{data:'zzzzz'})
-
         // if(data.message == 'unread'){
         //     setNotiOn(true)
         // }
@@ -36,6 +36,7 @@ const ItemList = () => {
         settabBtn(1)
         dispatch(sellType_REQUEST(sendData))
     }
+
     const auctionBtn = () => {
         settabBtn(2)
         dispatch(sellType_REQUEST(sendData))
