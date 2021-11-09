@@ -54,8 +54,6 @@ export const MY_NFT_ALL_SUCCESS = "MY_NFT_ALL_SUCCESS" as const;
 export const MY_NFT_ALL_ERROR = "MY_NFT_ALL_ERROR" as const;
 
 
-
-
 /* 판매 */
 export const Itemlist_REQUEST = () => {
     return {
@@ -393,7 +391,7 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
             return{
                 ...state
             }
-            
+           
         default:
             return state;
     }
