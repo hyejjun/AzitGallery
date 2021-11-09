@@ -188,11 +188,7 @@ export default function* userSaga(){
         fork(reqSellerAdminAccess),
         fork(reqSellerAdminDeny),
         fork(reqWaitEmail),
-<<<<<<< HEAD
-        fork(reqNickname)
-=======
         fork(reqUesrInfo),
         fork(reqNickname) 
->>>>>>> 4cf2aad7c35cb59826ac7ecd5fa5aeef39f3efb0
     ])
 }
