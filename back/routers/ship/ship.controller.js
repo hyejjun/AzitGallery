@@ -17,7 +17,7 @@ let get_shipinfo = async (req,res)=>{
         })
 
        const result =  await Orders.create({
-            total_price:55500,order_date:'2021-05-05',buyer:orderer,receiver:receiver,receiver_address:buyerAddress,receiver_contact:phoneNum,final_order_state:true,memo:memo,user_idx:USERRESULT.user_idx
+            total_price:55500,buyer:orderer,receiver:receiver,receiver_address:buyerAddress,receiver_contact:phoneNum,final_order_state:true,memo:memo,user_idx:USERRESULT.user_idx
         })
 
         await ShipInfo.create({

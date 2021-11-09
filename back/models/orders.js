@@ -11,7 +11,8 @@ module.exports = class Orders extends Sequelize.Model{
                 allowNull:false,
             },
             order_date:{
-                type:Sequelize.STRING(30),
+                type:Sequelize.DATE,
+                defaultValue:sequelize.literal('now()'),
             },
             buyer:{
                 type:Sequelize.STRING(30),
@@ -38,7 +39,6 @@ module.exports = class Orders extends Sequelize.Model{
                 type:Sequelize.STRING(50),
                 comment:'배송품 수령지 등에 대한 정보 '
             }
-
         },{
             sequelize,
             timestamps:false,

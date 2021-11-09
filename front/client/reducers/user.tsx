@@ -427,6 +427,7 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
             return {
                 ...state,
             }
+        /*  user info req   */
         case USER_INFO_REQUEST:
             return {
                 ...state,

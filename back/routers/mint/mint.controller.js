@@ -70,8 +70,10 @@ let mint_nft_post = async (req,res) => {
        // 본 예제에서는 임의의 sellerID와 productID를 json 형태로 저장합니다.
        // 토큰 이미지 URL이나 기타 정보를 tokenURI에 저장할 수 있습니다.
        tokenURI = JSON.stringify({
+         id:i,
           color: color,
          size: size,
+         
        });
        // KIP-17.mintWithTokenURI를 이용해서 새로운 토큰을 발행합니다.
        // 자세한 내용은 https://ko.docs.klaytn.com/bapp/sdk/caver-js/api-references/caver.kct/KIP-17#KIP-17-mintwithtokenuri 를 참고하세요.
