@@ -9,7 +9,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { sellType_REQUEST, genderCategorySelect_REQUEST, itemSearch_REQUEST, itemSort_REQUEST } from '../../reducers/type'
 import axios from 'axios'
 import {url} from '../../saga/url'
-
+import { RootState } from "../../reducers"
 const ItemList = () => {
     const dispatch = useDispatch()
 
@@ -44,7 +44,7 @@ const ItemList = () => {
     // @ 성별 탭
     const [genderTab, setGenderTab] = useState<boolean>(false);
     const [List, setList] = useState<boolean>(false);
-
+    const [list2,setlist] = useState<Array<any>>([])
     const genderTabOpen = () => {
         setGenderTab(prev => !prev)
     }
@@ -55,10 +55,14 @@ const ItemList = () => {
 
     // @ 0 미선택 1 여성복 2 남성복 3 아동복
     const [genderSelect, setGenderSelect] = useState<number>(0);
+    const Type = useSelector((state:RootState) => state.type);
+    const listReudcer = useSelector((state:RootState) => state.list);
+    let GenderList = Type.categoryData
 
     const selectGender = (num) => {
         setGenderSelect(num)
         dispatch(genderCategorySelect_REQUEST(sendData))
+        setlist(listReudcer.itemList)
     }
 
     const CategoryState = {
@@ -68,6 +72,9 @@ const ItemList = () => {
         handleList,
         genderSelect,
         selectGender,
+        GenderList,
+        list2,
+        
     }
 
     // @ 최근 발행순 좋아요 순 선택
@@ -83,7 +90,7 @@ const ItemList = () => {
     const [search, onChangeSearch] = useInput('')
 
     const searchSubmit = () => {
-        if (search !== '') {
+    if (search !== '') {
             dispatch(itemSearch_REQUEST(sendData))
         }
     }
@@ -92,7 +99,8 @@ const ItemList = () => {
     const sendData = {
         tabBtn,                         // @ 판매 or 경매 
         genderSelect,                   // @ 0 미선택 1 여성복 2 남성복 3 아동복
-        select,                         // @ 최근 발행순 좋아요 순 선택
+        select,  
+        setSelect,                       // @ 최근 발행순 좋아요 순 선택
         search                          // @ 검색창
     }
 
@@ -115,7 +123,7 @@ const ItemList = () => {
             <div>
                 {
                     tabBtn === 1
-                        ? <ItemListSell CategoryState={CategoryState} selectChange={selectChange} />
+                        ? <ItemListSell CategoryState={CategoryState} sendData={sendData} selectChange={selectChange} />
                         : <ItemListAuction CategoryState={CategoryState} selectChange={selectChange} />
                 }
             </div>

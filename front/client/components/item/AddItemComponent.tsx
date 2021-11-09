@@ -308,7 +308,7 @@ const AddItemComponent = () => {
     const mint = useSelector((state:RootState) => state.mint);
     const [nftCreateState,setnftCreateState] = useState<boolean>(false);
     const createNftCh = () => {
-        const data = {name:'insert', color:color, size:size}
+        const data = {name:name, color:color, size:size}
         dispatch(MintNFT_REQUEST(data))
         if(handleConfirm() === true){
             setnftCreateState(prev=>!prev)

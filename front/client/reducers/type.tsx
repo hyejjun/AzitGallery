@@ -8,6 +8,7 @@ export interface TypeState {
     error: string;
     UserAddress: string;
     verify: number;
+    categoryData: Array<any>
 }
 
 export const initialState: TypeState = {
@@ -17,6 +18,8 @@ export const initialState: TypeState = {
     error: '',
     UserAddress: 'kaikasAddress',
     verify: 200,
+    categoryData: []
+    
 };
 
 /* 판매 경매 선택 */
@@ -69,9 +72,10 @@ export const genderCategorySelect_REQUEST = (data) => {
     }
 }
 
-export const genderCategorySelect_SUCCESS = () => {
+export const genderCategorySelect_SUCCESS = (data) => {
     return {
         type: SELECT_CATEGORY_SUCCESS,
+        data: data
     }
 }
 
@@ -161,8 +165,10 @@ const reducer = (state: TypeState = initialState, action: TypeAction) => {
                 categoryData : action.data
             }
         case SELECT_CATEGORY_SUCCESS:
+    
             return {
                 ...state,
+                categoryData : action.data
             }
         case SELECT_CATEGORY_ERROR:
             return {

@@ -1,21 +1,24 @@
 
 /* 서영 */
 insert into category (main_category_code, category_name) values (01, '여성복');
-insert into item_info (creator, item_id, item_code, description, title, registered_at, sell_type, item_hits, category_id) values (1, 1, 'tmd 스웨터1', '기능성 스웨터1', '기능성 스웨터1', now(), false, 5, 02);
-
-
 insert into category (main_category_code, category_name) values (02, '남성복');
-insert into item_info (creator, item_id, item_code, description, title, registered_at, sell_type, item_hits, category_id) values (1, 2, 'tmd 스웨터2', '기능성 스웨터2', '기능성 스웨터2', now(), false, 5, 02);
-
 insert into category (main_category_code, category_name) values (03, '아동복');
 
+insert into item_info (creator, item_id, item_code, description, title, registered_at, sell_type, item_hits, category_id) values (1, 1, 'tmd 스웨터1', '기능성 스웨터1', '기능성 스웨터1', now(), false, 5, 01);
+insert into item_info (creator, item_id, item_code, description, title, registered_at, sell_type, item_hits, category_id) values (1, 2, 'tmd 스웨터2', '기능성 스웨터2', '기능성 스웨터2', now(), false, 5, 01);
+insert into item_info (creator, item_id, item_code, description, title, registered_at, sell_type, item_hits, category_id) values (1, 3, 'tmd 스웨터3', '기능성 스웨터3', '기능성 스웨터3', now(), false, 5, 02);
 insert into item_info (creator, item_id, item_code, description, title, registered_at, sell_type, item_hits, category_id) values (1, 5, 'tmd 스웨터5', '기능성 스웨터5', '기능성 스웨터5', now(), false, 5, 02);
-
-
-
 insert into item_info (creator, item_id, item_code, description, title, registered_at, sell_type, item_hits, category_id) values (1, 4, 'tmd 스웨터4', '기능성 스웨터4', '기능성 스웨터4', now(), false, 5, 03);
+insert into item_info (creator, item_id, item_code, description, title, registered_at, sell_type, item_hits, category_id) values (1, 6, 'tmd 스웨터6', '기능성 스웨터6', '기능성 스웨터6', now(), false, 5, 03);
 
+insert into item_info (creator, item_id, item_code, description, title, registered_at, sell_type, item_hits, category_id) values (1, 21, 'tmd 스웨터21', '기능성 스웨터21', '기능성 스웨터21', now(), true, 5, 01);
+insert into item_info (creator, item_id, item_code, description, title, registered_at, sell_type, item_hits, category_id) values (1, 22, 'tmd 스웨터22', '기능성 스웨터22', '기능성 스웨터22', now(), true, 5, 01);
+insert into item_info (creator, item_id, item_code, description, title, registered_at, sell_type, item_hits, category_id) values (1, 23, 'tmd 스웨터23', '기능성 스웨터23', '기능성 스웨터23', now(), true, 5, 02);
+insert into item_info (creator, item_id, item_code, description, title, registered_at, sell_type, item_hits, category_id) values (1, 25, 'tmd 스웨터25', '기능성 스웨터25', '기능성 스웨터25', now(), true, 5, 02);
+insert into item_info (creator, item_id, item_code, description, title, registered_at, sell_type, item_hits, category_id) values (1, 24, 'tmd 스웨터24', '기능성 스웨터24', '기능성 스웨터24', now(), true, 5, 03);
+insert into item_info (creator, item_id, item_code, description, title, registered_at, sell_type, item_hits, category_id) values (1, 26, 'tmd 스웨터26', '기능성 스웨터26', '기능성 스웨터26', now(), true, 5, 03);
 
+/* 다른 분 */
 insert into category (main_category_code, category_name) values (04, 'dds');
 
 insert into item (creator, item_id, item_code) values (1, 4,'item_code');

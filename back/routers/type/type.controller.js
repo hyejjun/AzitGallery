@@ -1,3 +1,5 @@
+const {ItemInfo} = require('../../models')
+
 /*
     @ 전체 값 다 보내는 이유?
     판매에서 여성복 선택하는 경우
@@ -28,6 +30,48 @@ let get_category = async (req,res)=>{
 
     const{ tabBtn, genderSelect, select, search} = req.body
 
+    console.log(genderSelect)
+
+    if(genderSelect == 1){
+        let result = await ItemInfo.findAll({where:{category_id:1}})
+        let ARR = []
+        for(let i=0; i<result.length; i++){
+            ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url: `/auction/${result[i].item_id}`})
+        }
+        console.log(ARR)
+        let data = {
+            ARR:ARR
+        }
+    
+        res.json(data)
+    } else if (genderSelect == 2){
+        let result2 = await ItemInfo.findAll({where:{category_id:2}})
+        let ARR = []
+        for(let i=0; i<result2.length; i++){
+            ARR.push({id:result2[i].item_id,subject:result2[i].description, artist:result2[i].title, Like:5, alert:result2[i].item_code, url: `/auction/${result2[i].item_id}`})
+        }
+        console.log(ARR)
+        let data = {
+            ARR:ARR
+        }
+    
+        res.json(data)
+    } else if (genderSelect == 3){
+        let result3 = await ItemInfo.findAll({where:{category_id:3}})
+        let ARR = []
+        for(let i=0; i<result3.length; i++){
+            ARR.push({id:result3[i].item_id,subject:result3[i].description, artist:result3[i].title, Like:5, alert:result3[i].item_code, url: `/auction/${result3[i].item_id}`})
+        }
+        console.log(ARR)
+        let data = {
+            ARR:ARR
+        }
+    
+        res.json(data)
+    } else {
+
+    }
+
 }
 
 /* 상품 검색 */
@@ -43,6 +87,23 @@ let get_sort = async (req,res)=>{
     // sell_likes, sell_recent, auction_likes, auciton_recent
 
     const{ tabBtn, genderSelect, select, search} = req.body
+
+    if(select == "sell_recent"){
+        console.log('recent 순')
+
+        let result = await ItemInfo.findAll({ order: [['registered_at', 'DESC']]})
+        let ARR = []
+        for(let i=0; i<result.length; i++){
+            ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url: `/auction/${result[i].item_id}`})
+        }
+     
+        let data = {
+            ARR:ARR
+        }
+        console.log(ARR)
+        res.json(data)
+
+    }
 }
 
 module.exports = {
