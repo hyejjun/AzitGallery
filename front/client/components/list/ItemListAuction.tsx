@@ -3,6 +3,10 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Category from '../common/Category'
 import { ItemListCSS } from './ItemListCSS'
+import { useSelector, useDispatch } from 'react-redux'
+import { RootState } from "../../reducers"
+import { ItemAuction_REQUEST } from '../../reducers/list'
+import { PlusAuctionlist_REQUEST } from '../../reducers/list'
 
 const ItemListAuction = (props) => {
     const {
@@ -26,82 +30,98 @@ const ItemListAuction = (props) => {
 
     let [loading, setLoading] = useState<boolean>(true)
     let [count, setCount] = useState<number>(0)
+    const dispatch = useDispatch()
+    const list = useSelector((state:RootState) => state.list);
 
     interface ArrEle {
         id: number,
         subject: string,
         artist: string,
         Like: number,
+        alert: string,
         url: string
     }
 
     const [Arr, setArr] = React.useState<ArrEle[]>([
         {
             id: 1,
-            subject: 'adsfds',
+            subject: 'dsfa',
             artist: 'daminal',
             Like: 0,
-            url:'auction/1'
+            alert: '신고하기',
+            url:`/sell/1`
         },
-        {
-            id: 2,
+        {   id: 2,
             subject: 'adsfdsf',
             artist: 'daminal',
             Like: 5,
-            url:'auction/2'
+            alert: '신고하기',
+            url:`/sell/2`
+
         },
         {
             id: 3,
             subject: 'adsff',
             artist: 'daminal',
             Like: 5,
-            url:'auction/3'
+            alert: '신고하기',
+            url:`/sell/3`
+
         },
         {
             id: 4,
             subject: 'adsg',
             artist: 'daminal',
             Like: 5,
-            url:'auction/4'
+            alert: '신고하기',
+            url:`/sell/4`
+
         },
         {
             id: 5,
             subject: 'adg',
             artist: 'daminal',
             Like: 5,
-            url:'auction/5'
+            alert: '신고하기',
+            url:`/sell/5`
+
         },
         {
             id: 6,
             subject: 'asdgsdg',
             artist: 'daminal',
             Like: 5,
-            url:'auction/6'
+            alert: '신고하기',
+            url:`/sell/6`
         },
         {
             id: 7,
             subject: 'adsg',
             artist: 'daminal',
             Like: 5,
-            url:'auction/7'
+            alert: '신고하기',
+            url:`/sell/7`
         },
         {
             id: 8,
             subject: 'asdgsdg',
             artist: 'daminal',
             Like: 5,
-            url:'auction/8'
+            alert: '신고하기',
+            url:`/sell/8`
         },
         {
             id: 9,
             subject: 'asdgsdg',
             artist: 'daminal',
             Like: 5,
-            url:'auction/9'
+            alert: '신고하기',
+            url:`/sell/9`
         },
-    ]);
+      ]);
 
-    const nameList: JSX.Element[] = Arr.map((ele) =>
+
+    const nameList: any = Arr.map((ele) =>
         <React.Fragment key={ele.id}>
             <NFTFourList>
                 <NFT>
@@ -137,34 +157,16 @@ const ItemListAuction = (props) => {
         </React.Fragment>
     );
 
-    const handleClick = (): void => {
-        setArr(
-            Arr.concat(
-                {
-                    id: 7,
-                    subject: 'adsg',
-                    artist: 'daminal',
-                    Like: 5,
-                    url:'auction/9'
-                },
-                {
-                    id: 8,
-                    subject: 'asdgsdg',
-                    artist: 'daminal',
-                    Like: 5,
-                    url:'auction/9'
-                },
-                {
-                    id: 7,
-                    subject: 'adsg',
-                    artist: 'daminal',
-                    Like: 5,
-                    url:'auction/9'
-                },
-            ),
-        );
+    const handleClick = () => {
+        dispatch(PlusAuctionlist_REQUEST(list.listlength))
+        setArr(list.auctionList)
+        console.log('dispatch?')
     };
 
+    useEffect(() => {
+        dispatch(ItemAuction_REQUEST())
+        setArr(list.auctionList)
+    },[])
 
     useEffect(() => {
 
