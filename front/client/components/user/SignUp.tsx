@@ -12,6 +12,7 @@ import { Userlist_REQUEST } from "../../reducers/user"
 import { setUncaughtExceptionCaptureCallback } from 'process'
 import Router from 'next/router'
 import { RootState } from "../../reducers"
+import { truncate } from 'fs'
 
 const SignUp = () => {
     const dispatch = useDispatch()
@@ -82,7 +83,7 @@ const SignUp = () => {
 
     const [joinState,setJoinState] = useState<boolean>(false)
     const sucJoin = () => {
-
+ 
         if(nickErr === true || 
             nickLength3Err === true || 
             nickSignErr === true ||
@@ -101,14 +102,7 @@ const SignUp = () => {
             // alert("필수 동의사항에 체크해주세요.")
         }
         
-        if(User.nicknameChkBool == false){
-            // alert("사용중인 닉네임입니다.")
-            setnickOverlapErr(true)
-        }else{
-            // alert("사용가능한 닉네임입니다.")
-            setnickOverlapErr(false)
-        }
-
+       
         let data = {
             NickName:nickName,
             Address:User.UserAddress,
@@ -117,8 +111,26 @@ const SignUp = () => {
         }
         dispatch(SignUp_REQUEST(data))
         dispatch(Userlist_REQUEST())
-        dispatch(Nickname_REQUEST(data))
         console.log(data, "55555");
+    }
+
+    const test = () =>{
+        let data = {
+            NickName:nickName,
+            Address:User.UserAddress,
+            Email:email,            
+        }
+
+       dispatch(Nickname_REQUEST(data))
+
+        if(User.nicknameChkBool == true){
+            // alert("사용가능한 닉네임입니다.")
+            setnickOverlapErr(false)
+        }else{
+            // alert("사용중인 닉네임입니다.")
+            setnickOverlapErr(true)
+        }
+
     }
 
 
@@ -151,11 +163,11 @@ const SignUp = () => {
                                     </tr>
                                     <tr>
                                         <td className="textLeft">
-                                            <input type="text" className="InputBox" value={nickName} onChange={nickChk1} name="nickName" id="nickName" placeholder="닉네임을 입력해주세요."/> 
+                                            <input type="text" className="InputBox" value={nickName} onMouseOut={test} onChange={nickChk1} name="nickName" id="nickName" placeholder="닉네임을 입력해주세요."/> 
                                             { nickErr ? <div className="error">닉네임을 입력해주세요.</div> : <></>}
                                             { nickLength3Err ? <div className="error">닉네임을 3자 이상, 20글자 이하로 입력해주세요.</div> : <></>}                                           
                                             { nickSignErr ? <div className="error">닉네임은 한글, 영문 대소문자, 숫자, 특수기호(_),(-),(.)만 입력 가능합니다.</div> : <></>}
-                                            { nickOverlapErr ? <div className="error">사용중인 닉네임입니다.</div> : <></> } 
+                                            { nickOverlapErr ? <div className="error">사용중인 닉네임입니다.</div> : <>사용 가능한 닉네임입니다</> } 
                                         </td>
                                     </tr>
 
@@ -227,7 +239,7 @@ const SignUp = () => {
                             <div className="devider"></div>
                             <div className="btn3">
                                 <a className="cancelBtn" onClick={()=>Router.back()}>취소</a>
-                                <button type="button" className="signUpBtn Btn" onClick={()=>{sucJoin()}}>회원가입</button>
+                                <button type="button" className="signUpBtn Btn" onClick={()=>{sucJoin}}>회원가입</button>
                                 
                             </div>
                         </form>
