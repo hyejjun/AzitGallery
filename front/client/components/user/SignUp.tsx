@@ -101,7 +101,7 @@ const SignUp = () => {
             // alert("필수 동의사항에 체크해주세요.")
         }
         
-        if(User.nicknameChkBool != false){
+        if(User.nicknameChkBool == false){
             // alert("사용중인 닉네임입니다.")
             setnickOverlapErr(true)
         }else{
