@@ -49,7 +49,6 @@ export const ITEM_GENDER_ERROR = "ITEM_GENDER_ERROR" as const;
 export const ITEM_RECENT_REQUEST = "ITEM_RECENT_REQUEST" as const;
 export const ITEM_RECENT_SUCCESS = "ITEM_RECENT_SUCCESS" as const;
 export const ITEM_RECENT_ERROR = "ITEM_RECENT_ERROR" as const;
-
 export const MY_NFT_ALL_REQUEST = "MY_NFT_ALL_REQUEST" as const;
 export const MY_NFT_ALL_SUCCESS = "MY_NFT_ALL_SUCCESS" as const;
 export const MY_NFT_ALL_ERROR = "MY_NFT_ALL_ERROR" as const;
@@ -347,7 +346,6 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
             return{
                 ...state,
             }
-
         case ITEM_GENDER_REQUEST:
             return{
                 ...state,
@@ -379,7 +377,6 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
             return{
                 ...state,
             }
-
         case MY_NFT_ALL_REQUEST:
             return{
                 ...state,
