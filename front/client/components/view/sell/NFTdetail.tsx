@@ -5,6 +5,9 @@ import NFTexplanation from "../NFTexplanation";
 import Like from "../../common/Like";
 import NFTTitle from "../NFTTitle";
 import SizeSelect from "../SizeSelect";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../reducers";
+
 
 const NFTdetail = ({children}) => {
     
@@ -13,6 +16,10 @@ const NFTdetail = ({children}) => {
         setOpen(prev => !prev)
     }
 
+    const nickname = useSelector((state:RootState) => state.view.nick_name);
+    const title = useSelector((state:RootState) => state.view.title);
+    const description = useSelector((state:RootState) => state.view.description);
+    
     return (
         <>
             <NFTdetailWrap>
@@ -24,8 +31,8 @@ const NFTdetail = ({children}) => {
                     </BuyBtnCSS>
                     <Order open={open} orderOpen={orderOpen} />
                 </NFTBuy>
-                <NFTTitle/>
-                <NFTexplanation/>
+                <NFTTitle title={title}/>
+                <NFTexplanation nickname={nickname} description={description}/>
             </NFTdetailWrap>
         </>
     )
