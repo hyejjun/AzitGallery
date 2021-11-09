@@ -14,7 +14,7 @@ export const initialState : ListState = {
     itemList: [],
     listlength: 3,
     auctionList: [],
-    auctionlength: 3
+    auctionlength: 3,
 };
 
 
@@ -39,6 +39,13 @@ export const PLUS_AUCTION_LIST_ERROR = "PLUS_AUCTION_LIST_ERROR" as const;
 export const SET_QUERY_REQUEST = "SET_QUERY_REQUEST" as const;
 export const SET_QUERY_SUCCESS = "SET_QUERY_SUCCESS" as const;
 export const SET_QUERY_ERROR = "SET_QUERY_ERROR" as const;
+
+export const MY_NFT_ALL_REQUEST = "MY_NFT_ALL_REQUEST" as const;
+export const MY_NFT_ALL_SUCCESS = "MY_NFT_ALL_SUCCESS" as const;
+export const MY_NFT_ALL_ERROR = "MY_NFT_ALL_ERROR" as const;
+
+
+
 
 /* 판매 */
 export const Itemlist_REQUEST = () => {
@@ -153,6 +160,27 @@ export const SetQuery_ERROR = () => {
     }
 }
 
+export const myNft_all_REQUEST = (data:string) => {
+    return {
+        type: MY_NFT_ALL_REQUEST,
+        data: data
+    }
+}
+
+export const myNft_all_SUCCESS = (data) => {
+    return {
+        type:MY_NFT_ALL_SUCCESS,
+        data:data
+    }
+}
+
+export const myNft_all_ERROR = () => {
+    return {
+        type:MY_NFT_ALL_ERROR
+    }
+}
+
+
 
 type ListAction = 
 | ReturnType<typeof Itemlist_REQUEST>
@@ -174,6 +202,10 @@ type ListAction =
 | ReturnType<typeof SetQuery_REQUEST>
 | ReturnType<typeof SetQuery_SUCCESS>
 | ReturnType<typeof SetQuery_ERROR>
+
+| ReturnType<typeof myNft_all_REQUEST>
+| ReturnType<typeof myNft_all_SUCCESS>
+| ReturnType<typeof myNft_all_ERROR>
 
 const reducer = (state:ListState=initialState, action:ListAction) => {
     switch (action.type){
@@ -197,7 +229,7 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
          
             }
         case PLUS_ITEM_LIST_SUCCESS:
-            console.log(action.Pluslength)
+            //console.log(action.Pluslength)
             return{
                 ...state,
                 itemList: action.data,
@@ -256,6 +288,21 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
             return{
                 ...state,
             }
+        case MY_NFT_ALL_REQUEST:
+            return{
+                ...state,
+                data:action.data
+            }
+        case MY_NFT_ALL_SUCCESS:
+            return{
+                ...state,
+                itemList: action.data               
+            }
+        case MY_NFT_ALL_ERROR:
+            return{
+                ...state
+            }
+            
         default:
             return state;
     }

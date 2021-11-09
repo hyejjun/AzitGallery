@@ -9,6 +9,7 @@ import { RootState } from "../../reducers"
 import {UserState} from "../../reducers/user"
 import { KipSwap_REQUEST } from "../../reducers/mint";
 import { Userlist_REQUEST } from '../../reducers/user'
+import { myNft_all_REQUEST } from '../../reducers/list'
 
 const MyNftComponent = () => {
 
@@ -34,7 +35,7 @@ const MyNftComponent = () => {
 
     // @ 여기서 NFT (구매한 , 판매된 , 미판매된 ) 가져옴 - dispatch 로 요청
     useEffect(()=>{
-        dispatch(Userlist_REQUEST())
+        dispatch(myNft_all_REQUEST(user.UserAddress))
         
     },[])
 

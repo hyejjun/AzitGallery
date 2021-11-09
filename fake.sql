@@ -1,7 +1,7 @@
 # category에 값 넣기
-INSERT INTO category(main_category_code,category_name) VALUES(CONCAT(0,5),'여성복');
-INSERT INTO category(main_category_code,category_name) VALUES(CONCAT(0,6),'남성복');
-INSERT INTO category(main_category_code,category_name) VALUES(CONCAT(0,7),'아동복');
+INSERT INTO category(main_category_code,category_name) VALUES(CONCAT(0,1),'여성복');
+INSERT INTO category(main_category_code,category_name) VALUES(CONCAT(0,2),'남성복');
+INSERT INTO category(main_category_code,category_name) VALUES(CONCAT(0,3),'아동복');
 INSERT INTO category(main_category_code,category_name) VALUES(CONCAT(0,4),'신발');
 
 # sub_category에 값 넣기
@@ -65,6 +65,8 @@ from item_detail
 where left(item_code,13)=1636335206101) 
 where a.buyer=2 
 order by registered_at;
+
+select b.item_code,d.registered_at from orders as a join order_detail as b on a.order_num=b.order_num join item_detail as c on b.item_code=c.item_code join item_info as d on d.item_id=(select distinct item_info_idx from item_detail where left(item_code,13)=1636335206101) where a.buyer=2 order by registered_at;
 
 
 
@@ -135,3 +137,82 @@ begin; insert INTO item_info(creator,item_code,description,title,sell_type,categ
 
 select max(b.item_id) from item_info as b;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+INSERT INTO category(main_category_code,category_name) VALUES(CONCAT(0,1),'여성복');
+INSERT INTO category(main_category_code,category_name) VALUES(CONCAT(0,2),'남성복');
+INSERT INTO category(main_category_code,category_name) VALUES(CONCAT(0,3),'아동복');
+
+
+INSERT INTO sub_category (main_category_idx,item_code,sub_category_code,sub_category_name) 
+(1,CONCAT((SELECT main_category_code FROM category WHERE category.id=1),0,1),01,'티셔츠'),
+(1,CONCAT((SELECT main_category_code FROM category WHERE category.id=1),0,2),02,'블라우스'),
+(1,CONCAT((SELECT main_category_code FROM category WHERE category.id=1),0,3),03,'셔츠'),
+(1,CONCAT((SELECT main_category_code FROM category WHERE category.id=1),0,4),04,'니트'),
+(1,CONCAT((SELECT main_category_code FROM category WHERE category.id=2),0,1),01,'티셔츠'),
+(1,CONCAT((SELECT main_category_code FROM category WHERE category.id=2),0,2),02,'블라우스'),
+(1,CONCAT((SELECT main_category_code FROM category WHERE category.id=2),0,3),03,'셔츠'),
+(1,CONCAT((SELECT main_category_code FROM category WHERE category.id=2),0,4),04,'니트');
+
+INSERT INTO user(nick_name,kaikas_address,contact,address,email)
+VALUES('mihee','address1',0100000000,'homeaddress1','email@naver.com'),
+('mihee2','address2',0200000000,'homeaddress2','email2@naver.com'),
+('mihee3','address3',0300000000,'homeaddress3','email3@naver.com'),
+('mihee4','address4',0400000000,'homeaddress4','email4@naver.com'),
+('mihee5','address5',0100000000,'homeaddres5','email5@naver.com'),
+('mihee6','address6',0200000000,'homeaddress6','email6@naver.com'),
+('mihee7','address7',0300000000,'homeaddress7','email7@naver.com'),
+('mihee8','address8',0400000000,'homeaddress8','email8@naver.com'),
+('mihee9','address9',0100000000,'homeaddress9','email9@naver.com'),
+('mihee10','address10',0100000000,'homeaddress10','email10@naver.com'),
+('mihee11','address11',0100000000,'homeaddress11','email11@naver.com'),
+('mihee12','address12',0100000000,'homeaddress12','email12@naver.com'),
+('mihee13','address13',0100000000,'homeaddress13','email13@naver.com'),
+('mihee14','address14',0100000000,'homeaddress14','email14@naver.com'),
+('mihee15','address15',0100000000,'homeaddress15','email15@naver.com');
+
+
+
+begin;
+insert INTO item_info(creator,item_code,description,title,sell_type,category_id)
+VALUES(2,UNIX_TIMESTAMP(concat(UNIX_TIMESTAMP(NOW()),101)),'편안하게 입으세요3','여성 티셔츠3',0,1);
+
+insert into item_detail
+select * from
+(select (select max(a.nft_idx)+1 from item_detail as a),
+(select max(a.item_id) from item_info as a),
+if((select max(a.item_detail_idx) from item_detail as a),(select max(a.item_detail_idx)+1 from item_detail as a),1),
+'L','black','nsadasdfat11',5,CONCAT((select a.item_code from item_info as a where a.item_id=(select max(item_id) from item_info)),10101),0 ) as item_detail;
+
+insert into item_detail
+select * from
+(select (select max(a.nft_idx)+1 from item_detail as a),
+(select max(a.item_id) from item_info as a),
+if((select max(a.item_detail_idx) from item_detail as a),(select max(a.item_detail_idx)+1 from item_detail as a),1),
+'s','black','nasadasdfat11',5,CONCAT((select a.item_code from item_info as a where a.item_id=(select max(item_id) from item_info)),10102),0 ) as item_detail;
+
+insert into item_detail
+select * from
+(select (select max(a.nft_idx)+1 from item_detail as a),
+(select max(a.item_id) from item_info as a),
+if((select max(a.item_detail_idx) from item_detail as a),(select max(a.item_detail_idx)+1 from item_detail as a),1),
+'m','black','nsazdasdfat11',5,CONCAT((select a.item_code from item_info as a where a.item_id=(select max(item_id) from item_info)),10103),0 ) as item_detail;
+
+insert into direct_deal(direct_deal_idx,price,currency) 
+values((select max(a.item_id) from item_info as a),3000,3000);
+commit;
