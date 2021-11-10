@@ -450,6 +450,7 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
             return{
                 ...state,
             }
+        // /user/mynftall페이지 구매한 nft
         case MY_NFT_ALL_REQUEST:
             return{
                 ...state,
@@ -464,6 +465,7 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
             return{
                 ...state
             }
+        // /user/mynftall페이지 판매된 nft
         case SOLD_NFT_REQUEST:
             return{
                 ...state,
@@ -478,6 +480,7 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
             return{
                 ...state
             }
+        // /user/mynftall페이지 미판매된 nft
         case NOT_SELLED_REQUEST:
             return{
                 ...state,

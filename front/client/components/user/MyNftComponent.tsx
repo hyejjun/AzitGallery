@@ -35,6 +35,18 @@ const MyNftComponent = () => {
         
     }
 
+    const orderBtn = () => {
+        if(tabBtn==1){
+            // 구매한 nft가 선택된 상황에서 조회수 순
+        }else if(tabBtn==2){
+            // 판매된 nft가 선택된 상황에서 조회수 순
+        }else if(tabBtn==3){
+            // 미판매된 nft가 선택된 상황에서 조회수 순
+        }
+        // 조회수로 정렬하고 좋아요 부분에 대한 것은 옆에 리스트를 따로 빼는 게 좋을 듯... 
+
+    }
+
     // @ 여기서 NFT (구매한 , 판매된 , 미판매된 ) 가져옴 - dispatch 로 요청
     useEffect(()=>{
         dispatch(myNft_all_REQUEST(user.UserAddress))
@@ -96,10 +108,10 @@ const MyNftComponent = () => {
                     <SelectBoxHeader>
                     
                         <SelectBox>
-                            <SelectOption>
+                            <SelectOption >
                                 최근 발행 순
                             </SelectOption>
-                            <SelectOption>
+                            <SelectOption onClick={orderBtn}>
                                 좋아요 순
                             </SelectOption>
                         </SelectBox>
