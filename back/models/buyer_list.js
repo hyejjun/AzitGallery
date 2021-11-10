@@ -21,9 +21,9 @@ module.exports = class BuyerList extends Sequelize.Model{
                 comment:'판매자가 구매자에게 상품을 배송했는지 여부'
             },
             sender_idx:{
-                type:Sequelize.INTEGER
+                type:Sequelize.INTEGER,
+                allowNull:false
             }
-            
         },{
             sequelize,
             timestamps:false,
@@ -36,7 +36,5 @@ module.exports = class BuyerList extends Sequelize.Model{
     }
     static associate(db){
         db.BuyerList.belongsTo(db.Seller,{foreignKey:'sender_idx',targetKey:'user_idx'})
-        
-
     }
 }

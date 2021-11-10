@@ -25,6 +25,7 @@ let mint_nft_post = async (req,res) => {
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
     console.log(keyObject)
+    const name = String(keyObject.name)
     const color = String(keyObject.color)
     const size = String(keyObject.size)
 
@@ -45,7 +46,7 @@ let mint_nft_post = async (req,res) => {
   // 넘어온 데이터를 바탕으로 새로운 KIP-17을 배포(=새로운 명품 등록)합니다. 
   const kip17 = await caver.kct.kip17.deploy(
     {
-      name: 'EPITEOM',
+      name: name,
       symbol: 'EPI',
     },
     keyring.address
@@ -84,7 +85,6 @@ let mint_nft_post = async (req,res) => {
        console.log(mintResult)
      }
 
-     let result = await ItemDetail.create({size:size,color:color,nft:0,qty:1,item_code:0})
 }
 
 
@@ -118,7 +118,7 @@ let KIP7Token_transfer = async () => {
 
   // 구매 완료 후 nft transfer
 
-  let senderPrivateKey = "0x126dd02e303ea1f8e1bf91a1ba99f8d06efbc501c40961d718950b29f03abd80";
+  let senderPrivateKey = "0xee787cc5b6cb27bc9ff018be6fad5db255a759c62e6170e18a80a282436a3699";
   const senderKeyring = caver.wallet.keyring.createFromPrivateKey(
     senderPrivateKey
   );
@@ -136,7 +136,7 @@ let KIP7Token_transfer = async () => {
 
         transferResult = await KIP_17.transferFrom(
           senderKeyring.address,
-          "0xEDA67a83F6c1F82F5affdADEf2fF6aa81B3D1901",
+          "0x5F5c71c26C985dB9CEcc4ba280534F75fdb54220",
           6402386040049111,
           { from: senderKeyring.address, gas: 200000 }
         );

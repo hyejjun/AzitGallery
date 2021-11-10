@@ -15,6 +15,8 @@ export interface UserState {
     signupBool: boolean;
     userList: Array<any>;
     loginBool: boolean;
+    nicknameChkBool: boolean;
+    userInfo:{};
 }
 
 export const initialState: UserState = {
@@ -28,7 +30,9 @@ export const initialState: UserState = {
     Email: '',
     signupBool: false,
     userList: [],
-    loginBool: false
+    loginBool: false,
+    nicknameChkBool:false,
+    userInfo:{},
 };
 
 
@@ -57,10 +61,17 @@ export const SIGNUP_POST_REQUEST = "SIGNUP_POST_REQUEST" as const;
 export const SIGNUP_POST_SUCCESS = "SIGNUP_POST_SUCCESS" as const;
 export const SIGNUP_POST_ERROR = "SIGNUP_POST_ERROR" as const;
 
+export const NICKNAME_POST_REQUEST = "NICKNAME_POST_REQUEST" as const;
+export const NICKNAME_POST_SUCCESS = "NICKNAME_POST_SUCCESS" as const;
+export const NICKNAME_POST_ERROR = "NICKNAME_POST_ERROR" as const;
+
 export const USER_LIST_REQUEST = "USER_LIST_REQUEST" as const;
 export const USER_LIST_SUCCESS = "USER_LIST_SUCCESS" as const;
 export const USER_LIST_ERROR = "USER_LIST_ERROR" as const;
 
+export const USER_INFO_REQUEST = "USER_INFO_REQUEST" as const;
+export const USER_INFO_SUCCESS = "USER_INFO_SUCCESS" as const;
+export const USER_INFO_ERROR = "USER_INFO_ERROR" as const;
 
 /* User Login req */
 export const UserLogin_REQUEST = (UserAddress) => {
@@ -143,6 +154,28 @@ export const SignUp_ERROR = (data) => {
     }
 }
 
+/* signup nickname chk succ */
+export const Nickname_REQUEST = (data) => {
+    return {
+        type: NICKNAME_POST_REQUEST,
+        data
+    }
+}
+
+export const Nickname_SUCCESS = (data) => {
+    return {
+        type: NICKNAME_POST_SUCCESS,
+        data
+    }
+}
+
+export const Nickname_ERROR = (data) => {
+    return {
+        type: NICKNAME_POST_ERROR,
+        data
+    }
+}
+
 
 /* user list req */
 export const Userlist_REQUEST = () => {
@@ -205,6 +238,29 @@ export const SellerAdminDeny_ERROR = () => {
     }
 }
 
+/* userinfo req */
+export const UserInfo_REQUEST = (data) => {
+    return {
+        type: USER_INFO_REQUEST,
+        data:data
+    }
+}
+
+export const UserInfo_SUCCESS = (userInfo) => {
+    return {
+        type: USER_INFO_SUCCESS,
+        data:userInfo
+    }
+}
+
+export const UserInfo_ERROR = () => {
+    return {
+        type: USER_INFO_ERROR,
+    }
+}
+
+
+
 type UserAction =
     | ReturnType<typeof UserLogin_REQUEST>
     | ReturnType<typeof UserLogin_SUCCESS>
@@ -217,6 +273,10 @@ type UserAction =
     | ReturnType<typeof SignUp_REQUEST>
     | ReturnType<typeof SignUp_SUCCESS>
     | ReturnType<typeof SignUp_ERROR>
+
+    | ReturnType<typeof Nickname_REQUEST>
+    | ReturnType<typeof Nickname_SUCCESS>
+    | ReturnType<typeof Nickname_ERROR>
 
     | ReturnType<typeof Userlist_REQUEST>
     | ReturnType<typeof UserList_SUCCESS>
@@ -233,6 +293,10 @@ type UserAction =
     | ReturnType<typeof SellerAdminWait_REQUEST>
     | ReturnType<typeof SellerAdminWait_SUCCESS>
     | ReturnType<typeof SellerAdminWait_ERROR>
+
+    | ReturnType<typeof UserInfo_REQUEST>
+    | ReturnType<typeof UserInfo_SUCCESS>
+    | ReturnType<typeof UserInfo_ERROR>
 
 const reducer = (state: UserState = initialState, action: UserAction) => {
     switch (action.type) {
@@ -329,6 +393,21 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
                 signupBool: false
             }
 
+        /* 회원가입 닉네임 중복체크 */
+        case NICKNAME_POST_REQUEST:
+            return {
+                ...state,
+            }
+        case NICKNAME_POST_SUCCESS:
+            return {
+                ...state,
+                nicknameChkBool: true
+            }
+        case NICKNAME_POST_ERROR:
+            return {
+                ...state,
+                nicknameChkBool: false
+            }
         /* User list req */
         case USER_LIST_REQUEST:
             return {
@@ -343,6 +422,24 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
             return {
                 ...state,
             }
+        case USER_INFO_REQUEST:
+            return {
+                ...state,
+                data: action.data
+            }
+        case USER_INFO_SUCCESS: 
+            return {
+                ...state,
+                NickName:action.data.nick_name,
+                Address:action.data.kaikas_address,
+                Email:action.data.email
+            }
+        case USER_INFO_ERROR: 
+            return {
+                ...state,
+            
+            }      
+
         default:
             return state;
     }

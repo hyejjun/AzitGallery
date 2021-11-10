@@ -3,14 +3,24 @@ import React,{useEffect} from 'react'
 import Link from 'next/link'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
-import { SellerAdmin_REQUEST } from '../../reducers/user'
-import { SellerAdminWait_REQUEST } from '../../reducers/user'
+import { SellerAdmin_REQUEST, SellerAdminWait_REQUEST, UserInfo_REQUEST } from '../../reducers/user'
 import { RootState } from "../../reducers"
 import { useSelector, useDispatch } from 'react-redux'
+import {UserState} from "../../reducers/user"
+
 
 const User = () => {
     const dispatch = useDispatch()
     const user = useSelector((state:RootState) => state.user);
+    
+    
+
+
+    useEffect(()=>{
+        dispatch(UserInfo_REQUEST(user.UserAddress))
+    },[])
+    
+    
 
     const SellerAdmin = () => {
         alert('인증을 위해서 이메일을 확인해주세요')
@@ -29,11 +39,11 @@ const User = () => {
                     <ul>
                         <li>
                             <p>닉네임</p>
-                            <p>&nbsp;{/*nickname*/}{user.error}</p>
+                            <p>&nbsp;{/*nickname*/}{user.NickName}</p>
                         </li>
                         <li>
                             <p>지갑주소</p>
-                            <p>&nbsp;{/*wallet account*/}0x2618f9B36086912B479bA6A6FFF6ABCfCC035482</p>
+                            <p>&nbsp;{/*wallet account*/}{user.Address}</p>
                         </li>
                         <li>
                             <p>
@@ -52,7 +62,7 @@ const User = () => {
                                 }
                                 
                             </p>
-                            <p>&nbsp;{/*email account*/}algml9603@mgail.com</p>
+                            <p>&nbsp;{/*email account*/}{user.Email}</p>
                         </li>
                         <li onClick = {SellerAdmin}>판매 신청</li>
                         <li>

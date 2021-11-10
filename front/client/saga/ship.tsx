@@ -29,11 +29,41 @@ function* reqDelivery(){
     yield takeLatest('DELIVERYINFO_INSERT_REQUEST',deliveryInfo)
 }
 
+ /* 상품 등록 하기 */
+function orderAPI(data){
+    return axios.post (`${url}/ship/orderdetail`,data)
+}
 
+function* OrderdetailSaga(action){
+    const result = yield call(orderAPI, action.data)
+}
+
+function* reqOrderdetail(){
+    yield takeLatest('ORDER_INSERT_REQUEST',OrderdetailSaga)
+}
+
+ /* 배송 정보 가져오기 */
+ function DeliveryCustomerAPI(data){
+    return axios.post (`${url}/ship/deliveryinfo`,data)
+}
+
+function* DeliveryCustomerSaga(action){
+    const result = yield call(DeliveryCustomerAPI, action.data)
+    yield put({
+        type:'DELIVERY_CUSTOMER_SUCCESS',
+        data:result.data.ARR
+    })
+}
+
+function* reqDeliveryCustomer(){
+    yield takeLatest('DELIVERY_CUSTOMER_REQUEST',DeliveryCustomerSaga)
+}
 
 export default function* shipSaga(){
     yield all([
         fork(reqShip),
-        fork(reqDelivery)
+        fork(reqDelivery),
+        fork(reqOrderdetail),
+        fork(reqDeliveryCustomer)
     ])
 }

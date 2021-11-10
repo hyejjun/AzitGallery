@@ -6,14 +6,13 @@ module.exports = class Category extends Sequelize.Model{
         return super.init({
             main_category_code:{
                 type:Sequelize.INTEGER,
-                comment:'01 02 03 04 05'
+                comment:'01 02 03 04 05...',
+                unique:true
             },
-            // item_classification:{
-            //     type:Sequelize.STRING(30),
-            // },
             category_name:{
                 type:Sequelize.STRING(20),
-                comment:'상의 하의 원피스 잡화 신발'
+                comment:'상의 하의 원피스 잡화 신발...',
+                unique:true
             },
         },{
             sequelize,
@@ -27,9 +26,8 @@ module.exports = class Category extends Sequelize.Model{
         })
     }
     static associate(db){
-        db.Category.hasMany(db.Item,{foreignKey:'item_id',sourceKey:'id'}),
+        db.Category.hasMany(db.ItemInfo,{foreignKey:'category_id',sourceKey:'id'}),
         db.Category.hasMany(db.SubCategory,{foreignKey:'main_category_idx',sourceKey:'id'})
-
-
     }
 }
+

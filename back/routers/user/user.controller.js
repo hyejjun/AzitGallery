@@ -35,8 +35,6 @@ let seller_admin = async (req,res) => {
         }
         transporter.close();
     })
-
-
 }
 
 
@@ -73,33 +71,23 @@ let seller_admin = async (req,res) => {
 /* 회원가입 */
 
 let signup_post = async (req,res) => {
-    
-    console.log('this is body')
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
-    console.log(keyObject)
-    let name = keyObject.NickName
+    console.log(keyObject,'keyobject')
+    let nick_name = keyObject.NickName
     let kaikas_address = keyObject.Address
     let email = keyObject.Email
     let join_date = new Date()
     let contact = '일단 비움'
     let address = '일단 비움'
-    let kycAuthorized = 0
-
-    console.log(keyObject.NickName)
-    console.log(keyObject.Address)
-    console.log(keyObject.Email)
-
-    let result = await User.create({name,kaikas_address,contact,address,join_date,email})
-    console.log(result)
-
+    let result = await User.create({nick_name,kaikas_address,contact,address,join_date,email})
 }
 
 /* 이미 회원가입 했는지, 아니면 새로운 회원인지 */
 
 let address_db_check = async (req,res) => {
-    
-    console.log('this is db check')
+    console.log(req.body,"3333333")
+    console.log('this is db check',"2222222")
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
     console.log(keyObject)
@@ -121,6 +109,34 @@ let address_db_check = async (req,res) => {
     }
     console.log(result)
 
+}
+
+let nickname_check = async(req,res) => {
+
+    console.log("왓나요?")
+    let key = Object.keys(req.body)
+    let keyObject = JSON.parse(key)
+
+    let nick_name = keyObject.NickName
+    let result = await User.findAll({where:nick_name})
+
+    if(result.length != 0){
+        let data = {
+            nicknameChkBoolean:true
+        }
+        res.json(data)
+    }else{
+        let data = {
+            nicknameChkBoolean:false
+        }
+        res.json(data)
+    }
+
+    
+    // if()
+    console.log(result,"33333")
+    console.log(keyObject,"444444")
+    console.log(nick_name,"55555")
 }
 
 /* 모든 회원들 정보를 불러오기 */
@@ -173,10 +189,22 @@ let selleradmin_wait = async (req,res) => {
     let key = Object.keys(req.body)
     const keyObject = JSON.parse(key)
     console.log(keyObject)
-    const name = 0
+    const name = 1
     let admin_approval = 1
     let email_validation = true
-    let result = await Seller.create({user_idx:name,seller_code:keyObject,admin_approval,email_validation})
+    let brand_name = 'NULL'
+    let result = await Seller.create({user_idx:name,seller_code:keyObject,admin_approval,email_validation,brand_name})
+
+}
+
+let user_info = async (req,res) => {
+
+    let key = Object.keys(req.body)
+    let keyObject = JSON.parse(key)
+    console.log(keyObject,'user_info')
+    let result = await User.findAll({where:{kaikas_address:'address4'}})
+    res.json(result[0])
+
 
 }
 
@@ -185,8 +213,10 @@ module.exports = {
     // adduser,
     signup_post,
     address_db_check,
+    nickname_check,
     userlist_get,
     selleradmin_access,
     selleradmin_deny,
-    selleradmin_wait
+    selleradmin_wait,
+    user_info
 }

@@ -9,6 +9,8 @@ router.post('/signup',controller.signup_post)
 
 router.post('/addressdbcheck',controller.address_db_check)
 
+router.post('/nicknamechk',controller.nickname_check)
+
 router.get('/userlist',controller.userlist_get)
 
 router.post('/selleradminaccess',controller.selleradmin_access)
@@ -16,5 +18,7 @@ router.post('/selleradminaccess',controller.selleradmin_access)
 router.post('/selleradmindeny',controller.selleradmin_deny)
 
 router.post('/selleradminwait',controller.selleradmin_wait)
+
+router.post('/userinfo',controller.user_info)
 
 module.exports = router

@@ -7,12 +7,15 @@ module.exports = class OrderDetail extends Sequelize.Model{
         return super.init({
             size:{
                 type:Sequelize.STRING(30),
+                defaultValue:'one size'
             },
             color:{
                 type:Sequelize.STRING(30),
+                defaultValue:'one color'
             },
             order_qty:{
                 type:Sequelize.INTEGER,
+                defaultValue:1
             },
             shipper_idx:{
                 type:Sequelize.INTEGER,
@@ -23,7 +26,12 @@ module.exports = class OrderDetail extends Sequelize.Model{
             price:{
                 type:Sequelize.INTEGER,
                 comment:'상품당가격'
-            }
+            },
+            order_num:{
+                type:Sequelize.INTEGER,
+                autoIncrement:true,
+                primaryKey:true,
+            },
         },{
             sequelize,
             timestamps:false,
@@ -36,7 +44,7 @@ module.exports = class OrderDetail extends Sequelize.Model{
         })
     }
     static associate(db){
-        db.OrderDetail.belongsTo(db.Orders,{foreignKey:'order_detail_id',targetKey:'order_num'}),
-        db.OrderDetail.hasOne(db.ShipInfo,{foreignKey:'order_num',sourceKey:'order_detail_id'})
+        db.OrderDetail.hasMany(db.Orders,{foreignKey:'order_num',targetKey:'order_num'}),
+        db.OrderDetail.belongsTo(db.ItemInfo,{foreignKey:'item_id',targetKey:'item_id'})
     }
 }
