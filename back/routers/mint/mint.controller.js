@@ -1,4 +1,4 @@
-const { sequelize, User, ItemInfo, ItemDetail, ItemImg, Auction, DirectDeal, AuctionHistory } = require('../../models')
+const { sequelize, User, ItemInfo, ItemDetail, ItemImg, Auction, DirectDeal, AuctionHistory, SubCategory } = require('../../models')
 const express = require('express')
 //https://baobab.scope.klaytn.com/account/0xdfaf037869bb807239e8c46d3b3472ac72adbaef?tabId=txList
 const option = {
@@ -22,138 +22,131 @@ const caver = new Caver(
 
 let mint_nft_post = async (req,res) => {
     // 나중에는 creator 도 가져와야함..
-    const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, aucTime, extension} = req.body[0]
-    //      bool    str    str       str   str    str      obj     obj   str       str      bool
+    const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, aucTime, extension, gender, bigCategory, smallCategory} = req.body[0]
+    //      bool    str    str       str   str    str      obj     obj   str       str      bool      str      str           str
     const imagesLink = req.body[1]
     let sell_type
     console.log(req.body)
     ifSell == true ? sell_type = false : sell_type = true
+    let data // res.json 리턴용
 
-    // user_idx 받아오기
-    let get_user_id = await User.findOne({
-        where: {
-            user_idx:1// from req.body
-    }})
+    try{
+        // user_idx 받아오기
+        let get_user_id = await User.findOne({
+            where: {
+                user_idx:1// from req.body
+        }})
 
-    // 일반구매일 때
-    if(ifSell == true && get_user_id.length !== 0){
-    // 받은 id로 item_info table에 추가
-    let add_to_item_info = await ItemInfo.create({
-        creator: get_user_id.dataValues.user_idx, 
-        item_code: Number(`${new Date().getTime()}101`), // 임시로
-        description: desc,
-        title: name,
-        sell_type,
-        category_id: 1, // // 임시로
-    })
+        // category 가져오기
+        let get_subcategory = await SubCategory.findOne({
 
-    // direct deal에 추가하기
-    let add_to_direct_deal = await DirectDeal.create({
-            direct_deal_idx: add_to_item_info.dataValues.item_id,
-            price: Number(price),
-            currency
-    })
-
-    // 다시 생각해보기
-    for(let i = 0; i<imagesLink.length; i++){
-        console.log('asd')
-        let add_to_item_img = await ItemImg.create({
-            item_img_idx: add_to_item_info.dataValues.item_id,
-            item_img_link: imagesLink[i]
         })
-    }
 
-    // 색과 사이즈 별로 넣기
-    for(let i = 0; i<color.length; i++){
-        for(let j = 0; j<size.length; j++){
-            getNFT(name,color[i],size[j])
-            console.log('getnft')
-            let add_to_item_detail = await ItemDetail.create({
-                item_detail_idx: i*size.length+j+1,  
-                item_info_idx: add_to_item_info.dataValues.item_id,
-                size:size[j],
-                color: color[i],
-                nft:`${Number(`${new Date().getTime()}101`)}${i}${j}${color[i]}`, // 임시로
-                qty:1 , //임시로
-                item_code:`${add_to_item_info.dataValues.item_code}${color[i]}${j}`, // 임시로
-                product_status:'ready' //임시로
-            })    
-        }
-    }      
-
-    res.send({
-        success: true,
-        msg: 'item 등록 성공'
-    })
-
-    } else if( ifSell == false && get_user_id.length !== 0){
-        //경매일 때
         // 받은 id로 item_info table에 추가
         let add_to_item_info = await ItemInfo.create({
             creator: get_user_id.dataValues.user_idx, 
-            item_code: Number(`${new Date().getTime()}101`), // 임시로
+            item_code: `${new Date().getTime()}${smallCategory}`, 
             description: desc,
             title: name,
             sell_type,
-            category_id: 1,// 임시로
+            size: size.join(','),
+            color: color.join(','),
+            category_id: bigCategory, 
         })
 
-        for(let i = 0; i<imagesLink.length; i++){
-            let add_to_item_img = await ItemImg.create({
+        // 다시 생각해보기: imagesLink로 for 또는 add to Item으로?
+        imagesLink.forEach(async x=>{
+            console.log('is forEach working?')
+            await ItemImg.create({
                 item_img_idx: add_to_item_info.dataValues.item_id,
-                item_img_link: imagesLink[i]
+                item_img_link: x
             })
-        }
-
-        // 경매 테이블에 데이터 넣기...
-        // 경매는 디테일 테이블이 아니라 아이템인포 테이블로 한다
-        
-        let add_to_auction = await Auction.create({
-            auction_idx: add_to_item_info.dataValues.item_id,
-            end_date: aucTime,
-            if_extended: extension,
-        })
-
-        // 경매 히스토리 최상단에도 넣어주어야 함
-        let add_to_auction_history = await AuctionHistory.create({
-            auc_history_idx: add_to_item_info.dataValues.item_id,
-            bidder: get_user_id.dataValues.user_idx,
-            bid_price: Number(aucPrice),
-            currency
         })
 
         // 색과 사이즈 별로 넣기
         for(let i = 0; i<color.length; i++){
             for(let j = 0; j<size.length; j++){
-                console.log('getnft')
+                // 색과 사이즈를 00~99로 해서 자릿수를 맞춰준다
+                let last_digits_for_detail
+                if(i == 0 && j == 0){
+                    last_digits_for_detail = `00`
+                }else if(i*size.length+j<10){
+                    last_digits_for_detail = `0${i*size.length+j}`
+                } else if(i*size.length+j>=10 || i*size.length+j+1<100){
+                    last_digits_for_detail = `${i*size.length+j}`
+                }
+
                 getNFT(name,color[i],size[j])
-                let add_to_item_detail = await ItemDetail.create({
+
+                await ItemDetail.create({
                     item_detail_idx: i*size.length+j+1,  // item_detail_idx 넣기
                     item_info_idx: add_to_item_info.dataValues.item_id,
                     size:size[j],
                     color: color[i],
-                    nft:`${Number(`${new Date().getTime()}101`)}${i}${j}${color[i]}`, //임시로
-                    qty:1 , //임시로
-                    item_code:`${add_to_item_info.dataValues.item_code}${color[i]}${j}`, //임시로
+                    nft:`${Number(`${new Date().getTime()}101`)}${size[j]}${color[i]}`, //임시로
+                    item_code:`${add_to_item_info.dataValues.item_code}${last_digits_for_detail}`,
                     product_status:'ready' //임시로
                 })    
             }
-        }   
-        res.send({
-            success: true,
-            msg: 'item 등록 성공'
-        })
+        }     
 
-    } else{
-        // get_user_id가 없는 경우. 다른 경우가 있다면 
-        res.send({
-            success: false,
-            msg: '존재하지 않는 유저입니다. 로그인 상태를 다시 확인해주세요.'
-        })
+        // 일반구매일 때
+        if(ifSell == true && get_user_id.length !== 0){
+            // direct deal에 추가하기 -> 경매와 다름
+            await DirectDeal.create({
+                direct_deal_idx: add_to_item_info.dataValues.item_id,
+                price: Number(price),
+                currency
+            })
+
+            data = {
+                result_msg: 'OK',
+                msg: 'item 등록 성공'
+            }
+
+            res.send(data)
+        } else if( ifSell == false && get_user_id.length !== 0){
+            //경매일 때
+            // 경매 테이블에 데이터 넣기...
+            
+            await Auction.create({
+                auction_idx: add_to_item_info.dataValues.item_id,
+                end_date: aucTime,
+                if_extended: extension,
+            })
+
+            // 경매 히스토리 최상단에도 넣어주어야 함
+            await AuctionHistory.create({
+                auc_history_idx: add_to_item_info.dataValues.item_id,
+                bidder: get_user_id.dataValues.user_idx,
+                bid_price: Number(aucPrice),
+                currency
+            })
+            
+            data = {
+                result_msg: 'OK',
+                msg: 'item 등록 성공'
+            }
+            res.send(data)
+
+        } else{
+            // 만에 하나 get_user_id가 없는 경우. 
+            // 정상 접근인데 다른 경우가 있는 경우도 추가
+            data = {
+                result_msg: 'Fail',
+                msg: '존재하지 않는 유저입니다. 로그인 상태를 다시 확인해주세요.'
+            }
+            res.send(data)
+        }
+        console.log('NFT')
+    } catch(e){
+        console.log(e)
+        data = {
+            result_msg: 'Fail',
+            msg: e
+        }
+        res.send(data) 
     }
-
-    console.log('NFT')
-
     async function getNFT(name, color, size){
         let strname = String(name)
         let strcolor = String(color)
@@ -308,15 +301,4 @@ module.exports = {
     mint_nft_post,
     KIP7Token_transfer,
     kipswap_post
-}
-
-
-
-let testrouter = async (req, res) => {
-    function addToDatabase(type, leng){
-
-    }
-
-
-
 }
