@@ -99,24 +99,75 @@ function* reqqueryitem(){
     yield takeLatest('SET_QUERY_REQUEST',queryitemSaga)
 }
 
-
+/* 구매한 nft가져오기  */
 function getmynftAPI(data){
-    console.log(data,'getmynftapi')
     return axios.post(`http://localhost:4000/list/mynftall`,JSON.stringify(data.data))
 }
 
 function* getmynftSaga(data){    
+
     const result = yield call(getmynftAPI,data)
-    yield put({
-        type:'MY_NFT_ALL_SUCCESS',
-        //data:result,
-        data:result
-    })
+    console.log(result.data.result_msg,'sudafas')
+    if(result.data.result_msg=='OK'){
+        yield put({
+            type:'MY_NFT_ALL_SUCCESS',
+            data:result.data.result
+        })
+    }else{
+        yield put({
+            type:'MY_NFT_ALL_ERROR',
+        })
+    }
 }
 
 function* reqmynftall(){
-    console.log('datareq_saga')
     yield takeLatest('MY_NFT_ALL_REQUEST',getmynftSaga)
+}
+
+/* 판매한 nft가져오기  */
+function* getsoldnftAPI(data){
+    return axios.post('http://localhost:4000/list/soldnft',JSON.stringify(data.data))
+}
+
+function* getsoldnftSaga(data){
+    
+    const result = yield call(getsoldnftAPI,data)
+    console.log(result,'result')
+    // if(result.data.result_msg=='OK'){
+    //     yield put({
+    //         type:'SOLD_NFT_SUCCESS',
+    //         data:result.data.result
+    //     })
+    // }else{
+    //     console.log('err')
+    // }
+}
+
+function* reqsoldnft(){
+    yield takeLatest('SOLD_NFT_REQUEST',getsoldnftSaga)
+}
+
+
+/* 미판매된 nft가져오기  */
+function* getnotsellnftAPI(data){
+    return axios.post('http://localhost:4000/list/notsellnft',JSON.stringify(data.data))
+}
+
+function* getnotsellnftSaga(data){
+    const result = yield call(getnotsellnftAPI,data)
+    console.log(result,'resilt')
+    // if(result.data.msg=='fail'){
+    //     yield put({
+    //         type:'NOT_SELLED_SUCCESS',
+    //         //data:result.data.result1
+    //     })
+    // }else{
+    //     console.log('err not sell')
+    // }
+}
+
+function* reqnotsellnft(){
+    yield takeLatest('NOT_SELLED_REQUEST',getnotsellnftSaga)
 }
 
 export default function* MintSaga(){
@@ -126,6 +177,8 @@ export default function* MintSaga(){
             fork(reqauctionitem),
             fork(reqplusauctionitem),
             fork(reqqueryitem),
-            fork(reqmynftall)
+            fork(reqmynftall),
+            fork(reqsoldnft),
+            fork(reqnotsellnft)
         ])
 }
