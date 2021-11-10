@@ -45,6 +45,7 @@ let plus_list_get =  async (req,res) => {
 /* 경매 상품 */
 
 let all_auction_get =  async (req,res) => {
+    console.log('this')
     let result = await ItemInfo.findAll({ where:{sell_type:true}, limit:3 })
     const ARR = []
 

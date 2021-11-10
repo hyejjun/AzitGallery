@@ -1,91 +1,225 @@
-const { User, ItemDetail } = require('../../models')
-
-  //https://baobab.scope.klaytn.com/account/0xdfaf037869bb807239e8c46d3b3472ac72adbaef?tabId=txList
+const { sequelize, User, ItemInfo, ItemDetail, ItemImg, Auction, DirectDeal, AuctionHistory } = require('../../models')
+const express = require('express')
+//https://baobab.scope.klaytn.com/account/0xdfaf037869bb807239e8c46d3b3472ac72adbaef?tabId=txList
 const option = {
     headers: [
-      {
-        name: "Authorization",
-        //https://console.klaytnapi.com/ko/security/credential 여기서 발급
-        value: "Basic " + Buffer.from("KASKIQX7OFKY5O7JUNTN9FOK" + ":" + "7rpDsRRxYvHYIeS42bNtT2TAtfAQ9tRBC9mf6bst").toString("base64"),
-      },
-      { name: "x-krn", value: "krn:1001:node" },
+        {
+            name: "Authorization",
+            //https://console.klaytnapi.com/ko/security/credential 여기서 발급
+            value: "Basic " + Buffer.from("KASKIQX7OFKY5O7JUNTN9FOK" + ":" + "7rpDsRRxYvHYIeS42bNtT2TAtfAQ9tRBC9mf6bst").toString("base64"),
+        },
+        { name: "x-krn", value: "krn:1001:node" },
     ],
-  };
+};
   
-  const Caver = require("caver-js");
-  const caver = new Caver(
+const Caver = require("caver-js");
+const caver = new Caver(
     new Caver.providers.HttpProvider(
       "https://node-api.klaytnapi.com/v1/klaytn",
       option
     )
-  );
+);
 
 let mint_nft_post = async (req,res) => {
+    // 나중에는 creator 도 가져와야함..
+    const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, aucTime, extension} = req.body[0]
+    //      bool    str    str       str   str    str      obj     obj   str       str      bool
+    const imagesLink = req.body[1]
+    let sell_type
+    console.log(req.body)
+    ifSell == true ? sell_type = false : sell_type = true
+
+    // user_idx 받아오기
+    let get_user_id = await User.findOne({
+        where: {
+            user_idx:1// from req.body
+    }})
+
+    // 일반구매일 때
+    if(ifSell == true && get_user_id.length !== 0){
+    // 받은 id로 item_info table에 추가
+    let add_to_item_info = await ItemInfo.create({
+        creator: get_user_id.dataValues.user_idx, 
+        item_code: Number(`${new Date().getTime()}101`), // 임시로
+        description: desc,
+        title: name,
+        sell_type,
+        category_id: 1, // // 임시로
+    })
+
+    // direct deal에 추가하기
+    let add_to_direct_deal = await DirectDeal.create({
+            direct_deal_idx: add_to_item_info.dataValues.item_id,
+            price: Number(price),
+            currency
+    })
+
+    // 다시 생각해보기
+    for(let i = 0; i<imagesLink.length; i++){
+        console.log('asd')
+        let add_to_item_img = await ItemImg.create({
+            item_img_idx: add_to_item_info.dataValues.item_id,
+            item_img_link: imagesLink[i]
+        })
+    }
+
+    // 색과 사이즈 별로 넣기
+    for(let i = 0; i<color.length; i++){
+        for(let j = 0; j<size.length; j++){
+            getNFT(name,color[i],size[j])
+            console.log('getnft')
+            let add_to_item_detail = await ItemDetail.create({
+                item_detail_idx: i*size.length+j+1,  
+                item_info_idx: add_to_item_info.dataValues.item_id,
+                size:size[j],
+                color: color[i],
+                nft:`${Number(`${new Date().getTime()}101`)}${i}${j}${color[i]}`, // 임시로
+                qty:1 , //임시로
+                item_code:`${add_to_item_info.dataValues.item_code}${color[i]}${j}`, // 임시로
+                product_status:'ready' //임시로
+            })    
+        }
+    }      
+
+    res.send({
+        success: true,
+        msg: 'item 등록 성공'
+    })
+
+    } else if( ifSell == false && get_user_id.length !== 0){
+        //경매일 때
+        // 받은 id로 item_info table에 추가
+        let add_to_item_info = await ItemInfo.create({
+            creator: get_user_id.dataValues.user_idx, 
+            item_code: Number(`${new Date().getTime()}101`), // 임시로
+            description: desc,
+            title: name,
+            sell_type,
+            category_id: 1,// 임시로
+        })
+
+        for(let i = 0; i<imagesLink.length; i++){
+            let add_to_item_img = await ItemImg.create({
+                item_img_idx: add_to_item_info.dataValues.item_id,
+                item_img_link: imagesLink[i]
+            })
+        }
+
+        // 경매 테이블에 데이터 넣기...
+        // 경매는 디테일 테이블이 아니라 아이템인포 테이블로 한다
+        
+        let add_to_auction = await Auction.create({
+            auction_idx: add_to_item_info.dataValues.item_id,
+            end_date: aucTime,
+            if_extended: extension,
+        })
+
+        // 경매 히스토리 최상단에도 넣어주어야 함
+        let add_to_auction_history = await AuctionHistory.create({
+            auc_history_idx: add_to_item_info.dataValues.item_id,
+            bidder: get_user_id.dataValues.user_idx,
+            bid_price: Number(aucPrice),
+            currency
+        })
+
+        // 색과 사이즈 별로 넣기
+        for(let i = 0; i<color.length; i++){
+            for(let j = 0; j<size.length; j++){
+                console.log('getnft')
+                getNFT(name,color[i],size[j])
+                let add_to_item_detail = await ItemDetail.create({
+                    item_detail_idx: i*size.length+j+1,  // item_detail_idx 넣기
+                    item_info_idx: add_to_item_info.dataValues.item_id,
+                    size:size[j],
+                    color: color[i],
+                    nft:`${Number(`${new Date().getTime()}101`)}${i}${j}${color[i]}`, //임시로
+                    qty:1 , //임시로
+                    item_code:`${add_to_item_info.dataValues.item_code}${color[i]}${j}`, //임시로
+                    product_status:'ready' //임시로
+                })    
+            }
+        }   
+        res.send({
+            success: true,
+            msg: 'item 등록 성공'
+        })
+
+    } else{
+        // get_user_id가 없는 경우. 다른 경우가 있다면 
+        res.send({
+            success: false,
+            msg: '존재하지 않는 유저입니다. 로그인 상태를 다시 확인해주세요.'
+        })
+    }
+
     console.log('NFT')
-    let key = Object.keys(req.body)
-    let keyObject = JSON.parse(key)
-    console.log(keyObject)
-    const name = String(keyObject.name)
-    const color = String(keyObject.color)
-    const size = String(keyObject.size)
 
-  // 개인키를 바탕으로 keyring을 생성합니다.
-  // https://baobab.wallet.klaytn.com/access/0xdfaf037869bb807239e8c46d3b3472ac72adbaef 여기서 
-  // keyring에 대한 자세한 내용은 https://ko.docs.klaytn.com/bapp/sdk/Caver-js/api-references/Caver.wallet/keyring 를 참고하세요.
-  // https://baobab.wallet.klaytn.com/access/0xdfaf037869bb807239e8c46d3b3472ac72adbaef  개인키
-  const keyring = caver.wallet.keyring.createFromPrivateKey(
-    "0xee787cc5b6cb27bc9ff018be6fad5db255a759c62e6170e18a80a282436a3699"
-  );
-  // wallet에 keyring이 추가되지 않은 경우에만 keyring을 추가합니다.
-  if (!caver.wallet.getKeyring(keyring.address)) {
-    const singleKeyRing = caver.wallet.keyring.createFromPrivateKey(
-      "0xee787cc5b6cb27bc9ff018be6fad5db255a759c62e6170e18a80a282436a3699"
-    );
-    caver.wallet.add(singleKeyRing);
-  }
-  // 넘어온 데이터를 바탕으로 새로운 KIP-17을 배포(=새로운 명품 등록)합니다. 
-  const kip17 = await caver.kct.kip17.deploy(
-    {
-      name: name,
-      symbol: 'EPI',
-    },
-    keyring.address
-  );
-//   console.log(kip17)
-  console.log(kip17.options.address);
-
-   // 컨트랙트 주소 기반으로 KIP-17 오브젝트를 생성합니다.
-   const kip_17 = new caver.kct.kip17(kip17.options.address);
-   // 새로 발행하는 토큰에 임의의 tokenId를 할당하기 위해 Math.random 사용 및 중복 여부를 체크합니다.
-
-     randomTokenID = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
-
-     try {
-       owner = await kip_17.ownerOf(randomTokenID);
-     } catch (e) {
-       // owner가 존재하지 않는 경우(=존재하지 않는 tokenID) 에러가 리턴됩니다.
-       // 에러를 받으면 해당 tokenID로 토큰 생성이 가능합니다.
-       console.log("we can mint");
-       // tokenURI에는 임의의 정보를 넣어줄 수 있습니다.
-       // 본 예제에서는 임의의 sellerID와 productID를 json 형태로 저장합니다.
-       // 토큰 이미지 URL이나 기타 정보를 tokenURI에 저장할 수 있습니다.
-       tokenURI = JSON.stringify({
-         id:i,
-          color: color,
-         size: size,
-         
-       });
-       // KIP-17.mintWithTokenURI를 이용해서 새로운 토큰을 발행합니다.
-       // 자세한 내용은 https://ko.docs.klaytn.com/bapp/sdk/caver-js/api-references/caver.kct/KIP-17#KIP-17-mintwithtokenuri 를 참고하세요.
-       mintResult = await kip_17.mintWithTokenURI(
-        // https://baobab.wallet.klaytn.com/access/0xdfaf037869bb807239e8c46d3b3472ac72adbaef  account주소를 넣는다
-         "0xeda67a83f6c1f82f5affdadef2ff6aa81b3d1901",
-         randomTokenID,
-         tokenURI,
-         { from: keyring.address }
-       );
-       console.log(mintResult)
-     }
+    async function getNFT(name, color, size){
+        let strname = String(name)
+        let strcolor = String(color)
+        let strsize = String(size)
+        let privateKey = "0xb6a4306091a3f4203b497cf461f22624f372c3cffe31d8c0f874ef75a7d1881f" // DB에서 가져와야 함
+        let accountAddress = "0x54e034470aB35768C24607Bb847870D776E10DE4"
+        console.log('beforeKeyRing')
+        // 개인키를 바탕으로 keyring을 생성합니다.
+        // https://baobab.wallet.klaytn.com/access/0xdfaf037869bb807239e8c46d3b3472ac72adbaef 여기서 
+        // keyring에 대한 자세한 내용은 https://ko.docs.klaytn.com/bapp/sdk/Caver-js/api-references/Caver.wallet/keyring 를 참고하세요.
+        // https://baobab.wallet.klaytn.com/access/0xdfaf037869bb807239e8c46d3b3472ac72adbaef  개인키
+        const keyring = caver.wallet.keyring.createFromPrivateKey(
+            privateKey
+        );
+        // wallet에 keyring이 추가되지 않은 경우에만 keyring을 추가합니다.
+        console.log('beforegetKeyRing')
+        if (!caver.wallet.getKeyring(keyring.address)) {
+            const singleKeyRing = caver.wallet.keyring.createFromPrivateKey(
+                privateKey
+            );
+            caver.wallet.add(singleKeyRing);
+        }
+        // 넘어온 데이터를 바탕으로 새로운 KIP-17을 배포(=새로운 명품 등록)합니다. 
+        console.log('beforekip17')
+        const kip17 = await caver.kct.kip17.deploy(
+            {
+            name: strname,
+            symbol: 'EPI',
+            },
+            keyring.address
+        );
+        // console.log(kip17)
+        // console.log(kip17.options.address);
+        // 컨트랙트 주소 기반으로 KIP-17 오브젝트를 생성합니다.
+        console.log('kip_17')
+        const kip_17 = new caver.kct.kip17(kip17.options.address);
+        // 새로 발행하는 토큰에 임의의 tokenId를 할당하기 위해 Math.random 사용 및 중복 여부를 체크합니다.
+        randomTokenID = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);  
+        try {
+            console.log('try')
+            owner = await kip_17.ownerOf(randomTokenID);
+        } catch (e) {
+            console.log('catch')
+            // owner가 존재하지 않는 경우(=존재하지 않는 tokenID) 에러가 리턴됩니다.
+            // 에러를 받으면 해당 tokenID로 토큰 생성이 가능합니다.
+            console.log("we can mint");
+            // tokenURI에는 임의의 정보를 넣어줄 수 있습니다.
+            // 본 예제에서는 임의의 sellerID와 productID를 json 형태로 저장합니다.
+            // 토큰 이미지 URL이나 기타 정보를 tokenURI에 저장할 수 있습니다.
+            tokenURI = JSON.stringify({
+                color: strcolor,
+                size: strsize,
+            });
+            // KIP-17.mintWithTokenURI를 이용해서 새로운 토큰을 발행합니다.
+            // 자세한 내용은 https://ko.docs.klaytn.com/bapp/sdk/caver-js/api-references/caver.kct/KIP-17#KIP-17-mintwithtokenuri 를 참고하세요.
+            mintResult = await kip_17.mintWithTokenURI(
+                // https://baobab.wallet.klaytn.com/access/0xdfaf037869bb807239e8c46d3b3472ac72adbaef  account주소를 넣는다
+                accountAddress,
+                randomTokenID,
+                tokenURI,
+                { from: keyring.address }
+            );
+            console.log(mintResult.events.Transfer.address,'address')
+            return mintResult.events.Transfer.address
+        }
+    }
 
 }
 
@@ -174,4 +308,15 @@ module.exports = {
     mint_nft_post,
     KIP7Token_transfer,
     kipswap_post
+}
+
+
+
+let testrouter = async (req, res) => {
+    function addToDatabase(type, leng){
+
+    }
+
+
+
 }
