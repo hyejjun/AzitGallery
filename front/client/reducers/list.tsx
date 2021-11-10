@@ -11,6 +11,7 @@ export interface ListState {
     mynftList: Array<any>;
     soldnftList: Array<any>;
     notsellnftList : Array<any>;
+    nfthitsList : Array<any>; 
 }
 
 export const initialState : ListState = {
@@ -20,7 +21,8 @@ export const initialState : ListState = {
     auctionlength: 3,
     mynftList : [],
     soldnftList : [],
-    notsellnftList : []
+    notsellnftList : [],
+    nfthitsList : []
 };
 
 
@@ -66,6 +68,18 @@ export const SOLD_NFT_ERROR = "SOLD_NFT_ERROR" as const;
 export const NOT_SELLED_REQUEST = "NOT_SELLED_REQUEST" as const;
 export const NOT_SELLED_SUCCESS = "NOT_SELLED_SUCCESS" as const;
 export const NOT_SELLED_ERROR = "NOT_SELLED_ERROR" as const;
+
+export const HITS_BUY_REQUEST = "HITS_BUY_REQUEST" as const;
+export const HITS_BUY_SUCCESS = "HITS_BUY_SUCCESS" as const;
+export const HITS_BUY_ERROR = "HITS_BUY_ERROR" as const;
+
+export const HITS_SELL_REQUEST = "HITS_SELL_REQUEST" as const;
+export const HITS_SELL_SUCCESS = "HITS_SELL_SUCCESS" as const;
+export const HITS_SELL_ERROR = "HITS_SELL_ERROR" as const;
+
+export const HITS_NOT_SELL_REQUEST = "HITS_NOT_SELL_REQUEST" as const;
+export const HITS_NOT_SELL_SUCCESS = "HITS_NOT_SELL_SUCCESS" as const;
+export const HITS_NOT_SELL_ERROR = "HITS_NOT_SELL_ERROR"as const;
 
 
 
@@ -248,6 +262,65 @@ export const not_selled_ERROR = () => {
     }
 }
 
+/* 구매한 제품에서 조회수순 정렬 */
+export const hits_buy_REQUEST = (data:string) => {
+    return {
+        type:HITS_BUY_REQUEST,
+        data:data
+    }
+}
+export const hits_buy_SUCCESS = (data) => {
+    return {
+        type:HITS_BUY_SUCCESS,
+        data:data
+    }
+}
+export const hits_buy_ERROR = () => {
+    return {
+        type:HITS_BUY_ERROR,
+    }
+}
+
+
+/* 판매된 제품에서 조회수순 정렬 */
+export const hits_sell_REQUEST = (data:string) => {
+    return {
+        type:HITS_SELL_REQUEST,
+        data:data
+    }
+}
+export const hits_sell_SUCCESS = (data) => {
+    return {
+        type:HITS_SELL_SUCCESS,
+        data:data
+    }
+}
+export const hits_sell_ERROR = () => {
+    return {
+        type:HITS_SELL_ERROR,
+    }
+}
+
+/* 미판매된 제품에서 조회수순 정렬 */
+export const hits_not_sell_REQUEST = (data:string) => {
+    return {
+        type:HITS_NOT_SELL_REQUEST,
+        data:data
+    }
+}
+export const hits_not_sell_SUCCESS = (data) => {
+    return {
+        type:HITS_NOT_SELL_SUCCESS,
+        data:data
+    }
+}
+export const hits_not_sell_ERROR = () => {
+    return {
+        type:HITS_NOT_SELL_ERROR,
+    }
+}
+
+
 
 
 
@@ -338,6 +411,18 @@ type ListAction =
 | ReturnType<typeof not_selled_REQUEST>
 | ReturnType<typeof not_selled_SUCCESS>
 | ReturnType<typeof not_selled_ERROR>
+
+| ReturnType<typeof hits_buy_REQUEST>
+| ReturnType<typeof hits_buy_SUCCESS>
+| ReturnType<typeof hits_buy_ERROR>
+
+| ReturnType<typeof hits_sell_REQUEST>
+| ReturnType<typeof hits_sell_SUCCESS>
+| ReturnType<typeof hits_sell_ERROR>
+
+| ReturnType<typeof hits_not_sell_REQUEST>
+| ReturnType<typeof hits_not_sell_SUCCESS>
+| ReturnType<typeof hits_not_sell_ERROR>
 
 const reducer = (state:ListState=initialState, action:ListAction) => {
     switch (action.type){
@@ -495,6 +580,53 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
             return{
                 ...state
             }
+        // 구매한 제품 조회수순
+        case HITS_BUY_REQUEST:
+            return{
+                ...state,
+                data:action.data
+            }
+        case HITS_BUY_SUCCESS:
+            return{
+                ...state,
+                nfthitsList:action.data
+            }
+        case HITS_BUY_ERROR:
+            return{
+                ...state
+            }
+        // 판매된 제품 조회수순
+        case HITS_SELL_REQUEST:
+            return{
+                ...state,
+                data:action.data
+            }
+        case HITS_SELL_SUCCESS:
+            return{
+                ...state,
+                nfthitsList:action.data
+            }
+        case HITS_SELL_ERROR:
+            return{
+                ...state
+            }
+
+        // 미판매된 제품 조회수순
+        case HITS_NOT_SELL_REQUEST:
+            return{
+                ...state,
+                data:action.data
+            }
+        case HITS_NOT_SELL_SUCCESS:
+            return{
+                ...state,
+                nfthitsList:action.data
+            }
+        case HITS_NOT_SELL_ERROR:
+            return{
+                ...state
+            }
+
         default:
             return state;
     }
