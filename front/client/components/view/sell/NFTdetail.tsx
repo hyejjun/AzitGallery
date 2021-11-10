@@ -5,6 +5,7 @@ import NFTexplanation from "../NFTexplanation";
 import Like from "../../common/Like";
 import NFTTitle from "../NFTTitle";
 import SizeSelect from "../SizeSelect";
+import ColorSelect from "../ColorSelect";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../reducers";
 
@@ -22,20 +23,14 @@ const NFTdetail = ({children}) => {
     const color = useSelector((state:RootState) => state.view.color);
     const size = useSelector((state:RootState) => state.view.size);
 
-    console.log("페이지 === ",color, size);
-
     const colorArr = color.split(",")
-    console.log(colorArr);
-
     const sizeArr = size.split(",")
-    console.log(sizeArr);
-    
-    
     
     return (
         <>
             <NFTdetailWrap>
                 <NFTBuy>
+                    <ColorSelect colorArr={colorArr}/>
                     <SizeSelect sizeArr={sizeArr}/>
                     <Like/>
                     <BuyBtnCSS onClick={orderOpen}>
@@ -62,7 +57,7 @@ const NFTBuy = Styled.div`
     width: 100%;
     height: 60px;
     display: flex;
-    padding-left: 65%;
+    padding-left: 50%;
     box-sizing: border-box;
 
 `
