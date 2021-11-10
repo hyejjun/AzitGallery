@@ -1,27 +1,21 @@
 import React, { useState } from "react";
 import Styled from 'styled-components'
 
-const NFTexplanation = () => {
+const NFTexplanation = (props) => {
     return (
         <>
             <NFTOwner>
                 <span>
                     <ul>
                         <li>Created by</li>
-                        <li>만든이</li>
+                        <li>{props.nickname}</li>
                     </ul>
                 </span>
-                {/* <span>
-                    <ul>
-                        <li>Owned by</li>
-                        <li>소유자</li>
-                    </ul>
-                </span> */}
             </NFTOwner>
             <NFTExplain>
                 <p>설명</p>
                 <div>
-                    상세 설명
+                    {props.description}
                 </div>
             </NFTExplain>
         </>

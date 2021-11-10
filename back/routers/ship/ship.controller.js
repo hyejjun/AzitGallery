@@ -17,13 +17,14 @@ let get_shipinfo = async (req,res)=>{
         })
 
        const result =  await Orders.create({
-            total_price:55500,order_date:'2021-05-05',buyer:orderer,receiver:receiver,receiver_address:buyerAddress,receiver_contact:phoneNum,final_order_state:true,memo:memo,user_idx:USERRESULT.user_idx
+            total_price:55500,buyer:orderer,receiver:receiver,receiver_address:buyerAddress,receiver_contact:phoneNum,final_order_state:true,memo:memo,user_idx:USERRESULT.user_idx
         })
 
         await ShipInfo.create({
             delivery_company:'55500',post_num:'orderer',item_delivery_state:'배송 중'
         })
 
+        res.json()
 }
 
 /* 구매 정보 */
@@ -36,6 +37,8 @@ let order_detail_post = async (req,res) => {
     await OrderDetail.create({
         size:'55500',color:'orderer',order_qty:45,shipper_idx:45,item_code:'phoneNum',price:1
     })
+
+    res.json()
 
 }
 

@@ -9,7 +9,23 @@ function directDealAPI(idx){
 
 function* directDealView(action){      
     const result = yield call(directDealAPI, action.idx)
-    // console.log("back 에서 온 데이터",result);
+    const {nick_name, title, description, result_msg, msg} = result.data
+
+    console.log(result.data);
+
+    if(result_msg==="OK"){
+        yield put({
+            type:'DIRECTDEAL_VIEW_SUCCESS',
+            list : result.data
+        })
+    }else{
+        yield put({
+            type:'DIRECTDEAL_VIEW_ERROR',
+            result_msg,
+            msg
+        })
+    }
+    
     
 }
 

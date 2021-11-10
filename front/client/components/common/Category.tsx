@@ -1,41 +1,46 @@
 import Link from 'next/link';
 import Styled from 'styled-components';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { category_REQUEST } from '../../reducers/type';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from "../../reducers"
 
 const Category = (props) => {
-    const { genderTab, List, genderTabOpen, handleList, selectGender, genderSelect } = props.CategoryState
-    
+    const dispatch = useDispatch()
+    const Type = useSelector((state:RootState) => state.type);
+    const { genderTab, genderTabOpen, selectGender, genderSelect } = props.CategoryState
+    const [subcategory, setsubCategory] = useState<number>(0)
+
+    const [List, setList] = useState<number>(0);
+    const handleList = (e) => {
+        setList(e)
+        console.log(`이 떄는 ??${Type.main}`)
+    }
+
+    const category = (E) => {
+        dispatch(category_REQUEST())
+        
+    }
+
     return (
         <CategoryWrapper>
-            <H3>전체 카테고리</H3>
-            <Ul flag={genderSelect}>
-                <Line></Line>
-                <Subject onClick={genderTabOpen}>성별</Subject>
-                <Line></Line>
-                {genderTab == true ?
-                    <>
-                        <LI onClick={() => { selectGender(1) }} className="female" >여성복</LI>
-                        <LI onClick={() => { selectGender(2) }} className="male" >남성복</LI>
-                        <LI onClick={() => { selectGender(3) }} className="child" >아동복</LI>
-                    </>
-                    :
-                    <li></li>
-                }
-            </Ul>
+            <H3 onClick = {category}>전체 카테고리</H3>
+            { Type.main[0] == undefined ? ''
+            : Type.main.map((ele,key)=>
             <Ul>
                 <Line></Line>
-                <Subject onClick={handleList}>여분</Subject>
+                <Subject onClick={() => { selectGender(key+1), handleList(key+1) }}>{Type.main[key] == undefined ? '로딩중' : Type.main[key].category_name}</Subject>
                 <Line></Line>
-                {List == true ?
+                {List == key+1 ?
                     <>
-                        <LI>리스트</LI>
-                        <LI>리스트</LI>
-                        <LI>리스트</LI>
+                        <LI className="female" >{Type.sub[0] == undefined ? '로딩중' : Type.sub[key][0].sub_category_name}</LI>
+                        <LI className="male" >{Type.sub[0] == undefined ? '로딩중' : Type.sub[key][1].sub_category_name}</LI>
                     </>
                     :
                     <li></li>
                 }
-            </Ul>
+            </Ul>)
+        }
         </CategoryWrapper>
     )
 }
