@@ -9,6 +9,8 @@ export interface TypeState {
     UserAddress: string;
     verify: number;
     categoryData: Array<any>
+    main:Array<any>,
+    sub:Array<any>
 }
 
 export const initialState: TypeState = {
@@ -18,7 +20,9 @@ export const initialState: TypeState = {
     error: '',
     UserAddress: 'kaikasAddress',
     verify: 200,
-    categoryData: []
+    categoryData: [],
+    main:[],
+    sub:[]
     
 };
 
@@ -41,6 +45,11 @@ export const ITEM_SEARCH_ERROR = "ITEM_SEARCH_ERROR" as const;
 export const ITEM_SORT_REQUEST = "ITEM_SORT_REQUEST" as const;
 export const ITEM_SORT_SUCCESS = "ITEM_SORT_SUCCESS" as const;
 export const ITEM_SORT_ERROR = "ITEM_SORT_ERROR" as const;
+
+/* 마케고리 가져오기 */
+export const CATEGORY_REQUEST = "CATEGORY_REQUEST" as const;
+export const CATEGORY_SUCCESS = "CATEGORY_SUCCESS" as const;
+export const CATEGORY_ERROR = "CATEGORY_ERROR" as const;
 
 /******************************************************************* */
 
@@ -125,6 +134,27 @@ export const itemSort_ERROR = () => {
     }
 }
 
+/* 상품 정렬 - 최근발행 | 인기 많은 순 */
+export const category_REQUEST = () => {
+    return {
+        type: CATEGORY_REQUEST,
+    }
+}
+
+export const category_SUCCESS = (main,sub) => {
+    return {
+        type: CATEGORY_SUCCESS,
+        main:main,
+        sub:sub
+    }
+}
+
+export const category_ERROR = () => {
+    return {
+        type: CATEGORY_ERROR,
+    }
+}
+
 
 type TypeAction =
     | ReturnType<typeof sellType_REQUEST>
@@ -139,6 +169,9 @@ type TypeAction =
     | ReturnType<typeof itemSort_REQUEST>
     | ReturnType<typeof itemSort_SUCCESS>
     | ReturnType<typeof itemSort_ERROR>
+    | ReturnType<typeof category_REQUEST>
+    | ReturnType<typeof category_SUCCESS>
+    | ReturnType<typeof category_ERROR>
 
 const reducer = (state: TypeState = initialState, action: TypeAction) => {
     switch (action.type) {
@@ -201,6 +234,23 @@ const reducer = (state: TypeState = initialState, action: TypeAction) => {
                 ...state,
             }
         case ITEM_SORT_ERROR:
+            return {
+                ...state,
+            }
+            
+        /* 카테고리 */
+        case CATEGORY_REQUEST:
+            return {
+                ...state,
+            }
+        case CATEGORY_SUCCESS:
+            console.log(`카테고리 리턴 값 작동 여부 == ${action.sub[1][0].sub_category_name}`)
+            return {
+                ...state,
+                main:action.main,
+                sub:action.sub
+            }
+        case CATEGORY_ERROR:
             return {
                 ...state,
             }
