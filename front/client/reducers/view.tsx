@@ -8,7 +8,7 @@ export interface ViewState {
     error: string;
     UserAddress: string;
     verify: number;
-    nick_name, title, description: string;
+    nick_name, title, description,size,color: string;
     directView: {};
 
 }
@@ -23,6 +23,8 @@ export const initialState: ViewState = {
     nick_name : '',
     title : '',
     description : '',
+    size : '',
+    color : '',
     directView: {},
 };
 
@@ -108,6 +110,8 @@ const reducer = (state: ViewState = initialState, action: ViewAction) => {
                 nick_name : action.list.nick_name,
                 title : action.list.title,
                 description : action.list.description,
+                size : action.list.size,
+                color : action.list.color,
             }
 
 

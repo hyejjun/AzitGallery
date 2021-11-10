@@ -1,26 +1,20 @@
 import Styled from 'styled-components'
 
-const SizeSelect = () => {
+const SizeSelect = (props) => {
+    const optionArr = [...props.sizeArr]
+    let sizeList = optionArr.map((v,k)=>{
+        return(
+            <option key={k}>
+                {v}
+            </option>
+        )
+    })    
     return (
         <SizeSelectCSS>
             <option>
                 SIZE
             </option>
-            <option>
-                XL
-            </option>
-            <option>
-                L
-            </option>
-            <option>
-                M
-            </option>
-            <option>
-                S
-            </option>
-            <option>
-                XS
-            </option>
+            {sizeList}
         </SizeSelectCSS>
     )
 }

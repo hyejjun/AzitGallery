@@ -19,12 +19,24 @@ const NFTdetail = ({children}) => {
     const nickname = useSelector((state:RootState) => state.view.nick_name);
     const title = useSelector((state:RootState) => state.view.title);
     const description = useSelector((state:RootState) => state.view.description);
+    const color = useSelector((state:RootState) => state.view.color);
+    const size = useSelector((state:RootState) => state.view.size);
+
+    console.log("페이지 === ",color, size);
+
+    const colorArr = color.split(",")
+    console.log(colorArr);
+
+    const sizeArr = size.split(",")
+    console.log(sizeArr);
+    
+    
     
     return (
         <>
             <NFTdetailWrap>
                 <NFTBuy>
-                    <SizeSelect/>
+                    <SizeSelect sizeArr={sizeArr}/>
                     <Like/>
                     <BuyBtnCSS onClick={orderOpen}>
                         <button>{children}</button>
