@@ -3,6 +3,7 @@ const mysql = require('mysql')
 const pool = require('../pool');
 
 
+
 /* 일반 상품 */
 
 let all_list_get =  async (req,res) => {
@@ -142,8 +143,35 @@ let my_nft_all_post = async (req,res) => {
 
 // 판매한 nft
 let sold_nft_post = async (req,res) => {
-    // let key = Object.keys(req.body)
-    // let keyObject = JSON.parse(key)
+    let key = Object.keys(req.body)
+    let keyObject = JSON.parse(key)
+    pool.getConnection((err,connection)=>{
+        connection.query(
+            `
+            select a.item_code, a.state, c.item_hits, c.title, e.order_date 
+            from buyer_list as a join item_detail as b 
+            on a.item_code= b.item_code join item_info as c 
+            on b.item_info_idx=c.item_id join order_detail as d 
+            on d.item_code=b.item_code join orders as e 
+            on d.order_num= e.order_num where sender_idx=2;
+            `
+        ,function(err,result,fields){
+            if(err) throw err;
+            if(result==undefined){
+                data = {
+                    result_msg:'Fail'
+                }
+            }else{
+                console.log(result)
+                data = {
+                    result_msg:'OK',
+                    result
+                }
+                res.json(data)
+            }
+            connection.release()
+        })
+    })
     
 }
 

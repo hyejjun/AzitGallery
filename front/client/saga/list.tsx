@@ -126,14 +126,12 @@ function* reqmynftall(){
 /* 판매한 nft가져오기  */
 function getsoldnftAPI(data){
     return axios.post('http://localhost:4000/list/soldnft',JSON.stringify(data.data))
-    
-
 }
 
 function* getsoldnftSaga(data){
     
     const result = yield call(getsoldnftAPI,data)
-    console.log(result,'result')
+    console.log(result.data.result_msg,'result')
     if(result.data.result_msg=='OK'){
         yield put({
             type:'SOLD_NFT_SUCCESS',
