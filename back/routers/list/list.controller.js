@@ -111,13 +111,16 @@ let my_nft_all_post = async (req,res) => {
 
     pool.getConnection((err,connection)=>{
         connection.query(
+            // 기본적으로 발행순
             `
-            select a.final_order_state,b.item_code,b.size,b.size, c.title,c.creator,c.item_hits,e.nick_name 
+            select a.final_order_state,b.item_code,b.size,b.size, c.title,c.creator,c.item_hits,e.nick_name, c.registered_at
             from orders as a join order_detail as b 
             on a.order_num=b.order_num join item_info as c 
             on c.item_code=substring(b.item_code,1,13) join user as d 
             on a.buyer=d.user_idx join user as e 
-            on e.user_idx=c.creator where d.kaikas_address='${keyObject}';
+            on e.user_idx=c.creator 
+            where d.kaikas_address='${keyObject}' 
+            order by c.registered_at;
             `
             ,function(err,result,fields){
             if(err) throw err;
@@ -141,19 +144,22 @@ let my_nft_all_post = async (req,res) => {
 
 
 
-// 판매한 nft
+// 판매된 nft
 let sold_nft_post = async (req,res) => {
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
     pool.getConnection((err,connection)=>{
         connection.query(
             `
-            select a.item_code, a.state, c.item_hits, c.title, e.order_date 
+            select a.item_code, a.state, c.item_hits, c.title, e.order_date,c.registered_at
             from buyer_list as a join item_detail as b 
             on a.item_code= b.item_code join item_info as c 
             on b.item_info_idx=c.item_id join order_detail as d 
             on d.item_code=b.item_code join orders as e 
-            on d.order_num= e.order_num where sender_idx=2;
+            on d.order_num= e.order_num join user as f 
+            on f.user_idx=a.sender_idx 
+            where f.kaikas_address='${keyObject}' 
+            order by c.registered_at;
             `
         ,function(err,result,fields){
             if(err) throw err;
@@ -174,7 +180,7 @@ let sold_nft_post = async (req,res) => {
     })
     
 }
-
+// 미판매된 nft
 let not_sell_post = async(req,res) => {
 
     let data = {}
@@ -185,11 +191,11 @@ let not_sell_post = async(req,res) => {
     pool.getConnection((err,connection)=>{
         connection.query(
             `
-            select a.creator,a.title, b.item_code, a.item_hits 
+            select a.creator,a.title, b.item_code, a.item_hits,a.registered_at
             from item_info as a join item_detail as b 
             on a.item_id=b.item_info_idx join user as c 
             on a.creator=c.user_idx 
-            where c.kaikas_address='${keyObject}' and b.product_status=0;
+            where c.kaikas_address='address1' and b.product_status=0 order by a.registered_at;
             `
         ,function(err,result,fields){
             if(err) throw err;
