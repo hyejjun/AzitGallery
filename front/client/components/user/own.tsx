@@ -1,6 +1,9 @@
 import Styled from 'styled-components'
 import React, { useState } from 'react'
 import Link from 'next/link'
+import { useSelector } from 'react-redux'
+import { RootState } from "../../reducers"
+import { ListState } from "../../reducers/list"
 
 const Own = () => {
 
@@ -9,16 +12,21 @@ const Own = () => {
         subject: string,
         artist: string,
         Like: number,
-        alert: string
+        alert: string,
     }
+
+
+    const mynftList =  useSelector((state:RootState)=>state.list.mynftList);
+    console.log(mynftList,'masdfas')
+
 
     const [Arr, setArr] = React.useState<ArrEle[]>([
         {
             id: 1,
-            subject: 'adsfds',
+            subject: 'adsfdasdfasdfs',
             artist: 'daminal',
             Like: 0,
-            alert: '신고하기'
+            alert: '신고하기asdfasf'
         },
         {   id: 2,
             subject: 'adsfdsf',
@@ -43,8 +51,8 @@ const Own = () => {
       ]);
 
 
-    const nameList: JSX.Element[] = Arr.map((ele) =>
-        <React.Fragment key={ele.id}>
+    const nameList: JSX.Element[] = mynftList.map((ele) =>
+        <React.Fragment key={ele.item_code}>
             <NFTFourList>
                 <NFT>
                     <NFTImg>
@@ -54,9 +62,9 @@ const Own = () => {
                     <Line></Line>
                     <NFTOne>
                         <NFTOneList>
-                            <NFTSubject>{ele.subject}</NFTSubject>
+                            <NFTSubject>{ele.title}</NFTSubject>
                             {/* 여기 a 빠졌는데 동작되는 이유.. a 추가하면 오류남 */}
-                            <NFTartist>{ele.artist}</NFTartist>
+                            <NFTartist>{ele.nick_name}</NFTartist>
                         </NFTOneList>
                         <NFTOneImg>
                             <img></img>
@@ -64,7 +72,7 @@ const Own = () => {
                     </NFTOne>
                     <NFTOne>
                         <NFTOneList>
-                            <NFTSubject>@ {ele.Like}</NFTSubject>
+                            <NFTSubject>@ {ele.item_hits}</NFTSubject>
                         </NFTOneList>
                         <NFTDeclaration>
                             <NFTSubject>* * *</NFTSubject>

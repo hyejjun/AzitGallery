@@ -1,10 +1,13 @@
 const mysql = require('mysql');
 
-let connection = mysql.createConnection({
+let pool = mysql.createPool({
     host:'127.0.0.1',
     user:'root',
     password:'root',
     database:'auction_test',
+    connectionLimit:30
 });
 
-module.exports = connection;
+
+
+module.exports = pool;

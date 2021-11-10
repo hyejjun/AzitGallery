@@ -1,6 +1,7 @@
-const {ItemInfo} = require('../../models');
+const {ItemInfo,ItemDetail} = require('../../models');
 const mysql = require('mysql')
-const connection = require('../pool')
+const pool = require('../pool');
+
 
 /* 일반 상품 */
 
@@ -100,33 +101,87 @@ let query_item_post =  async (req,res) => {
     res.json(data)
 }
 
+// 구매한 nft
 let my_nft_all_post = async (req,res) => {
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
-    console.log(keyObject)
 
-    // connection.connect()
-    // connection.query(` 
-    //     select b.item_code,d.registered_at 
-    //     from orders as a 
-    //     join order_detail as b 
-    //     on a.order_num=b.order_num 
-    //     join item_detail as c 
-    //     on b.item_code=c.item_code 
-    //     join item_info as d 
-    //     on d.item_id=(select distinct item_info_idx 
-    //         from item_detail 
-    //         where left(item_code,13)=1636335206101) 
-    //         where a.buyer=2 order by registered_at
-    // `,(error,result)=>{
-    // if(error){
-    //         console.log(error)
-    //     }else{
-    //         console.log('sug')
+    let data = {}
+
+    pool.getConnection((err,connection)=>{
+        connection.query(
+            `
+            select a.final_order_state,b.item_code,b.size,b.size, c.title,c.creator,c.item_hits,e.nick_name 
+            from orders as a join order_detail as b 
+            on a.order_num=b.order_num join item_info as c 
+            on c.item_code=substring(b.item_code,1,13) join user as d 
+            on a.buyer=d.user_idx join user as e 
+            on e.user_idx=c.creator where d.kaikas_address='${keyObject}';
+            `
+            ,function(err,result,fields){
+            if(err) throw err;
+            if(result==undefined){
+                data = {
+                    result_msg:'Fail'
+                }
+            }else{
+                console.log(result)
+                data = {
+                    result_msg:'OK',
+                    result
+                }
+                res.json(data)
+            }
+            
+            connection.release();
+        })
+    })
+}
+
+
+
+// 판매한 nft
+let sold_nft_post = async (req,res) => {
+    // let key = Object.keys(req.body)
+    // let keyObject = JSON.parse(key)
+    // let data = {}
+
+    // try{
+    //     let result = await ItemInfo.findAll();
+    //     console.log(result)
+    //     data = {
+    //         result_msg:'SUC',
+    //         result
     //     }
-    // })
-    //connection.query(`insert into category(main_category,_code,category_name) values('test','tset)`)
+    // }catch (err){
+    //     data = {
+    //         result_msg:'Fail',
+    //         msg:'해당 페이지가 없어요'
+    //     }
+    // }
+    // res.json(data)   
 
+    
+    data = {
+        result_msg:'asdf',
+        result
+        
+    }
+    res.json(data)
+}
+
+let not_sell_post = async(req,res) => {
+
+    let data = {}
+
+    let key = Object.keys(req.body)
+    let keyObject = JSON.parse(key)
+    console.log(keyObject,'not sell')
+    // 미판매된 제품에 대한 쿼리
+    // item_Detail에서 색상과 사이즈를 기준으로 해서 개별로 각각 보여줄 경우
+    // select a.creator,a.title, b.item_code, a.item_hits from item_info as a join item_detail as b on a.item_id=b.item_info_idx where a.creator=2 and b.product_status=0;
+    // item_info에서 색상과 사이즈를 아우르는 제품 자체에 대해 보여줄 경우
+    // select distinct a.creator,a.title, a.item_code, a.item_hits from item_info as a join item_detail as b on a.item_id=b.item_info_idx where a.creator=2 and b.product_status=0;
 }
 
 module.exports = {
@@ -135,5 +190,7 @@ module.exports = {
     all_auction_get,
     plus_auction_get,
     query_item_post,
-    my_nft_all_post
+    my_nft_all_post,
+    sold_nft_post,
+    not_sell_post
 }
