@@ -27,10 +27,10 @@ VALUES(1,CONCAT(UNIX_TIMESTAMP(NOW()),101),'편안하게 입으세요3','여성 
 # insert into item_detail select * from (select (select max(a.nft_idx)+1 from item_detail as a),(select max(a.item_id) from item_info as a),if((select a.item_detail_idx from item_detail as a),(select max(a.item_detail_idx)+1 from item_detail as a),1),'L','black','nfttt',5,CONCAT(UNIX_TIMESTAMP(NOW()),101),0 ) as item_detail;
 # insert into item_detail select * from (select (select last_insert_id(),(select max(a.item_id) from item_info as a),if((select a.item_detail_idx from item_detail as a),(select max(a.item_detail_idx)+1 from item_detail as a),1),'L','black','nfttt',5,CONCAT(UNIX_TIMESTAMP(NOW()),101),0 ) as item_detail;
 //밑에 item_detail 값 넣기 진짜...!
-insert into item_detail select * from (select (select max(a.nft_idx)+1 from item_detail as a),(select max(a.item_id) from item_info as a),if((select max(a.item_detail_idx) from item_detail as a),(select max(a.item_detail_idx)+1 from item_detail as a),1),'m','black','nftfasfddftt',5,CONCAT(1636359080,10103),0 ) as item_detail;
-insert into direct_deal(direct_deal_idx,price,currency) 
-values((select max(a.item_id) from item_info as a),3000,3000);
-commit;
+    insert into item_detail select * from (select (select max(a.nft_idx)+1 from item_detail as a),(select max(a.item_id) from item_info as a),if((select max(a.item_detail_idx) from item_detail as a),(select max(a.item_detail_idx)+1 from item_detail as a),1),'m','black','nftfasfddftt',5,CONCAT(1636359080,10103),0 ) as item_detail;
+    insert into direct_deal(direct_deal_idx,price,currency) 
+    values((select max(a.item_id) from item_info as a),3000,3000);
+    commit;
 
 ## item_detail은 size랑 color 때문에 아예 따로 넣어야 할 듯...
 
