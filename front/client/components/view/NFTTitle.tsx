@@ -1,11 +1,10 @@
 import Styled from 'styled-components'
 
-const NFTTitle = ()=>{
-    
+const NFTTitle = (props)=>{
     return(
         <>
             <NFTTitleWrap>
-                <span>NFT 제목</span>
+                <span>{props.title}</span>
             </NFTTitleWrap>
         </>
     )

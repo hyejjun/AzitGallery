@@ -88,18 +88,14 @@ function nicknameAPI(action):any {
 }
 
 function* nicknameSaga(action){
-    const result = yield call(nicknameAPI(action))
-    console.log(result, "===1====");
-   
+    const result = yield call(nicknameAPI,action)
     if(result.data.nicknameChkBool == true){
         yield put({
             type:'NICKNAME_POST_SUCCESS',
-      
         })
     }else{
         yield put({
             type:'NICKNAME_POST_ERROR',
-        
         })
     }
 
