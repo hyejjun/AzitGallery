@@ -10,6 +10,7 @@ export interface ListState {
     auctionlength: number;
     mynftList: Array<any>;
     soldnftList: Array<any>;
+    notsellnftList : Array<any>;
 }
 
 export const initialState : ListState = {
@@ -18,7 +19,8 @@ export const initialState : ListState = {
     auctionList: [],
     auctionlength: 3,
     mynftList : [],
-    soldnftList : []
+    soldnftList : [],
+    notsellnftList : []
 };
 
 

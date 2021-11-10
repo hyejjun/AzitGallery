@@ -144,30 +144,7 @@ let my_nft_all_post = async (req,res) => {
 let sold_nft_post = async (req,res) => {
     // let key = Object.keys(req.body)
     // let keyObject = JSON.parse(key)
-    // let data = {}
-
-    // try{
-    //     let result = await ItemInfo.findAll();
-    //     console.log(result)
-    //     data = {
-    //         result_msg:'SUC',
-    //         result
-    //     }
-    // }catch (err){
-    //     data = {
-    //         result_msg:'Fail',
-    //         msg:'해당 페이지가 없어요'
-    //     }
-    // }
-    // res.json(data)   
-
     
-    data = {
-        result_msg:'asdf',
-        result
-        
-    }
-    res.json(data)
 }
 
 let not_sell_post = async(req,res) => {
@@ -177,11 +154,38 @@ let not_sell_post = async(req,res) => {
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
     console.log(keyObject,'not sell')
+    pool.getConnection((err,connection)=>{
+        connection.query(
+            `
+            select a.creator,a.title, b.item_code, a.item_hits 
+            from item_info as a join item_detail as b 
+            on a.item_id=b.item_info_idx join user as c 
+            on a.creator=c.user_idx 
+            where c.kaikas_address='${keyObject}' and b.product_status=0;
+            `
+        ,function(err,result,fields){
+            if(err) throw err;
+            if(result==undefined){
+                data = {
+                    result_msg:'Fail'
+                }
+            }else{
+                console.log(result)
+                data = {
+                    result_msg:'OK',
+                    result
+                }
+                res.json(data)
+            }
+            connection.release()
+        })
+    })
     // 미판매된 제품에 대한 쿼리
     // item_Detail에서 색상과 사이즈를 기준으로 해서 개별로 각각 보여줄 경우
     // select a.creator,a.title, b.item_code, a.item_hits from item_info as a join item_detail as b on a.item_id=b.item_info_idx where a.creator=2 and b.product_status=0;
     // item_info에서 색상과 사이즈를 아우르는 제품 자체에 대해 보여줄 경우
     // select distinct a.creator,a.title, a.item_code, a.item_hits from item_info as a join item_detail as b on a.item_id=b.item_info_idx where a.creator=2 and b.product_status=0;
+   
 }
 
 module.exports = {

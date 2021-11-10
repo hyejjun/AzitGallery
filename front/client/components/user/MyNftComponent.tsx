@@ -16,7 +16,6 @@ const MyNftComponent = () => {
     const dispatch = useDispatch()
     const [tabBtn, settabBtn] = useState<number>(1);
     const user:UserState = useSelector((state:RootState) => state.user);
-    console.log(user.UserAddress)
 
     const btn1 = () => {
         settabBtn(1);

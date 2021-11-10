@@ -107,7 +107,6 @@ function getmynftAPI(data){
 function* getmynftSaga(data){    
 
     const result = yield call(getmynftAPI,data)
-    console.log(result.data.result_msg,'sudafas')
     if(result.data.result_msg=='OK'){
         yield put({
             type:'MY_NFT_ALL_SUCCESS',
@@ -125,22 +124,24 @@ function* reqmynftall(){
 }
 
 /* 판매한 nft가져오기  */
-function* getsoldnftAPI(data){
+function getsoldnftAPI(data){
     return axios.post('http://localhost:4000/list/soldnft',JSON.stringify(data.data))
+    
+
 }
 
 function* getsoldnftSaga(data){
     
     const result = yield call(getsoldnftAPI,data)
     console.log(result,'result')
-    // if(result.data.result_msg=='OK'){
-    //     yield put({
-    //         type:'SOLD_NFT_SUCCESS',
-    //         data:result.data.result
-    //     })
-    // }else{
-    //     console.log('err')
-    // }
+    if(result.data.result_msg=='OK'){
+        yield put({
+            type:'SOLD_NFT_SUCCESS',
+            data:result.data.result
+        })
+    }else{
+        console.log('err')
+    }
 }
 
 function* reqsoldnft(){
@@ -149,21 +150,23 @@ function* reqsoldnft(){
 
 
 /* 미판매된 nft가져오기  */
-function* getnotsellnftAPI(data){
+function getnotsellnftAPI(data){
     return axios.post('http://localhost:4000/list/notsellnft',JSON.stringify(data.data))
 }
 
 function* getnotsellnftSaga(data){
+
     const result = yield call(getnotsellnftAPI,data)
-    console.log(result,'resilt')
-    // if(result.data.msg=='fail'){
-    //     yield put({
-    //         type:'NOT_SELLED_SUCCESS',
-    //         //data:result.data.result1
-    //     })
-    // }else{
-    //     console.log('err not sell')
-    // }
+    if(result.data.result_msg=='OK'){
+        yield put({
+            type:'NOT_SELLED_SUCCESS',
+            data:result.data.result
+        })
+    }else{
+        yield put({
+            type:'NOT_SELLED_ERROR',
+        })
+    }
 }
 
 function* reqnotsellnft(){
