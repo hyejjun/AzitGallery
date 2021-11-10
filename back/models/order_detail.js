@@ -13,10 +13,6 @@ module.exports = class OrderDetail extends Sequelize.Model{
                 type:Sequelize.STRING(30),
                 defaultValue:'one color'
             },
-            order_qty:{
-                type:Sequelize.INTEGER,
-                defaultValue:1
-            },
             shipper_idx:{
                 type:Sequelize.INTEGER,
             },
