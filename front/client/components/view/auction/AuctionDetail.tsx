@@ -3,9 +3,10 @@ import { useState, useEffect } from 'react';
 import { BuyBtnCSS } from '../sell/NFTdetail';
 import JoinAcution from './JoinAuction';
 
-const AuctionDetail = () => {
-    const [num, setNum] = useState<number>(5);
-    const [price, setPrice] = useState<number>(0.15);
+const AuctionDetail = (props) => {
+    // const [num, setNum] = useState<number>(5);
+    const [price, setPrice] = useState<number>(0);
+
     const [limitTime, setlimitTime] = useState<number>(5);
 
     const [openAuction, setOpenAuction] = useState<boolean>(false);
@@ -58,20 +59,20 @@ const AuctionDetail = () => {
         <>
             <AuctionDetailWrap>
                 <ul className="auctionTitle">
-                    <li>경매 입찰 수</li>
+                    {/* <li>경매 입찰 수</li> */}
                     <li>현재 입찰가</li>
                     <li>마감시간</li>
                 </ul>
                 <ul className="auctionContent">
-                    <li>{num}</li>
-                    <li>{price}ETH</li>
-                    <li>{limitTime}분 전</li>
+                    {/* <li>{num}</li> */}
+                    <li>{props.bid_price} {props.currency}</li>
+                    <li>{props.left_time}</li>
                 </ul>
                 <BtnWrap>
                     <BuyBtnCSS className="auctionBtn" onClick={auctionOpen}>
                         <button>경매 참여</button>
                     </BuyBtnCSS>
-                    <JoinAcution openAuction={openAuction} auctionOpen={auctionOpen} auctionValue={auctionValue}/>
+                    <JoinAcution openAuction={openAuction} auctionOpen={auctionOpen} auctionValue={auctionValue} bid_price={props.bid_price}/>
                 </BtnWrap>
             </AuctionDetailWrap>
         </>
