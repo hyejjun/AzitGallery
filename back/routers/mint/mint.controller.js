@@ -76,7 +76,8 @@ let mint_nft_post = async (req,res) => {
                     last_digits_for_detail = `${i*size.length+j}`
                 }
 
-                getNFT(name,color[i],size[j])
+                // 오류해결
+                // getNFT(name,color[i],size[j])
 
                 await ItemDetail.create({
                     item_detail_idx: i*size.length+j+1,  // item_detail_idx 넣기
