@@ -3,8 +3,8 @@ const qs = require('qs');
 const nodemailer = require('nodemailer');
 const smtpTransporter = require('nodemailer-smtp-transport');
 require('dotenv').config()
-const { auction, deliver, item, user } = require("../../models");
-const { User, Seller } = require('../../models')
+const { auction, deliver, item, User, Seller, OrderDetail } = require("../../models");
+
 
 
 /* 이메일 보내기 */
@@ -113,37 +113,41 @@ let address_db_check = async (req,res) => {
 
 let nickname_check = async(req,res) => {
 
-    console.log("왓나요?")
     let key = Object.keys(req.body)
-    let keyObject = JSON.parse(key)
-
-    let nick_name = keyObject.NickName
-    let result = await User.findAll({where:nick_name})
-
-    if(result.length != 0){
-        let data = {
-            nicknameChkBoolean:true
-        }
-        res.json(data)
+    let nick_name = JSON.parse(key)
+    
+    let result = await User.findAll({where:{nick_name}})
+    console.log(key,"===-=-=-",nick_name,"========", result);
+    if(result.length == 0){
+        // let data = {
+        //     nicknameChkBool:true
+        // }
+        res.json(true)
     }else{
-        let data = {
-            nicknameChkBoolean:false
-        }
-        res.json(data)
+        // let data = {
+        //     nicknameChkBool:false
+        // }
+        res.json(false)
     }
 
     
-    // if()
-    console.log(result,"33333")
-    console.log(keyObject,"444444")
-    console.log(nick_name,"55555")
+    // // if()
+    // console.log(result,"33333")
 }
 
 /* 모든 회원들 정보를 불러오기 */
 
 let userlist_get = async (req,res) => {
 
-    let result = await Seller.findAll({})
+    //select b.item_code from orders as a 
+    //join order_detail as b 
+    //on a.order_num = b.order_num 
+    //join item_detail as c 
+    //on b.item_code=c.item_code 
+    //where a.buyer=2;
+
+    let result = await OrderDetail.findAll({})
+    console.log(result,'====================================')
   
 
     const ARR = []
@@ -151,7 +155,7 @@ let userlist_get = async (req,res) => {
     for(let i=0; i<result.length; i++){
         ARR.push({id:`Arr${i+1}`,name:result[i].user_idx, kaikas_address:result[i].seller_code, kycAuthorized:result[i].admin_approval })
     }
-    console.log(ARR)
+    //console.log(ARR)
     let data = {
         ARR:ARR
     }
@@ -202,7 +206,7 @@ let user_info = async (req,res) => {
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
     console.log(keyObject,'user_info')
-    let result = await User.findAll({where:{kaikas_address:'address4'}})
+    let result = await User.findAll({where:{kaikas_address:keyObject}})
     res.json(result[0])
 
 

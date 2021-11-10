@@ -8,6 +8,7 @@ import { PlusItemlist_REQUEST } from '../../reducers/list'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from "../../reducers"
 import { SetQuery_REQUEST } from "../../reducers/list"
+import { sellType_REQUEST, genderCategorySelect_REQUEST, itemSearch_REQUEST, itemSort_REQUEST } from '../../reducers/type'
 
 const ItemListSell = (props) => {
 
@@ -30,9 +31,11 @@ const ItemListSell = (props) => {
         AStyle,
     } = ItemListCSS
 
-    const { gender, List, handlegender, handleList } = props.CategoryState
+    const { gender, List, handlegender, genderSelect,  handleList, genderTab, list2 } = props.CategoryState
+    const { search, setSelect, select, tabBtn } = props.sendData
     const dispatch = useDispatch()
     const list = useSelector((state:RootState) => state.list);
+    const type = useSelector((state:RootState) => state.type);
     let [loading, setLoading] = useState<boolean>(false)
 
     let [count,setCount] = useState<number>(0)
@@ -167,10 +170,26 @@ const ItemListSell = (props) => {
         console.log('dispatch?')
     };
 
+    const sendData = {
+
+        genderSelect,    
+                       // @ 0 미선택 1 여성복 2 남성복 3 아동복
+    }
+
+
     useEffect(() => {
-        dispatch(Itemlist_REQUEST())
+        dispatch(genderCategorySelect_REQUEST(sendData))
         setArr(list.itemList)
-    },[])
+    },[genderSelect])
+
+
+    useEffect(() => {
+        setArr(list.itemList)
+    },[select])
+
+
+
+    
     useEffect(() => {
        
         let cnt0: number = 0;
@@ -200,10 +219,10 @@ const ItemListSell = (props) => {
                 </PictureNumberNotice>
                 <SelectBox onChange={props.selectChange}>
                     <SelectOption value="sell_recent">
-                        최근 발행 순
+                        좋아요 순
                     </SelectOption>
                     <SelectOption value="sell_likes">
-                        좋아요 순
+                        최근 발행 순
                     </SelectOption>
                 </SelectBox>
             </div>

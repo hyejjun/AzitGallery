@@ -44,7 +44,7 @@ module.exports = class OrderDetail extends Sequelize.Model{
         })
     }
     static associate(db){
-        db.OrderDetail.hasMany(db.Orders,{foreignKey:'order_num',targetKey:'order_num'}),
+        db.OrderDetail.hasOne(db.Orders,{foreignKey:'order_num',targetKey:'order_num'}),
         db.OrderDetail.belongsTo(db.ItemInfo,{foreignKey:'item_id',targetKey:'item_id'})
     }
 }

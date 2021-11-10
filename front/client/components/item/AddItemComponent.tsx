@@ -300,7 +300,7 @@ const AddItemComponent = () => {
 
     // 새 NFT발행 시 그냥 새로고침
     const resetState = () => {
-        window.location.reload() 
+        // window.location.reload() 
     }
 
 
@@ -308,8 +308,13 @@ const AddItemComponent = () => {
     const mint = useSelector((state:RootState) => state.mint);
     const [nftCreateState,setnftCreateState] = useState<boolean>(false);
     const createNftCh = () => {
-        const data = {name:'insert', color:color, size:size}
-        dispatch(MintNFT_REQUEST(data))
+        let data = {}
+        if(ifSell == true){
+            data = {ifSell, price, currency, name, desc, itemType, color, size}
+        } else{
+            data = {ifSell, name, desc, aucPrice, currency, aucTime, extension, itemType, color, size}
+        }
+        dispatch(MintNFT_REQUEST([data,file]))
         if(handleConfirm() === true){
             setnftCreateState(prev=>!prev)
         }
@@ -413,7 +418,7 @@ const AddItemComponent = () => {
                 </SectionWrapper>
                 <SectionWrapper>
                     <SmallTitle>
-                        색상 및 사이즈`
+                        색상 및 사이즈
                     </SmallTitle>
                     <DescText>엔터를 누르면 자동으로 입력되며 띄어쓰기는 불가합니다(각 항목당 30자 이내).</DescText>
                     <SmallerTitle>색상</SmallerTitle>

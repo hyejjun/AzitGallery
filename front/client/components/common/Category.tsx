@@ -3,20 +3,24 @@ import Styled from 'styled-components';
 import React, { useState } from 'react'
 
 const Category = (props) => {
-    const { genderTab, List, genderTabOpen, handleList, selectGender, genderSelect } = props.CategoryState
-    
+    const { genderTab, genderTabOpen, selectGender, genderSelect } = props.CategoryState
+    const [List, setList] = useState<number>(0);
+    const handleList = (e) => {
+        setList(e)
+    }
+
     return (
         <CategoryWrapper>
             <H3>전체 카테고리</H3>
             <Ul flag={genderSelect}>
                 <Line></Line>
-                <Subject onClick={genderTabOpen}>성별</Subject>
+                <Subject onClick={() => { selectGender(1), handleList(1) }}>상의</Subject>
                 <Line></Line>
-                {genderTab == true ?
+                {List == 1 ?
                     <>
-                        <LI onClick={() => { selectGender(1) }} className="female" >여성복</LI>
-                        <LI onClick={() => { selectGender(2) }} className="male" >남성복</LI>
-                        <LI onClick={() => { selectGender(3) }} className="child" >아동복</LI>
+                        <LI className="female" >여성복</LI>
+                        <LI className="male" >남성복</LI>
+                        <LI className="child" >아동복</LI>
                     </>
                     :
                     <li></li>
@@ -24,9 +28,23 @@ const Category = (props) => {
             </Ul>
             <Ul>
                 <Line></Line>
-                <Subject onClick={handleList}>여분</Subject>
+                <Subject onClick={() => { selectGender(2), handleList(2) }} >하의</Subject>
                 <Line></Line>
-                {List == true ?
+                {List == 2 ?
+                    <>
+                        <LI>리스트</LI>
+                        <LI>리스트</LI>
+                        <LI>리스트</LI>
+                    </>
+                    :
+                    <li></li>
+                }
+            </Ul>
+            <Ul>
+                <Line></Line>
+                <Subject onClick={() => { selectGender(3), handleList(3) }} >잡화</Subject>
+                <Line></Line>
+                {List == 3 ?
                     <>
                         <LI>리스트</LI>
                         <LI>리스트</LI>
