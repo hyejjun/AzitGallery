@@ -1,6 +1,5 @@
 import axios from 'axios';
 import {all,put,takeEvery,takeLatest,fork,call} from "redux-saga/effects";
-import { Json } from 'sequelize/types/lib/utils';
 
 /* 일반 */
 
