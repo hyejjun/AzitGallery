@@ -47,28 +47,28 @@ const Selled = () => {
     // @ 배송 등록 후, 판매된 NFT 리스트들
     const [Arr2, setArr2] = React.useState<ArrEle[]>([
         {
-            id: 1,
+            id: 4,
             subject: 'ffffffffff',
             artist: 'daminal',
             Like: 0,
             alert: '신고하기'
         },
         {
-            id: 2,
+            id: 5,
             subject: 'asdg',
             artist: 'daminal',
             Like: 5,
             alert: '신고하기'
         },
         {
-            id: 3,
+            id: 6,
             subject: 'gahhfdsh',
             artist: 'daminal',
             Like: 5,
             alert: '신고하기'
         },
         {
-            id: 4,
+            id: 7,
             subject: 'gahhfdsh',
             artist: 'daminal',
             Like: 5,
@@ -108,34 +108,36 @@ const Selled = () => {
     }
 
     const nameList: JSX.Element[] = Arr.map((ele) =>
-        <NFTFourList>
-            <Alert severity="error">
-                <a className="deliverySet" onClick={setDelivery}>배송 등록 하기!</a>
-            </Alert>
-            <NFT>
-                <NFTImg>
-                    <div><img /></div>
-                </NFTImg>
-                <Line></Line>
-                <NFTOne>
-                    <NFTOneList>
-                        <NFTSubject>{ele.subject}</NFTSubject>
-                        <NFTartist>{ele.artist}</NFTartist>
-                    </NFTOneList>
-                    <NFTOneImg>
-                        <img></img>
-                    </NFTOneImg>
-                </NFTOne>
-                <NFTOne>
-                    <NFTOneList>
-                        <NFTSubject>@ {ele.Like}</NFTSubject>
-                    </NFTOneList>
-                    <NFTDeclaration>
-                        <NFTSubject>* * *</NFTSubject>
-                    </NFTDeclaration>
-                </NFTOne>
-            </NFT>
-        </NFTFourList>
+        <React.Fragment key={ele.id}>
+            <NFTFourList>
+                <Alert severity="error">
+                    <a className="deliverySet" onClick={setDelivery}>배송 등록 하기!</a>
+                </Alert>
+                <NFT>
+                    <NFTImg>
+                        <div><img /></div>
+                    </NFTImg>
+                    <Line></Line>
+                    <NFTOne>
+                        <NFTOneList>
+                            <NFTSubject>{ele.subject}</NFTSubject>
+                            <NFTartist>{ele.artist}</NFTartist>
+                        </NFTOneList>
+                        <NFTOneImg>
+                            <img></img>
+                        </NFTOneImg>
+                    </NFTOne>
+                    <NFTOne>
+                        <NFTOneList>
+                            <NFTSubject>@ {ele.Like}</NFTSubject>
+                        </NFTOneList>
+                        <NFTDeclaration>
+                            <NFTSubject>* * *</NFTSubject>
+                        </NFTDeclaration>
+                    </NFTOne>
+                </NFT>
+            </NFTFourList>
+        </React.Fragment>
     );
 
     const compeltedList: JSX.Element[] = Arr2.map((ele) =>

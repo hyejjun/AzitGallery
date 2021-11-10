@@ -9,7 +9,7 @@ import { RootState } from "../../reducers"
 import {UserState} from "../../reducers/user"
 import { KipSwap_REQUEST } from "../../reducers/mint";
 import { Userlist_REQUEST } from '../../reducers/user'
-import { myNft_all_REQUEST } from '../../reducers/list'
+import { myNft_all_REQUEST,sold_nft_REQUEST,not_selled_REQUEST } from '../../reducers/list'
 
 const MyNftComponent = () => {
 
@@ -22,10 +22,13 @@ const MyNftComponent = () => {
         settabBtn(1);
     }
     const btn2 = () => {
+        dispatch(sold_nft_REQUEST(user.UserAddress))
         settabBtn(2);
+        
     }
     
     const btn3 = () => {
+        dispatch(not_selled_REQUEST(user.UserAddress))
         settabBtn(3);
     }
 

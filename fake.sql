@@ -164,7 +164,7 @@ INSERT INTO sub_category (main_category_idx,item_code,sub_category_code,sub_cate
 (1,CONCAT((SELECT main_category_code FROM category WHERE category.id=2),0,4),04,'니트');
 
 INSERT INTO user(nick_name,kaikas_address,contact,address,email)
-VALUES('mihee','address1',0100000000,'homeaddress1','email@naver.com'),
+VALUES('mihsee','0x2618f9b36086912b479ba6a6fff6abcfcc032398',01000000100,'homeaddrsess1','email@navesr.com'),
 ('mihee2','address2',0200000000,'homeaddress2','email2@naver.com'),
 ('mihee3','address3',0300000000,'homeaddress3','email3@naver.com'),
 ('mihee4','address4',0400000000,'homeaddress4','email4@naver.com'),
@@ -246,4 +246,4 @@ commit;
 
 // order_detail에 값넣기
 insert into order_detail(size,color,shipper_idx,item_code,price,item_id) 
-values('S','black','3',163647030310109,3000,3);
+values('S','black','3',163647030310107,3000,3);
