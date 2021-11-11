@@ -190,55 +190,55 @@ insert into item_detail
 select * from
 (select (select max(a.nft_idx)+1 from item_detail as a),
 (select max(a.item_id) from item_info as a),
-'S','black','nsadasdfat1',CONCAT((select a.item_code from item_info as a where a.item_id=(select max(item_id) from item_info)),0,1),0 ) as item_detail;
+'S','black','3nsadasdfat1',CONCAT((select a.item_code from item_info as a where a.item_id=(select max(item_id) from item_info)),0,1),0 ) as item_detail;
 
 insert into item_detail
 select * from
 (select (select max(a.nft_idx)+1 from item_detail as a),
 (select max(a.item_id) from item_info as a),
-'M','black','nsadaasdfat1',CONCAT((select a.item_code from item_info as a where a.item_id=(select max(item_id) from item_info)),0,2),0 ) as item_detail;
+'M','black','3nsadaasdfat1',CONCAT((select a.item_code from item_info as a where a.item_id=(select max(item_id) from item_info)),0,2),0 ) as item_detail;
 
 insert into item_detail
 select * from
 (select (select max(a.nft_idx)+1 from item_detail as a),
 (select max(a.item_id) from item_info as a),
-'L','black','nssadasdfat1',CONCAT((select a.item_code from item_info as a where a.item_id=(select max(item_id) from item_info)),0,3),0 ) as item_detail;
+'L','black','3nssadasdfat1',CONCAT((select a.item_code from item_info as a where a.item_id=(select max(item_id) from item_info)),0,3),0 ) as item_detail;
 
 insert into item_detail
 select * from
 (select (select max(a.nft_idx)+1 from item_detail as a),
 (select max(a.item_id) from item_info as a),
-'S','white','snsadasdfat1',CONCAT((select a.item_code from item_info as a where a.item_id=(select max(item_id) from item_info)),0,4),0 ) as item_detail;
+'S','white','3snsadasdfat1',CONCAT((select a.item_code from item_info as a where a.item_id=(select max(item_id) from item_info)),0,4),0 ) as item_detail;
 
 insert into item_detail
 select * from
 (select (select max(a.nft_idx)+1 from item_detail as a),
 (select max(a.item_id) from item_info as a),
-'M','white','nszvadasdfat1',CONCAT((select a.item_code from item_info as a where a.item_id=(select max(item_id) from item_info)),0,5),0 ) as item_detail;
+'M','white','3nszvadasdfat1',CONCAT((select a.item_code from item_info as a where a.item_id=(select max(item_id) from item_info)),0,5),0 ) as item_detail;
 
 insert into item_detail
 select * from
 (select (select max(a.nft_idx)+1 from item_detail as a),
 (select max(a.item_id) from item_info as a),
-'L','white','qnsadasdfat1',CONCAT((select a.item_code from item_info as a where a.item_id=(select max(item_id) from item_info)),0,6),0 ) as item_detail;
+'L','white','3qnsadasdfat1',CONCAT((select a.item_code from item_info as a where a.item_id=(select max(item_id) from item_info)),0,6),0 ) as item_detail;
 
 insert into item_detail
 select * from
 (select (select max(a.nft_idx)+1 from item_detail as a),
 (select max(a.item_id) from item_info as a),
-'S','red','wnsadasdfat1',CONCAT((select a.item_code from item_info as a where a.item_id=(select max(item_id) from item_info)),0,7),0 ) as item_detail;
+'S','red','3wnsadasdfat1',CONCAT((select a.item_code from item_info as a where a.item_id=(select max(item_id) from item_info)),0,7),0 ) as item_detail;
 
 insert into item_detail
 select * from
 (select (select max(a.nft_idx)+1 from item_detail as a),
 (select max(a.item_id) from item_info as a),
-'M','red','ensadasdfat1',CONCAT((select a.item_code from item_info as a where a.item_id=(select max(item_id) from item_info)),0,8),0 ) as item_detail;
+'M','red','3ensadasdfat1',CONCAT((select a.item_code from item_info as a where a.item_id=(select max(item_id) from item_info)),0,8),0 ) as item_detail;
 
 insert into item_detail
 select * from
 (select (select max(a.nft_idx)+1 from item_detail as a),
 (select max(a.item_id) from item_info as a),
-'L','red','rnsadasdfat1',CONCAT((select a.item_code from item_info as a where a.item_id=(select max(item_id) from item_info)),0,9),0 ) as item_detail;
+'L','red','3rnsadasdfat1',CONCAT((select a.item_code from item_info as a where a.item_id=(select max(item_id) from item_info)),0,9),0 ) as item_detail;
 
 insert into direct_deal(direct_deal_idx,price,currency) 
 values((select max(a.item_id) from item_info as a),3000,3000);
@@ -246,4 +246,4 @@ commit;
 
 // order_detail에 값넣기
 insert into order_detail(size,color,shipper_idx,item_code,price,item_id) 
-values('S','black','3',163647030310107,3000,3);
+values('S','black','3',163656849410109,3000,4);

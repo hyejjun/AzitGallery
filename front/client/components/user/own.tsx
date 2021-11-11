@@ -17,7 +17,6 @@ const Own = () => {
 
 
     const mynftList =  useSelector((state:RootState)=>state.list.mynftList);
-    console.log(mynftList,'masdfas')
 
 
     const [Arr, setArr] = React.useState<ArrEle[]>([

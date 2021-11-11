@@ -4,8 +4,9 @@ import Link from 'next/link'
 import Alert from '@mui/material/Alert';
 import Waybill from '../view/Waybill';
 import useInput from '../../hooks/useInput';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { deliveryInfo_REQUEST } from '../../reducers/ship';
+import { RootState } from '../../reducers';
 
 const Selled = () => {
 
@@ -17,6 +18,9 @@ const Selled = () => {
         alert: string
     }
     // @ 나중에 가라데이터 지우고 back 에서 가져옴
+
+    const soldnftList = useSelector((state:RootState)=>state.list.soldnftList)
+    console.log(soldnftList)
 
     // @ 배송 등록 전, 판매된 NFT 리스트들
     const [Arr, setArr] = React.useState<ArrEle[]>([
@@ -107,12 +111,49 @@ const Selled = () => {
         deliveryNum
     }
 
-    const nameList: JSX.Element[] = Arr.map((ele) =>
-        <React.Fragment key={ele.id}>
+    const nameList: JSX.Element[] = soldnftList.map((ele) =>
+        <React.Fragment key={ele.item_code}>
             <NFTFourList>
+                {ele.state==0
+                ?
+                
                 <Alert severity="error">
                     <a className="deliverySet" onClick={setDelivery}>배송 등록 하기!</a>
                 </Alert>
+                :
+                <Alert severity="success">배송 등록 완료!</Alert>
+                }
+                <NFT>
+                    <NFTImg>
+                        <div><img /></div>
+                    </NFTImg>
+                    <Line></Line>
+                    <NFTOne>
+                        <NFTOneList>
+                            <NFTSubject>{ele.title}</NFTSubject>
+                            <NFTartist>{ele.state}</NFTartist>
+                        </NFTOneList>
+                        <NFTOneImg>
+                            <img></img>
+                        </NFTOneImg>
+                    </NFTOne>
+                    <NFTOne>
+                        <NFTOneList>
+                            <NFTSubject>@ {ele.hits}</NFTSubject>
+                        </NFTOneList>
+                        <NFTDeclaration>
+                            <NFTSubject>* * *</NFTSubject>
+                        </NFTDeclaration>
+                    </NFTOne>
+                </NFT>
+            </NFTFourList>
+        </React.Fragment>
+    );
+
+    const compeltedList: JSX.Element[] = Arr2.map((ele) =>
+        <React.Fragment key={ele.id}>
+            <NFTFourList>
+                <Alert severity="success">배송 등록 완료!</Alert>
                 <NFT>
                     <NFTImg>
                         <div><img /></div>
@@ -138,35 +179,6 @@ const Selled = () => {
                 </NFT>
             </NFTFourList>
         </React.Fragment>
-    );
-
-    const compeltedList: JSX.Element[] = Arr2.map((ele) =>
-        <NFTFourList>
-            <Alert severity="success">배송 등록 완료!</Alert>
-            <NFT>
-                <NFTImg>
-                    <div><img /></div>
-                </NFTImg>
-                <Line></Line>
-                <NFTOne>
-                    <NFTOneList>
-                        <NFTSubject>{ele.subject}</NFTSubject>
-                        <NFTartist>{ele.artist}</NFTartist>
-                    </NFTOneList>
-                    <NFTOneImg>
-                        <img></img>
-                    </NFTOneImg>
-                </NFTOne>
-                <NFTOne>
-                    <NFTOneList>
-                        <NFTSubject>@ {ele.Like}</NFTSubject>
-                    </NFTOneList>
-                    <NFTDeclaration>
-                        <NFTSubject>* * *</NFTSubject>
-                    </NFTDeclaration>
-                </NFTOne>
-            </NFT>
-        </NFTFourList>
     );
 
     return (
