@@ -4,6 +4,7 @@ import SellType from './SellType'
 import Agreement from './Agreement'
 import CreateNftCh from './CreateNftCh'
 import CancelNft from './CancelNft'
+import Category from './Category'
 import FileUpload from './FileUpload'
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from "react"
@@ -38,8 +39,6 @@ const AddItemComponent = () => {
     const [aucPrice, setAucPrice] = useState<string>('')
     // 경매 마감 시간
     const [aucTime, setAucTime] = useState<any>('')
-    // 성별 및 아동에 따른 카테고리 분류
-    const [itemType, setItemType] = useState<string>('female')
     // 색상 배열
     const [color, setColor] = useState<Array<string>>([])
     // 색상 입력값
@@ -48,7 +47,30 @@ const AddItemComponent = () => {
     const [size, setSize] = useState<Array<string>>([])
     // 사이즈 입력값
     const [sizeVal, setSizeVal] = useState<string>('')
-   
+    // 카테고리 배열 로드
+    const [category, setCategory] = useState<Array<string>>([])
+    const [loadCategory, setLoadCategory] = useState<boolean>(false)
+    //카테고리 입력값들
+    const [gender, setGender] = useState<string>('female')
+    const [bigCategory, setBigCategory] = useState<string>('')
+    const [smallCategory, setSmallCategory] = useState<string>('')
+    //테스트
+    const [test,setTest] = useState<string>('')
+    useEffect(()=>{
+        let categoryArr = []
+        async function getCategory(){
+            let result = await axios.post(`${url}/item/getcategory`)
+            categoryArr.push(result.data)
+            setLoadCategory(true)
+        }
+        getCategory().then(()=>{
+            setCategory(categoryArr[0])
+        })
+    },[])
+
+    useEffect(()=>{
+        console.log(bigCategory, smallCategory,'카테고리변경됨')
+    },[smallCategory, bigCategory])
     
     // input에 대한 handlechange(각 컴포넌트에서 텍스트를 인자값으로 받아
     // 각 컴포넌트마다 인자값에 따라 다르게 응답한다
@@ -63,7 +85,6 @@ const AddItemComponent = () => {
                 alert('숫자만 입력해주세요.')
                 // 이유는 모르지만 value로 적으면 작동하지 않음(이하 나오는 경우도 동일)
                 e.target.value=''
-                console.log(price)
                 setPrice('')
             }else {
             setPrice(value)
@@ -76,7 +97,6 @@ const AddItemComponent = () => {
             if(isNaN(value)!==false){
                 alert('숫자만 입력해주세요.')
                 e.target.value=''
-                console.log(price)
                 setPrice('')
             }
             setAucPrice(value)
@@ -153,9 +173,17 @@ const AddItemComponent = () => {
     }
 
     // 옷 카테고리 선택
-    const handleItemType = (e:any) => {
+    function handleCategory(e:any, type: string){
         let {value} = e.target
-            setItemType(value)
+        if(type == "gender"){
+            setGender(value)
+        }
+        if(type == "bigc"){
+            setBigCategory(value)
+        }
+        if(type == "smallc"){
+            setSmallCategory(value)
+        }
     }
 
     // 사이즈, 컬러에 대한 onChange
@@ -182,7 +210,7 @@ const AddItemComponent = () => {
         // 컬러와 사이즈에서 입력받은 각각의 경우에 대해
         // 위의 유효성검사 함수 실행, false 리턴받으면 경고메시지 표출
         // 및 해당 값 밸류를 직전 state로 회귀시킴
-        if(item == 'color'){
+        if(item == 'color' && color.length<10){
             if(handleChk(value) === false){
                 alert('특수문자나 띄어쓰기 없이 입력해 주세요.')
                 e.target.value = colorVal
@@ -193,7 +221,10 @@ const AddItemComponent = () => {
                     setColorVal(value)
                 }
             }
-        } else if(item == 'size'){
+        } else if(item == 'color' && color.length>=10){
+            alert('총 항목이 10개를 넘을 수 없습니다.')
+        } 
+        else if(item == 'size' && size.length<10){
             if(handleChk(value) === false){
                 alert('특수문자나 띄어쓰기 없이 입력해 주세요.')
                 e.target.value = sizeVal
@@ -204,7 +235,9 @@ const AddItemComponent = () => {
                     setSizeVal(value)
                 }
             }
-        }
+        } else if(item == 'size' && size.length>=10){
+            alert('총 항목이 10개를 넘을 수 없습니다.')
+        } 
     }
 
     // 엔터 누르면 등록되게 하는 함수
@@ -242,10 +275,12 @@ const AddItemComponent = () => {
             return false
         }
         else if((ifSell === true &&
-                (name=='' || desc=='' || price == '' || itemType == '' ||
+                (name=='' || desc=='' || price == '' || gender == '' ||
+                bigCategory == '' || smallCategory == '' ||
                 color.length == 0 || size.length == 0)) ||
                 (ifSell === false &&
-                (name=='' ||desc=='' ||aucPrice=='' ||aucTime=='' || itemType == '' ||
+                (name=='' ||desc=='' ||aucPrice=='' ||aucTime=='' || gender == '' ||
+                bigCategory == '' || smallCategory == '' ||
                 color.length == 0 || size.length == 0))){
                 alert('모든 칸을 입력해주세요.')
                 return false
@@ -261,10 +296,10 @@ const AddItemComponent = () => {
     const handleSubmit = async () => { 
         let data = {}
         if(ifSell == true){
-            data = {ifSell, price, currency, name, desc, itemType, color, size}
+            data = {ifSell, price, currency, name, desc, gender, bigCategory, smallCategory, color, size}
             sendDataToServer([data,file])
         } else{
-            data = {ifSell, name, desc, aucPrice, currency, aucTime, extension, itemType, color, size}
+            data = {ifSell, name, desc, aucPrice, currency, aucTime, extension, gender, bigCategory, smallCategory, color, size}
             sendDataToServer([data,file])
         }
     }
@@ -277,17 +312,21 @@ const AddItemComponent = () => {
             // data[1]의 파일들을 s3에 각각 올리고 업로드 주소값을 받아 배열에 넣는다
             let fileArray = data[1].map(async (items)=>{
                 const response = await fetch(`${url}/item/uploadpics`)
-                console.log(response,'response')
-                const { link } = await response.json()
-                await fetch(link, {
-                    method: "PUT",
-                    headers: {
-                        "Content-Type": "multipart/form-data"
-                    },
-                    body: items
-                })
-                const imageURL = link.split('?')[0];
-                fileArr.push(imageURL)
+                const { link, result_msg } = await response.json()
+                if(result_msg === undefined){
+                    await fetch(link, {
+                        method: "PUT",
+                        headers: {
+                            "Content-Type": "multipart/form-data"
+                        },
+                        body: items
+                    })
+                    const imageURL = link.split('?')[0];
+                    fileArr.push(imageURL)
+                } else{
+                    // s3 업로드 실패 시 
+                    alert('사진 업로드에 실패하였습니다. 잠시 후 다시 시도해주세요.')
+                }
             })
             // 모든 파일에 대해 값을 받아온 뒤 시행한다
             await Promise.all(fileArray)
@@ -310,9 +349,9 @@ const AddItemComponent = () => {
     const createNftCh = () => {
         let data = {}
         if(ifSell == true){
-            data = {ifSell, price, currency, name, desc, itemType, color, size}
+            data = {ifSell, price, currency, name, desc, gender, bigCategory, smallCategory, color, size}
         } else{
-            data = {ifSell, name, desc, aucPrice, currency, aucTime, extension, itemType, color, size}
+            data = {ifSell, name, desc, aucPrice, currency, aucTime, extension, gender, bigCategory, smallCategory, color, size}
         }
         dispatch(MintNFT_REQUEST([data,file]))
         if(handleConfirm() === true){
@@ -406,15 +445,12 @@ const AddItemComponent = () => {
                     />
                 </SectionWrapper>
                 <SectionWrapper>
-                    <SmallTitle>
-                        분류
-                    </SmallTitle>
-                    <select className = "category" onChange = {handleItemType}>
-                            <option value = "female">여성</option>
-                            <option value = "male">남성</option>
-                            <option value = "kids">아동</option>
-                            <option value = "common">남녀 공용</option>
-                    </select>
+                    <Category
+                        handleCategory = {handleCategory}
+                        category = {category}
+                        bigCategory = {bigCategory}
+                        smallCategory = {smallCategory}
+                    />
                 </SectionWrapper>
                 <SectionWrapper>
                     <SmallTitle>
@@ -466,13 +502,7 @@ const TopWrapper = Styled.div`
 const SectionWrapper = Styled.div`
     margin-bottom: 50px;
     display: block;
-    .category{
-        margin-top: 40px;
-        display: block;
-        width: 400px;
-        height: 34px;
-        font-size: 25px;
-    }
+
 `
 
 const BigTitle = Styled.h3`
@@ -491,6 +521,7 @@ const SmallerTitle = Styled.div`
     font-size:20px;
     margin-top:20px;
     display: block;
+    margin-bottom: 10px;
 `
 
 const DescText = Styled.div`

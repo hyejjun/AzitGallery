@@ -405,7 +405,6 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
             return {
                 ...state,
                 nicknameChkBool: true
-
             }
         case NICKNAME_POST_ERROR:
             console.log(action.type,"====4====")

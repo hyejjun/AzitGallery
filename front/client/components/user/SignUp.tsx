@@ -13,6 +13,8 @@ import { setUncaughtExceptionCaptureCallback } from 'process'
 import Router from 'next/router'
 import { RootState } from "../../reducers"
 import { truncate } from 'fs'
+import { url } from '../../saga/url'
+import axios from 'axios'
 
 const SignUp = () => {
     const dispatch = useDispatch()
@@ -29,6 +31,8 @@ const SignUp = () => {
     const [checked1,setChecked1] = useState<boolean>(false);
     const [checked2,setChecked2] = useState<boolean>(false);
     const [checked3,setChecked3] = useState<boolean>(false);
+
+    // const [loading, setLoading] = useState<string>("");
 
     const User = useSelector((state:RootState) => state.user);
 
@@ -82,7 +86,7 @@ const SignUp = () => {
     
 
     const [joinState,setJoinState] = useState<boolean>(false)
-    const sucJoin = () => {
+    const sucJoin = async () => {
  
         if(nickErr === true || 
             nickLength3Err === true || 
@@ -114,23 +118,37 @@ const SignUp = () => {
         console.log(data, "55555");
     }
 
-    const test = () =>{
-        let data = {
-            NickName:nickName,
-            Address:User.UserAddress,
-            Email:email,            
-        }
+    const test = async () =>{
+        let NickName = nickName;      
+        
 
-       dispatch(Nickname_REQUEST(data))
+    //    dispatch(Nickname_REQUEST(data))
+    //    console.log(User.nicknameChkBool);
 
-        if(User.nicknameChkBool == true){
-            // alert("사용가능한 닉네임입니다.")
+    //     if(User.nicknameChkBool == true){
+    //         // alert("사용가능한 닉네임입니다.")
+    //         setnickOverlapErr(false)
+    //     }else{
+    //         // alert("사용중인 닉네임입니다.")
+    //         setnickOverlapErr(true)
+    //     }
+
+        let result = await axios.post(`${url}/user/nicknamechk`,JSON.stringify(NickName))
+        
+        console.log(result);
+        console.log(result.data,"222222");
+             if(result.data == true){
+            alert("사용가능한 닉네임입니다.")
             setnickOverlapErr(false)
         }else{
-            // alert("사용중인 닉네임입니다.")
+            alert("사용중인 닉네임입니다.")
             setnickOverlapErr(true)
         }
-
+    //     if (result) {
+    //         setCheck(result.data)
+    //     } else {
+    //         setCheck(result.data)
+    //     }
     }
 
 
