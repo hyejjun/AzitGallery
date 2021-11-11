@@ -312,6 +312,7 @@ const AddItemComponent = () => {
         } else if(mainImgIdx == null || mainImgIdx == undefined){
             alert('대표 사진을 설정해 주세요.')
         } else{
+                createNftCh()
                 return true
         }
     }
@@ -374,15 +375,13 @@ const AddItemComponent = () => {
     const [nftCreateState,setnftCreateState] = useState<boolean>(false);
     const createNftCh = () => {
         let data = {}
-        if(ifSell == true){
-            data = {ifSell, price, currency, name, desc, gender, bigCategory, smallCategory, color, size, mainImgIdx, }
-        } else{
-            data = {ifSell, name, desc, aucPrice, currency, aucTime, extension, gender, bigCategory, smallCategory, color, size, mainImgIdx, }
-        }
-        dispatch(MintNFT_REQUEST([data,file]))
-        if(handleConfirm() === true){
+            if(ifSell == true){
+                data = {ifSell, price, currency, name, desc, gender, bigCategory, smallCategory, color, size, mainImgIdx, }
+            } else{
+                data = {ifSell, name, desc, aucPrice, currency, aucTime, extension, gender, bigCategory, smallCategory, color, size, mainImgIdx, }
+            }
+            dispatch(MintNFT_REQUEST([data,file]))
             setnftCreateState(prev=>!prev)
-        }
     }
 
     const [cancelNft,setcancelNft] = useState<boolean>(false);
