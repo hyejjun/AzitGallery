@@ -500,9 +500,10 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
             }
         case PLUS_AUCTION_LIST_SUCCESS:
             console.log(`작동하는지 여부${action.Pluslength}`)
+
             return{
                 ...state,
-                auctionitemList: action.data,
+                auctionList: action.data,
                 auctionlength: action.Pluslength
             }
         case PLUS_AUCTION_LIST_ERROR:

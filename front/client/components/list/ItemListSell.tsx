@@ -20,7 +20,7 @@ const ItemListSell = (props) => {
         NFTFourList,
         NFT,
         NFTImg,
-    
+        IMG,
         NFTOne,
         NFTOneList,
         NFTOneImg,
@@ -38,10 +38,65 @@ const ItemListSell = (props) => {
     const list = useSelector((state:RootState) => state.list);
     const type = useSelector((state:RootState) => state.type);
     let [loading, setLoading] = useState<boolean>(false)
-
+    let [Load, setLoad] = useState<boolean>(false)
 
 
     let [count,setCount] = useState<number>(0)
+
+    const handleClick = () => {
+
+        dispatch(PlusItemlist_REQUEST(list.listlength))
+        setArr(list.itemList)
+
+    };
+    //dispatch(PlusItemlist_REQUEST(list.listlength))
+    const sendData = {
+
+        genderSelect,    
+                       // @ 0 미선택 1 여성복 2 남성복 3 아동복
+    }
+
+
+    useEffect(() => {
+        dispatch(genderCategorySelect_REQUEST(sendData))
+        setArr(list.itemList)
+    },[genderSelect])
+
+
+    useEffect(() => {
+        setArr(list.itemList)
+    },[select])
+
+    useEffect(()=>{
+         setArr(list.itemList)
+    },[search])
+
+    useEffect(() => {
+       
+        let cnt0: number = 0;
+        
+        function counterFn() {
+            let id0 = setInterval(count0Fn, 55);
+            function count0Fn() {
+                cnt0++;
+                setCount(cnt0)
+                if (cnt0 > 50) {
+                    return setCount(50)
+                }
+
+            }
+        }
+        counterFn();
+
+        return () => setLoading(false);
+
+    }, [])
+
+    useEffect(() => {
+        dispatch(Itemlist_REQUEST())
+    },[!loading])
+    
+
     interface ArrEle {
         id: number,
         subject: string,
@@ -131,7 +186,7 @@ const ItemListSell = (props) => {
 
 
 
-    const nameList: any = Arr.map((ele) =>
+    const nameList: any = list.itemList.map((ele) =>
     <React.Fragment key={ele.id}>
         <NFTFourList>
             <NFT>
@@ -139,8 +194,7 @@ const ItemListSell = (props) => {
                     <a>
                         <NFTImg>
                             {/* <div><img src={require('../../src/지도.jpg').default} /></div> */}
-                            {/* <img src = {ele.img.split('?')[0]}/> */}
-                      
+                            <IMG src = {ele.img.split('?')[0]}/>
                         </NFTImg>
                     </a>
                 </Link>
@@ -167,56 +221,6 @@ const ItemListSell = (props) => {
     </React.Fragment>
     );
 
-    const handleClick = () => {
-
-        dispatch(PlusItemlist_REQUEST(list.listlength))
-        setArr(list.itemList)
-
-    };
-    //dispatch(PlusItemlist_REQUEST(list.listlength))
-    const sendData = {
-
-        genderSelect,    
-                       // @ 0 미선택 1 여성복 2 남성복 3 아동복
-    }
-
-
-    useEffect(() => {
-        dispatch(genderCategorySelect_REQUEST(sendData))
-        setArr(list.itemList)
-    },[genderSelect])
-
-
-    useEffect(() => {
-        setArr(list.itemList)
-    },[select])
-
-    useEffect(()=>{
-         setArr(list.itemList)
-    },[search])
-
-
-    
-    useEffect(() => {
-       
-        let cnt0: number = 0;
-        
-        function counterFn() {
-            let id0 = setInterval(count0Fn, 55);
-            function count0Fn() {
-                cnt0++;
-                setCount(cnt0)
-                if (cnt0 > 50) {
-                    return setCount(50)
-                }
-
-            }
-        }
-        counterFn();
-
-        return () => setLoading(false);
-
-    }, [])
 
     return (
         <>

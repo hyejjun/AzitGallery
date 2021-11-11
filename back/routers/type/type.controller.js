@@ -1,4 +1,4 @@
-const {ItemInfo, Category, SubCategory} = require('../../models')
+const {ItemInfo, Category, SubCategory, ItemImg} = require('../../models')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op;
 /*
@@ -34,9 +34,10 @@ let get_category = async (req,res)=>{
     console.log(genderSelect)
 
         let result = await ItemInfo.findAll({where:{category_id:genderSelect,sell_type:false}})
+         let result2 = await ItemImg.findAll({  })
         let ARR = []
         for(let i=0; i<result.length; i++){
-            ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url: `/auction/${result[i].item_id}`})
+            ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url: `/sell/${result[i].item_id}`, img:result2[i].item_img_link})
         }
         console.log(ARR)
         let data = {
@@ -52,10 +53,11 @@ let get_search = async (req,res)=>{
     const{ tabBtn, genderSelect, select, search} = req.body
     console.log(search)
         let result = await ItemInfo.findAll({where:{title:{[Op.like]: "%" + search + "%"}}})
+            let result2 = await ItemImg.findAll({  })
         console.log(`search ${result.item_id}`)
         let ARR = []
         for(let i=0; i<result.length; i++){
-            ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url: `/auction/${result[i].item_id}`})
+            ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url: `/auction/${result[i].item_id}`,img:result2[i].item_img_link})
         }
         console.log(ARR)
         let data = {
@@ -77,9 +79,10 @@ let get_sort = async (req,res)=>{
         console.log('recent 순')
 
         let result = await ItemInfo.findAll({ order: [['registered_at', 'DESC']]})
+        let result2 = await ItemImg.findAll({  })
         let ARR = []
         for(let i=0; i<result.length; i++){
-            ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url: `/auction/${result[i].item_id}`})
+            ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url: `/auction/${result[i].item_id}`, img:result2[i].item_img_link})
         }
      
         let data = {
@@ -129,17 +132,18 @@ let get_sub_category_list = async (req,res)=>{
 
     console.log(`key 값${key} ele 값 ${ele}`)
 
-        // let result = await ItemInfo.findAll({where:{category_id:genderSelect,sell_type:false}})
-        // let ARR = []
-        // for(let i=0; i<result.length; i++){
-        //     ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url: `/auction/${result[i].item_id}`})
-        // }
-        // console.log(ARR)
-        // let data = {
-        //     ARR:ARR
-        // }
+        let result = await ItemInfo.findAll({where:{category_id:genderSelect,sell_type:false}})
+         let result2 = await ItemImg.findAll({ limit:keyObject })
+        let ARR = []
+        for(let i=0; i<result.length; i++){
+            ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url: `/sell/${result[i].item_id}`, img:result2[i].item_img_link})
+        }
+        console.log(ARR)
+        let data = {
+            ARR:ARR
+        }
     
-        // res.json(data)
+        res.json(data)
 
 }
 

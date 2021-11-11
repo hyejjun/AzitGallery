@@ -5,23 +5,28 @@ import { category_REQUEST } from '../../reducers/type';
 import { sub_category_REQUEST } from '../../reducers/type';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from "../../reducers"
-
+import { Itemlist_REQUEST } from '../../reducers/list'
 const Category = (props) => {
     const dispatch = useDispatch()
     const Type = useSelector((state:RootState) => state.type);
     const { genderTab, genderTabOpen, selectGender, genderSelect } = props.CategoryState
     const [subcategory, setsubCategory] = useState<number>(0)
-
+    const [Load,setLoad] = useState(false)
     const [List, setList] = useState<number>(0);
     const handleList = (e) => {
         setList(e)
         console.log(`이 떄는 ??${Type.main}`)
     }
 
-    const category = (E) => {
-        dispatch(category_REQUEST())
+    // const category = (E) => {
+    //     dispatch(category_REQUEST())
         
-    }
+    // }
+
+    useEffect(()=>{
+        dispatch(category_REQUEST())
+        setLoad(true)
+    },[Load])
 
     const handlesub = (key,ele) => {
         
@@ -35,7 +40,7 @@ const Category = (props) => {
 //onsole.log(Type.main)
     return (
         <CategoryWrapper>
-            <H3 onClick = {category}>전체 카테고리</H3>
+            <H3>전체 카테고리</H3>
             { Type.main == undefined ? ''
             : Type.main.map((ele,key)=>
             <React.Fragment key={ele.main_category_code}>

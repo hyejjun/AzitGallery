@@ -386,11 +386,11 @@ let kipswap_post = async () => {
     caver.wallet.add(singleKeyRing);
   }
 
-  const kip7Instance = new caver.kct.kip7('0xbd929FED827F26E84ca8b66A35Ef694F5829f9De')
+  const kip7Instance = new caver.kct.kip7('0xbd929fed827f26e84ca8b66a35ef694f5829f9de')
   kip7Instance.name().then(console.log)
   const opts = { from: keyring.address }
   //보낼 account 주소를 입력 시키기
-  const recipientAddress = '0xeda67a83f6c1f82f5affdadef2ff6aa81b3d1901'
+  const recipientAddress = '0xadbEC8669bbfBd1481aaD736f98De590d37b26Ce'
   const value = 100000000000
   const receipt = await kip7Instance.transfer(recipientAddress, value, opts)
   console.log(receipt)
