@@ -8,16 +8,16 @@ import { useEffect, useState } from 'react'
 
 const View = ({children}) => {
 
-    const router = useRouter()
-    const {view} = router.query // 카테고리 이름
-    console.log(view);
+    // const router = useRouter()
+    // const {view} = router.query // 카테고리 이름
+    // console.log(view);
     
     
-    const dispatch = useDispatch()
+    // const dispatch = useDispatch()
     
-    useEffect(()=>{
-        dispatch(directDealView_REQUEST(view))
-    },[])
+    // useEffect(()=>{
+    //     dispatch(directDealView_REQUEST(view))
+    // },[])
 
 
 

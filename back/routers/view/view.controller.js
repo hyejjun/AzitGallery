@@ -3,8 +3,11 @@ const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 
 let get_directdeal_view = async (req, res) => {
+    
+    console.log(req.body)
     let key = Object.keys(req.body)
     let idx = JSON.parse(key)
+    console.log(key,idx)
     // @ user 에 대한 정보 가져와서 like 조회해야함.
     // @ idx 로 해당 view 조회하기
 

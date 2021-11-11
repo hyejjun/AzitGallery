@@ -20,7 +20,7 @@ const Selled = () => {
     // @ 나중에 가라데이터 지우고 back 에서 가져옴
 
     const soldnftList = useSelector((state:RootState)=>state.list.soldnftList)
-    console.log(soldnftList)
+
 
     // @ 배송 등록 전, 판매된 NFT 리스트들
     const [Arr, setArr] = React.useState<ArrEle[]>([

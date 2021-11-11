@@ -38,6 +38,8 @@ const ItemListSell = (props) => {
     const type = useSelector((state:RootState) => state.type);
     let [loading, setLoading] = useState<boolean>(false)
 
+
+
     let [count,setCount] = useState<number>(0)
     interface ArrEle {
         id: number,
@@ -167,9 +169,9 @@ const ItemListSell = (props) => {
 
         dispatch(PlusItemlist_REQUEST(list.listlength))
         setArr(list.itemList)
-        console.log('dispatch?')
-    };
 
+    };
+    //dispatch(PlusItemlist_REQUEST(list.listlength))
     const sendData = {
 
         genderSelect,    
@@ -186,6 +188,7 @@ const ItemListSell = (props) => {
     useEffect(() => {
         setArr(list.itemList)
     },[select])
+
 
 
 
