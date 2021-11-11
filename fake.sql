@@ -154,7 +154,7 @@ INSERT INTO category(main_category_code,category_name) VALUES(CONCAT(0,3),'아�
 
 
 INSERT INTO sub_category (main_category_idx,item_code,sub_category_code,sub_category_name) 
-(1,CONCAT((SELECT main_category_code FROM category WHERE category.id=1),0,1),01,'티셔츠'),
+VALUES(1,CONCAT((SELECT main_category_code FROM category WHERE category.id=1),0,1),01,'티셔츠'),
 (1,CONCAT((SELECT main_category_code FROM category WHERE category.id=1),0,2),02,'블라우스'),
 (1,CONCAT((SELECT main_category_code FROM category WHERE category.id=1),0,3),03,'셔츠'),
 (1,CONCAT((SELECT main_category_code FROM category WHERE category.id=1),0,4),04,'니트'),

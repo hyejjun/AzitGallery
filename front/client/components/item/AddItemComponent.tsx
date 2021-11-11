@@ -295,7 +295,7 @@ const AddItemComponent = () => {
     // 최종 밸류 submit, nft 팝업에서 예 누른 이후
     const handleSubmit = async () => { 
         let data = {}
-        if(ifSell == true){
+        if(ifSell === true){
             data = {ifSell, price, currency, name, desc, gender, bigCategory, smallCategory, color, size}
             sendDataToServer([data,file])
         } else{
@@ -334,14 +334,14 @@ const AddItemComponent = () => {
         // then으로 강제로 await을 시켜 전송
         putImagesLink().then(x=>{
             let result = axios.post(`${url}/item/uploaddata`,[data[0],fileArr])
+            console.log(result,'zzzzz')
         })
     }
 
-    // 새 NFT발행 시 그냥 새로고침
+    // 새 NFT발행 시 그냥 새로고침 ->테스트 완료 후 주석 해제
     const resetState = () => {
         // window.location.reload() 
     }
-
 
     const dispatch = useDispatch()
     const mint = useSelector((state:RootState) => state.mint);
@@ -368,7 +368,6 @@ const AddItemComponent = () => {
         setcancelNft(false)
         setnftCreateState(false)
     }
-
 
     const ColorBar = () => {
         return (
