@@ -17,6 +17,7 @@ const ItemListAuction = (props) => {
         NFTFourList,
         NFT,
         NFTImg,
+        IMG,
         NFTOne,
         NFTOneList,
         NFTOneImg,
@@ -30,8 +31,43 @@ const ItemListAuction = (props) => {
 
     let [loading, setLoading] = useState<boolean>(true)
     let [count, setCount] = useState<number>(0)
+    let [Load, setLoad] = useState<boolean>(false)
     const dispatch = useDispatch()
     const list = useSelector((state:RootState) => state.list);
+
+    const handleClick = () => {
+        dispatch(PlusAuctionlist_REQUEST(list.auctionlength))
+    };
+
+    useEffect(() => {
+        dispatch(ItemAuction_REQUEST())
+        setArr(list.auctionList)
+       setLoad(true)
+       console.log()
+    },[Load])
+
+    useEffect(() => {
+
+        let cnt0: number = 0;
+
+        counterFn();
+
+        function counterFn() {
+            let id0 = setInterval(count0Fn, 55);
+            function count0Fn() {
+                cnt0++;
+                setCount(cnt0)
+                if (cnt0 > 50) {
+
+                    return setCount(50)
+                }
+
+            }
+        }
+
+        return () => setLoading(false);
+
+    }, [])
 
     interface ArrEle {
         id: number,
@@ -121,15 +157,14 @@ const ItemListAuction = (props) => {
       ]);
 
 
-    const nameList: any = Arr.map((ele) =>
+    const nameList: any = list.auctionList.map((ele) =>
         <React.Fragment key={ele.id}>
             <NFTFourList>
                 <NFT>
                     <Link href= {ele.url}>
                         <a>
                             <NFTImg>
-                                {/* <div><img src={require('../../src/지도.jpg').default} /></div> */}
-                                <div><img /></div>
+                                 <IMG src = {ele.img.split('?')[0]}/>
                             </NFTImg>
                         </a>
                     </Link>
@@ -157,39 +192,6 @@ const ItemListAuction = (props) => {
         </React.Fragment>
     );
 
-    const handleClick = () => {
-        dispatch(PlusAuctionlist_REQUEST(list.listlength))
-        setArr(list.auctionList)
-
-    };
-
-    useEffect(() => {
-        dispatch(ItemAuction_REQUEST())
-        setArr(list.auctionList)
-    },[])
-
-    useEffect(() => {
-
-        let cnt0: number = 0;
-
-        counterFn();
-
-        function counterFn() {
-            let id0 = setInterval(count0Fn, 55);
-            function count0Fn() {
-                cnt0++;
-                setCount(cnt0)
-                if (cnt0 > 50) {
-
-                    return setCount(50)
-                }
-
-            }
-        }
-
-        return () => setLoading(false);
-
-    }, [])
 
     return (
         <>

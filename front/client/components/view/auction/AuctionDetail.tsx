@@ -105,7 +105,7 @@ const AuctionDetail = (props) => {
         <>
             <AuctionDetailWrap>
                 <ul className="auctionTitle">
-                    {/* <li>경매 입찰 수</li> */}
+                    <li>경매 입찰 수</li>
                     <li>현재 입찰가</li>
                     <li>마감시간</li>
                 </ul>
