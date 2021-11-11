@@ -113,28 +113,15 @@ let address_db_check = async (req,res) => {
 
 let nickname_check = async(req,res) => {
 
-    console.log("왓나요?")
     let key = Object.keys(req.body)
-    let keyObject = JSON.parse(key)
-
-    let nick_name = keyObject.NickName
-    let result = await User.findAll({where:{nick_name}})
-
-    if(result.length == 0){
-        let data = {
-            nicknameChkBool:true
-        }
-        res.json(data)
-    }else{
-        let data = {
-            nicknameChkBool:false
-        }
-        res.json(data)
-    }
-
+    let nick_name = JSON.parse(key)
     
-    // if()
-    console.log(result,"33333")
+    let result = await User.findAll({where:{nick_name}})
+    if(result.length == 0){
+        res.json(true)
+    }else{
+        res.json(false)
+    }
 }
 
 /* 모든 회원들 정보를 불러오기 */
