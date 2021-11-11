@@ -46,7 +46,7 @@ let mint_nft_post = async (req,res) => {
   // 넘어온 데이터를 바탕으로 새로운 KIP-17을 배포(=새로운 명품 등록)합니다. 
   const kip17 = await caver.kct.kip17.deploy(
     {
-      name: name,
+      name: ,
       symbol: 'EPI',
     },
     keyring.address
