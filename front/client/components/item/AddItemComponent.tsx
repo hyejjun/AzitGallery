@@ -436,12 +436,12 @@ const AddItemComponent = () => {
             ? < CreateNftCh 
                 flag={nftCreateState} 
                 closeBtn={closeBtn} 
-                handleSubmit = {handleSubmit}
+                createNftCh = {createNftCh}
                 resetState = {resetState}
                 /> :<></> }
             {cancelNft ? < CancelNft flag={cancelNft} closeBtn={closeBtn}/> :<></>}
             <TopWrapper> 
-                <BigTitle onClick = {handleSubmit}>
+                <BigTitle>
                     새로운 NFT 발행하기
                 </BigTitle>
                 <SectionWrapper>
@@ -513,7 +513,7 @@ const AddItemComponent = () => {
             />
             <BottomBtnWrapper>
                 <LeftBtn onClick={()=>{cancelNftCh()}}>취소</LeftBtn>
-                <RightBtn onClick={()=>{createNftCh()}}>NFT 발행하기<br/>(오늘{n}개 발행 가능)</RightBtn>
+                <RightBtn onClick={()=>{handleConfirm()}}>NFT 발행하기<br/>(오늘{n}개 발행 가능)</RightBtn>
             </BottomBtnWrapper>    
         </>
     )
