@@ -67,6 +67,12 @@ const NFTImg = Styled.div`
     height:200px;
     cursor:pointer;
 `
+const IMG = Styled.img`
+    background:#bbb;
+    width:200px;
+    height:200px;
+    cursor:pointer;
+`
 const NFTOne = Styled.ul`
     padding:0px;
     clear:both;
@@ -152,6 +158,7 @@ export const ItemListCSS = {
     NFTFourList,
     NFT,
     NFTImg,
+    IMG,
     NFTOne,
     NFTOneList,
     NFTOneImg,
