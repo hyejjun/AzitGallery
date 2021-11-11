@@ -9,39 +9,60 @@ import { RootState } from "../../reducers"
 import {UserState} from "../../reducers/user"
 import { KipSwap_REQUEST } from "../../reducers/mint";
 import { Userlist_REQUEST } from '../../reducers/user'
-import { myNft_all_REQUEST,sold_nft_REQUEST,not_selled_REQUEST } from '../../reducers/list'
+import { myNft_all_REQUEST,sold_nft_REQUEST,not_selled_REQUEST,hits_buy_REQUEST,hits_sell_REQUEST,hits_not_sell_REQUEST} from '../../reducers/list'
 
 const MyNftComponent = () => {
 
     const dispatch = useDispatch()
     const [tabBtn, settabBtn] = useState<number>(1);
+    const [likeBtn, setLikeBtn] = useState<number>(0);
     const user:UserState = useSelector((state:RootState) => state.user);
+    
 
     const btn1 = () => {
+        dispatch(myNft_all_REQUEST(user.UserAddress))
         settabBtn(1);
+        setLikeBtn(0);
     }
     const btn2 = () => {
         dispatch(sold_nft_REQUEST(user.UserAddress))
         settabBtn(2);
+        setLikeBtn(0);
         
     }
     
     const btn3 = () => {
         dispatch(not_selled_REQUEST(user.UserAddress))
         settabBtn(3);
+        setLikeBtn(0);
     }
 
+    const handleChange = (e) => {
+        console.log(e.target.value)
+        setLikeBtn(e.target.value)
+    }
     const test = () => {        
         
     }
+    let data:{}
 
-    const orderBtn = () => {
-        if(tabBtn==1){
-            // 구매한 nft가 선택된 상황에서 조회수 순
-        }else if(tabBtn==2){
-            // 판매된 nft가 선택된 상황에서 조회수 순
-        }else if(tabBtn==3){
-            // 미판매된 nft가 선택된 상황에서 조회수 순
+    const orderByLikeBtn = () => {
+        if(likeBtn==1){
+            data = {
+                userAddress:user.UserAddress,
+                likeBtn:likeBtn
+            }
+            if(tabBtn==1){
+                // 구매한 nft가 선택된 상황에서 조회수 순
+                dispatch(hits_buy_REQUEST(data))
+            }else if(tabBtn==2){
+                console.log(tabBtn)
+                // 판매된 nft가 선택된 상황에서 조회수 순
+                dispatch(hits_sell_REQUEST(data))
+            }else if(tabBtn==3){
+                // 미판매된 nft가 선택된 상황에서 조회수 순
+                dispatch(hits_not_sell_REQUEST(data))
+            }
         }
         // 조회수로 정렬하고 좋아요 부분에 대한 것은 옆에 리스트를 따로 빼는 게 좋을 듯... 
 
@@ -107,12 +128,12 @@ const MyNftComponent = () => {
                     </MenuBar>
                     <SelectBoxHeader>
                     
-                        <SelectBox>
-                            <SelectOption >
+                        <SelectBox value={likeBtn} onChange={handleChange} onClick={orderByLikeBtn}>
+                            <SelectOption value="0">
                                 최근 발행 순
                             </SelectOption>
-                            <SelectOption onClick={orderBtn}>
-                                좋아요 순
+                            <SelectOption value="1">
+                                 조회수 순
                             </SelectOption>
                         </SelectBox>
                         <Notice>*KraftSpace에서 발행한 NFT만 표시합니다.</Notice>
@@ -231,7 +252,7 @@ const SelectBox = Styled.select`
     box-sizing:border-box;
     font-size:16px;
 `
-const SelectOption = Styled.option`
+const SelectOption = Styled.option `
     color:black;
     display:inline-block;
     padding:5px;

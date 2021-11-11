@@ -1,3 +1,4 @@
+import { ConstructionOutlined } from '@mui/icons-material';
 import axios from 'axios';
 import {all,put,takeEvery,takeLatest,fork,call} from "redux-saga/effects";
 
@@ -129,9 +130,7 @@ function getsoldnftAPI(data){
 }
 
 function* getsoldnftSaga(data){
-    
     const result = yield call(getsoldnftAPI,data)
-    console.log(result.data.result_msg,'result')
     if(result.data.result_msg=='OK'){
         yield put({
             type:'SOLD_NFT_SUCCESS',
@@ -170,6 +169,82 @@ function* getnotsellnftSaga(data){
 function* reqnotsellnft(){
     yield takeLatest('NOT_SELLED_REQUEST',getnotsellnftSaga)
 }
+/* 구매한 nft 조회수 순으로 가져오기  */
+function getmynftbyhitsAPI(data){
+    let userAddress = JSON.stringify(data.data.userAddress)
+    let likeState = data.data.likeBtn
+    return axios.post('http://localhost:4000/list/mynftbyhits',{userAddress:userAddress,likeState:likeState})
+
+}
+function* getmynftbyhitsSaga(data){
+    const result = yield call(getmynftbyhitsAPI,data)
+    if(result.data.result_msg=='OK'){
+        yield put({
+            type:'HITS_BUY_SUCCESS',
+            data:result.data.result
+        })
+    }else{
+        yield put({
+            type:'HITS_BUY_ERROR',
+        })
+    } 
+}
+
+function* reqmynftbyhits(){
+    yield takeLatest('HITS_BUY_REQUEST',getmynftbyhitsSaga)
+}
+
+/* 판매된 nft 조회수 순으로 가져오기  */
+function getsellnftbyhitsAPI(data){
+    let userAddress = JSON.stringify(data.data.userAddress)
+    let likeState = data.data.likeBtn
+    return axios.post('http://localhost:4000/list/sellnftbyhits',{userAddress:userAddress,likeState:likeState})
+
+}
+
+function* getsellnftbyhitsSaga(data){
+    const result = yield call(getsellnftbyhitsAPI,data)
+    if(result.data.result_msg=='OK'){
+        yield put({
+            type:'HITS_SELL_SUCCESS',
+            data:result.data.result
+        })
+    }else{
+        yield put({
+            type:'HITS_SELL_ERROR',
+        })
+    } 
+}
+
+function* reqsellnftbyhits(){
+    yield takeLatest('HITS_SELL_REQUEST',getsellnftbyhitsSaga)
+}
+
+/* 미판매된 nft 조회수 순으로 가져오기  */
+function getnotsellnftbyhitsAPI(data){
+    let userAddress = JSON.stringify(data.data.userAddress)
+    let likeState = data.data.likeBtn
+    return axios.post('http://localhost:4000/list/notsellnftbyhits',{userAddress:userAddress,likeState:likeState})
+
+}
+
+function* getnotsellnftbyhitsSaga(data){
+    const result = yield call(getnotsellnftbyhitsAPI,data)
+    if(result.data.result_msg=='OK'){
+        yield put({
+            type:'HITS_NOT_SELL_SUCCESS',
+            data:result.data.result
+        })
+    }else{
+        yield put({
+            type:'HITS_NOT_SELL_ERROR',
+        })
+    } 
+}
+
+function* reqnotsellnftbyhits(){
+    yield takeLatest('HITS_NOT_SELL_REQUEST',getnotsellnftbyhitsSaga)
+}
 
 export default function* MintSaga(){
         yield all([
@@ -180,6 +255,9 @@ export default function* MintSaga(){
             fork(reqqueryitem),
             fork(reqmynftall),
             fork(reqsoldnft),
-            fork(reqnotsellnft)
+            fork(reqnotsellnft),
+            fork(reqmynftbyhits),
+            fork(reqsellnftbyhits),
+            fork(reqnotsellnftbyhits)
         ])
 }

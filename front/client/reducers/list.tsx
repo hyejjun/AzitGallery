@@ -11,7 +11,6 @@ export interface ListState {
     mynftList: Array<any>;
     soldnftList: Array<any>;
     notsellnftList : Array<any>;
-    nfthitsList : Array<any>; 
 }
 
 export const initialState : ListState = {
@@ -22,7 +21,6 @@ export const initialState : ListState = {
     mynftList : [],
     soldnftList : [],
     notsellnftList : [],
-    nfthitsList : []
 };
 
 
@@ -263,7 +261,7 @@ export const not_selled_ERROR = () => {
 }
 
 /* 구매한 제품에서 조회수순 정렬 */
-export const hits_buy_REQUEST = (data:string) => {
+export const hits_buy_REQUEST = (data) => {   
     return {
         type:HITS_BUY_REQUEST,
         data:data
@@ -283,7 +281,7 @@ export const hits_buy_ERROR = () => {
 
 
 /* 판매된 제품에서 조회수순 정렬 */
-export const hits_sell_REQUEST = (data:string) => {
+export const hits_sell_REQUEST = (data:{}) => {
     return {
         type:HITS_SELL_REQUEST,
         data:data
@@ -302,7 +300,7 @@ export const hits_sell_ERROR = () => {
 }
 
 /* 미판매된 제품에서 조회수순 정렬 */
-export const hits_not_sell_REQUEST = (data:string) => {
+export const hits_not_sell_REQUEST = (data:{}) => {
     return {
         type:HITS_NOT_SELL_REQUEST,
         data:data
@@ -535,7 +533,7 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
             return{
                 ...state,
             }
-        // /user/mynftall페이지 구매한 nft
+
         case MY_NFT_ALL_REQUEST:
             return{
                 ...state,
@@ -584,12 +582,12 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
         case HITS_BUY_REQUEST:
             return{
                 ...state,
-                data:action.data
+                //data:action.data
             }
         case HITS_BUY_SUCCESS:
             return{
                 ...state,
-                nfthitsList:action.data
+                mynftList:action.data
             }
         case HITS_BUY_ERROR:
             return{
@@ -604,7 +602,7 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
         case HITS_SELL_SUCCESS:
             return{
                 ...state,
-                nfthitsList:action.data
+                soldnftList:action.data
             }
         case HITS_SELL_ERROR:
             return{
@@ -618,9 +616,10 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
                 data:action.data
             }
         case HITS_NOT_SELL_SUCCESS:
+            console.log(action.data)
             return{
                 ...state,
-                nfthitsList:action.data
+                notsellnftList:action.data
             }
         case HITS_NOT_SELL_ERROR:
             return{
