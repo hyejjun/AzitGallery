@@ -26,6 +26,8 @@ const AddItemComponent = () => {
     const [file, setFile] = useState<Array<string>>([])
     // 미리보기 렌더링을 위한 state
     const [fileBase, setFileBase] = useState<Array<string>>([])
+    // 대표이미지 번호
+    const [mainImgIdx, setMainImgIdx] = useState<number>(null)
     // 단위 통화 (won/ether)
     const [currency, setCurrency] = useState<string>('won')
     // 즉판 선택 시 가격 주의: string으로 들어감; input text는 string으로 받기 때문
@@ -54,8 +56,7 @@ const AddItemComponent = () => {
     const [gender, setGender] = useState<string>('female')
     const [bigCategory, setBigCategory] = useState<string>('')
     const [smallCategory, setSmallCategory] = useState<string>('')
-    //테스트
-    const [test,setTest] = useState<string>('')
+
     useEffect(()=>{
         let categoryArr = []
         async function getCategory(){
@@ -69,9 +70,22 @@ const AddItemComponent = () => {
     },[])
 
     useEffect(()=>{
-        console.log(bigCategory, smallCategory,'카테고리변경됨')
+    // 카테고리 변경 시 오차없이 변경되도록
+        // console.log(bigCategory, smallCategory,'카테고리변경됨')
     },[smallCategory, bigCategory])
-    
+
+    useEffect(()=>{
+        // 마지막 순서의 이미지 삭제시 대표사진을 하나 민다
+        if(mainImgIdx+1>fileBase.length && mainImgIdx !== null){
+            setMainImgIdx(fileBase.length-1)
+        // 최초 화면 로드 시 대표사진 로드가 안되는 문제로
+        // 파일 이미지 state에 항목이 있는데도 mainImgIdx가 null값인 경우
+        // 강제로 인덱스를 0으로 설정하여 첫 사진이 대표 사진이 되도록 함
+        } if(mainImgIdx == null && fileBase.length>0){
+            setMainImgIdx(0)
+        }
+    },[mainImgIdx, fileBase])
+
     // input에 대한 handlechange(각 컴포넌트에서 텍스트를 인자값으로 받아
     // 각 컴포넌트마다 인자값에 따라 다르게 응답한다
     function handleTxtChange(e:any, item:string){
@@ -144,6 +158,14 @@ const AddItemComponent = () => {
             setFileBase(newFileBaseArray)
         } else{
             console.log('취소')
+        }
+    }
+
+    // 대표사진 클릭
+    function setMainImage(index: number){
+        if(file.length>0){
+            setMainImgIdx(index)
+            console.log(mainImgIdx, 'idxwhenchoosing')
         }
     }
 
@@ -277,7 +299,7 @@ const AddItemComponent = () => {
         else if((ifSell === true &&
                 (name=='' || desc=='' || price == '' || gender == '' ||
                 bigCategory == '' || smallCategory == '' ||
-                color.length == 0 || size.length == 0)) ||
+                color.length == 0 || size.length == 0 )) ||
                 (ifSell === false &&
                 (name=='' ||desc=='' ||aucPrice=='' ||aucTime=='' || gender == '' ||
                 bigCategory == '' || smallCategory == '' ||
@@ -287,20 +309,25 @@ const AddItemComponent = () => {
         } else if(file.length == 0 ){
                 alert('파일을 첨부해주세요.')
                 return false
-        }else{
-                setnftCreateState(prev=>!prev)
+        } else if(mainImgIdx == null || mainImgIdx == undefined){
+            alert('대표 사진을 설정해 주세요.')
+        } else{
+                createNftCh()
+                return true
         }
     }
 
     // 최종 밸류 submit, nft 팝업에서 예 누른 이후
     const handleSubmit = async () => { 
         let data = {}
-        if(ifSell == true){
-            data = {ifSell, price, currency, name, desc, gender, bigCategory, smallCategory, color, size}
+        if(ifSell === true){
+            data = {ifSell, price, currency, name, desc, gender, bigCategory, smallCategory, color, size, mainImgIdx}
             sendDataToServer([data,file])
+            console.log(data,'handleSubmit')
         } else{
-            data = {ifSell, name, desc, aucPrice, currency, aucTime, extension, gender, bigCategory, smallCategory, color, size}
+            data = {ifSell, name, desc, aucPrice, currency, aucTime, extension, gender, bigCategory, smallCategory, color, size, mainImgIdx}
             sendDataToServer([data,file])
+            console.log(data,'handleSubmit')
         }
     }
 
@@ -334,29 +361,27 @@ const AddItemComponent = () => {
         // then으로 강제로 await을 시켜 전송
         putImagesLink().then(x=>{
             let result = axios.post(`${url}/item/uploaddata`,[data[0],fileArr])
+            // console.log(result,'zzzzz')
         })
     }
 
-    // 새 NFT발행 시 그냥 새로고침
+    // 새 NFT발행 시 그냥 새로고침 ->테스트 완료 후 주석 해제
     const resetState = () => {
         // window.location.reload() 
     }
-
 
     const dispatch = useDispatch()
     const mint = useSelector((state:RootState) => state.mint);
     const [nftCreateState,setnftCreateState] = useState<boolean>(false);
     const createNftCh = () => {
         let data = {}
-        if(ifSell == true){
-            data = {ifSell, price, currency, name, desc, gender, bigCategory, smallCategory, color, size}
-        } else{
-            data = {ifSell, name, desc, aucPrice, currency, aucTime, extension, gender, bigCategory, smallCategory, color, size}
-        }
-        dispatch(MintNFT_REQUEST([data,file]))
-        if(handleConfirm() === true){
+            if(ifSell == true){
+                data = {ifSell, price, currency, name, desc, gender, bigCategory, smallCategory, color, size, mainImgIdx, }
+            } else{
+                data = {ifSell, name, desc, aucPrice, currency, aucTime, extension, gender, bigCategory, smallCategory, color, size, mainImgIdx, }
+            }
+            dispatch(MintNFT_REQUEST([data,file]))
             setnftCreateState(prev=>!prev)
-        }
     }
 
     const [cancelNft,setcancelNft] = useState<boolean>(false);
@@ -368,7 +393,6 @@ const AddItemComponent = () => {
         setcancelNft(false)
         setnftCreateState(false)
     }
-
 
     const ColorBar = () => {
         return (
@@ -411,12 +435,12 @@ const AddItemComponent = () => {
             ? < CreateNftCh 
                 flag={nftCreateState} 
                 closeBtn={closeBtn} 
-                handleSubmit = {handleSubmit}
+                createNftCh = {createNftCh}
                 resetState = {resetState}
                 /> :<></> }
             {cancelNft ? < CancelNft flag={cancelNft} closeBtn={closeBtn}/> :<></>}
             <TopWrapper> 
-                <BigTitle onClick = {handleSubmit}>
+                <BigTitle>
                     새로운 NFT 발행하기
                 </BigTitle>
                 <SectionWrapper>
@@ -424,6 +448,8 @@ const AddItemComponent = () => {
                     fileChange = {fileChange}
                     fileBase = {fileBase} 
                     deleteFile = {deleteFile}
+                    setMainImage = {setMainImage}
+                    mainImgIdx = {mainImgIdx}
                     />
                 </SectionWrapper>
                 <SectionWrapper>
@@ -486,7 +512,7 @@ const AddItemComponent = () => {
             />
             <BottomBtnWrapper>
                 <LeftBtn onClick={()=>{cancelNftCh()}}>취소</LeftBtn>
-                <RightBtn onClick={()=>{createNftCh()}}>NFT 발행하기<br/>(오늘{n}개 발행 가능)</RightBtn>
+                <RightBtn onClick={()=>{handleConfirm()}}>NFT 발행하기<br/>(오늘{n}개 발행 가능)</RightBtn>
             </BottomBtnWrapper>    
         </>
     )
