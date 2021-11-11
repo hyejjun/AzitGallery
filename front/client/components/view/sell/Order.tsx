@@ -1,8 +1,9 @@
-import React, { useState} from "react";
+import React, { useState,useEffect } from "react";
 import Styled from 'styled-components'
 import CloseIcon from '@mui/icons-material/Close';
 import Link from 'next/link'
 import { KipToken_REQUEST } from "../../../reducers/mint";
+import { direct_deal_REQUEST } from "../../../reducers/deal";
 import { useSelector, useDispatch } from 'react-redux'
 import router from "next/router";
 
@@ -46,9 +47,19 @@ const Order = (props) => {
         })
 
     }
-    const Purchase = () => {
+    let data 
+    data = {
+        color:props.flagcolor,
+        size:props.flagsize,
+        item_id:props.item_id,
+        price:props.price,
+        currency:props.currency
+    }
+    //dispatch(direct_deal_REQUEST(data))
 
-        dispatch(KipToken_REQUEST())
+    const Purchase = () => {
+        dispatch(direct_deal_REQUEST(data))
+        //dispatch(KipToken_REQUEST())
         alert('EPI로 거래되셨습니다!')
         console.log(JSON.stringify(window.location.href).split('ell/')[1].replace("\"", ""))
         let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
