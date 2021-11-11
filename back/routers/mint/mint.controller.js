@@ -22,11 +22,12 @@ const caver = new Caver(
 
 let mint_nft_post = async (req,res) => {
     // 나중에는 creator 도 가져와야함..
-    const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, aucTime, extension, gender, bigCategory, smallCategory} = req.body[0]
+    const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, aucTime, extension, gender, bigCategory, smallCategory, mainImgIdx} = req.body[0]
     //      bool    str    str       str   str    str      obj     obj   str       str      bool      str      str           str
     const imagesLink = req.body[1]
+    const mainImgLink = req.body[2]
+    console.log(mainImgLink)
     let sell_type
-    console.log(req.body)
     ifSell == true ? sell_type = false : sell_type = true
     let data // res.json 리턴용
 
@@ -37,10 +38,10 @@ let mint_nft_post = async (req,res) => {
                 user_idx:1// from req.body
         }})
 
-        // category 가져오기
-        let get_subcategory = await SubCategory.findOne({
+        // category 가져오기 아마 필요없을 듯?
+        // let get_subcategory = await SubCategory.findOne({
 
-        })
+        // })
 
         // 받은 id로 item_info table에 추가
         let add_to_item_info = await ItemInfo.create({
@@ -54,9 +55,11 @@ let mint_nft_post = async (req,res) => {
             category_id: bigCategory, 
         })
 
+        // 대표이미지
+        let main_img_link
+
         // 다시 생각해보기: imagesLink로 for 또는 add to Item으로?
         imagesLink.forEach(async x=>{
-            console.log('is forEach working?')
             await ItemImg.create({
                 item_img_idx: add_to_item_info.dataValues.item_id,
                 item_img_link: x
@@ -104,9 +107,10 @@ let mint_nft_post = async (req,res) => {
             setTimeout(()=>{
                 // 동시에 실행되면 known transaction 오류가 나기 때문에 setTimeout을 통해 딜레이를 줌
                 // 500ms정도면 괜찮은 것 같음..
-                getNFT(color_size_item[i].name, color_size_item[i].color, color_size_item[i].size, color_size_item[i].idx)
+                getNFT(color_size_item[i].name, color_size_item[i].color, color_size_item[i].size, color_size_item[i].idx, mainImgLink)
             },500*i)
         }
+        
         // 일반구매일 때
         if(ifSell == true && get_user_id.length !== 0){
             // direct deal에 추가하기 -> 경매와 다름
@@ -163,7 +167,7 @@ let mint_nft_post = async (req,res) => {
         }
         res.send(data) 
     }
-    async function getNFT(name, color, size, idx){
+    async function getNFT(name, color, size, idx, link){
         let strname = String(name)
         let strcolor = String(color)
         let strsize = String(size)
@@ -216,6 +220,7 @@ let mint_nft_post = async (req,res) => {
                 name: strname,
                 color: strcolor,
                 size: strsize,
+                link: link
             });
             // KIP-17.mintWithTokenURI를 이용해서 새로운 토큰을 발행합니다.
             // 자세한 내용은 https://ko.docs.klaytn.com/bapp/sdk/caver-js/api-references/caver.kct/KIP-17#KIP-17-mintwithtokenuri 를 참고하세요.
@@ -228,13 +233,16 @@ let mint_nft_post = async (req,res) => {
             ).then(async (data)=>{
                 // setTimeout(async () => {
                     // address값 떨어지는걸 받아서 덮어씌움. 
-                    let nftValue = data.events.Transfer.address
-                    await ItemDetail.update({
-                        nft: nftValue
-                    },{where:{
-                        nft_idx:idx
-                    }})
-                    console.log(data.events.Transfer.address)
+                    try{
+
+                        let nftValue = data.events.Transfer.address
+                        await ItemDetail.update({
+                            nft: nftValue
+                        },{where:{
+                            nft_idx:idx
+                        }})
+                        console.log(data.events.Transfer.address)
+                    }catch(e){console.log(e,'then 안에서')}
                 // }, 10);
             })            
 
