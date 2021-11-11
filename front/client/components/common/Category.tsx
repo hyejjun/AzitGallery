@@ -35,7 +35,7 @@ const Category = (props) => {
     return (
         <CategoryWrapper>
             <H3 onClick = {category}>전체 카테고리</H3>
-            { Type.main[0] == undefined ? ''
+            { Type.main == undefined ? ''
             : Type.main.map((ele,key)=>
             <Ul>
                 <Line></Line>
@@ -48,8 +48,8 @@ const Category = (props) => {
                     </>
                     :
                     <li></li>
-                }
-            </Ul>)
+                } 
+             </Ul>)
         }
         </CategoryWrapper>
     )
