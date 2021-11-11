@@ -17524,7 +17524,7 @@
   },
   "networks": {},
   "schemaVersion": "3.1.0",
-  "updatedAt": "2021-11-05T00:23:56.162Z",
+  "updatedAt": "2021-11-11T00:50:52.391Z",
   "devdoc": {
     "details": "EIP에 정의된 ERC20 표준 인터페이스 추가 함수를 포함하지 않습니다;\r 이들에 접근하려면 `ERC20Detailed`을 확인하세요.\r",
     "methods": {}

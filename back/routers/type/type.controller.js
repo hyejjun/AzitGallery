@@ -1,5 +1,6 @@
 const {ItemInfo, Category, SubCategory} = require('../../models')
-
+const Sequelize = require('sequelize')
+const Op = Sequelize.Op;
 /*
     @ 전체 값 다 보내는 이유?
     판매에서 여성복 선택하는 경우
@@ -49,7 +50,19 @@ let get_category = async (req,res)=>{
 /* 상품 검색 */
 let get_search = async (req,res)=>{
     const{ tabBtn, genderSelect, select, search} = req.body
-
+    console.log(search)
+        let result = await ItemInfo.findAll({where:{title:{[Op.like]: "%" + search + "%"}}})
+        console.log(`search ${result.item_id}`)
+        let ARR = []
+        for(let i=0; i<result.length; i++){
+            ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url: `/auction/${result[i].item_id}`})
+        }
+        console.log(ARR)
+        let data = {
+            ARR:ARR
+        }
+    
+        res.json(data)
 }
 
 /* 상품 정렬 - 최근발행 | 인기 많은 순 */
@@ -106,10 +119,35 @@ let get_category_list = async (req,res) => {
 
 }
 
+
+/* 서브 카테고리 */
+
+let get_sub_category_list = async (req,res)=>{
+    // genderSelect = 0 미선택 1 여성복 2 남성복 3 아동복
+
+    const{ key, ele } = req.body
+
+    console.log(`key 값${key} ele 값 ${ele}`)
+
+        // let result = await ItemInfo.findAll({where:{category_id:genderSelect,sell_type:false}})
+        // let ARR = []
+        // for(let i=0; i<result.length; i++){
+        //     ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url: `/auction/${result[i].item_id}`})
+        // }
+        // console.log(ARR)
+        // let data = {
+        //     ARR:ARR
+        // }
+    
+        // res.json(data)
+
+}
+
 module.exports = {
     get_selltype,
     get_category,
     get_search,
     get_sort,
-    get_category_list
+    get_category_list,
+    get_sub_category_list
 }

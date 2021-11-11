@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Styled from 'styled-components';
 import React, { useState, useEffect } from 'react'
 import { category_REQUEST } from '../../reducers/type';
+import { sub_category_REQUEST } from '../../reducers/type';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from "../../reducers"
 
@@ -22,6 +23,15 @@ const Category = (props) => {
         
     }
 
+    const handlesub = (key,ele) => {
+        
+        let data = {
+            key:key,
+            ele:ele
+        }
+        dispatch(sub_category_REQUEST(data))
+    }
+
     return (
         <CategoryWrapper>
             <H3 onClick = {category}>전체 카테고리</H3>
@@ -33,8 +43,8 @@ const Category = (props) => {
                 <Line></Line>
                 {List == key+1 ?
                     <>
-                        <LI className="female" >{Type.sub[0] == undefined ? '로딩중' : Type.sub[key][0].sub_category_name}</LI>
-                        <LI className="male" >{Type.sub[0] == undefined ? '로딩중' : Type.sub[key][1].sub_category_name}</LI>
+                        <LI className = "female" >{Type.sub[0] == undefined ? '로딩중' : Type.sub[key][0].sub_category_name}</LI>
+                        <LI className =" male" >{Type.sub[0] == undefined ? '로딩중' : Type.sub[key][1].sub_category_name}</LI>
                     </>
                     :
                     <li></li>

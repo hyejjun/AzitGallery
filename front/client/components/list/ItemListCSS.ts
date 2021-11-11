@@ -67,7 +67,6 @@ const NFTImg = Styled.div`
     height:200px;
     cursor:pointer;
 `
-
 const NFTOne = Styled.ul`
     padding:0px;
     clear:both;
