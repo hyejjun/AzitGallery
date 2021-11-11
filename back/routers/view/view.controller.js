@@ -1,4 +1,4 @@
-const { NftImg, ItemDetail, LikeList, AuctionHistory, Item, ItemInfo, ItemImg, User, Auction } = require('../../models')
+const { NftImg, ItemDetail, LikeList, AuctionHistory, Item, ItemInfo, ItemImg, User, Auction, DirectDeal } = require('../../models')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 
@@ -18,13 +18,18 @@ let get_directdeal_view = async (req, res) => {
         let result2 = await User.findOne({ where: { user_idx: creator }, attributes: ['nick_name'] })
         const { nick_name } = result2.dataValues
 
+        let result3 = await DirectDeal.findOne({where:{direct_deal_idx:idx}})
+        const {price, currency} = result3.dataValues
+
         data = {
             result_msg: 'OK',
             nick_name,
             description,
             title,
             size,
-            color
+            color,
+            price,
+            currency
         }
 
     } catch (error) {
@@ -51,7 +56,7 @@ let get_auction_view = async (req, res) => {
         const { nick_name } = result2.dataValues
 
         // @ 경매 정보
-        let result3 = await AuctionHistory.findOne({ where: { auc_history_idx: idx }, order: [['bid_date', 'DESC']] })
+        let result3 = await AuctionHistory.findOne({ where: { auc_history_idx: idx }, order: [['bid_price', 'DESC']] })
         const { bid_date, bid_price, currency } = result3.dataValues
 
         // @ 경매 종료 시간

@@ -22,6 +22,8 @@ const NFTdetail = ({children}) => {
     const description = useSelector((state:RootState) => state.view.description);
     const color = useSelector((state:RootState) => state.view.color);
     const size = useSelector((state:RootState) => state.view.size);
+    const price = useSelector((state:RootState) => state.view.price);
+    const currency = useSelector((state:RootState) => state.view.currency);
 
     const colorArr = color.split(",")
     const sizeArr = size.split(",")
@@ -36,7 +38,7 @@ const NFTdetail = ({children}) => {
                     <BuyBtnCSS onClick={orderOpen}>
                         <button>{children}</button>
                     </BuyBtnCSS>
-                    <Order open={open} orderOpen={orderOpen} />
+                    <Order open={open} orderOpen={orderOpen} price={price} currency={currency}/>
                 </NFTBuy>
                 <NFTTitle title={title}/>
                 <NFTexplanation nickname={nickname} description={description}/>

@@ -73,12 +73,12 @@ const Order = (props) => {
                                 <img alt="상품 작은 이미지" />
                             </div>
                             <div>
-                                0.14 ETH
+                                {props.price}{props.currency}
                             </div>
                         </div>
                         <div className="orderTotalPrice">
                             <div>Total</div>
-                            <div>0.14 ETH</div>
+                            <div>{props.price}{props.currency}</div>
                         </div>
                         <div className="orderAgreement">
                             <input type="checkbox" id="agreementBuy" onChange={e=>{checkAgreement(e.target.checked)}}/>
