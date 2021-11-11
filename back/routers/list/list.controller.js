@@ -1,4 +1,4 @@
-const {ItemInfo,ItemDetail} = require('../../models');
+const {ItemInfo,ItemDetail,ItemImg} = require('../../models');
 const mysql = require('mysql')
 const pool = require('../pool');
 const { user_info } = require('../user/user.controller');
@@ -28,11 +28,12 @@ let plus_list_get =  async (req,res) => {
     let keyObject = JSON.parse(key)
     console.log(req.body)
     let result = await ItemInfo.findAll({ where:{sell_type:false}, limit:keyObject })
+    let result2 = await ItemImg.findAll({ limit:keyObject })
     let Pluslength = keyObject + 3
     const ARR = []
 
     for(let i=0; i<result.length; i++){
-        ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url:`/sell/${result[i].item_id}`})
+        ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url:`/sell/${result[i].item_id}`,img:result2[i].item_img_link})
     }
     console.log(Pluslength)
 

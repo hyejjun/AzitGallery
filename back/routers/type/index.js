@@ -7,5 +7,6 @@ router.post('/category', controller.get_category)
 router.post('/search', controller.get_search)
 router.post('/sort', controller.get_sort)
 router.post('/categorylist', controller.get_category_list)
+router.post('/subcategorylist', controller.get_sub_category_list)
 
 module.exports = router

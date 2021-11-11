@@ -87,3 +87,26 @@ export const BuyBtnCSS = Styled.span`
     }
 
 ` 
+export const EndBtnCSS = Styled.span`
+    width: 246px;
+    height : 60px;
+    margin-left: 3%;
+    
+    & > button {
+        width : 100%;
+        height : 100%;
+        display: inline-flex;
+        flex-direction: row;
+        align-items: center;
+        border-radius: 4px;
+        justify-content: center;
+        font-size: 20px;
+        font-weight: 600;
+        padding: 12px 20px;
+        background-color: #bbb;
+        border: 1px solid white;
+        color: white;
+        cursor: pointer;
+    }
+
+` 
