@@ -161,9 +161,12 @@ const SignUp = () => {
                                     <tr>
                                         <td className="textLeft">
                                             <input type="text" className="InputBox" value={nickName} onChange={nickChk1} name="nickName" id="nickName" placeholder="닉네임을 입력해주세요."/> 
-                                            { nickErr ? <div className="error">닉네임을 입력해주세요.</div> : <> { nickOverlapErr ? <div className="error">사용중인 닉네임입니다.</div> : <div className="success">사용 가능한 닉네임입니다.</div>}</>}
-                                            { nickLength3Err ? <div className="error">닉네임을 3자 이상, 20글자 이하로 입력해주세요.</div> : <></>}                                           
-                                            { nickSignErr ? <div className="error">닉네임은 한글, 영문 대소문자, 숫자, 특수기호(_),(-),(.)만 입력 가능합니다.</div> : <></>}
+                                            { nickErr ? <div className="error">닉네임을 입력해주세요.</div> 
+                                            : <> { nickLength3Err ? <div className="error">닉네임을 3자 이상, 20글자 이하로 입력해주세요.</div> 
+                                            : <> { nickSignErr ? <div className="error">닉네임은 한글, 영문 대소문자, 숫자, 특수기호(_),(-),(.)만 입력 가능합니다.</div> 
+                                            : <> { nickOverlapErr ? <div className="error">사용중인 닉네임입니다.</div> : <div className="success">사용 가능한 닉네임입니다.</div>}</>}</>}</>}
+                                                                                      
+                                           
                                         </td>
                                     </tr>
 
