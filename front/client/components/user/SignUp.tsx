@@ -36,12 +36,21 @@ const SignUp = () => {
 
     const User = useSelector((state:RootState) => state.user);
 
-    const nickChk1 = e => {
+    const nickChk1 = async e => {
         const value = e.target.value;
         setNickName(value);
         setNickErr(value === "");
         setNickLength3Err(value.length < 3 && value.length >0 || value.length > 20 );
         // setNickLength5Err(value.length < 5 && value.length >0);
+
+
+        let result = await axios.post(`${url}/user/nicknamechk`,JSON.stringify(value))
+
+        if(result.data == true){
+            setnickOverlapErr(false)
+        }else{
+            setnickOverlapErr(true)
+        }
         
         
         const chkk = () => {
@@ -67,7 +76,6 @@ const SignUp = () => {
 
     const checkEmail = (e) => {
         var regExp = /^(([^<>()\[\].,;:\s@"]+(\.[^<>()\[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
-        console.log('이메일 유효성검사 :: ', regExp.test(e.target.value) )
         setEmail2Err(regExp.test(e.target.value));
     }
     
@@ -87,23 +95,27 @@ const SignUp = () => {
 
     const [joinState,setJoinState] = useState<boolean>(false)
     const sucJoin = async () => {
- 
+           
         if(nickErr === true || 
             nickLength3Err === true || 
             nickSignErr === true ||
             emailErr === true ||
-            email2Err !== true
+            email2Err !== true ||
+            nickOverlapErr === true            
             ){
-            alert("내용입력해주세요.")
+            alert("내용을 확인해주세요.")
+            return ;
         }else if(checked1 !== true || 
             checked2 !== true || 
             checked3 !== true){
             alert("필수 동의사항에 체크해주세요.")
+
+            return;
         }else{
             setJoinState(prev=>!prev)        
         }
         if(checked1 !== true || checked2 !== true || checked3 !== true){
-            // alert("필수 동의사항에 체크해주세요.")
+            alert("필수 동의사항에 체크해주세요.")
         }
         
        
@@ -116,39 +128,6 @@ const SignUp = () => {
         dispatch(SignUp_REQUEST(data))
         dispatch(Userlist_REQUEST())
         console.log(data, "55555");
-    }
-
-    const test = async () =>{
-        let NickName = nickName;      
-        
-
-    //    dispatch(Nickname_REQUEST(data))
-    //    console.log(User.nicknameChkBool);
-
-    //     if(User.nicknameChkBool == true){
-    //         // alert("사용가능한 닉네임입니다.")
-    //         setnickOverlapErr(false)
-    //     }else{
-    //         // alert("사용중인 닉네임입니다.")
-    //         setnickOverlapErr(true)
-    //     }
-
-        let result = await axios.post(`${url}/user/nicknamechk`,JSON.stringify(NickName))
-        
-        console.log(result);
-        console.log(result.data,"222222");
-             if(result.data == true){
-            alert("사용가능한 닉네임입니다.")
-            setnickOverlapErr(false)
-        }else{
-            alert("사용중인 닉네임입니다.")
-            setnickOverlapErr(true)
-        }
-    //     if (result) {
-    //         setCheck(result.data)
-    //     } else {
-    //         setCheck(result.data)
-    //     }
     }
 
 
@@ -181,11 +160,10 @@ const SignUp = () => {
                                     </tr>
                                     <tr>
                                         <td className="textLeft">
-                                            <input type="text" className="InputBox" value={nickName} onMouseOut={test} onChange={nickChk1} name="nickName" id="nickName" placeholder="닉네임을 입력해주세요."/> 
-                                            { nickErr ? <div className="error">닉네임을 입력해주세요.</div> : <></>}
+                                            <input type="text" className="InputBox" value={nickName} onChange={nickChk1} name="nickName" id="nickName" placeholder="닉네임을 입력해주세요."/> 
+                                            { nickErr ? <div className="error">닉네임을 입력해주세요.</div> : <> { nickOverlapErr ? <div className="error">사용중인 닉네임입니다.</div> : <div className="success">사용 가능한 닉네임입니다.</div>}</>}
                                             { nickLength3Err ? <div className="error">닉네임을 3자 이상, 20글자 이하로 입력해주세요.</div> : <></>}                                           
                                             { nickSignErr ? <div className="error">닉네임은 한글, 영문 대소문자, 숫자, 특수기호(_),(-),(.)만 입력 가능합니다.</div> : <></>}
-                                            { nickOverlapErr ? <div className="error">사용중인 닉네임입니다.</div> : <>사용 가능한 닉네임입니다</> } 
                                         </td>
                                     </tr>
 
@@ -257,7 +235,7 @@ const SignUp = () => {
                             <div className="devider"></div>
                             <div className="btn3">
                                 <a className="cancelBtn" onClick={()=>Router.back()}>취소</a>
-                                <button type="button" className="signUpBtn Btn" onClick={()=>{sucJoin}}>회원가입</button>
+                                <button type="button" className="signUpBtn Btn" onClick={sucJoin}>회원가입</button>
                                 
                             </div>
                         </form>
@@ -453,6 +431,11 @@ svg:hover{
 
 .error{
     color:#dc3545;
+    font-size:12px;
+    margin-top: 4px;
+}
+.success{
+    color:#000;
     font-size:12px;
     margin-top: 4px;
 }
