@@ -38,7 +38,6 @@ const MyNftComponent = () => {
     }
 
     const handleChange = (e) => {
-        console.log(e.target.value)
         setLikeBtn(e.target.value)
     }
     const test = () => {        
@@ -56,7 +55,6 @@ const MyNftComponent = () => {
                 // 구매한 nft가 선택된 상황에서 조회수 순
                 dispatch(hits_buy_REQUEST(data))
             }else if(tabBtn==2){
-                console.log(tabBtn)
                 // 판매된 nft가 선택된 상황에서 조회수 순
                 dispatch(hits_sell_REQUEST(data))
             }else if(tabBtn==3){

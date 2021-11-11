@@ -20,7 +20,7 @@ const ItemListSell = (props) => {
         NFTFourList,
         NFT,
         NFTImg,
-        IMG,
+    
         NFTOne,
         NFTOneList,
         NFTOneImg,
@@ -38,6 +38,8 @@ const ItemListSell = (props) => {
     const list = useSelector((state:RootState) => state.list);
     const type = useSelector((state:RootState) => state.type);
     let [loading, setLoading] = useState<boolean>(false)
+
+
 
     let [count,setCount] = useState<number>(0)
     interface ArrEle {
@@ -169,9 +171,9 @@ const ItemListSell = (props) => {
 
         dispatch(PlusItemlist_REQUEST(list.listlength))
         setArr(list.itemList)
-        console.log('dispatch?')
-    };
 
+    };
+    //dispatch(PlusItemlist_REQUEST(list.listlength))
     const sendData = {
 
         genderSelect,    
@@ -192,6 +194,7 @@ const ItemListSell = (props) => {
     useEffect(()=>{
          setArr(list.itemList)
     },[search])
+
 
     
     useEffect(() => {

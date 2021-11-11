@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Styled from 'styled-components'
 import Order from "./Order";
 import NFTexplanation from "../NFTexplanation";
@@ -6,11 +6,28 @@ import Like from "../../common/Like";
 import NFTTitle from "../NFTTitle";
 import SizeSelect from "../SizeSelect";
 import ColorSelect from "../ColorSelect";
-import { useSelector } from "react-redux";
 import { RootState } from "../../../reducers";
+import {useRouter} from 'next/router'
+import { useSelector, useDispatch } from 'react-redux'
+import { directDealView_REQUEST } from '../../../reducers/view'
+
 
 
 const NFTdetail = ({children}) => {
+
+
+    const router = useRouter()
+    const {view} = router.query // 카테고리 이름
+    console.log(view);
+    
+    
+    const dispatch = useDispatch()
+    let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
+    
+    useEffect(()=>{
+        dispatch(directDealView_REQUEST(params))
+    },[])
+
     
     const [open, setOpen] = useState<boolean>(false);
     const orderOpen = () => {
@@ -25,8 +42,10 @@ const NFTdetail = ({children}) => {
     const price = useSelector((state:RootState) => state.view.price);
     const currency = useSelector((state:RootState) => state.view.currency);
 
-    const colorArr = color.split(",")
-    const sizeArr = size.split(",")
+    const colorArr = color.split("/")
+    const sizeArr = size.split("/")
+
+    
     
     return (
         <>

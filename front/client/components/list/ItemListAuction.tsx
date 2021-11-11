@@ -160,7 +160,7 @@ const ItemListAuction = (props) => {
     const handleClick = () => {
         dispatch(PlusAuctionlist_REQUEST(list.listlength))
         setArr(list.auctionList)
-        console.log('dispatch?')
+
     };
 
     useEffect(() => {

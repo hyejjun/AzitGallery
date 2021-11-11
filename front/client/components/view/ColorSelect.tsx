@@ -8,7 +8,8 @@ const ColorSelect = (props) => {
                 {v}
             </option>
         )
-    })    
+    })
+    
     return (
         <ColorSelectCSS>
             <option>
