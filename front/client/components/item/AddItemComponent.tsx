@@ -367,21 +367,26 @@ const AddItemComponent = () => {
 
     // 새 NFT발행 시 그냥 새로고침 ->테스트 완료 후 주석 해제
     const resetState = () => {
-        // window.location.reload() 
+        window.location.reload() 
     }
 
     const dispatch = useDispatch()
     const mint = useSelector((state:RootState) => state.mint);
     const [nftCreateState,setnftCreateState] = useState<boolean>(false);
     const createNftCh = () => {
-        let data = {}
-            if(ifSell == true){
-                data = {ifSell, price, currency, name, desc, gender, bigCategory, smallCategory, color, size, mainImgIdx, }
-            } else{
-                data = {ifSell, name, desc, aucPrice, currency, aucTime, extension, gender, bigCategory, smallCategory, color, size, mainImgIdx, }
-            }
-            dispatch(MintNFT_REQUEST([data,file]))
+
+            // 
             setnftCreateState(prev=>!prev)
+    }
+
+    const createNFTconfirmed = () => {
+        let data = {}
+        if(ifSell == true){
+            data = {ifSell, price, currency, name, desc, gender, bigCategory, smallCategory, color, size, mainImgIdx, }
+        } else{
+            data = {ifSell, name, desc, aucPrice, currency, aucTime, extension, gender, bigCategory, smallCategory, color, size, mainImgIdx, }
+        }   
+        dispatch(MintNFT_REQUEST([data,file]))
     }
 
     const [cancelNft,setcancelNft] = useState<boolean>(false);
@@ -435,7 +440,7 @@ const AddItemComponent = () => {
             ? < CreateNftCh 
                 flag={nftCreateState} 
                 closeBtn={closeBtn} 
-                createNftCh = {createNftCh}
+                createNFTconfirmed = {createNFTconfirmed}
                 resetState = {resetState}
                 /> :<></> }
             {cancelNft ? < CancelNft flag={cancelNft} closeBtn={closeBtn}/> :<></>}
