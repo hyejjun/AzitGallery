@@ -5,6 +5,7 @@ import NFTexplanation from "../NFTexplanation";
 import Like from "../../common/Like";
 import NFTTitle from "../NFTTitle";
 import SizeSelect from "../SizeSelect";
+import ColorSelect from "../ColorSelect";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../reducers";
 
@@ -19,17 +20,25 @@ const NFTdetail = ({children}) => {
     const nickname = useSelector((state:RootState) => state.view.nick_name);
     const title = useSelector((state:RootState) => state.view.title);
     const description = useSelector((state:RootState) => state.view.description);
+    const color = useSelector((state:RootState) => state.view.color);
+    const size = useSelector((state:RootState) => state.view.size);
+    const price = useSelector((state:RootState) => state.view.price);
+    const currency = useSelector((state:RootState) => state.view.currency);
+
+    const colorArr = color.split(",")
+    const sizeArr = size.split(",")
     
     return (
         <>
             <NFTdetailWrap>
                 <NFTBuy>
-                    <SizeSelect/>
+                    <ColorSelect colorArr={colorArr}/>
+                    <SizeSelect sizeArr={sizeArr}/>
                     <Like/>
                     <BuyBtnCSS onClick={orderOpen}>
                         <button>{children}</button>
                     </BuyBtnCSS>
-                    <Order open={open} orderOpen={orderOpen} />
+                    <Order open={open} orderOpen={orderOpen} price={price} currency={currency}/>
                 </NFTBuy>
                 <NFTTitle title={title}/>
                 <NFTexplanation nickname={nickname} description={description}/>
@@ -50,7 +59,7 @@ const NFTBuy = Styled.div`
     width: 100%;
     height: 60px;
     display: flex;
-    padding-left: 65%;
+    padding-left: 50%;
     box-sizing: border-box;
 
 `

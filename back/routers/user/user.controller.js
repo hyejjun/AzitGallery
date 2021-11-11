@@ -117,22 +117,11 @@ let nickname_check = async(req,res) => {
     let nick_name = JSON.parse(key)
     
     let result = await User.findAll({where:{nick_name}})
-    console.log(key,"===-=-=-",nick_name,"========", result);
     if(result.length == 0){
-        // let data = {
-        //     nicknameChkBool:true
-        // }
         res.json(true)
     }else{
-        // let data = {
-        //     nicknameChkBool:false
-        // }
         res.json(false)
     }
-
-    
-    // // if()
-    // console.log(result,"33333")
 }
 
 /* 모든 회원들 정보를 불러오기 */

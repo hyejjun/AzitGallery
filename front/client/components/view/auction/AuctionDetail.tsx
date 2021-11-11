@@ -13,6 +13,7 @@ const AuctionDetail = () => {
     const Auction = useSelector((state:RootState) => state.auction);    
     const [num, setNum] = useState<number>(5);
     const [price, setPrice] = useState<number>(0);
+
     const [limitTime, setlimitTime] = useState<number>(5);
     const [endBool, setEndBool] = useState<boolean>(false)
     const [openAuction, setOpenAuction] = useState<boolean>(false);
@@ -103,7 +104,7 @@ const AuctionDetail = () => {
         <>
             <AuctionDetailWrap>
                 <ul className="auctionTitle">
-                    <li>경매 입찰 수</li>
+                    {/* <li>경매 입찰 수</li> */}
                     <li>현재 입찰가</li>
                     <li>마감시간</li>
                 </ul>
@@ -122,7 +123,7 @@ const AuctionDetail = () => {
                     <EndBtnCSS className="auctionBtn">
                         <button>경매 종료</button>
                     </EndBtnCSS>}
-                    <JoinAcution openAuction={openAuction} auctionOpen={auctionOpen} auctionValue={auctionValue}/>
+                    <JoinAcution openAuction={openAuction} auctionOpen={auctionOpen} auctionValue={auctionValue} bid_price={props.bid_price}/>
                 </BtnWrap>
             </AuctionDetailWrap>
         </>

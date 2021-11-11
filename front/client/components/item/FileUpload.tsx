@@ -1,7 +1,7 @@
 import Styled from 'styled-components';
 import React from "react";
 
-const FileUpload = ({fileChange, fileBase, deleteFile}) =>{
+const FileUpload = ({fileChange, fileBase, deleteFile, setMainImage, mainImgIdx}) =>{
     return(
         <>
             <SmallTitle>
@@ -23,12 +23,27 @@ const FileUpload = ({fileChange, fileBase, deleteFile}) =>{
                 {fileBase.map((x, k) => {
                     return(
                         <ImageContent key = {k}>
-                            <img
-                                src={x}
-                            />
-                            <CloseButton
-                                onClick = {()=>{deleteFile(k)}}
-                            >&#10006;</CloseButton>
+                            {mainImgIdx == k 
+                            ?                         
+                            <ImageWrapper onClick = {()=>{setMainImage(k)}}>
+                                <img src={x}/>
+                                <CloseButton onClick = {()=>{deleteFile(k)}}>&#10006;</CloseButton>
+                                <MainImageText>대표사진</MainImageText>
+                            </ImageWrapper>
+                            :  // https://dfassf-bucket-test.s3.ap-northeast-2.amazonaws.com/d9b9e0e9ccb65020e321b73ac933ad83
+                            <>
+                                <MainImageWrapper>
+                                    <img src={x} onClick = {()=>{setMainImage(k)}} />
+                                    <CloseButton onClick = {()=>{deleteFile(k)}}>&#10006;</CloseButton>
+                                </MainImageWrapper>
+                            </>
+                            }
+                            {/* <ImageWrapper onClick = {()=>{setMainImage(k)}}>
+                                <img src={x}/>
+                                <CloseButton
+                                    onClick = {()=>{deleteFile(k)}}
+                                >&#10006;</CloseButton>
+                            </ImageWrapper> */}
                         </ImageContent>
                     )
                 })}
@@ -36,6 +51,36 @@ const FileUpload = ({fileChange, fileBase, deleteFile}) =>{
         </>
     )
 }
+
+const ImageWrapper = Styled.div`
+    border: solid 2px red;
+    box-sizing: border-box;
+    width:90px;
+    height:90px;
+    padding: 10px;
+`
+
+const MainImageWrapper = Styled.div`
+    /* border: solid 2px black; */
+    box-sizing: border-box;
+    width:90px;
+    height:90px;
+    padding: 10px;
+    `
+
+const MainImageText = Styled.div`
+    background-color: white;
+    opacity: 0.8;
+    border-radius: 3px;
+    /* border: solid 1px blue; */
+    width: 60px;
+    height: 20px;
+    font-size: 15px;
+    
+    position: absolute;
+    left: 3px;
+    top: 3px;
+`
 
 const SmallTitle = Styled.h4`
     margin-top: 30px;
@@ -76,30 +121,30 @@ const BlueButton = Styled.label`
 `
 
 const PrevWrapper = Styled.div`
-    width: 850px;
+    width: 880px;
     height: 85px;
     margin-top: 20px;
     margin-bottom: 20px;
-    /* border: solid 1px black; */
 `
 
 const ImageContent = Styled.div`
     /* border: solid 1px black; */
     width: 80px;
     float: left;
-    margin-right: 5px;
+    margin-right: 8px;
     img{
         width: 70px;
         height: 70px;
-        margin: 5px;
+        margin-left: -2px;
+        margin-top: -2px;
     }
     position: relative;
 `
 
 const CloseButton = Styled.div`
     position: absolute;
-    right: -5px;
-    top: -5px;
+    right: -10px; //여기에
+    top: 0px; //여기에
     width: 20px;
     height:20px;
     border-radius: 10px;

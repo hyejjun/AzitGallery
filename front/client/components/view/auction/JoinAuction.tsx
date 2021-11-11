@@ -47,7 +47,7 @@ const JoinAcution = (props) => {
                         </div>
                         <div className="orderTotalPrice">
                             <div>현재 최고가</div>
-                            <div>{maxPrice} ETH</div>
+                            <div>{props.bid_price} ETH</div>
                         </div>
                         <div className="yourBalance">
                             <div>잔액</div>

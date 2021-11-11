@@ -21,8 +21,13 @@ const caver = new Caver(
 );
 
 let mint_nft_post = async (req,res) => {
+<<<<<<< HEAD
     console.log('NFT')
 const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, aucTime, extension, gender, bigCategory, smallCategory} = req.body[0]
+=======
+    // 나중에는 creator 도 가져와야함..
+    const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, aucTime, extension, gender, bigCategory, smallCategory, mainImgIdx} = req.body[0]
+>>>>>>> 4f0eebde22adcd3ae75f2e6b771a4b32738e7e92
     //      bool    str    str       str   str    str      obj     obj   str       str      bool      str      str           str
   // 개인키를 바탕으로 keyring을 생성합니다.
   // https://baobab.wallet.klaytn.com/access/0xdfaf037869bb807239e8c46d3b3472ac72adbaef 여기서 
@@ -83,8 +88,9 @@ const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, auc
     // 나중에는 creator 도 가져와야함..
   
     const imagesLink = req.body[1]
+    const mainImgLink = req.body[2]
+    console.log(mainImgLink)
     let sell_type
-    console.log(req.body)
     ifSell == true ? sell_type = false : sell_type = true
     let data // res.json 리턴용
 
@@ -95,10 +101,10 @@ const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, auc
                 user_idx:1// from req.body
         }})
 
-        // category 가져오기
-        let get_subcategory = await SubCategory.findOne({
+        // category 가져오기 아마 필요없을 듯?
+        // let get_subcategory = await SubCategory.findOne({
 
-        })
+        // })
 
         // 받은 id로 item_info table에 추가
         let add_to_item_info = await ItemInfo.create({
@@ -112,9 +118,11 @@ const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, auc
             category_id: bigCategory, 
         })
 
+        // 대표이미지
+        let main_img_link
+
         // 다시 생각해보기: imagesLink로 for 또는 add to Item으로?
         imagesLink.forEach(async x=>{
-            console.log('is forEach working?')
             await ItemImg.create({
                 item_img_idx: add_to_item_info.dataValues.item_id,
                 item_img_link: x
@@ -122,8 +130,11 @@ const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, auc
         })
 
         // 색과 사이즈 별로 넣기
+        let color_size_item = []
         for(let i = 0; i<color.length; i++){
+
             for(let j = 0; j<size.length; j++){
+                console.log('sooon', i, j)
                 // 색과 사이즈를 00~99로 해서 자릿수를 맞춰준다
                 let last_digits_for_detail
                 if(i == 0 && j == 0){
@@ -133,12 +144,9 @@ const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, auc
                 } else if(i*size.length+j>=10 || i*size.length+j+1<100){
                     last_digits_for_detail = `${i*size.length+j}`
                 }
-
+                
                 // 오류해결
-                // getNFT(name,color[i],size[j])
-
-                await ItemDetail.create({
-                    item_detail_idx: i*size.length+j+1,  // item_detail_idx 넣기
+                let add_to_item_detail = await ItemDetail.create({
                     item_info_idx: add_to_item_info.dataValues.item_id,
                     size:size[j],
                     color: color[i],
@@ -146,9 +154,26 @@ const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, auc
                     item_code:`${add_to_item_info.dataValues.item_code}${last_digits_for_detail}`,
                     product_status:'ready' //임시로
                 })    
+                // 아래 함수 인자값은 이름, 색상, 사이즈를 바탕으로 토큰 발행을 하기 위함이며
+                // idx는 getNFT함수 안에서 item_detail 테이블에서 nft_idx에 맞게 nft값을 업데이트 하기 위함임
+                color_size_item.push({
+                    idx: add_to_item_detail.dataValues.nft_idx, 
+                    name: name,
+                    color: color[i],
+                    size: size[j]
+                })
             }
-        }     
 
+        }    
+
+        for(let i = 0; i<color_size_item.length; i++){
+            setTimeout(()=>{
+                // 동시에 실행되면 known transaction 오류가 나기 때문에 setTimeout을 통해 딜레이를 줌
+                // 500ms정도면 괜찮은 것 같음..
+                getNFT(color_size_item[i].name, color_size_item[i].color, color_size_item[i].size, color_size_item[i].idx, mainImgLink)
+            },500*i)
+        }
+        
         // 일반구매일 때
         if(ifSell == true && get_user_id.length !== 0){
             // direct deal에 추가하기 -> 경매와 다름
@@ -197,7 +222,6 @@ const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, auc
             }
             res.send(data)
         }
-        console.log('NFT')
     } catch(e){
         console.log(e)
         data = {
@@ -206,13 +230,19 @@ const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, auc
         }
         res.send(data) 
     }
-    async function getNFT(name, color, size){
+    async function getNFT(name, color, size, idx, link){
         let strname = String(name)
         let strcolor = String(color)
         let strsize = String(size)
+<<<<<<< HEAD
         let privateKey = "0x07ea3560faca009fdbaf6cee2ea6ee87aaf22bd1f381f3afd312e79ff45f122b" // DB에서 가져와야 함
         let accountAddress = "0x89e204fcbad4c4197a9e3971c7bb3c32f46cc458"
         console.log('beforeKeyRing')
+=======
+        let privateKey = "0xb6a4306091a3f4203b497cf461f22624f372c3cffe31d8c0f874ef75a7d1881f" // DB에서 가져와야 함
+        let accountAddress = "0x54e034470aB35768C24607Bb847870D776E10DE4"
+
+>>>>>>> 4f0eebde22adcd3ae75f2e6b771a4b32738e7e92
         // 개인키를 바탕으로 keyring을 생성합니다.
         // https://baobab.wallet.klaytn.com/access/0xdfaf037869bb807239e8c46d3b3472ac72adbaef 여기서 
         // keyring에 대한 자세한 내용은 https://ko.docs.klaytn.com/bapp/sdk/Caver-js/api-references/Caver.wallet/keyring 를 참고하세요.
@@ -221,7 +251,7 @@ const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, auc
             privateKey
         );
         // wallet에 keyring이 추가되지 않은 경우에만 keyring을 추가합니다.
-        console.log('beforegetKeyRing')
+
         if (!caver.wallet.getKeyring(keyring.address)) {
             const singleKeyRing = caver.wallet.keyring.createFromPrivateKey(
                 privateKey
@@ -229,10 +259,10 @@ const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, auc
             caver.wallet.add(singleKeyRing);
         }
         // 넘어온 데이터를 바탕으로 새로운 KIP-17을 배포(=새로운 명품 등록)합니다. 
-        console.log('beforekip17')
+
         const kip17 = await caver.kct.kip17.deploy(
             {
-            name: strname,
+            name: `${strname}${strcolor}${strsize}`,
             symbol: 'EPI',
             },
             keyring.address
@@ -256,8 +286,10 @@ const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, auc
             // 본 예제에서는 임의의 sellerID와 productID를 json 형태로 저장합니다.
             // 토큰 이미지 URL이나 기타 정보를 tokenURI에 저장할 수 있습니다.
             tokenURI = JSON.stringify({
+                name: strname,
                 color: strcolor,
                 size: strsize,
+                link: link
             });
             // KIP-17.mintWithTokenURI를 이용해서 새로운 토큰을 발행합니다.
             // 자세한 내용은 https://ko.docs.klaytn.com/bapp/sdk/caver-js/api-references/caver.kct/KIP-17#KIP-17-mintwithtokenuri 를 참고하세요.
@@ -267,9 +299,22 @@ const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, auc
                 randomTokenID,
                 tokenURI,
                 { from: keyring.address }
-            );
-            console.log(mintResult.events.Transfer.address,'address')
-            return mintResult.events.Transfer.address
+            ).then(async (data)=>{
+                // setTimeout(async () => {
+                    // address값 떨어지는걸 받아서 덮어씌움. 
+                    try{
+
+                        let nftValue = data.events.Transfer.address
+                        await ItemDetail.update({
+                            nft: nftValue
+                        },{where:{
+                            nft_idx:idx
+                        }})
+                        console.log(data.events.Transfer.address)
+                    }catch(e){console.log(e,'then 안에서')}
+                // }, 10);
+            })            
+
         }
     }
 
