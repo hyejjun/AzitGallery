@@ -21,13 +21,12 @@ const caver = new Caver(
 );
 
 let mint_nft_post = async (req,res) => {
-<<<<<<< HEAD
+
     console.log('NFT')
-const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, aucTime, extension, gender, bigCategory, smallCategory} = req.body[0]
-=======
+
     // 나중에는 creator 도 가져와야함..
     const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, aucTime, extension, gender, bigCategory, smallCategory, mainImgIdx} = req.body[0]
->>>>>>> 4f0eebde22adcd3ae75f2e6b771a4b32738e7e92
+
     //      bool    str    str       str   str    str      obj     obj   str       str      bool      str      str           str
   // 개인키를 바탕으로 keyring을 생성합니다.
   // https://baobab.wallet.klaytn.com/access/0xdfaf037869bb807239e8c46d3b3472ac72adbaef 여기서 
@@ -234,15 +233,10 @@ const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, auc
         let strname = String(name)
         let strcolor = String(color)
         let strsize = String(size)
-<<<<<<< HEAD
         let privateKey = "0x07ea3560faca009fdbaf6cee2ea6ee87aaf22bd1f381f3afd312e79ff45f122b" // DB에서 가져와야 함
         let accountAddress = "0x89e204fcbad4c4197a9e3971c7bb3c32f46cc458"
         console.log('beforeKeyRing')
-=======
-        let privateKey = "0xb6a4306091a3f4203b497cf461f22624f372c3cffe31d8c0f874ef75a7d1881f" // DB에서 가져와야 함
-        let accountAddress = "0x54e034470aB35768C24607Bb847870D776E10DE4"
 
->>>>>>> 4f0eebde22adcd3ae75f2e6b771a4b32738e7e92
         // 개인키를 바탕으로 keyring을 생성합니다.
         // https://baobab.wallet.klaytn.com/access/0xdfaf037869bb807239e8c46d3b3472ac72adbaef 여기서 
         // keyring에 대한 자세한 내용은 https://ko.docs.klaytn.com/bapp/sdk/Caver-js/api-references/Caver.wallet/keyring 를 참고하세요.
