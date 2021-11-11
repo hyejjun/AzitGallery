@@ -1,8 +1,8 @@
 import Styled from 'styled-components'
 
-const SizeSelect = (props) => {
-    const optionArr = [...props.sizeArr]
-    let sizeList = optionArr.map((v,k)=>{
+const ColorSelect = (props) => {
+    const optionArr = [...props.colorArr]
+    let colorList = optionArr.map((v,k)=>{
         return(
             <option key={k}>
                 {v}
@@ -10,20 +10,20 @@ const SizeSelect = (props) => {
         )
     })    
     return (
-        <SizeSelectCSS>
+        <ColorSelectCSS>
             <option>
-                SIZE
+                Color
             </option>
-            {sizeList}
-        </SizeSelectCSS>
+            {colorList}
+        </ColorSelectCSS>
     )
 }
-export default SizeSelect
+export default ColorSelect
 
 
-const SizeSelectCSS = Styled.select`
+const ColorSelectCSS = Styled.select`
     margin-right:10px;
-    width:72px;
+    width:100px;
     font-size:22px;
     border: 1px solid #aab4be;
     border-radius : 4px;
