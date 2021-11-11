@@ -1,6 +1,8 @@
 const {ItemInfo,ItemDetail} = require('../../models');
 const mysql = require('mysql')
 const pool = require('../pool');
+const { user_info } = require('../user/user.controller');
+
 
 
 /* 일반 상품 */
@@ -105,83 +107,138 @@ let query_item_post =  async (req,res) => {
 let my_nft_all_post = async (req,res) => {
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
+    let query=
+    `
+    select a.final_order_state,b.item_code,b.size,b.size, c.title,c.creator,c.item_hits,e.nick_name, c.registered_at
+    from orders as a join order_detail as b 
+    on a.order_num=b.order_num join item_info as c 
+    on c.item_code=substring(b.item_code,1,13) join user as d 
+    on a.buyer=d.user_idx join user as e 
+    on e.user_idx=c.creator 
+    where d.kaikas_address='${keyObject}' 
+    order by c.registered_at;
+    `    
+   queryset(req,res,query)
+}
 
+
+// 판매된 nft
+let sold_nft_post = async (req,res) => {
+    let key = Object.keys(req.body)
+    let keyObject = JSON.parse(key)
+    let query = 
+    `
+    select a.item_code, a.state, c.item_hits, c.title, e.order_date,c.registered_at
+    from buyer_list as a join item_detail as b 
+    on a.item_code= b.item_code join item_info as c 
+    on b.item_info_idx=c.item_id join order_detail as d 
+    on d.item_code=b.item_code join orders as e 
+    on d.order_num= e.order_num join user as f 
+    on f.user_idx=a.sender_idx 
+    where f.kaikas_address='address1' 
+    order by c.registered_at;
+    `
+    queryset(req,res,query)
+    
+}
+// 미판매된 nft
+let not_sell_post = async(req,res) => {
+
+    //let data = {}
+
+    let key = Object.keys(req.body)
+    let keyObject = JSON.parse(key)
+    let query =
+    `
+    select a.creator,a.title, b.item_code, a.item_hits,a.registered_at
+    from item_info as a join item_detail as b 
+    on a.item_id=b.item_info_idx join user as c 
+    on a.creator=c.user_idx 
+    where c.kaikas_address='address1' and b.product_status=0 order by a.registered_at;
+    `
+
+    queryset(req,res,query)
+    /*
+    // 미판매된 제품에 대한 쿼리
+    // item_Detail에서 색상과 사이즈를 기준으로 해서 개별로 각각 보여줄 경우
+    // select a.creator,a.title, b.item_code, a.item_hits from item_info as a join item_detail as b on a.item_id=b.item_info_idx where a.creator=2 and b.product_status=0;
+    // item_info에서 색상과 사이즈를 아우르는 제품 자체에 대해 보여줄 경우
+    // select distinct a.creator,a.title, a.item_code, a.item_hits from item_info as a join item_detail as b on a.item_id=b.item_info_idx where a.creator=2 and b.product_status=0;
+    */
+}
+// 구매한 nft중 조회수 높은 순
+let mynft_hit_post = (req,res) => {
+    let { userAddress } = req.body
+    let query =
+    `
+    select a.final_order_state,b.item_code,b.size,b.size, c.title,c.creator,c.item_hits,e.nick_name, c.registered_at
+    from orders as a join order_detail as b 
+    on a.order_num=b.order_num join item_info as c 
+    on c.item_code=substring(b.item_code,1,13) join user as d 
+    on a.buyer=d.user_idx join user as e 
+    on e.user_idx=c.creator 
+    where d.kaikas_address=${userAddress} 
+    order by c.item_hits;;
+    `
+    queryset(req,res,query)
+}
+
+// 판매된 nft중 조회수 높은 순
+let sellnft_hit_post = (req,res) => {
+    let { userAddress } = req.body
+    let query =
+    `
+    select a.item_code, a.state, c.item_hits, c.title, e.order_date,c.registered_at
+    from buyer_list as a join item_detail as b 
+    on a.item_code= b.item_code join item_info as c 
+    on b.item_info_idx=c.item_id join order_detail as d 
+    on d.item_code=b.item_code join orders as e 
+    on d.order_num= e.order_num join user as f 
+    on f.user_idx=a.sender_idx 
+    where f.kaikas_address='address1'
+    order by c.item_hits;
+    `
+    queryset(req,res,query)
+}
+
+// 미판매된 nft중 조회수 높은 순
+let notsellnft_hit_post = (req,res) => {
+    let { userAddress } = req.body
+    let query =
+    `
+    select a.creator,a.title, b.item_code, a.item_hits,a.registered_at
+    from item_info as a join item_detail as b 
+    on a.item_id=b.item_info_idx join user as c 
+    on a.creator=c.user_idx 
+    where c.kaikas_address='address1' and b.product_status=0 order by a.item_hits desc;
+    
+    `
+    queryset(req,res,query)
+
+}
+
+let queryset = (req,res,query) => {
     let data = {}
-
     pool.getConnection((err,connection)=>{
-        connection.query(
-            `
-            select a.final_order_state,b.item_code,b.size,b.size, c.title,c.creator,c.item_hits,e.nick_name 
-            from orders as a join order_detail as b 
-            on a.order_num=b.order_num join item_info as c 
-            on c.item_code=substring(b.item_code,1,13) join user as d 
-            on a.buyer=d.user_idx join user as e 
-            on e.user_idx=c.creator where d.kaikas_address='${keyObject}';
-            `
-            ,function(err,result,fields){
+        connection.query(            
+            query            
+        ,function(err,result,fields){
             if(err) throw err;
             if(result==undefined){
                 data = {
                     result_msg:'Fail'
                 }
             }else{
-                console.log(result)
+                //console.log(result)
                 data = {
                     result_msg:'OK',
                     result
                 }
                 res.json(data)
             }
-            
-            connection.release();
+            connection.release()
         })
-    })
-}
-
-
-
-// 판매한 nft
-let sold_nft_post = async (req,res) => {
-    // let key = Object.keys(req.body)
-    // let keyObject = JSON.parse(key)
-    // let data = {}
-
-    // try{
-    //     let result = await ItemInfo.findAll();
-    //     console.log(result)
-    //     data = {
-    //         result_msg:'SUC',
-    //         result
-    //     }
-    // }catch (err){
-    //     data = {
-    //         result_msg:'Fail',
-    //         msg:'해당 페이지가 없어요'
-    //     }
-    // }
-    // res.json(data)   
-
-    
-    data = {
-        result_msg:'asdf',
-        result
-        
-    }
-    res.json(data)
-}
-
-let not_sell_post = async(req,res) => {
-
-    let data = {}
-
-    let key = Object.keys(req.body)
-    let keyObject = JSON.parse(key)
-    console.log(keyObject,'not sell')
-    // 미판매된 제품에 대한 쿼리
-    // item_Detail에서 색상과 사이즈를 기준으로 해서 개별로 각각 보여줄 경우
-    // select a.creator,a.title, b.item_code, a.item_hits from item_info as a join item_detail as b on a.item_id=b.item_info_idx where a.creator=2 and b.product_status=0;
-    // item_info에서 색상과 사이즈를 아우르는 제품 자체에 대해 보여줄 경우
-    // select distinct a.creator,a.title, a.item_code, a.item_hits from item_info as a join item_detail as b on a.item_id=b.item_info_idx where a.creator=2 and b.product_status=0;
+    })   
 }
 
 module.exports = {
@@ -192,5 +249,8 @@ module.exports = {
     query_item_post,
     my_nft_all_post,
     sold_nft_post,
-    not_sell_post
+    not_sell_post,
+    mynft_hit_post,
+    sellnft_hit_post,
+    notsellnft_hit_post
 }
