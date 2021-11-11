@@ -65,6 +65,7 @@ let all_auction_get =  async (req,res) => {
 }
 
 let plus_auction_get =  async (req,res) => {
+    
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
     console.log(req.body)
