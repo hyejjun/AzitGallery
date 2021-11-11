@@ -20,7 +20,7 @@ const ItemListSell = (props) => {
         NFTFourList,
         NFT,
         NFTImg,
-        IMG,
+    
         NFTOne,
         NFTOneList,
         NFTOneImg,

@@ -31,25 +31,28 @@ const Category = (props) => {
         }
         dispatch(sub_category_REQUEST(data))
     }
-
+    //console.log(Type)
+//onsole.log(Type.main)
     return (
         <CategoryWrapper>
             <H3 onClick = {category}>전체 카테고리</H3>
             { Type.main == undefined ? ''
             : Type.main.map((ele,key)=>
-            <Ul>
-                <Line></Line>
-                <Subject onClick={() => { selectGender(key+1), handleList(key+1) }}>{Type.main[key] == undefined ? '로딩중' : Type.main[key].category_name}</Subject>
-                <Line></Line>
-                {List == key+1 ?
-                    <>
-                        <LI className = "female" >{Type.sub[0] == undefined ? '로딩중' : Type.sub[key][0].sub_category_name}</LI>
-                        <LI className =" male" >{Type.sub[0] == undefined ? '로딩중' : Type.sub[key][1].sub_category_name}</LI>
-                    </>
-                    :
-                    <li></li>
-                } 
-             </Ul>)
+            <React.Fragment key={ele.main_category_code}>
+                <Ul>
+                    <Line></Line>
+                    <Subject onClick={() => { selectGender(key+1), handleList(key+1) }}>{Type.main[key] == undefined ? '로딩중' : Type.main[key].category_name}</Subject>
+                    <Line></Line>
+                    {List == key+1 ?
+                        <>
+                            <LI className = "female" >{Type.sub[0] == undefined ? '로딩중' : Type.sub[key][0].sub_category_name}</LI>
+                            <LI className =" male" >{Type.sub[0] == undefined ? '로딩중' : Type.sub[key][1].sub_category_name}</LI>
+                        </>
+                        :
+                        <li></li>
+                    } 
+                </Ul>
+             </React.Fragment>)
         }
         </CategoryWrapper>
     )
