@@ -8,7 +8,7 @@ export interface ViewState {
     error: string;
     UserAddress: string;
     verify: number;
-    nick_name, title, description: string;
+    nick_name, title, description,size,color,price,bid_price, currency, left_time: string;
     directView: {};
 
 }
@@ -23,6 +23,12 @@ export const initialState: ViewState = {
     nick_name : '',
     title : '',
     description : '',
+    size : '',
+    color : '',
+    price : '',
+    bid_price : '',
+    currency : '',
+    left_time : '',
     directView: {},
 };
 
@@ -62,15 +68,17 @@ export const directDealView_ERROR = () => {
 
 
 /* 경매 view 가져오기 */
-export const auctionView_REQUEST = () => {
+export const auctionView_REQUEST = (idx) => {
     return {
         type: AUCTION_VIEW_REQUEST,
+        idx
     }
 }
 
-export const auctionView_SUCCESS = () => {
+export const auctionView_SUCCESS = (list) => {
     return {
         type: AUCTION_VIEW_SUCCESS,
+        list
     }
 }
 
@@ -100,14 +108,16 @@ const reducer = (state: ViewState = initialState, action: ViewAction) => {
                 directIdx: action.idx
             }
         case DIRECTDEAL_VIEW_SUCCESS:
-            console.log("리듀서 === ", action.list);
-
             return {
                 ...state,
                 directView: action.list,
                 nick_name : action.list.nick_name,
                 title : action.list.title,
                 description : action.list.description,
+                size : action.list.size,
+                color : action.list.color,
+                price : action.list.price,
+                currency : action.list.currency,
             }
 
 
@@ -120,10 +130,20 @@ const reducer = (state: ViewState = initialState, action: ViewAction) => {
         case AUCTION_VIEW_REQUEST:
             return {
                 ...state,
+                auctionIdx:action.idx
             }
         case AUCTION_VIEW_SUCCESS:
             return {
                 ...state,
+                directView: action.list,
+                nick_name : action.list.nick_name,
+                title : action.list.title,
+                description : action.list.description,
+                size : action.list.size,
+                color : action.list.color,
+                bid_price : action.list.bid_price,
+                currency : action.list.currency,
+                left_time : action.list.left_time,
             }
         case AUCTION_VIEW_ERROR:
             return {

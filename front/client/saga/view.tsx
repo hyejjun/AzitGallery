@@ -35,12 +35,27 @@ function* reqDirectDealView(){
 
 
 /* 경매 view 가져오기 */
-function auctionViewAPI(){
-    return axios.get (`${url}/view/auction`)
+function auctionViewAPI(idx){
+    return axios.post (`${url}/view/auction`,JSON.stringify(idx))
 }
 
-function* auctionView(){
-    const result = yield call(auctionViewAPI)
+function* auctionView(action){
+    const result = yield call(auctionViewAPI, action.idx)
+
+    const {nick_name, title, description, result_msg, msg} = result.data
+
+    if(result_msg==="OK"){
+        yield put({
+            type:'AUCTION_VIEW_SUCCESS',
+            list : result.data
+        })
+    }else{
+        yield put({
+            type:'AUCTION_VIEW_ERROR',
+            result_msg,
+            msg
+        })
+    }
 }
 
 function* reqAuctionView(){
