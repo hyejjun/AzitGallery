@@ -1,6 +1,9 @@
 import Styled from 'styled-components'
 import React, { useState } from 'react'
 import Link from 'next/link'
+import { useSelector } from 'react-redux'
+import { RootState } from "../../reducers"
+
 
 const NotSelled = () => {
 
@@ -11,6 +14,8 @@ const NotSelled = () => {
         Like: number,
         alert: string
     }
+
+    const notsellednftList = useSelector((state:RootState)=>state.list.notsellnftList)
 
     const [Arr, setArr] = React.useState<ArrEle[]>([
         {
@@ -43,8 +48,8 @@ const NotSelled = () => {
       ]);
 
 
-    const nameList: JSX.Element[] = Arr.map((ele) =>
-        <React.Fragment key={ele.id}>
+    const nameList: JSX.Element[] = notsellednftList.map((ele) =>
+        <React.Fragment key={ele.item_code}>
             <NFTFourList>
                 <NFT>
                     <NFTImg>
@@ -54,9 +59,9 @@ const NotSelled = () => {
                     <Line></Line>
                     <NFTOne>
                         <NFTOneList>
-                            <NFTSubject>{ele.subject}</NFTSubject>
+                            <NFTSubject>{ele.title}</NFTSubject>
                             {/* 여기 a 빠졌는데 동작되는 이유.. a 추가하면 오류남 */}
-                            <NFTartist>{ele.artist}</NFTartist>
+                            <NFTartist>{ele.item_code}</NFTartist>
                         </NFTOneList>
                         <NFTOneImg>
                             <img></img>
@@ -64,7 +69,7 @@ const NotSelled = () => {
                     </NFTOne>
                     <NFTOne>
                         <NFTOneList>
-                            <NFTSubject>@ {ele.Like}</NFTSubject>
+                            <NFTSubject>@ {ele.hits}</NFTSubject>
                         </NFTOneList>
                         <NFTDeclaration>
                             <NFTSubject>* * *</NFTSubject>
