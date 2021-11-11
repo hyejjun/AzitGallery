@@ -22,7 +22,8 @@ const caver = new Caver(
 
 let mint_nft_post = async (req,res) => {
     console.log('NFT')
-
+const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, aucTime, extension, gender, bigCategory, smallCategory} = req.body[0]
+    //      bool    str    str       str   str    str      obj     obj   str       str      bool      str      str           str
   // 개인키를 바탕으로 keyring을 생성합니다.
   // https://baobab.wallet.klaytn.com/access/0xdfaf037869bb807239e8c46d3b3472ac72adbaef 여기서 
   // keyring에 대한 자세한 내용은 https://ko.docs.klaytn.com/bapp/sdk/Caver-js/api-references/Caver.wallet/keyring 를 참고하세요.
@@ -64,7 +65,6 @@ let mint_nft_post = async (req,res) => {
        // 본 예제에서는 임의의 sellerID와 productID를 json 형태로 저장합니다.
        // 토큰 이미지 URL이나 기타 정보를 tokenURI에 저장할 수 있습니다.
        tokenURI = JSON.stringify({
-         id:i,
           color: color,
          size: size,
          
@@ -81,8 +81,7 @@ let mint_nft_post = async (req,res) => {
        console.log(mintResult)
      }
     // 나중에는 creator 도 가져와야함..
-    const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, aucTime, extension, gender, bigCategory, smallCategory} = req.body[0]
-    //      bool    str    str       str   str    str      obj     obj   str       str      bool      str      str           str
+  
     const imagesLink = req.body[1]
     let sell_type
     console.log(req.body)

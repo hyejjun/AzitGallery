@@ -44,15 +44,22 @@ export const SET_QUERY_REQUEST = "SET_QUERY_REQUEST" as const;
 export const SET_QUERY_SUCCESS = "SET_QUERY_SUCCESS" as const;
 export const SET_QUERY_ERROR = "SET_QUERY_ERROR" as const;
 
-
 export const ITEM_GENDER_REQUEST = "ITEM_GENDER_REQUEST" as const;
 export const ITEM_GENDER_SUCCESS = "ITEM_GENDER_SUCCESS" as const;
 export const ITEM_GENDER_ERROR = "ITEM_GENDER_ERROR" as const;
 
+export const ITEM_LIST_SEARCH_REQUEST = "ITEM_LIST_SEARCH_REQUEST" as const;
+export const ITEM_LIST_SEARCH_SUCCESS = "ITEM_LIST_SEARCH_SUCCESS" as const;
+export const ITEM_LIST_SEARCH_ERROR = "ITEM_LIST_SEARCH_ERROR" as const;
+
+export const NOT_SELLED_REQUEST = "NOT_SELLED_REQUEST" as const;
+export const NOT_SELLED_SUCCESS = "NOT_SELLED_SUCCESS" as const;
+export const NOT_SELLED_ERROR = "NOT_SELLED_ERROR" as const;
 
 export const ITEM_RECENT_REQUEST = "ITEM_RECENT_REQUEST" as const;
 export const ITEM_RECENT_SUCCESS = "ITEM_RECENT_SUCCESS" as const;
 export const ITEM_RECENT_ERROR = "ITEM_RECENT_ERROR" as const;
+
 export const MY_NFT_ALL_REQUEST = "MY_NFT_ALL_REQUEST" as const;
 export const MY_NFT_ALL_SUCCESS = "MY_NFT_ALL_SUCCESS" as const;
 export const MY_NFT_ALL_ERROR = "MY_NFT_ALL_ERROR" as const;
@@ -61,9 +68,6 @@ export const SOLD_NFT_REQUEST = "SOLD_NFT_REQUEST" as const;
 export const SOLD_NFT_SUCCESS = "SOLD_NFT_SUCCESS" as const;
 export const SOLD_NFT_ERROR = "SOLD_NFT_ERROR" as const;
 
-export const NOT_SELLED_REQUEST = "NOT_SELLED_REQUEST" as const;
-export const NOT_SELLED_SUCCESS = "NOT_SELLED_SUCCESS" as const;
-export const NOT_SELLED_ERROR = "NOT_SELLED_ERROR" as const;
 
 
 
@@ -296,6 +300,28 @@ export const ItemRecent_ERROR = () => {
     }
 }
 
+/* query에 해당하는 상품만 */
+
+export const Item_List_Search_REQUEST = () => {
+    return {
+        type: ITEM_LIST_SEARCH_REQUEST,
+    }
+}
+
+export const Item_List_Search_SUCCESS = (data) => {
+    console.log(data)
+    return {
+        type: ITEM_LIST_SEARCH_SUCCESS,
+        data: data
+    }
+}
+
+export const Item_List_Search_ERROR = () => {
+    return {
+        type: ITEM_LIST_SEARCH_ERROR,
+    }
+}
+
 
 type ListAction = 
 | ReturnType<typeof Itemlist_REQUEST>
@@ -336,6 +362,10 @@ type ListAction =
 | ReturnType<typeof not_selled_REQUEST>
 | ReturnType<typeof not_selled_SUCCESS>
 | ReturnType<typeof not_selled_ERROR>
+
+| ReturnType<typeof Item_List_Search_REQUEST>
+| ReturnType<typeof Item_List_Search_SUCCESS>
+| ReturnType<typeof Item_List_Search_ERROR>
 
 const reducer = (state:ListState=initialState, action:ListAction) => {
     switch (action.type){
@@ -490,6 +520,22 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
             return{
                 ...state
             }
+        case ITEM_LIST_SEARCH_REQUEST:
+            return{
+                ...state,
+         
+            }
+        case ITEM_LIST_SEARCH_SUCCESS:
+            console.log(`back에서 return 값까지 front에 왔나요?${action.data}`)
+            return{
+                ...state,
+                itemList: action.data
+            }
+        case ITEM_LIST_SEARCH_ERROR:
+            return{
+                ...state,
+            }
+
         default:
             return state;
     }

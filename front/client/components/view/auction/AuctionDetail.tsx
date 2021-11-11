@@ -1,13 +1,20 @@
 import Styled from 'styled-components'
 import { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 import { BuyBtnCSS } from '../sell/NFTdetail';
+import { EndBtnCSS } from '../sell/NFTdetail';
 import JoinAcution from './JoinAuction';
+import { Auction_Price_REQUEST } from "../../../reducers/auction"
+import { Auction_Current_REQUEST } from "../../../reducers/auction"
 
 const AuctionDetail = () => {
+    const dispatch = useDispatch()
+    const User = useSelector((state:RootState) => state.user);    
+    const Auction = useSelector((state:RootState) => state.auction);    
     const [num, setNum] = useState<number>(5);
-    const [price, setPrice] = useState<number>(0.15);
+    const [price, setPrice] = useState<number>(0);
     const [limitTime, setlimitTime] = useState<number>(5);
-
+    const [endBool, setEndBool] = useState<boolean>(false)
     const [openAuction, setOpenAuction] = useState<boolean>(false);
     const auctionOpen = () => {
         setOpenAuction(prev => !prev)
@@ -29,21 +36,58 @@ const AuctionDetail = () => {
     },[])
 
     const lowBalance = () => {
-        if (balacne <= maxPrice){
-            alert('잔액을 확인해주세요')
-        }else{
-            if(auctionPrice <= maxPrice || auctionPrice > yourBalance){
-                alert('입찰 금액을 확인해주세요')
-            } else {
-                setBalanceCheck(prev => !prev)
-                alert('입찰 되었습니다')
-                // 입찰하고 어떻게 처리할지...
-                setAuctionPrice(0)
-                window.location.reload();
+        // if (balacne <= maxPrice){
+        //     alert('잔액을 확인해주세요')
+        // }else{
+        //     if(auctionPrice <= maxPrice || auctionPrice > yourBalance){
+        //         alert('입찰 금액을 확인해주세요')
+        //     } else {
+        //         setBalanceCheck(prev => !prev)
+        //         alert('입찰 되었습니다')
+        //         // 입찰하고 어떻게 처리할지...
+        //         setAuctionPrice(0)
+        //         window.location.reload();
+        //     }
+        // }
+
+        if(auctionPrice <= Auction.current){
+            alert('현재가보다 높게 제시해주세요')
+            setOpenAuction(prev => !prev)
+        } else {
+            console.log(JSON.stringify(window.location.href).split('ion/')[1].replace("\"", ""))
+            let params = JSON.stringify(window.location.href).split('ion/')[1].replace("\"", "")
+                    let data = {
+                params: params,
+                user: User.UserAddress,
+                price: auctionPrice
             }
+            console.log(data)
+
+            dispatch(Auction_Price_REQUEST(data))
+            alert('입찰 되셨습니다!')
+            setOpenAuction(prev => !prev)
+
+            let data2 = {
+                params: params,
+            }
+            dispatch(Auction_Current_REQUEST(data2))
         }
     }
 
+    useEffect(()=>{
+        let params = JSON.stringify(window.location.href).split('ion/')[1].replace("\"", "")
+        let data = {
+            params: params,
+        }
+        dispatch(Auction_Current_REQUEST(data))
+        console.log(`종료 일 ${Auction.endDate}`)
+          console.log(`현재 일 ${Auction.now.toISOString()}`)
+          
+       if(Auction.endDate<Auction.now.toISOString()){
+           alert('경매 종료')
+           setEndBool(true)
+       }
+    },[Auction.endDate])
     const auctionValue = {
         maxPrice,
         yourBalance,
@@ -51,7 +95,8 @@ const AuctionDetail = () => {
         priceChange,
         setBalance,
         setBalanceCheck,
-        lowBalance
+        lowBalance,
+        auctionPrice
     }
 
     return (
@@ -64,13 +109,19 @@ const AuctionDetail = () => {
                 </ul>
                 <ul className="auctionContent">
                     <li>{num}</li>
-                    <li>{price}ETH</li>
-                    <li>{limitTime}분 전</li>
+                    <li>{Auction.current}ETH</li>
+                    <li>{Auction.endDate.toString()}</li>
                 </ul>
                 <BtnWrap>
+                    {endBool == false
+                    ? 
                     <BuyBtnCSS className="auctionBtn" onClick={auctionOpen}>
                         <button>경매 참여</button>
                     </BuyBtnCSS>
+                    : 
+                    <EndBtnCSS className="auctionBtn">
+                        <button>경매 종료</button>
+                    </EndBtnCSS>}
                     <JoinAcution openAuction={openAuction} auctionOpen={auctionOpen} auctionValue={auctionValue}/>
                 </BtnWrap>
             </AuctionDetailWrap>
@@ -119,4 +170,6 @@ const BtnWrap = Styled.div`
     .auctionBtn > button{
         font-size : 20px;
     }
+
+
 `

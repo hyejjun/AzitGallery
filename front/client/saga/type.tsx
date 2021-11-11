@@ -44,13 +44,19 @@ function itemSearchAPI(data){
 }
 
 function* itemSearch(action){
-    console.log(action.data);
     
     const result = yield call(itemSearchAPI, action.data)
+     console.log(`saga까지 왔을까?${result.data.ARR}`);
+        yield put({
+        type:'ITEM_LIST_SEARCH_SUCCESS',
+        data:result.data.ARR
+        
+    })
 }
 
 function* reqItemSearch(){
     yield takeLatest('ITEM_SEARCH_REQUEST',itemSearch)
+
 }
 
 

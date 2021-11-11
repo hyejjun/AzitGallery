@@ -24,6 +24,7 @@ const Category = (props) => {
     }
 
     const handlesub = (key,ele) => {
+        
         let data = {
             key:key,
             ele:ele
@@ -42,8 +43,8 @@ const Category = (props) => {
                 <Line></Line>
                 {List == key+1 ?
                     <>
-                        <LI className = "female" onClick = {handlesub(key,0)} >{Type.sub[0] == undefined ? '로딩중' : Type.sub[key][0].sub_category_name}</LI>
-                        <LI className =" male" onClick = {handlesub(key,1)} >{Type.sub[0] == undefined ? '로딩중' : Type.sub[key][1].sub_category_name}</LI>
+                        <LI className = "female" >{Type.sub[0] == undefined ? '로딩중' : Type.sub[key][0].sub_category_name}</LI>
+                        <LI className =" male" >{Type.sub[0] == undefined ? '로딩중' : Type.sub[key][1].sub_category_name}</LI>
                     </>
                     :
                     <li></li>

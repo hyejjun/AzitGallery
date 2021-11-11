@@ -98,7 +98,8 @@ const ItemList = () => {
         genderSelect,                   // @ 0 미선택 1 여성복 2 남성복 3 아동복
         select,  
         setSelect,                       // @ 최근 발행순 좋아요 순 선택
-        search                          // @ 검색창
+        search,
+        searchSubmit                 // @ 검색창
     }
 
 

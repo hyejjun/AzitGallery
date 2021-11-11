@@ -58,7 +58,7 @@ let get_delivery_info = async (req,res)=>{
     let result3 = await ItemInfo.findOne({where:{item_id:result2[result2.length-1].item_id}})
     const ARR = []
     console.log(result3.item_code)
-    ARR.push({total_price:result[result.length-1].total_price, buyer:result[result.length-1].buyer, receiver:result[result.length-1].receiver, receiver_address:result[result.length-1].receiver_address, receiver_contact:result[result.length-1].receiver_contact, final_order_state:result[result.length-1].final_order_state, memo:result[result.length-1].memo, item_code:result3.item_code})
+    ARR.push({total_price:result[result.length-1].total_price, buyer:result[result.length-1].buyer, receiver:result[result.length-1].receiver, receiver_address:result[result.length-1].receiver_address, receiver_contact:result[result.length-1].receiver_contact, final_order_state:result[result.length-1].final_order_state, memo:result[result.length-1].memo, item_code:result3.title})
 
 
     let data = {
