@@ -50,7 +50,11 @@ module.exports = class ItemInfo extends Sequelize.Model{
             color:{
                 type:Sequelize.STRING(255),
                 defaultValue:'미정'
-            }
+            },
+            product_status:{
+                type:Sequelize.STRING,
+                comment:'현재 판매 중 인지 여부'
+            },
         },{
             sequelize,
             timestamps:false,

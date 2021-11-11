@@ -1,59 +1,55 @@
 import Link from 'next/link';
 import Styled from 'styled-components';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { category_REQUEST } from '../../reducers/type';
+import { sub_category_REQUEST } from '../../reducers/type';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from "../../reducers"
 
 const Category = (props) => {
+    const dispatch = useDispatch()
+    const Type = useSelector((state:RootState) => state.type);
     const { genderTab, genderTabOpen, selectGender, genderSelect } = props.CategoryState
+    const [subcategory, setsubCategory] = useState<number>(0)
+
     const [List, setList] = useState<number>(0);
     const handleList = (e) => {
         setList(e)
+        console.log(`이 떄는 ??${Type.main}`)
+    }
+
+    const category = (E) => {
+        dispatch(category_REQUEST())
+        
+    }
+
+    const handlesub = (key,ele) => {
+        let data = {
+            key:key,
+            ele:ele
+        }
+        dispatch(sub_category_REQUEST(data))
     }
 
     return (
         <CategoryWrapper>
-            <H3>전체 카테고리</H3>
-            <Ul flag={genderSelect}>
-                <Line></Line>
-                <Subject onClick={() => { selectGender(1), handleList(1) }}>상의</Subject>
-                <Line></Line>
-                {List == 1 ?
-                    <>
-                        <LI className="female" >여성복</LI>
-                        <LI className="male" >남성복</LI>
-                        <LI className="child" >아동복</LI>
-                    </>
-                    :
-                    <li></li>
-                }
-            </Ul>
+            <H3 onClick = {category}>전체 카테고리</H3>
+            { Type.main[0] == undefined ? ''
+            : Type.main.map((ele,key)=>
             <Ul>
                 <Line></Line>
-                <Subject onClick={() => { selectGender(2), handleList(2) }} >하의</Subject>
+                <Subject onClick={() => { selectGender(key+1), handleList(key+1) }}>{Type.main[key] == undefined ? '로딩중' : Type.main[key].category_name}</Subject>
                 <Line></Line>
-                {List == 2 ?
+                {List == key+1 ?
                     <>
-                        <LI>리스트</LI>
-                        <LI>리스트</LI>
-                        <LI>리스트</LI>
+                        <LI className = "female" onClick = {handlesub(key,0)} >{Type.sub[0] == undefined ? '로딩중' : Type.sub[key][0].sub_category_name}</LI>
+                        <LI className =" male" onClick = {handlesub(key,1)} >{Type.sub[0] == undefined ? '로딩중' : Type.sub[key][1].sub_category_name}</LI>
                     </>
                     :
                     <li></li>
                 }
-            </Ul>
-            <Ul>
-                <Line></Line>
-                <Subject onClick={() => { selectGender(3), handleList(3) }} >잡화</Subject>
-                <Line></Line>
-                {List == 3 ?
-                    <>
-                        <LI>리스트</LI>
-                        <LI>리스트</LI>
-                        <LI>리스트</LI>
-                    </>
-                    :
-                    <li></li>
-                }
-            </Ul>
+            </Ul>)
+        }
         </CategoryWrapper>
     )
 }

@@ -20,7 +20,8 @@ const ItemList = () => {
     const [notiOn, setNotiOn] = useState<boolean>(false)
 
     const notiHandler = async () => {
-        let {data} = await axios.post(`${url}/sendnoti`,{data:'zzzzz'})
+        let {data} = await axios.post(`${url}/sendnoti`,{data:'send noti router 나중에 연결해야 함'})
+
         // if(data.message == 'unread'){
         //     setNotiOn(true)
         // }

@@ -8,6 +8,8 @@ export interface ListState {
     listlength: number;
     auctionList: Array<any>;
     auctionlength: number;
+    mynftList: Array<any>;
+    soldnftList: Array<any>;
 }
 
 export const initialState : ListState = {
@@ -15,6 +17,8 @@ export const initialState : ListState = {
     listlength: 3,
     auctionList: [],
     auctionlength: 3,
+    mynftList : [],
+    soldnftList : []
 };
 
 
@@ -52,6 +56,15 @@ export const ITEM_RECENT_ERROR = "ITEM_RECENT_ERROR" as const;
 export const MY_NFT_ALL_REQUEST = "MY_NFT_ALL_REQUEST" as const;
 export const MY_NFT_ALL_SUCCESS = "MY_NFT_ALL_SUCCESS" as const;
 export const MY_NFT_ALL_ERROR = "MY_NFT_ALL_ERROR" as const;
+
+export const SOLD_NFT_REQUEST = "SOLD_NFT_REQUEST" as const;
+export const SOLD_NFT_SUCCESS = "SOLD_NFT_SUCCESS" as const;
+export const SOLD_NFT_ERROR = "SOLD_NFT_ERROR" as const;
+
+export const NOT_SELLED_REQUEST = "NOT_SELLED_REQUEST" as const;
+export const NOT_SELLED_SUCCESS = "NOT_SELLED_SUCCESS" as const;
+export const NOT_SELLED_ERROR = "NOT_SELLED_ERROR" as const;
+
 
 
 /* 판매 */
@@ -167,6 +180,7 @@ export const SetQuery_ERROR = () => {
     }
 }
 
+/* 내가 구매한 상품 전부 */
 export const myNft_all_REQUEST = (data:string) => {
     return {
         type: MY_NFT_ALL_REQUEST,
@@ -186,6 +200,55 @@ export const myNft_all_ERROR = () => {
         type:MY_NFT_ALL_ERROR
     }
 }
+
+/* 판매된 상품 전부 */
+export const sold_nft_REQUEST = (data:string) => {
+    return {
+        type:SOLD_NFT_REQUEST,
+        data:data
+    }
+}
+
+export const sold_nft_SUCCESS = (data) => {
+    return {
+        type:SOLD_NFT_SUCCESS,
+        data:data
+    }
+}
+
+export const sold_nft_ERROR = () => {
+    return {
+        type:SOLD_NFT_ERROR,
+
+    }
+}
+
+
+/* 미판매된 상품 전부 */
+export const not_selled_REQUEST = (data:string) => {
+    return {
+        type:NOT_SELLED_REQUEST,
+        data:data
+    }
+}
+
+export const not_selled_SUCCESS = (data) => {
+    return {
+        type:NOT_SELLED_SUCCESS,
+        data:data
+    }
+}
+
+export const not_selled_ERROR = () => {
+    return {
+        type:NOT_SELLED_ERROR,
+
+    }
+}
+
+
+
+
 
 
 
@@ -265,6 +328,14 @@ type ListAction =
 | ReturnType<typeof myNft_all_REQUEST>
 | ReturnType<typeof myNft_all_SUCCESS>
 | ReturnType<typeof myNft_all_ERROR>
+
+| ReturnType<typeof sold_nft_REQUEST>
+| ReturnType<typeof sold_nft_SUCCESS>
+| ReturnType<typeof sold_nft_ERROR>
+
+| ReturnType<typeof not_selled_REQUEST>
+| ReturnType<typeof not_selled_SUCCESS>
+| ReturnType<typeof not_selled_ERROR>
 
 const reducer = (state:ListState=initialState, action:ListAction) => {
     switch (action.type){
@@ -385,13 +456,40 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
         case MY_NFT_ALL_SUCCESS:
             return{
                 ...state,
-                itemList: action.data               
+                mynftList:action.data       
             }
         case MY_NFT_ALL_ERROR:
             return{
                 ...state
             }
-           
+        case SOLD_NFT_REQUEST:
+            return{
+                ...state,
+                data:action.data
+            }
+        case SOLD_NFT_SUCCESS:
+            return{
+                ...state,
+                soldnftList:action.data
+            }
+        case SOLD_NFT_ERROR:
+            return{
+                ...state
+            }
+        case NOT_SELLED_REQUEST:
+            return{
+                ...state,
+                data:action.data
+            }
+        case NOT_SELLED_SUCCESS:
+            return{
+                ...state,
+                notsellnftList:action.data
+            }
+        case NOT_SELLED_ERROR:
+            return{
+                ...state
+            }
         default:
             return state;
     }

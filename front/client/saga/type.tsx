@@ -73,11 +73,49 @@ function* reqSortType(){
     yield takeLatest('ITEM_SORT_REQUEST',sortType)
 }
 
+/* 카테고리 */
+function categoryAPI(){
+    return axios.post(`${url}/type/categorylist`)
+}
+
+function* categorySaga(){
+    const result = yield call(categoryAPI)
+        yield put({
+        type:'CATEGORY_SUCCESS',
+        main:result.data.main,
+        sub:result.data.sub
+        
+    })
+}
+
+function* reqCategory(){
+    yield takeLatest('CATEGORY_REQUEST',categorySaga)
+}
+
+/* 서브 카테고리 */
+function subcategoryAPI(data){
+    return axios.post(`${url}/type/subcategorylist`,data)
+}
+
+function* subcategorySaga(action){
+    const result = yield call(subcategoryAPI,action.data)
+        yield put({
+        type:'SUB_LIST_CATEGORY_SUCCESS',
+        
+    })
+}
+
+function* reqSubCategory(){
+    yield takeLatest('SUB_CATEGORY_REQUEST',subcategorySaga)
+}
+
 export default function* typeSaga(){
     yield all([
         fork(reqSellType),
         fork(reqSelectCategory),
         fork(reqItemSearch),
         fork(reqSortType),
+        fork(reqCategory),
+        fork(reqSubCategory)
     ])
 }
