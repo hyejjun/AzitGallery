@@ -20,6 +20,7 @@ const ItemListSell = (props) => {
         NFTFourList,
         NFT,
         NFTImg,
+        IMG,
         NFTOne,
         NFTOneList,
         NFTOneImg,
@@ -138,7 +139,8 @@ const ItemListSell = (props) => {
                     <a>
                         <NFTImg>
                             {/* <div><img src={require('../../src/지도.jpg').default} /></div> */}
-                            <div><img/></div>
+                            {/* <img src = {ele.img.split('?')[0]}/> */}
+                      
                         </NFTImg>
                     </a>
                 </Link>
@@ -189,7 +191,9 @@ const ItemListSell = (props) => {
         setArr(list.itemList)
     },[select])
 
-
+    useEffect(()=>{
+         setArr(list.itemList)
+    },[search])
 
 
     

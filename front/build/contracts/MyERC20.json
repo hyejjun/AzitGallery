@@ -17678,12 +17678,12 @@
         }
       },
       "links": {},
-      "address": "0x8586822bAaE5388BF1ee0a6de2e750dE80cA063a",
-      "transactionHash": "0xb590dee7bc6072b592d4ab5c96053c571bc18ad4d25b0b5eecf93e2f3a6c08f7"
+      "address": "0xbd929FED827F26E84ca8b66A35Ef694F5829f9De",
+      "transactionHash": "0xfe0549d11e935318a61236d7b1661bb6ca77635d90b349cdf6c34028af5d0650"
     }
   },
   "schemaVersion": "3.1.0",
-  "updatedAt": "2021-11-05T00:24:06.072Z",
+  "updatedAt": "2021-11-11T00:51:01.214Z",
   "networkType": "ethereum",
   "devdoc": {
     "details": "`IERC20` 인터페이스의 구현\r  * 이 구현은 토큰이 생성되는 방식과 무관합니다. 이는\r 파생 컨트랙트에 `_mint`를 이용한 공급 메커니즘이 추가되어야 한다는 의미입니다.\r 일반적인 메커니즘은 `ERC20Mintable`을 참조하세요.\r  * *자세한 내용은 가이드 [How to implement supply mechanisms]\r (https://forum.zeppelin.solutions/t/how-to-implement-erc20-supply-mechanisms/226)를 참고하세요.*\r  * 일반적인 OpenZeppelin 지침을 따랐습니다: 함수는 실패시 `false`를 반환하는 대신\r 예외처리를 따릅니다. 그럼에도 이는 관습적이며\r ERC20 애플리케이션의 기대에 반하지 않습니다.\r  * 또한, `transferFrom` 호출 시 `Approval` 이벤트가 발생됩니다.\r 이로부터 애플리케이션은 해당 이벤트를 수신하는 것만으로\r 모든 계정에 대한 허용량(allowance)을 재구성 할 수 있습니다. 이는 스펙에서 요구되지 않으므로, EIP에 대한 다른 구현체는\r 이러한 이벤트를 발생하지 않을 수 있습니다.\r  * 마지막으로, 표준이 아닌 `decreaseAllowance` 및 `increaseAllowance`\r 함수가 추가되어 허용량 설정과 관련해 잘 알려진 문제를\r 완화했습니다. `IERC20.approve`를 참조하세요.\r",

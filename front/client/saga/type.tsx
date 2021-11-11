@@ -44,13 +44,19 @@ function itemSearchAPI(data){
 }
 
 function* itemSearch(action){
-    console.log(action.data);
     
     const result = yield call(itemSearchAPI, action.data)
+     console.log(`saga까지 왔을까?${result.data.ARR}`);
+        yield put({
+        type:'ITEM_LIST_SEARCH_SUCCESS',
+        data:result.data.ARR
+        
+    })
 }
 
 function* reqItemSearch(){
     yield takeLatest('ITEM_SEARCH_REQUEST',itemSearch)
+
 }
 
 
@@ -91,6 +97,24 @@ function* categorySaga(){
 function* reqCategory(){
     yield takeLatest('CATEGORY_REQUEST',categorySaga)
 }
+
+/* 서브 카테고리 */
+function subcategoryAPI(data){
+    return axios.post(`${url}/type/subcategorylist`,data)
+}
+
+function* subcategorySaga(action){
+    const result = yield call(subcategoryAPI,action.data)
+        yield put({
+        type:'SUB_LIST_CATEGORY_SUCCESS',
+        
+    })
+}
+
+function* reqSubCategory(){
+    yield takeLatest('SUB_CATEGORY_REQUEST',subcategorySaga)
+}
+
 export default function* typeSaga(){
     yield all([
         fork(reqSellType),
@@ -98,5 +122,6 @@ export default function* typeSaga(){
         fork(reqItemSearch),
         fork(reqSortType),
         fork(reqCategory),
+        fork(reqSubCategory)
     ])
 }

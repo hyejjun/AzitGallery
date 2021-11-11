@@ -46,10 +46,15 @@ export const ITEM_SORT_REQUEST = "ITEM_SORT_REQUEST" as const;
 export const ITEM_SORT_SUCCESS = "ITEM_SORT_SUCCESS" as const;
 export const ITEM_SORT_ERROR = "ITEM_SORT_ERROR" as const;
 
-/* 마케고리 가져오기 */
+/* 카테고리 가져오기 */
 export const CATEGORY_REQUEST = "CATEGORY_REQUEST" as const;
 export const CATEGORY_SUCCESS = "CATEGORY_SUCCESS" as const;
 export const CATEGORY_ERROR = "CATEGORY_ERROR" as const;
+
+/* 서브 카테고리 가져오기 */
+export const SUB_CATEGORY_REQUEST = "SUB_CATEGORY_REQUEST" as const;
+export const SUB_CATEGORY_SUCCESS = "SUB_CATEGORY_SUCCESS" as const;
+export const SUB_CATEGORY_ERROR = "SUB_CATEGORY_ERROR" as const;
 
 /******************************************************************* */
 
@@ -155,6 +160,27 @@ export const category_ERROR = () => {
     }
 }
 
+/* 상품 정렬 - 최근발행 | 인기 많은 순 */
+export const sub_category_REQUEST = (data) => {
+    return {
+        type: SUB_CATEGORY_REQUEST,
+        data: data
+    }
+}
+
+export const sub_category_SUCCESS = (main,sub) => {
+    return {
+        type: SUB_CATEGORY_SUCCESS,
+        main:main,
+        sub:sub
+    }
+}
+
+export const sub_category_ERROR = () => {
+    return {
+        type: SUB_CATEGORY_ERROR,
+    }
+}
 
 type TypeAction =
     | ReturnType<typeof sellType_REQUEST>
@@ -172,6 +198,9 @@ type TypeAction =
     | ReturnType<typeof category_REQUEST>
     | ReturnType<typeof category_SUCCESS>
     | ReturnType<typeof category_ERROR>
+    | ReturnType<typeof sub_category_REQUEST>
+    | ReturnType<typeof sub_category_SUCCESS>
+    | ReturnType<typeof sub_category_ERROR>
 
 const reducer = (state: TypeState = initialState, action: TypeAction) => {
     switch (action.type) {
@@ -251,6 +280,20 @@ const reducer = (state: TypeState = initialState, action: TypeAction) => {
                 sub:action.sub
             }
         case CATEGORY_ERROR:
+            return {
+                ...state,
+            }
+        /* 서브 카테고리 */
+        case SUB_CATEGORY_REQUEST:
+            return {
+                ...state,
+                data:action.data
+            }
+        case SUB_CATEGORY_SUCCESS:
+            return {
+                ...state,
+            }
+        case SUB_CATEGORY_ERROR:
             return {
                 ...state,
             }
