@@ -53,7 +53,8 @@ const FileUpload = ({fileChange, fileBase, deleteFile, setMainImage, mainImgIdx}
 }
 
 const ImageWrapper = Styled.div`
-    border: solid 2px red;
+    border: solid 2px #055fec;
+    border-radius: 5px;
     box-sizing: border-box;
     width:90px;
     height:90px;
@@ -76,7 +77,7 @@ const MainImageText = Styled.div`
     width: 60px;
     height: 20px;
     font-size: 15px;
-    
+
     position: absolute;
     left: 3px;
     top: 3px;
