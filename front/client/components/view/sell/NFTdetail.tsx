@@ -45,7 +45,7 @@ const NFTdetail = ({children}) => {
     const currency = useSelector((state:RootState) => state.view.currency);
 
     const colorArr = color.split("/")
-    const sizeArr = size.split("/")
+    const sizeArr = size.split(",")
 
     
     console.log(colorpic)
