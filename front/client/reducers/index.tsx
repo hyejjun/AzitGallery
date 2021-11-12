@@ -6,6 +6,7 @@ import type from './type'
 import view from './view'
 import list from './list'
 import auction from './auction'
+import deal from './deal'
 import reducer from './user'
 import {initialState} from './user'
 import {AnyAction} from 'redux';
@@ -19,6 +20,7 @@ import { ViewState } from './view'
 import { TypeState } from './type'
 import { ListState } from '../reducers/list'
 import { AuctionState } from './auction'
+import { DealState } from './deal'
 import {Reducer} from 'redux'
 
 const persistConfig = {
@@ -34,12 +36,12 @@ export interface State {
     type:TypeState,
     view:ViewState,
     list:ListState,
-    auction:AuctionState
-
+    auction:AuctionState,
+    deal:DealState
 }
 
 const combinedReducers = combineReducers({
-    user, mint, ship, type, view, list, auction
+    user, mint, ship, type, view, list, auction, deal
 })
 
 export const rootReducer:Reducer<State,AnyAction> = (state,action) => {

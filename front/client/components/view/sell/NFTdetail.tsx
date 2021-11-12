@@ -15,6 +15,8 @@ import { directDealView_REQUEST } from '../../../reducers/view'
 
 const NFTdetail = ({children}) => {
 
+    const [colorpic,setColor] = useState<string>('')
+    const [sizepic,setSize] = useState<string>('')
 
     const router = useRouter()
     const {view} = router.query // 카테고리 이름
@@ -43,21 +45,22 @@ const NFTdetail = ({children}) => {
     const currency = useSelector((state:RootState) => state.view.currency);
 
     const colorArr = color.split("/")
-    const sizeArr = size.split("/")
+    const sizeArr = size.split(",")
 
     
-    
+    console.log(colorpic)
+    console.log(sizepic)
     return (
         <>
             <NFTdetailWrap>
                 <NFTBuy>
-                    <ColorSelect colorArr={colorArr}/>
-                    <SizeSelect sizeArr={sizeArr}/>
+                    <ColorSelect colorArr={colorArr} flagsetcolor={setColor} flagcolor={colorpic}/>
+                    <SizeSelect sizeArr={sizeArr} flagsetsize={setSize} flagsize={sizepic}/>
                     <Like/>
                     <BuyBtnCSS onClick={orderOpen}>
                         <button>{children}</button>
                     </BuyBtnCSS>
-                    <Order open={open} orderOpen={orderOpen} price={price} currency={currency}/>
+                    <Order open={open} orderOpen={orderOpen} price={price} currency={currency} flagcolor={colorpic} flagsize={sizepic} item_id={params}/>
                 </NFTBuy>
                 <NFTTitle title={title}/>
                 <NFTexplanation nickname={nickname} description={description}/>

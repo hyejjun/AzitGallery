@@ -591,6 +591,7 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
                 data:action.data
             }
         case NOT_SELLED_SUCCESS:
+            console.log(action.data,'action.dataaaaaaaaaaaaaa')
             return{
                 ...state,
                 notsellnftList:action.data

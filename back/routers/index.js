@@ -9,6 +9,7 @@ const typeRouter = require('./type/index')
 const viewRouter = require('./view/index')
 const listRouter = require('./list/index')
 const auctionRouter = require('./auction/index')
+const dealRouter = require('./deal/index')
 
 router.use('/', mainRouter)
 router.use('/user', userRouter)
@@ -19,5 +20,6 @@ router.use('/type',typeRouter)
 router.use('/view',viewRouter)
 router.use('/list',listRouter)
 router.use('/auction',auctionRouter)
+router.use('/deal',dealRouter)
 
 module.exports = router

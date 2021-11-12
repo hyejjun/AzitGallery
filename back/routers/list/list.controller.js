@@ -115,13 +115,13 @@ let my_nft_all_post = async (req,res) => {
     let keyObject = JSON.parse(key)
     let query=
     `
-    select a.final_order_state,b.item_code,b.size,b.size, c.title,c.creator,c.item_hits,e.nick_name, c.registered_at
+    select a.final_order_state,b.item_code,b.size,c.title,c.creator,c.item_hits,d.nick_name 
     from orders as a join order_detail as b 
     on a.order_num=b.order_num join item_info as c 
-    on c.item_code=substring(b.item_code,1,13) join user as d 
-    on a.buyer=d.user_idx join user as e 
-    on e.user_idx=c.creator 
-    where d.kaikas_address='${keyObject}' 
+    on c.item_code=substring(b.item_code,1,16) 
+    join user as d on a.user_idx=d.user_idx 
+    where d.user_idx=c.creator 
+    and d.kaikas_address='${keyObject}' 
     order by c.registered_at;
     `    
    queryset(req,res,query)
@@ -130,19 +130,13 @@ let my_nft_all_post = async (req,res) => {
 
 // 판매된 nft
 let sold_nft_post = async (req,res) => {
+    
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
     let query = 
     `
-    select a.item_code, a.state, c.item_hits, c.title, e.order_date,c.registered_at
-    from buyer_list as a join item_detail as b 
-    on a.item_code= b.item_code join item_info as c 
-    on b.item_info_idx=c.item_id join order_detail as d 
-    on d.item_code=b.item_code join orders as e 
-    on d.order_num= e.order_num join user as f 
-    on f.user_idx=a.sender_idx 
-    where f.kaikas_address='address1' 
-    order by c.registered_at;
+    select * from buyer_list as a join item_info as b on substring(a.item_code,1,16)=b.item_code where a.buyer_idx=1
+    order by b.registered_at;
     `
     queryset(req,res,query)
     
@@ -156,11 +150,11 @@ let not_sell_post = async(req,res) => {
     let keyObject = JSON.parse(key)
     let query =
     `
-    select a.creator,a.title, b.item_code, a.item_hits,a.registered_at
-    from item_info as a join item_detail as b 
-    on a.item_id=b.item_info_idx join user as c 
-    on a.creator=c.user_idx 
-    where c.kaikas_address='address1' and b.product_status=0 order by a.registered_at;
+    select a.item_code,b.title,b.item_hits from item_detail as a join item_info as b 
+    on a.item_info_idx=b.item_id join user as c 
+    on c.user_idx=b.creator 
+    where c.kaikas_address='${keyObject}' and a.product_status=0 
+    order by b.registered_at;
     `
 
     queryset(req,res,query)
@@ -177,32 +171,33 @@ let mynft_hit_post = (req,res) => {
     let { userAddress } = req.body
     let query =
     `
-    select a.final_order_state,b.item_code,b.size,b.size, c.title,c.creator,c.item_hits,e.nick_name, c.registered_at
+    select a.final_order_state,b.item_code,b.size,c.title,c.creator,c.item_hits,d.nick_name 
     from orders as a join order_detail as b 
     on a.order_num=b.order_num join item_info as c 
-    on c.item_code=substring(b.item_code,1,13) join user as d 
-    on a.buyer=d.user_idx join user as e 
-    on e.user_idx=c.creator 
-    where d.kaikas_address=${userAddress} 
-    order by c.item_hits;;
+    on c.item_code=substring(b.item_code,1,16) 
+    join user as d on a.user_idx=d.user_idx 
+    where d.user_idx=c.creator 
+    and d.kaikas_address=${userAddress} 
+    order by c.item_hits;
     `
     queryset(req,res,query)
 }
 
+
+// `
+// select * from item_detail as a join item_info as b 
+// on a.item_info_idx=b.item_id join user as c 
+// on c.user_idx=b.creator 
+// where c.kaikas_address='0x2618f9b36086912b479ba6a6fff6abcfcc032398' and a.product_status=1 
+// order by b.item_hits desc;
+// `
 // 판매된 nft중 조회수 높은 순
 let sellnft_hit_post = (req,res) => {
     let { userAddress } = req.body
     let query =
     `
-    select a.item_code, a.state, c.item_hits, c.title, e.order_date,c.registered_at
-    from buyer_list as a join item_detail as b 
-    on a.item_code= b.item_code join item_info as c 
-    on b.item_info_idx=c.item_id join order_detail as d 
-    on d.item_code=b.item_code join orders as e 
-    on d.order_num= e.order_num join user as f 
-    on f.user_idx=a.sender_idx 
-    where f.kaikas_address='address1'
-    order by c.item_hits;
+    select * from buyer_list as a join item_info as b on substring(a.item_code,1,16)=b.item_code where a.buyer_idx=1
+    order by b.item_hits desc;
     `
     queryset(req,res,query)
 }
@@ -212,12 +207,11 @@ let notsellnft_hit_post = (req,res) => {
     let { userAddress } = req.body
     let query =
     `
-    select a.creator,a.title, b.item_code, a.item_hits,a.registered_at
-    from item_info as a join item_detail as b 
-    on a.item_id=b.item_info_idx join user as c 
-    on a.creator=c.user_idx 
-    where c.kaikas_address='address1' and b.product_status=0 order by a.item_hits desc;
-    
+    select a.item_code,b.title,b.item_hits from item_detail as a join item_info as b 
+    on a.item_info_idx=b.item_id join user as c 
+    on c.user_idx=b.creator 
+    where c.kaikas_address=${userAddress} and a.product_status=0 
+    order by b.item_hits;
     `
     queryset(req,res,query)
 
@@ -235,7 +229,6 @@ let queryset = (req,res,query) => {
                     result_msg:'Fail'
                 }
             }else{
-                //console.log(result)
                 data = {
                     result_msg:'OK',
                     result

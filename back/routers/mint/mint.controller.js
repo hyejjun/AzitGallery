@@ -51,7 +51,7 @@ let mint_nft_post = async (req,res) => {
     keyring.address
   );
 //   console.log(kip17)
-  console.log(kip17.options.address);
+  //console.log(kip17.options.address);
 
    // 컨트랙트 주소 기반으로 KIP-17 오브젝트를 생성합니다.
    const kip_17 = new caver.kct.kip17(kip17.options.address);
@@ -82,13 +82,13 @@ let mint_nft_post = async (req,res) => {
          tokenURI,
          { from: keyring.address }
        );
-       console.log(mintResult)
+       //console.log(mintResult)
      }
     // 나중에는 creator 도 가져와야함..
   
     const imagesLink = req.body[1]
     const mainImgLink = req.body[2]
-    console.log(mainImgLink)
+    //console.log(mainImgLink)
     let sell_type
     ifSell == true ? sell_type = false : sell_type = true
     let data // res.json 리턴용
@@ -304,7 +304,7 @@ let mint_nft_post = async (req,res) => {
                         },{where:{
                             nft_idx:idx
                         }})
-                        console.log(data.events.Transfer.address)
+                        //console.log(data.events.Transfer.address)
                     }catch(e){console.log(e,'then 안에서')}
                 // }, 10);
             })            
