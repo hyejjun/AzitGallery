@@ -2,18 +2,19 @@ import Styled from 'styled-components'
 
 const SizeSelect = (props) => {
     const optionArr = [...props.sizeArr]
+    optionArr.unshift('SIZE')
     let sizeList = optionArr.map((v,k)=>{
         return(
-            <option key={k}>
+            <option value={v} key={k}>
                 {v}
             </option>
         )
-    })    
+    })   
+    const handleChange = (e) =>{
+        props.flagsetsize(e.target.value)
+    } 
     return (
-        <SizeSelectCSS>
-            <option>
-                SIZE
-            </option>
+        <SizeSelectCSS value={props.flagsize} onChange={handleChange}>
             {sizeList}
         </SizeSelectCSS>
     )

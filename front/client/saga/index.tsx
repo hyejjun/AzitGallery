@@ -6,6 +6,7 @@ import typeSaga from './type'
 import viewSaga from './view'
 import listSaga from './list'
 import auctionSaga from './auction'
+import deal from './deal'
 
 export default function* rootSaga(){
         yield all([
@@ -15,7 +16,8 @@ export default function* rootSaga(){
         fork(typeSaga),
         fork(viewSaga),
         fork(listSaga),
-        fork(auctionSaga)
+        fork(auctionSaga),
+        fork(deal)
         ])        
 
 }

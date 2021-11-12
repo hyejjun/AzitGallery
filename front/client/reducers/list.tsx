@@ -400,55 +400,42 @@ type ListAction =
 | ReturnType<typeof Itemlist_REQUEST>
 | ReturnType<typeof Itemlist_SUCCESS>
 | ReturnType<typeof Itemlist_ERROR>
-
 | ReturnType<typeof PlusItemlist_REQUEST>
 | ReturnType<typeof PlusItemlist_SUCCESS>
 | ReturnType<typeof PlusItemlist_ERROR>
-
 | ReturnType<typeof ItemAuction_REQUEST>
 | ReturnType<typeof ItemAuction_SUCCESS>
 | ReturnType<typeof ItemAuction_ERROR>
-
 | ReturnType<typeof PlusAuctionlist_REQUEST>
 | ReturnType<typeof PlusAuctionlist_SUCCESS>
 | ReturnType<typeof PlusAuctionlist_ERROR>
-
 | ReturnType<typeof SetQuery_REQUEST>
 | ReturnType<typeof SetQuery_SUCCESS>
 | ReturnType<typeof SetQuery_ERROR>
-
 | ReturnType<typeof ItemGender_REQUEST>
 | ReturnType<typeof ItemGender_SUCCESS>
 | ReturnType<typeof ItemGender_ERROR>
-
 | ReturnType<typeof ItemRecent_REQUEST>
 | ReturnType<typeof ItemRecent_SUCCESS>
 | ReturnType<typeof ItemRecent_ERROR>
 | ReturnType<typeof myNft_all_REQUEST>
 | ReturnType<typeof myNft_all_SUCCESS>
 | ReturnType<typeof myNft_all_ERROR>
-
 | ReturnType<typeof sold_nft_REQUEST>
 | ReturnType<typeof sold_nft_SUCCESS>
 | ReturnType<typeof sold_nft_ERROR>
-
 | ReturnType<typeof not_selled_REQUEST>
 | ReturnType<typeof not_selled_SUCCESS>
 | ReturnType<typeof not_selled_ERROR>
-
-
 | ReturnType<typeof Item_List_Search_REQUEST>
 | ReturnType<typeof Item_List_Search_SUCCESS>
 | ReturnType<typeof Item_List_Search_ERROR>
-
 | ReturnType<typeof hits_buy_REQUEST>
 | ReturnType<typeof hits_buy_SUCCESS>
 | ReturnType<typeof hits_buy_ERROR>
-
 | ReturnType<typeof hits_sell_REQUEST>
 | ReturnType<typeof hits_sell_SUCCESS>
 | ReturnType<typeof hits_sell_ERROR>
-
 | ReturnType<typeof hits_not_sell_REQUEST>
 | ReturnType<typeof hits_not_sell_SUCCESS>
 | ReturnType<typeof hits_not_sell_ERROR>
@@ -512,9 +499,11 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
          
             }
         case PLUS_AUCTION_LIST_SUCCESS:
+            console.log(`작동하는지 여부${action.Pluslength}`)
+
             return{
                 ...state,
-                auctionitemList: action.data,
+                auctionList: action.data,
                 auctionlength: action.Pluslength
             }
         case PLUS_AUCTION_LIST_ERROR:
@@ -602,6 +591,7 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
                 data:action.data
             }
         case NOT_SELLED_SUCCESS:
+            console.log(action.data,'action.dataaaaaaaaaaaaaa')
             return{
                 ...state,
                 notsellnftList:action.data

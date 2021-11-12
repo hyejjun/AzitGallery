@@ -6,8 +6,9 @@ import { EndBtnCSS } from '../sell/NFTdetail';
 import JoinAcution from './JoinAuction';
 import { Auction_Price_REQUEST } from "../../../reducers/auction"
 import { Auction_Current_REQUEST } from "../../../reducers/auction"
+import { RootState } from "../../../reducers"
 
-const AuctionDetail = () => {
+const AuctionDetail = (props) => {
     const dispatch = useDispatch()
     const User = useSelector((state:RootState) => state.user);    
     const Auction = useSelector((state:RootState) => state.auction);    
@@ -104,7 +105,7 @@ const AuctionDetail = () => {
         <>
             <AuctionDetailWrap>
                 <ul className="auctionTitle">
-                    {/* <li>경매 입찰 수</li> */}
+                    <li>경매 입찰 수</li>
                     <li>현재 입찰가</li>
                     <li>마감시간</li>
                 </ul>

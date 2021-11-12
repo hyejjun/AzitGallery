@@ -2,18 +2,19 @@ import Styled from 'styled-components'
 
 const ColorSelect = (props) => {
     const optionArr = [...props.colorArr]
+    optionArr.unshift('COLOR')
     let colorList = optionArr.map((v,k)=>{
         return(
-            <option key={k}>
+            <option value={v} key={k}>
                 {v}
             </option>
         )
-    })    
+    })
+    const handleChange = (e) =>{
+        props.flagsetcolor(e.target.value)
+    }
     return (
-        <ColorSelectCSS>
-            <option>
-                Color
-            </option>
+        <ColorSelectCSS value={props.flagcolor} onChange={handleChange}>            
             {colorList}
         </ColorSelectCSS>
     )

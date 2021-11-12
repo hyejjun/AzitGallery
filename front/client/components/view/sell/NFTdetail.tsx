@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import Styled from 'styled-components'
 import Order from "./Order";
 import NFTexplanation from "../NFTexplanation";
@@ -6,11 +6,30 @@ import Like from "../../common/Like";
 import NFTTitle from "../NFTTitle";
 import SizeSelect from "../SizeSelect";
 import ColorSelect from "../ColorSelect";
-import { useSelector } from "react-redux";
 import { RootState } from "../../../reducers";
+import {useRouter} from 'next/router'
+import { useSelector, useDispatch } from 'react-redux'
+import { directDealView_REQUEST } from '../../../reducers/view'
+
 
 
 const NFTdetail = ({children}) => {
+
+    const [colorpic,setColor] = useState<string>('')
+    const [sizepic,setSize] = useState<string>('')
+
+    const router = useRouter()
+    const {view} = router.query // 카테고리 이름
+    console.log(view);
+    
+    
+    const dispatch = useDispatch()
+    let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
+    
+    useEffect(()=>{
+        dispatch(directDealView_REQUEST(params))
+    },[])
+
     
     const [open, setOpen] = useState<boolean>(false);
     const orderOpen = () => {
@@ -25,20 +44,23 @@ const NFTdetail = ({children}) => {
     const price = useSelector((state:RootState) => state.view.price);
     const currency = useSelector((state:RootState) => state.view.currency);
 
-    const colorArr = color.split(",")
+    const colorArr = color.split("/")
     const sizeArr = size.split(",")
+
     
+    console.log(colorpic)
+    console.log(sizepic)
     return (
         <>
             <NFTdetailWrap>
                 <NFTBuy>
-                    <ColorSelect colorArr={colorArr}/>
-                    <SizeSelect sizeArr={sizeArr}/>
+                    <ColorSelect colorArr={colorArr} flagsetcolor={setColor} flagcolor={colorpic}/>
+                    <SizeSelect sizeArr={sizeArr} flagsetsize={setSize} flagsize={sizepic}/>
                     <Like/>
                     <BuyBtnCSS onClick={orderOpen}>
                         <button>{children}</button>
                     </BuyBtnCSS>
-                    <Order open={open} orderOpen={orderOpen} price={price} currency={currency}/>
+                    <Order open={open} orderOpen={orderOpen} price={price} currency={currency} flagcolor={colorpic} flagsize={sizepic} item_id={params}/>
                 </NFTBuy>
                 <NFTTitle title={title}/>
                 <NFTexplanation nickname={nickname} description={description}/>
