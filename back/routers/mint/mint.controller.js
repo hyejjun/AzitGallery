@@ -6,7 +6,7 @@ const option = {
         {
             name: "Authorization",
             //https://console.klaytnapi.com/ko/security/credential 여기서 발급
-            value: "Basic " + Buffer.from("KASKKDRR6BVLSCRAM4I6PRPS" + ":" + "_uFWVwECedWHBsugbvH9EBMhUbHxKKvXG9covs42").toString("base64"),
+            value: "Basic " + Buffer.from("KASKTBRTBYCJZW0FAXSBJBSP" + ":" + "Z3yNkPzJ20ARwFBdt2DooHySi4HVdE1rmdfpt-tM").toString("base64"),
         },
         { name: "x-krn", value: "krn:1001:node" },
     ],

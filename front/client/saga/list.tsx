@@ -10,10 +10,11 @@ function listitemAPI() {
 
 function* listitemSaga(){
     const result = yield call(listitemAPI)
-   
+
     yield put({
         type:'ITEM_LIST_SUCCESS',
-        data:result.data.ARR
+        data:result.data.ARR,
+
     })
 }
 

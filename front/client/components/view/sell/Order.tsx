@@ -65,6 +65,11 @@ const Order = (props) => {
         let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
         window.location.href = `/ship/${params}`
     }
+    let NEXT =()=>{
+        dispatch(direct_deal_REQUEST(data))
+        let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
+        window.location.href = `/ship/${params}`
+    }
     
     return (
         <>
@@ -107,7 +112,7 @@ const Order = (props) => {
                     <OrderBtn>
                         {
                             checked 
-                            ? <button onClick = {Purchase}>Checkout</button>
+                            ? <button onClick = {NEXT}>Checkout</button>
                             : <button className="unChecked" onClick={unCheckedClick}>Checkout</button>
 
                         }

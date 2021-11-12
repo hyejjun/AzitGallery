@@ -93,11 +93,12 @@ export const Itemlist_REQUEST = () => {
     }
 }
 
-export const Itemlist_SUCCESS = (data) => {
+export const Itemlist_SUCCESS = (data,test) => {
   
     return {
         type: ITEM_LIST_SUCCESS,
-        data: data
+        data: data,
+
     }
 }
 
@@ -449,9 +450,10 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
          
             }
         case ITEM_LIST_SUCCESS:
+
             return{
                 ...state,
-                itemList: action.data
+                itemList: action.data,
             }
         case ITEM_LIST_ERROR:
             return{

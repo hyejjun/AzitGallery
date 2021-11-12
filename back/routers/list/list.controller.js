@@ -3,7 +3,24 @@ const mysql = require('mysql')
 const pool = require('../pool');
 const { user_info } = require('../user/user.controller');
 
-
+const option = {
+    headers: [
+        {
+            name: "Authorization",
+            //https://console.klaytnapi.com/ko/security/credential 여기서 발급
+            value: "Basic " + Buffer.from("KASKTBRTBYCJZW0FAXSBJBSP" + ":" + "Z3yNkPzJ20ARwFBdt2DooHySi4HVdE1rmdfpt-tM").toString("base64"),
+        },
+        { name: "x-krn", value: "krn:1001:node" },
+    ],
+};
+  
+const Caver = require("caver-js");
+const caver = new Caver(
+    new Caver.providers.HttpProvider(
+      "https://node-api.klaytnapi.com/v1/klaytn",
+      option
+    )
+);
 
 /* 일반 상품 */
 
@@ -16,9 +33,10 @@ let all_list_get =  async (req,res) => {
     for(let i=0; i<result.length; i++){
         ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url: `/sell/${result[i].item_id}`,img:result2[i].item_img_link})
     }
+
     console.log(ARR)
     let data = {
-        ARR:ARR
+        ARR:ARR,
     }
 
     res.json(data)

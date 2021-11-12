@@ -4,12 +4,29 @@ import Styled from 'styled-components'
 import Link from 'next/link'
 import Button from '@mui/material/Button';
 
+declare global {
+    interface Window {
+        klaytn: any;
+        caver: any;
+    }
+}
+
 const MyNFT = ()=>{
+
+    const test = async() => {
+        function hex(value){
+            return parseInt(value, 16)
+        }
+        let getBal = await window.klaytn.getBalance("0x89e204FcBAD4C4197A9E3971c7bB3C32f46cC458")
+        hex(getBal)
+    }
+    
     return(
         <>
             <MyNFTAll>
                 <Menu>
-                    <MenuH3>나만의 NFT를 발행해보세요</MenuH3>
+                    <MenuH3 onClick = {test}>나만의 NFT를 발행해보세요</MenuH3>
+                    <div></div>
                     <div>KrafterSpace에서는 누구나 쉽고 간편하게<br/>NFT를 발행하고 관리할 수 있어요.</div>
                     <Link href = "/item/additem"><a>
                         <Button variant="contained" size="large">NFT 발행하기</Button>

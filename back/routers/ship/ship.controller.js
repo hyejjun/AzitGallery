@@ -9,19 +9,17 @@ let get_shipinfo = async (req,res)=>{
     const buyerAddress = address+addressDetail
     const USERRESULT = await User.findOne({where:{kaikas_address:UserAddress}})
     // const params_item = await ItemInfo.findOne({where:{item_id :params}})
-
+    const ORDERDETAILRESULT = await OrderDetail.findAll({})
     console.log(params)
-
-        await OrderDetail.create({
-            size:'blue',color:'orderer',order_qty:45,shipper_idx:45,item_code:'phoneNum',price:1,item_id:params
-        })
-
-       const result =  await Orders.create({
-            total_price:55500,buyer:orderer,receiver:receiver,receiver_address:buyerAddress,receiver_contact:phoneNum,final_order_state:true,memo:memo,user_idx:USERRESULT.user_idx
-        })
+        
+       const result =  await Orders.update({
+            buyer:orderer,receiver:receiver,receiver_address:buyerAddress,receiver_contact:phoneNum,final_order_state:true,memo:memo,user_idx:USERRESULT.user_idx
+        }, {
+            where: { order_num: ORDERDETAILRESULT.length  }
+          })
 
         await ShipInfo.create({
-            delivery_company:'55500',post_num:'orderer',item_delivery_state:'배송 중'
+            delivery_company:'로젠택배',post_num:'0',item_delivery_state:'0'
         })
 
         res.json()

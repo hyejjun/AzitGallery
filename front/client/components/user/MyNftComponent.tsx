@@ -77,7 +77,7 @@ const MyNftComponent = () => {
         .sendTransaction({
           type: 'VALUE_TRANSFER',
           from: window.klaytn.selectedAddress,
-          to: '0x5F5c71c26C985dB9CEcc4ba280534F75fdb54220',
+          to: '0x89e204FcBAD4C4197A9E3971c7bB3C32f46cC458',
           value: window.caver.utils.toPeb('1', 'KLAY'),
           gas: 8000000
         })

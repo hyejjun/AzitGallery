@@ -19,6 +19,7 @@ declare global {
 const LoginForm = (props) =>{
     const [clicked, setClicked] = React.useState<boolean>(false)
     const [kaikasAddress, setKaikasAddress] = React.useState<string[]>([])
+    const [Load,setLoad] = React.useState<boolean>(false)
     const User = useSelector((state:RootState) => state.user);
     const dispatch = useDispatch()
 
@@ -37,8 +38,9 @@ const LoginForm = (props) =>{
         const account = window.klaytn.selectedAddress
         const message = 'Login User'
         const signedMessage = await window.caver.klay.sign(message, account)
-  
+        setLoad(true)
       if(User.signupBool == false){
+        
           window.location.href = "/signup"
       } else if(User.signupBool == true){
           window.location.href = "/"
@@ -50,6 +52,10 @@ const LoginForm = (props) =>{
 
     }
 
+    useEffect(()=>{
+        const klaytnAddress = window.klaytn.selectedAddress
+        dispatch(UserLogin_REQUEST(klaytnAddress))
+    },[Load])
     const onClick = () => {
         if (!window.klaytn) {
             return
