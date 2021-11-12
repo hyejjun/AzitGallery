@@ -51,8 +51,14 @@ const AuctionDetail = (props) => {
         //         window.location.reload();
         //     }
         // }
-
-        if(auctionPrice <= Auction.current){
+        let params = JSON.stringify(window.location.href).split('ion/')[1].replace("\"", "")
+        let data2 = {
+            params: params,
+        }
+        dispatch(Auction_Current_REQUEST(data2))
+        console.log(`현재가 책정 ${auctionPrice}`)
+        console.log(`최고가 책정 ${Auction.current}`)
+        if(Number(auctionPrice) <= Number(Auction.current)){
             alert('현재가보다 높게 제시해주세요')
             setOpenAuction(prev => !prev)
         } else {
