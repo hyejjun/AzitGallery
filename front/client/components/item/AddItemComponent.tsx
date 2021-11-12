@@ -318,6 +318,7 @@ const AddItemComponent = () => {
     }
 
     // 최종 밸류 submit, nft 팝업에서 예 누른 이후
+    /* mint saga쪽에서 핸들링
     const handleSubmit = async () => { 
         let data = {}
         if(ifSell === true){
@@ -330,7 +331,8 @@ const AddItemComponent = () => {
             console.log(data,'handleSubmit')
         }
     }
-
+    */
+/* mint saga쪽에서 핸들링
     function sendDataToServer(data:Array<any>){
         // s3에서 리턴받은 주소를 넣을 배열
         let fileArr = []
@@ -361,13 +363,15 @@ const AddItemComponent = () => {
         // then으로 강제로 await을 시켜 전송
         putImagesLink().then(x=>{
             let result = axios.post(`${url}/item/uploaddata`,[data[0],fileArr])
-            // console.log(result,'zzzzz')
+            if(result.data.data.result_msg == "Fail" && result.data.data.msg == "잔액이 충분하지 않습니다"){
+                console.log('asd')
+            }
         })
     }
-
+*/
     // 새 NFT발행 시 그냥 새로고침 ->테스트 완료 후 주석 해제
     const resetState = () => {
-        window.location.reload() 
+        // window.location.reload() 
     }
 
     const dispatch = useDispatch()

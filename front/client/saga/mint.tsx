@@ -31,20 +31,19 @@ function MintNftAPI(action) {
         await Promise.all(fileArray)
     }
     // then으로 강제로 await을 시켜 전송
-    putImagesLink().then(async x=>{
 
-        console.log(mainImgLink,'mainImgLink')
-        await axios.post(`${url}/mint/mintnft`,[data[0],fileArr, mainImgLink])
+    putImagesLink().then(async x=>{
+        let result =  await axios.post(`${url}/mint/mintnft`,[data[0],fileArr, mainImgLink])
+        console.log(result)
+        return result
     })
 }
 
 function* MintNftSaga(action){
-    const result = yield call(MintNftAPI,action)
-
-    yield put({
-        type:'MINT_NFT_SUCCESS',
-        verify:5000
-    })  
+    
+    let result = yield call(MintNftAPI,action)
+    console.log(result.data,'mintnftsaga')
+   
 }
 
 function* reqMintNft(){
