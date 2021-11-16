@@ -49,11 +49,6 @@ const AddItemComponent = () => {
     const [size, setSize] = useState<Array<string>>([])
     // 사이즈 입력값
     const [sizeVal, setSizeVal] = useState<string>('')
-    // 수량 배열
-    const [qty, setQty] = useState<Array<string>>([])
-    //수량 입력값
-    const [qtyVal, setQtyVal] = useState<string>('')
-
     // 카테고리 배열 로드
     const [category, setCategory] = useState<Array<string>>([])
     const [loadCategory, setLoadCategory] = useState<boolean>(false)
@@ -91,29 +86,6 @@ const AddItemComponent = () => {
         }
     },[mainImgIdx, fileBase])
 
-    useEffect(()=>{
-
-    }, [color, size, qty])
-
-    // 띄어쓰기나 특수문자 포함되었는지 판단하는 함수
-    function handleChk(txt){
-        // 특수문자(띄어쓰기 포함) 제외
-        let chkLetters = /[a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/
-        // 입력된 값을 한자 한자 쪼개서 하나라도 특수문자가 있으면 false 리턴
-        let text = txt.split('')
-        let arr = []
-        text.forEach(x=>{
-            arr.push(chkLetters.test(x))
-        })
-        let chk
-        arr.find(ele=>{
-            if(ele==false){
-                chk = false
-            } else{ chk = true}
-        })
-        return chk
-    }
-
     // input에 대한 handlechange(각 컴포넌트에서 텍스트를 인자값으로 받아
     // 각 컴포넌트마다 인자값에 따라 다르게 응답한다
     function handleTxtChange(e:any, item:string){
@@ -123,7 +95,7 @@ const AddItemComponent = () => {
         } else if(item == "price"){
             // isNaN의 결과값이 false인 경우는 숫자, true는 문자열 포함
             // 입력값에 따라 달라지는 것이지 string/integer와는 관계 없음. 
-            if(isNaN(value)!==false || handleChk(value) == false){
+            if(isNaN(value)!==false){
                 alert('숫자만 입력해주세요.')
                 // 이유는 모르지만 value로 적으면 작동하지 않음(이하 나오는 경우도 동일)
                 e.target.value=''
@@ -136,7 +108,7 @@ const AddItemComponent = () => {
         } else if(item == "desc"){
             setDesc(value)  
         } else if(item == "aucPrice"){
-            if(isNaN(value)!==false || handleChk(value) == false){
+            if(isNaN(value)!==false){
                 alert('숫자만 입력해주세요.')
                 e.target.value=''
                 setPrice('')
@@ -239,10 +211,28 @@ const AddItemComponent = () => {
     // 사이즈, 컬러에 대한 onChange
     function handleTags(e:any, item:string){
         let {value} = e.target
+        // 특수문자(띄어쓰기 포함) 제외
+        let chkLetters = /[a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/
+        // 입력된 값을 한자 한자 쪼개서 하나라도 특수문자가 있으면 false 리턴
+        function handleChk(txt){
+            let text = txt.split('')
+            let arr = []
+            text.forEach(x=>{
+                arr.push(chkLetters.test(x))
+            })
+            let chk
+            arr.find(ele=>{
+                if(ele==false){
+                    chk = false
+                } else{ chk = true}
+            })
+            return chk
+        }
+
         // 컬러와 사이즈에서 입력받은 각각의 경우에 대해
         // 위의 유효성검사 함수 실행, false 리턴받으면 경고메시지 표출
         // 및 해당 값 밸류를 직전 state로 회귀시킴
-        if(item == 'color'){
+        if(item == 'color' && color.length<10){
             if(handleChk(value) === false){
                 alert('특수문자나 띄어쓰기 없이 입력해 주세요.')
                 e.target.value = colorVal
@@ -253,8 +243,10 @@ const AddItemComponent = () => {
                     setColorVal(value)
                 }
             }
+        } else if(item == 'color' && color.length>=10){
+            alert('총 항목이 10개를 넘을 수 없습니다.')
         } 
-        else if(item == 'size'){
+        else if(item == 'size' && size.length<10){
             if(handleChk(value) === false){
                 alert('특수문자나 띄어쓰기 없이 입력해 주세요.')
                 e.target.value = sizeVal
@@ -265,49 +257,38 @@ const AddItemComponent = () => {
                     setSizeVal(value)
                 }
             }
-        } else if(item == 'number'){
-            if(isNaN(value)!==false || handleChk(value) == false){
-                alert('숫자만 입력해주세요.')
-                // 이유는 모르지만 value로 적으면 작동하지 않음(이하 나오는 경우도 동일)
-                e.target.value=''
-                setQtyVal('')
-            } else{setQtyVal(value)}
+        } else if(item == 'size' && size.length>=10){
+            alert('총 항목이 10개를 넘을 수 없습니다.')
         } 
     }
 
-    function addItem(){
-        if(colorVal !== '' && sizeVal !== '' && qtyVal !== ''){
-            let newColArr = [...color]
-            let newSizeArr = [...size]
-            let newQtyArr = [...qty]
-            newColArr.push(colorVal)
-            newSizeArr.push(sizeVal)
-            newQtyArr.push(qtyVal)
-            setColor(newColArr)
-            setSize(newSizeArr)
-            setQty(newQtyArr)
+    // 엔터 누르면 등록되게 하는 함수
+    function handleKeyPress(e:any, item:string){
+        // 빈칸일 때 작동하지 않도록 설정
+        if(colorVal !== '' && item == 'color' && e.key === 'Enter'){
+            let newColor = [...color]
+            newColor.push(colorVal)
+            setColor(newColor)
             setColorVal('')
+        } else if(sizeVal !== '' && item == 'size' && e.key === 'Enter'){
+            let newSize = [...size]
+            newSize.push(sizeVal)
+            setSize(newSize)
             setSizeVal('')
-            setQtyVal('')
-        } else{
-            alert('항목을 모두 입력해주세요.')
         }
     }
 
-    function deleteItem(key:number){
-            let newColArr = [...color]
-            newColArr.splice(key,1)
-            setColor(newColArr)
-            let newSizeArr = [...size]
-            newSizeArr.splice(key,1)
-            setSize(newSizeArr)
-            let newQtyArr = [...qty]
-            newQtyArr.splice(key,1)
-            setQty(newQtyArr)
-
+    function deleteItem(key:number, item:string){
+        if(item == "color"){
+            let newColorArray = [...color]
+            newColorArray.splice(key,1)
+            setColor(newColorArray)
+        } else if(item == "size"){
+            let newSizeArray = [...size]
+            newSizeArray.splice(key,1)
+            setSize(newSizeArray)
+        }
     }
-
-
 
     // 모든 value 최종 submit 전, 미입력 항목이 있는지 검증(nft관련 팝업 전 단계)
     const handleConfirm = () => {
@@ -397,7 +378,9 @@ const AddItemComponent = () => {
     const mint = useSelector((state:RootState) => state.mint);
     const [nftCreateState,setnftCreateState] = useState<boolean>(false);
     const createNftCh = () => {
-        setnftCreateState(prev=>!prev)
+
+            // 
+            setnftCreateState(prev=>!prev)
     }
 
     const createNFTconfirmed = () => {
@@ -420,28 +403,38 @@ const AddItemComponent = () => {
         setnftCreateState(false)
     }
 
-    const ItemDetailRow = () => {
-
-        // color, size, qty
+    const ColorBar = () => {
         return (
-            <>  
+            <BarWrapper>
                 {color.map((x,k)=>{
-                return (
-                <ItemDetailDiv key = {k}>
-                        <ItemDetailInserted>
+                    return (
+                        <ColorSizeItem key = {k}>
                             {x}
-                        </ItemDetailInserted>
-                        <ItemDetailInserted>
-                            {size[k]}
-                        </ItemDetailInserted>
-                        <ItemDetailInserted>
-                            {qty[k]}
-                        </ItemDetailInserted>
-                        <AddRmvBtn onClick = {()=>deleteItem(k)}>-</AddRmvBtn>    
-                </ItemDetailDiv>
+                            <CloseButton 
+                            onClick = {()=>{deleteItem(k,"color")}}
+                            >&#10006;</CloseButton>
+                        </ColorSizeItem>
                     )
                 })}
-            </>
+            </BarWrapper>
+        )
+    }
+
+    const SizeBar = () => {
+        return (
+            <BarWrapper>
+            {size.map((x,k)=>{
+                return (
+                    <ColorSizeItem key = {k}>
+                        {x}
+                        <CloseButton
+                        onClick = {()=>{deleteItem(k,"size")}}
+                        >&#10006;</CloseButton>
+                    </ColorSizeItem>
+                    
+                    )
+                })}
+            </BarWrapper>
         )
     }
     
@@ -496,31 +489,23 @@ const AddItemComponent = () => {
                 </SectionWrapper>
                 <SectionWrapper>
                     <SmallTitle>
-                        제품별 상세 정보 입력
+                        색상 및 사이즈
                     </SmallTitle>
-                    <DescText>색상, 사이즈, 수량을 입력해 주세요.</DescText>
-                    <SmallerTitle>색상 / 사이즈 / 수량 </SmallerTitle>
-                    {ItemDetailRow()}
-                    <ItemDetailBox
+                    <DescText>엔터를 누르면 자동으로 입력되며 띄어쓰기는 불가합니다(각 항목당 30자 이내).</DescText>
+                    <SmallerTitle>색상</SmallerTitle>
+                    <InputBox
                         onChange = {(e)=>handleTags(e,"color")}
+                        onKeyPress = {(e)=>handleKeyPress(e,"color")}
                         value = {colorVal}
-                        placeholder = "색상"
                     />
-                    <ItemDetailBox
+                    <ColorBar/>
+                    <SmallerTitle>사이즈</SmallerTitle>
+                    <InputBox
                         onChange = {(e)=>handleTags(e,"size")}
+                        onKeyPress = {(e)=>handleKeyPress(e,"size")}
                         value = {sizeVal}
-                        placeholder = "사이즈"
                     />
-                    <ItemDetailBox
-                        onChange = {(e)=>handleTags(e,"number")}
-                        value = {qtyVal}
-                        placeholder = "수량"
-                    />
-                    
-                    <AddRmvBtn
-                        onClick = {addItem}
-                    >+</AddRmvBtn>
-                  
+                    <SizeBar/>
                 </SectionWrapper>
                 <SectionWrapper>
                     <SmallTitle>
@@ -585,44 +570,6 @@ const InputBox = Styled.input`
     font-size: 25px;
     display: block;
     margin-bottom: 20px;
-`
-
-const ItemDetailBox = Styled.input`
-    width: 150px;
-    height: 30px;
-    font-size: 25px;
-    margin-right: 20px;
-    margin-bottom: 20px;
-    float: left;
-`
-
-const ItemDetailDiv = Styled.div`
-    width: 690px;
-    height: 30px;
-    font-size: 25px;
-    display: block;
-    margin-bottom: 20px;
-`
-
-const ItemDetailInserted = Styled.div`
-    width: 154px;
-    height: 30px;
-    font-size: 25px;
-    margin-right: 20px;
-    margin-bottom: 20px;
-    float: left;
-`
-
-const AddRmvBtn = Styled.div`
-    width: 35px;
-    height: 35px;
-    background: lightgray;
-    cursor: pointer;
-    display: inline-block;
-    padding: 2px 0 0 8px;
-    font-size: 30px;
-    box-sizing: border-box;
-    margin-right: 10px;
 `
 
 const TextBox = Styled.textarea`
