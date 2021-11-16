@@ -95,7 +95,7 @@ const AddItemComponent = () => {
         } else if(item == "price"){
             // isNaN의 결과값이 false인 경우는 숫자, true는 문자열 포함
             // 입력값에 따라 달라지는 것이지 string/integer와는 관계 없음. 
-            if(isNaN(value)!==false){
+            if(isNaN(value)!==false || handleChk(value) === false){
                 alert('숫자만 입력해주세요.')
                 // 이유는 모르지만 value로 적으면 작동하지 않음(이하 나오는 경우도 동일)
                 e.target.value=''
@@ -108,7 +108,7 @@ const AddItemComponent = () => {
         } else if(item == "desc"){
             setDesc(value)  
         } else if(item == "aucPrice"){
-            if(isNaN(value)!==false){
+            if(isNaN(value)!==false || handleChk(value) === false){
                 alert('숫자만 입력해주세요.')
                 e.target.value=''
                 setPrice('')
@@ -207,30 +207,30 @@ const AddItemComponent = () => {
             setSmallCategory(value)
         }
     }
+    // 유효성 검사 
+    function handleChk(txt){
+        let chkLetters = /[a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/
+        let text = txt.split('')
+        let arr = []
+        text.forEach(x=>{
+            arr.push(chkLetters.test(x))
+        })
+        let chk
+        arr.find(ele=>{
+            if(ele==false){
+                chk = false
+            } else{ chk = true}
+        })
+        return chk
+    }
 
     // 사이즈, 컬러에 대한 onChange
     function handleTags(e:any, item:string){
         let {value} = e.target
         // 특수문자(띄어쓰기 포함) 제외
-        let chkLetters = /[a-zA-Z0-9ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/
         // 입력된 값을 한자 한자 쪼개서 하나라도 특수문자가 있으면 false 리턴
-        function handleChk(txt){
-            let text = txt.split('')
-            let arr = []
-            text.forEach(x=>{
-                arr.push(chkLetters.test(x))
-            })
-            let chk
-            arr.find(ele=>{
-                if(ele==false){
-                    chk = false
-                } else{ chk = true}
-            })
-            return chk
-        }
-
         // 컬러와 사이즈에서 입력받은 각각의 경우에 대해
-        // 위의 유효성검사 함수 실행, false 리턴받으면 경고메시지 표출
+        // 유효성검사 함수 실행, false 리턴받으면 경고메시지 표출
         // 및 해당 값 밸류를 직전 state로 회귀시킴
         if(item == 'color' && color.length<10){
             if(handleChk(value) === false){
