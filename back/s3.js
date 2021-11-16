@@ -8,6 +8,7 @@ dotenv.config()
 
 const region = 'ap-northeast-2'
 const bucketName = 'dfassf-bucket-test'
+// const bucketName = 'nft2-s3'
 const accessKeyId = process.env.AWS_ACCESS_KEY_ID
 const secretAccessKey = process.env.AWS_SECRET_ACCESS_KEY
 
