@@ -1,5 +1,11 @@
 import styled from 'styled-components'
 import PhotoSlide from './PhotoSilde'
+import { useSelector, useDispatch } from 'react-redux'
+import { RootState } from '../../reducers';
+
+// const item_img_link = useSelector((state:RootState) => state.view.item_img_link)
+
+    
 
 interface itemsProps {
   item: string,

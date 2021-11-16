@@ -3,15 +3,10 @@ const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 
 let get_directdeal_view = async (req, res) => {
-    
-    console.log(req.body)
     let key = Object.keys(req.body)
     let idx = JSON.parse(key)
-    console.log(key,idx)
     // @ user 에 대한 정보 가져와서 like 조회해야함.
     // @ idx 로 해당 view 조회하기
-
-
     let data = {};
 
     try {
@@ -20,9 +15,12 @@ let get_directdeal_view = async (req, res) => {
 
         let result2 = await User.findOne({ where: { user_idx: creator }, attributes: ['nick_name'] })
         const { nick_name } = result2.dataValues
-
+        
         let result3 = await DirectDeal.findOne({where:{direct_deal_idx:idx}})
         const {price, currency} = result3.dataValues
+
+        let result4 = await ItemImg.findOne({where:{item_id:idx}})
+        const {item_img_link} = result4.dataValues
 
         data = {
             result_msg: 'OK',
@@ -32,7 +30,8 @@ let get_directdeal_view = async (req, res) => {
             size,
             color,
             price,
-            currency
+            currency,
+            item_img_link
         }
 
     } catch (error) {
