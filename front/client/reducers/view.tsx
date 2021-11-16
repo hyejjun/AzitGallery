@@ -8,7 +8,8 @@ export interface ViewState {
     error: string;
     UserAddress: string;
     verify: number;
-    nick_name, title, description, size, color, price, bid_price, currency, left_time, item_img_link: string;
+    nick_name, title, description, size, color, price, bid_price, currency, left_time: string;
+    item_img_link : Array<string>,
     directView: {};
 
 }
@@ -29,7 +30,7 @@ export const initialState: ViewState = {
     bid_price: '',
     currency: '',
     left_time: '',
-    item_img_link: '',
+    item_img_link: [],
     directView: {},
 };
 

@@ -19,8 +19,14 @@ let get_directdeal_view = async (req, res) => {
         let result3 = await DirectDeal.findOne({where:{direct_deal_idx:idx}})
         const {price, currency} = result3.dataValues
 
-        let result4 = await ItemImg.findOne({where:{item_id:idx}})
-        const {item_img_link} = result4.dataValues
+        let result4 = await ItemImg.findAll({where:{item_id:idx}})
+
+        let pic_array = [...result4]
+        let item_img_link = []
+
+        pic_array.forEach((v,k)=>{
+            item_img_link.push(v.dataValues.item_img_link)
+        })
 
         data = {
             result_msg: 'OK',
