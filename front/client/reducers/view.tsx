@@ -8,7 +8,8 @@ export interface ViewState {
     error: string;
     UserAddress: string;
     verify: number;
-    nick_name, title, description,size,color,price,bid_price, currency, left_time: string;
+    nick_name, title, description, size, color, price, bid_price, currency, left_time: string;
+    item_img_link : Array<string>,
     directView: {};
 
 }
@@ -20,15 +21,16 @@ export const initialState: ViewState = {
     error: '',
     UserAddress: 'kaikasAddress',
     verify: 200,
-    nick_name : '',
-    title : '',
-    description : '',
-    size : '',
-    color : '',
-    price : '',
-    bid_price : '',
-    currency : '',
-    left_time : '',
+    nick_name: '',
+    title: '',
+    description: '',
+    size: '',
+    color: '',
+    price: '',
+    bid_price: '',
+    currency: '',
+    left_time: '',
+    item_img_link: [],
     directView: {},
 };
 
@@ -53,6 +55,8 @@ export const directDealView_REQUEST = (idx) => {
 }
 
 export const directDealView_SUCCESS = (list) => {
+    console.log("리듀서 ==== ",list);
+    
     return {
         type: DIRECTDEAL_VIEW_SUCCESS,
         list
@@ -111,13 +115,14 @@ const reducer = (state: ViewState = initialState, action: ViewAction) => {
             return {
                 ...state,
                 directView: action.list,
-                nick_name : action.list.nick_name,
-                title : action.list.title,
-                description : action.list.description,
-                size : action.list.size,
-                color : action.list.color,
-                price : action.list.price,
-                currency : action.list.currency,
+                nick_name: action.list.nick_name,
+                title: action.list.title,
+                description: action.list.description,
+                size: action.list.size,
+                color: action.list.color,
+                price: action.list.price,
+                currency: action.list.currency,
+                item_img_link: action.list.item_img_link,
             }
 
 
@@ -130,20 +135,21 @@ const reducer = (state: ViewState = initialState, action: ViewAction) => {
         case AUCTION_VIEW_REQUEST:
             return {
                 ...state,
-                auctionIdx:action.idx
+                auctionIdx: action.idx
             }
         case AUCTION_VIEW_SUCCESS:
             return {
                 ...state,
                 directView: action.list,
-                nick_name : action.list.nick_name,
-                title : action.list.title,
-                description : action.list.description,
-                size : action.list.size,
-                color : action.list.color,
-                bid_price : action.list.bid_price,
-                currency : action.list.currency,
-                left_time : action.list.left_time,
+                nick_name: action.list.nick_name,
+                title: action.list.title,
+                description: action.list.description,
+                size: action.list.size,
+                color: action.list.color,
+                bid_price: action.list.bid_price,
+                currency: action.list.currency,
+                left_time: action.list.left_time,
+                item_img_link: action.list.item_img_link,
             }
         case AUCTION_VIEW_ERROR:
             return {

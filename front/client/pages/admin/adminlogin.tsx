@@ -1,4 +1,4 @@
-import AdminloginComponent from '../../components/approve/adminlogincomponent'
+import AdminloginComponent from '../../components/approve/Adminlogincomponent'
 
 
 const adminlogin = () => {

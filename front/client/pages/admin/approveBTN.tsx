@@ -1,4 +1,4 @@
-import ApprovebuttonComponent from '../../components/approve/approvebutton'
+import ApprovebuttonComponent from '../../components/approve/Approvebutton'
 
 
 const approvebtn = () => {

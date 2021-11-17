@@ -21,13 +21,9 @@ const caver = new Caver(
 );
 
 let mint_nft_post = async (req,res) => {
-
-    // 배열에 먼저 담을거 다 담고 나중에 후처리로 DB에 등록하기?
-
-
-
-    
+    // 나중에는 creator 도 가져와야함..
     const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, aucTime, extension, gender, bigCategory, smallCategory, mainImgIdx} = req.body[0]
+
     //      bool    str    str       str   str    str      obj     obj   str       str      bool      str      str           str
   
     const imagesLink = req.body[1]
@@ -43,9 +39,13 @@ let mint_nft_post = async (req,res) => {
                 user_idx:1// from req.body
         }})
 
-        // 받은 id는 item_info 배열에 추가
-        let item_info_arr = []
-        let item_info_obj = {
+        // category 가져오기 아마 필요없을 듯?
+        // let get_subcategory = await SubCategory.findOne({
+
+        // })
+
+        // 받은 id로 item_info table에 추가
+        let add_to_item_info = await ItemInfo.create({
             creator: get_user_id.dataValues.user_idx, 
             item_code: `${new Date().getTime()}${smallCategory}`, 
             description: desc,
@@ -54,17 +54,17 @@ let mint_nft_post = async (req,res) => {
             size: size.join(','),
             color: color.join(','),
             category_id: bigCategory, 
-        }
-        item_info_arr.push(item_info_obj)
-        console.log(item_info_arr)
+        })
 
         // 대표이미지
-        let item_img_arr = []
-        let item_img_obj = {}
+        let main_img_link
 
-        imagesLink.forEach(async x=> {
-            item_img_obj = {item_img_link: x}
-            item_img_arr.push(item_img_obj)
+        // 다시 생각해보기: imagesLink로 for 또는 add to Item으로?
+        imagesLink.forEach(async x=>{
+            await ItemImg.create({
+                item_img_idx: add_to_item_info.dataValues.item_id,
+                item_img_link: x
+            })
         })
 
         // 색과 사이즈 별로 넣기
@@ -100,64 +100,8 @@ let mint_nft_post = async (req,res) => {
                 })
             }
 
-        }  
-
-        /*
-        // step 1 받은 id로 item_info table에 추가
-        let add_to_item_info = await ItemInfo.create({
-            creator: get_user_id.dataValues.user_idx, 
-            item_code: `${new Date().getTime()}${smallCategory}`, 
-            description: desc,
-            title: name,
-            sell_type,
-            size: size.join(','),
-            color: color.join(','),
-            category_id: bigCategory, 
-        })
-
-        // step 2 다시 생각해보기: imagesLink로 for 또는 add to Item으로?
-        imagesLink.forEach(async x=>{
-            await ItemImg.create({
-                item_img_idx: add_to_item_info.dataValues.item_id,
-                item_img_link: x
-            })
-        })
-
-        // step 3 색과 사이즈 별로 넣기
-        let color_size_item = []
-        for(let i = 0; i<color.length; i++){
-            for(let j = 0; j<size.length; j++){
-                // 색과 사이즈를 00~99로 해서 자릿수를 맞춰준다
-                let last_digits_for_detail
-                if(i == 0 && j == 0){
-                    last_digits_for_detail = `00`
-                }else if(i*size.length+j<10){
-                    last_digits_for_detail = `0${i*size.length+j}`
-                } else if(i*size.length+j>=10 || i*size.length+j+1<100){
-                    last_digits_for_detail = `${i*size.length+j}`
-                }
-                
-                // 오류해결
-                let add_to_item_detail = await ItemDetail.create({
-                    item_info_idx: add_to_item_info.dataValues.item_id,
-                    size:size[j],
-                    color: color[i],
-                    nft:`${Number(`${new Date().getTime()}101`)}${size[j]}${color[i]}`, //임시로
-                    item_code:`${add_to_item_info.dataValues.item_code}${last_digits_for_detail}`,
-                    product_status:'ready' //임시로
-                })    
-                // 아래 함수 인자값은 이름, 색상, 사이즈를 바탕으로 토큰 발행을 하기 위함이며
-                // idx는 getNFT함수 안에서 item_detail 테이블에서 nft_idx에 맞게 nft값을 업데이트 하기 위함임
-                color_size_item.push({
-                    idx: add_to_item_detail.dataValues.nft_idx, 
-                    name: name,
-                    color: color[i],
-                    size: size[j]
-                })
-            }
-
         }    
-        */
+
         let next_step_test
         async function nft_working(){
             for(let i = 0; i<color_size_item.length; i++){
@@ -418,10 +362,10 @@ const klaytn_test = async (req, res) => {
     // function hex(value){
     //     return parseInt(value, 16)
     // }
-    // //privateKey = 0xb6a4306091a3f4203b497cf461f22624f372c3cffe31d8c0f874ef75a7d1881f
-    accAddress =  "0x54e034470ab35768c24607bb847870d776e10de4"
-    // let getBal = await caver.rpc.klay.getBalance(accAddress)
-    let getAcc = await caver.rpc.klay.getAccount("0x54e034470ab35768c24607bb847870d776e10de4")
+    // //privateKey = 0x07ea3560faca009fdbaf6cee2ea6ee87aaf22bd1f381f3afd312e79ff45f122b
+    accAddress =  0x89e204fcbad4c4197a9e3971c7bb3c32f46cc458
+    // let getBal = await caver.rpc.klay.getBalance("0x89e204fcbad4c4197a9e3971c7bb3c32f46cc458")
+    let getAcc = await caver.rpc.klay.getAccount("0x89e204fcbad4c4197a9e3971c7bb3c32f46cc458")
     // /* getAcc 리턴 예시
     // {
     //     accType: 1,
