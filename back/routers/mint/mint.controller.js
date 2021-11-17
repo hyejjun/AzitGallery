@@ -45,16 +45,18 @@ let mint_nft_post = async (req,res) => {
 
         // 받은 id는 item_info 배열에 추가
         let item_info_arr = []
-        let item_info_obj = {
+        console.log()
+        let item_info_obj = await ItemInfo.create ({
             creator: get_user_id.dataValues.user_idx, 
             item_code: `${new Date().getTime()}${smallCategory}`, 
+            item_id,
             description: desc,
             title: name,
             sell_type,
             size: size.join(','),
             color: color.join(','),
             category_id: bigCategory, 
-        }
+        })
         item_info_arr.push(item_info_obj)
         console.log(item_info_arr)
 
@@ -83,11 +85,11 @@ let mint_nft_post = async (req,res) => {
                 
                 // 오류해결
                 let add_to_item_detail = await ItemDetail.create({
-                    item_info_idx: add_to_item_info.dataValues.item_id,
+                    item_info_idx: item_info_obj.dataValues.item_id,
                     size:size[j],
                     color: color[i],
                     nft:`${Number(`${new Date().getTime()}101`)}${size[j]}${color[i]}`, //임시로
-                    item_code:`${add_to_item_info.dataValues.item_code}${last_digits_for_detail}`,
+                    item_code:`${item_info_obj.dataValues.item_code}${last_digits_for_detail}`,
                     product_status:'ready' //임시로
                 })    
                 // 아래 함수 인자값은 이름, 색상, 사이즈를 바탕으로 토큰 발행을 하기 위함이며
@@ -192,7 +194,7 @@ let mint_nft_post = async (req,res) => {
             if(ifSell == true && get_user_id.length !== 0){
                 // direct deal에 추가하기 -> 경매와 다름
                 await DirectDeal.create({
-                    direct_deal_idx: add_to_item_info.dataValues.item_id,
+                    direct_deal_idx: item_info_obj.dataValues.item_id,
                     price: Number(price),
                     currency
                 })
@@ -209,14 +211,14 @@ let mint_nft_post = async (req,res) => {
                 // 경매 테이블에 데이터 넣기...
                 
                 await Auction.create({
-                    auction_idx: add_to_item_info.dataValues.item_id,
+                    auction_idx: item_info_obj.dataValues.item_id,
                     end_date: aucTime,
                     if_extended: extension,
                 })
 
                 // 경매 히스토리 최상단에도 넣어주어야 함
                 await AuctionHistory.create({
-                    auc_history_idx: add_to_item_info.dataValues.item_id,
+                    auc_history_idx: item_info_obj.dataValues.item_id,
                     bidder: get_user_id.dataValues.user_idx,
                     bid_price: Number(aucPrice),
                     currency
