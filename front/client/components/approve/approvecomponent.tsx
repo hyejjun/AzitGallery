@@ -6,7 +6,7 @@ import { Userlist_REQUEST } from '../../reducers/user'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from "../../reducers"
 
-const approvecomponent = () => {
+const Approvecomponent = () => {
 
     const user = useSelector((state:RootState) => state.user);
     const dispatch = useDispatch()
@@ -80,7 +80,7 @@ const approvecomponent = () => {
     )
 }
 
-export default approvecomponent
+export default Approvecomponent
 
 const Table = Styled.table`
     width:800px;
