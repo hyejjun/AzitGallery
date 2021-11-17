@@ -1,6 +1,6 @@
 import { useSelector, useDispatch} from "react-redux";
 import { useEffect } from "react";
-import DeliveryForm from "./deliveryForm";
+import DeliveryForm from "./DeliveryForm";
 import { delivery_customer_REQUEST } from "../../reducers/ship"
 import { RootState } from "../../reducers"
 
