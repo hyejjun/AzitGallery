@@ -99,11 +99,11 @@ const MyNftComponent = () => {
         <>  
             <MyInfo> 
                 {/* <MyIMG><img src = {require('../../src/지도.jpg')}/></MyIMG> */}
-                <MyIMG> <img alt="이미지" /> </MyIMG>
+                {/* <MyIMG> <img alt="이미지" /> </MyIMG> */}
                 <MyName onClick = {test}>원금회복</MyName>
                 <MyAddress>{user.UserAddress}</MyAddress>
                 <MySwap onClick = {FROMklayToEPI}>klay에서 EPI로 토큰 스왑</MySwap>
-                <Link href = "/user/user"><AStyle><MyProfile>프로필 편집</MyProfile></AStyle></Link>
+                {/* <Link href = "/user/user"><AStyle><MyProfile>프로필 편집</MyProfile></AStyle></Link> */}
             </MyInfo>
             <MyNft>
                 <Header>
@@ -161,17 +161,8 @@ const MyInfo = Styled.div`
     height:330px;
 `
 
-const MyIMG = Styled.div`
-    background:#bbb;
-    margin:50px auto 30px auto;
-    width:100px;
-    height:100px;
-
-`
-
 const MyAddress = Styled.div`
     color:#bbb;
-
     margin-bottom:20px;
 `
 
@@ -189,7 +180,8 @@ const MyName = Styled.div`
     text-align:center;
     font-size:20px;
     font-weight:bold;
-    margin-bottom:6px;
+    margin-top: 40px;
+    margin-bottom:20px;
 
 `
 const MyProfile = Styled.div`
@@ -341,7 +333,4 @@ const Line = Styled.div`
     background:#bbb;
     margin-top:20px;
     height:1px;
-`
-const AStyle = Styled.a`
-    text-decoration:none;
 `
