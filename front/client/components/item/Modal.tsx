@@ -1,5 +1,4 @@
 import Styled from 'styled-components'
-import ModalBackground from '../common/ModalBackground'
 
 
 const Modal = ({children}) => {

@@ -1,4 +1,3 @@
-import Styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Category from '../common/Category'

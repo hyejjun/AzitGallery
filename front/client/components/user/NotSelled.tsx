@@ -1,6 +1,5 @@
 import Styled from 'styled-components'
-import React, { useState } from 'react'
-import Link from 'next/link'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from "../../reducers"
 

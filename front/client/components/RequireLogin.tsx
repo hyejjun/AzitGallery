@@ -1,6 +1,4 @@
-import Link from 'next/link';
-import Styled from 'styled-components';
-import Router from 'next/router';
+
 import ModalBackground from './common/ModalBackground';
 import ModalForm from './common/ModalForm';
 

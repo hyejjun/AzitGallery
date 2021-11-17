@@ -1,10 +1,8 @@
 import Styled from 'styled-components'
 import React, { useState } from 'react'
-import Link from 'next/link'
 import Alert from '@mui/material/Alert';
 import Waybill from '../view/Waybill';
 import useInput from '../../hooks/useInput';
-import { useDispatch, useSelector } from 'react-redux';
 import { deliveryInfo_REQUEST } from '../../reducers/ship';
 import { RootState } from '../../reducers';
 

@@ -8,7 +8,6 @@ import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from "../../reducers"
 import {UserState} from "../../reducers/user"
 import { KipSwap_REQUEST } from "../../reducers/mint";
-import { Userlist_REQUEST } from '../../reducers/user'
 import { myNft_all_REQUEST,sold_nft_REQUEST,not_selled_REQUEST,hits_buy_REQUEST,hits_sell_REQUEST,hits_not_sell_REQUEST} from '../../reducers/list'
 
 const MyNftComponent = () => {

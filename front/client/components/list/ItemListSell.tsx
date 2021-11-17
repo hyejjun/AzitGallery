@@ -1,4 +1,3 @@
-import Styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Category from '../common/Category'
@@ -7,8 +6,7 @@ import { Itemlist_REQUEST } from '../../reducers/list'
 import { PlusItemlist_REQUEST } from '../../reducers/list'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from "../../reducers"
-import { SetQuery_REQUEST } from "../../reducers/list"
-import { sellType_REQUEST, genderCategorySelect_REQUEST, itemSearch_REQUEST, itemSort_REQUEST } from '../../reducers/type'
+import { genderCategorySelect_REQUEST } from '../../reducers/type'
 
 const ItemListSell = (props) => {
 

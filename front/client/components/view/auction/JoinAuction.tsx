@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Styled from 'styled-components'
 import CloseIcon from '@mui/icons-material/Close';
-import Link from 'next/link'
-import Router from "next/router"
-import { ModalWrapper, OrderTitle, OrderContent, OrderForm, OrderBtn } from "../sell/Order";
+import { ModalWrapper, OrderTitle, OrderContent, OrderBtn } from "../sell/Order";
 // import useInput from "../../../hooks/useInput";
 
 

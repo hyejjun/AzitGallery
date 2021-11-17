@@ -144,10 +144,6 @@ const Menu = Styled.li`
         cursor : default;
         font-size: 20px;
     }
-
-    
-
-  
 `
 
 const MenuBar = Styled.ul`
