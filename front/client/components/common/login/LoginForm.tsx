@@ -1,8 +1,6 @@
 import Styled from 'styled-components'
 import ModalBackground  from "../ModalBackground"
-import { connect } from 'react-redux'
 import React from 'react'
-import Link from 'next/link'
 import CloseIcon from '@mui/icons-material/Close';
 import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from "react"
@@ -98,7 +96,7 @@ export default LoginForm
 
 
 
-const LoginFormWrapper = Styled.div`
+const LoginFormWrapper = Styled.div<{closeLogin:boolean}>`
     display: ${(props) => (props.closeLogin ? "block" : "none")} 
     box-sizing:border-box;
     position:absolute;

@@ -31,20 +31,7 @@ const Selled = () => {
             Like: 0,
             alert: '신고하기'
         },
-        {
-            id: 2,
-            subject: 'asdg',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
-        {
-            id: 3,
-            subject: 'asdg',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
+        
 
     ]);
 
@@ -57,27 +44,7 @@ const Selled = () => {
             Like: 0,
             alert: '신고하기'
         },
-        {
-            id: 5,
-            subject: 'asdg',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
-        {
-            id: 6,
-            subject: 'gahhfdsh',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
-        {
-            id: 7,
-            subject: 'gahhfdsh',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
+
     ]);
 
     // @ 배송등록하기

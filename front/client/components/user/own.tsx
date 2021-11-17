@@ -27,26 +27,7 @@ const Own = () => {
             Like: 0,
             alert: '신고하기asdfasf'
         },
-        {   id: 2,
-            subject: 'adsfdsf',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
-        {
-            id: 3,
-            subject: 'adsff',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
-        {
-            id: 4,
-            subject: 'adsff',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
+
       ]);
 
 

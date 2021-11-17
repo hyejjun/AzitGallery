@@ -12,7 +12,7 @@ const ModalForm = ({children},props) => {
 
 export default ModalForm 
 
-const FormWrapper = Styled.div`
+const FormWrapper = Styled.div<{flag:boolean}>`
     z-index:999;
     box-sizing:border-box;
     width:350px;

@@ -1,13 +1,8 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState} from 'react';
 import Styled from 'styled-components';
-import { setFlagsFromString } from 'v8';
-import ModalBackground from './ModalBackground';
 import RequireLogin from '../RequireLogin';
 import LoginForm from './login/LoginForm';
-import NeedCert from './login/NeedCert';
 import Link from 'next/link';
-import AddItemComponent from '../item/AddItemComponent';
-import Btn from './Btn';
 
 
 const MenuBar = () => {
@@ -40,8 +35,7 @@ const MenuBar = () => {
                 flag
                     ?
                     <RequireLogin flag={flag} openBtn={requireOpenBtn} loginOpenBtn={loginOpenBtn} />
-                    //{/* <LoginForm/> */}
-                    //{/* <NeedCert/> */}     
+  
                     : Login
                         ?
                         <LoginForm closeLogin={Login} closeLoginBtn={closeLoginForm} />

@@ -1,11 +1,11 @@
-import Link from 'next/link';
+
 import Styled from 'styled-components';
 import React, { useState, useEffect } from 'react'
 import { category_REQUEST } from '../../reducers/type';
 import { sub_category_REQUEST } from '../../reducers/type';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from "../../reducers"
-import { Itemlist_REQUEST } from '../../reducers/list'
+
 const Category = (props) => {
     const dispatch = useDispatch()
     const Type = useSelector((state:RootState) => state.type);
@@ -36,8 +36,7 @@ const Category = (props) => {
         }
         dispatch(sub_category_REQUEST(data))
     }
-    //console.log(Type)
-//onsole.log(Type.main)
+
     return (
         <CategoryWrapper>
             <H3>전체 카테고리</H3>
@@ -48,7 +47,8 @@ const Category = (props) => {
                     <Line></Line>
                     <Subject onClick={() => { selectGender(key+1), handleList(key+1) }}>{Type.main[key] == undefined ? '로딩중' : Type.main[key].category_name}</Subject>
                     <Line></Line>
-                    {List == key+1 ?
+                    {List == key+1 
+                    ?
                         <>
                             <LI className = "female" >{Type.sub[0] == undefined ? '로딩중' : Type.sub[key][0].sub_category_name}</LI>
                             <LI className =" male" >{Type.sub[0] == undefined ? '로딩중' : Type.sub[key][1].sub_category_name}</LI>
@@ -93,7 +93,7 @@ const Line = Styled.li`
     margin-bottom:10px;
 `
 
-const Ul = Styled.ul`
+const Ul = Styled.ul<{flag:boolean}>`
     .female{
         color: ${props => (props.flag == 1 ? '#000000' : '#777')};
         font-weight: ${props => (props.flag == 1 ? 'bold' : 'none')};

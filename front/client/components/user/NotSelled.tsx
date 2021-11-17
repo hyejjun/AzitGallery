@@ -25,26 +25,6 @@ const NotSelled = () => {
             Like: 0,
             alert: '신고하기'
         },
-        {   id: 2,
-            subject: 'se',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
-        {
-            id: 3,
-            subject: 'adssef',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
-        {
-            id: 4,
-            subject: 'sefesfase',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
       ]);
 
 

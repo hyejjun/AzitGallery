@@ -14,7 +14,7 @@ const ItemList = () => {
     const dispatch = useDispatch()
 
     // @ 판매 경매 선택 버튼
-    const [tabBtn, settabBtn] = useState<number>(1);
+    const [tabBtn, settabBtn] = useState<boolean>(true);
 
     // @ 주문이 들어오면 state를 바꿔줌; useEffect로 알람 띄울 것
     const [notiOn, setNotiOn] = useState<boolean>(false)
@@ -34,12 +34,12 @@ const ItemList = () => {
     },[notiOn])
 
     const sellBtn = () => {
-        settabBtn(1)
+        settabBtn(true)
         dispatch(sellType_REQUEST(sendData))
     }
 
     const auctionBtn = () => {
-        settabBtn(2)
+        settabBtn(false)
         dispatch(sellType_REQUEST(sendData))
     }
 
@@ -120,7 +120,7 @@ const ItemList = () => {
             </MenuBar>
             <div>
                 {
-                    tabBtn === 1
+                    tabBtn === true
                         ? <ItemListSell CategoryState={CategoryState} sendData={sendData} selectChange={selectChange} />
                         : <ItemListAuction CategoryState={CategoryState} selectChange={selectChange} />
                 }
@@ -155,18 +155,18 @@ const MenuBar = Styled.ul`
     height: 100px;
 `
 
-const SellTab = Styled.div`
+const SellTab = Styled.div<{flag:boolean}>`
     cursor:pointer;
     font-size: 23px;
-    color: ${props => (props.flag == 1 ? '#000000b3' : '#a0a0a0b3')};
-    font-weight: ${props => (props.flag == 1 ? 'bold' : 'none')};
+    color: ${props => (props.flag == true ? '#000000b3' : '#a0a0a0b3')};
+    font-weight: ${props => (props.flag == true ? 'bold' : 'none')};
 `
 
-const AuctionTab = Styled.div`
+const AuctionTab = Styled.div<{flag:boolean}>`
     cursor:pointer;
     font-size: 23px;
-    color:  ${props => (props.flag == 2 ? '#000000b3' : '#a0a0a0b3')};
-    font-weight: ${props => (props.flag == 2 ? 'bold' : 'none')};
+    color:  ${props => (props.flag == false ? '#000000b3' : '#a0a0a0b3')};
+    font-weight: ${props => (props.flag == false ? 'bold' : 'none')};
 `
 
 
