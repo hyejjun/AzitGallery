@@ -273,7 +273,7 @@ const reducer = (state: TypeState = initialState, action: TypeAction) => {
                 ...state,
             }
         case CATEGORY_SUCCESS:
-            console.log(`카테고리 리턴 값 작동 여부 == ${action.sub[1][0].sub_category_name}`)
+            // console.log(`카테고리 리턴 값 작동 여부 == ${action.sub[1][0].sub_category_name}`)
             return {
                 ...state,
                 main:action.main,
