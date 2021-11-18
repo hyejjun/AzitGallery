@@ -181,7 +181,7 @@ function* userInfoSaga(action) {
         data: userinfo.data
     })
 }
-function* reqUesrInfo() {
+function* reqUserInfo() {
     yield takeLatest('USER_INFO_REQUEST', userInfoSaga)
 }
 
@@ -195,7 +195,7 @@ export default function* userSaga() {
         fork(reqSellerAdminAccess),
         fork(reqSellerAdminDeny),
         fork(reqWaitEmail),
-        fork(reqUesrInfo),
+        fork(reqUserInfo),
         fork(reqNickname)
     ])
 }
