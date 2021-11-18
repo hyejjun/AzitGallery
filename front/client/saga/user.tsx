@@ -1,28 +1,27 @@
 
-
 import { ContactlessOutlined } from '@mui/icons-material';
 import axios from 'axios';
 import { all, put, takeEvery, takeLatest, fork, call } from "redux-saga/effects";
+import { url } from './url';
 
 
 /* 로그인 중복 확인 */
 function loginAPI(action) {
-    return axios.post(`http://localhost:4000/user/addressdbcheck`, JSON.stringify(action.data))
+    return axios.post(`${url}/user/addressdbcheck`, JSON.stringify(action.data))
 
 }
 
-function* login(action) {    
+function* login(action) {  
     let result = yield call(loginAPI, action)
+
     if (result.data.signupBool === true) {
         yield put({
-            // type: 'SIGNUP_POST_SUCCESS',
             type: 'USER_LOGIN_SUCCESS',
             signupBool : result.data.signupBool,
             UserAddress : result.data.kaikas_address
         })
     } else {
         yield put({
-            // type: 'SIGNUP_POST_ERROR',
             type: 'USER_LOGIN_ERROR',
             signupBool : result.data.signupBool
         })
@@ -35,8 +34,6 @@ function* reqLogin() {
 
 /* 로그아웃 */
 function* logout() {
-    console.log('로그아웃 사가 =============');
-    
     yield put({
         type: 'USER_LOGOUT_SUCCESS',
         loginBool: false,
@@ -51,7 +48,7 @@ function* reqLogout() {
 /* 이메일 인증 */
 
 function sellerAdminAPI(action) {
-    return axios.post(`http://localhost:4000/user/selleradmin`)
+    return axios.post(`${url}/user/selleradmin`)
 }
 
 function* sellerAdminSaga(action) {
@@ -67,7 +64,7 @@ function* reqAdminEmail() {
 /* 이메일 대기    */
 
 function sellerWaitAPI(action): any {
-    return axios.post(`http://localhost:4000/user/selleradminwait`, JSON.stringify(action.data))
+    return axios.post(`${url}/user/selleradminwait`, JSON.stringify(action.data))
 }
 
 function* sellerWaitSaga(action) {
@@ -80,7 +77,7 @@ function* reqWaitEmail() {
 
 /* 회원 가입 post */
 function signupAPI(action) {
-    return axios.post(`http://localhost:4000/user/signup`, JSON.stringify(action.data))
+    return axios.post(`${url}/user/signup`, JSON.stringify(action.data))
 }
 
 function* signupSaga(action) {
@@ -94,7 +91,7 @@ function* reqSignup() {
 /* 회원가입 nickname 중복체크 */
 
 function nicknameAPI(action): any {
-    return axios.post(`http://localhost:4000/user/nicknamechk`, JSON.stringify(action.data))
+    return axios.post(`${url}/user/nicknamechk`, JSON.stringify(action.data))
 }
 
 function* nicknameSaga(action) {
@@ -118,15 +115,12 @@ function* reqNickname() {
 /* 관리자 페이지 user list req */
 
 function userListAPI() {
-    return axios.get(`http://localhost:4000/user/userlist`)
+    return axios.get(`${url}/user/userlist`)
 }
 
 function* userListSaga() {
     const result = yield call(userListAPI)
-    // console.log(result.data)
-    console.log("result ===== ", result);
 
-    console.log(result.data.ARR)
     yield put({
         type: 'USER_LIST_SUCCESS',
         data: result.data.ARR
@@ -140,7 +134,7 @@ function* reqUserList() {
 /* 관리자 페이지 user list req */
 
 function adminAccessAPI(action): any {
-    return axios.post(`http://localhost:4000/user/selleradminaccess`, JSON.stringify(action.data))
+    return axios.post(`${url}/user/selleradminaccess`, JSON.stringify(action.data))
 }
 
 function* sellerAdminAccessSaga(action) {
@@ -155,7 +149,7 @@ function* reqSellerAdminAccess() {
 /* 관리자 페이지 user list req */
 
 function adminDenyAPI(action) {
-    return axios.post(`http://localhost:4000/user/selleradmindeny`, JSON.stringify(action.data))
+    return axios.post(`${url}/user/selleradmindeny`, JSON.stringify(action.data))
 }
 
 function* sellerAdminDenySaga(action) {
@@ -168,7 +162,7 @@ function* reqSellerAdminDeny() {
 
 /* user/uesr페이지 user info req */
 function userInfoAPI(action): any {
-    return axios.post(`http://localhost:4000/user/userinfo`, JSON.stringify(action.data))
+    return axios.post(`${url}/user/userinfo`, JSON.stringify(action.data))
 }
 
 function* userInfoSaga(action) {
@@ -178,7 +172,7 @@ function* userInfoSaga(action) {
         data: userinfo.data
     })
 }
-function* reqUesrInfo() {
+function* reqUserInfo() {
     yield takeLatest('USER_INFO_REQUEST', userInfoSaga)
 }
 
@@ -192,7 +186,7 @@ export default function* userSaga() {
         fork(reqSellerAdminAccess),
         fork(reqSellerAdminDeny),
         fork(reqWaitEmail),
-        fork(reqUesrInfo),
+        fork(reqUserInfo),
         fork(reqNickname)
     ])
 }

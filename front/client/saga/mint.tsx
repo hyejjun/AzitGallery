@@ -56,12 +56,12 @@ function* reqMintNft(){
 
 /* mintNFT */
 
-function KipTokenAPI() {
+function kipTokenAPI() {
     return axios.post(`http://localhost:4000/mint/kiptransfer`)
 }
 
-function* KipTokenSaga(){
-    const result = yield call(KipTokenAPI)
+function* kipTokenSaga(){
+    const result = yield call(kipTokenAPI)
 
     yield put({
         type:'KIP_TOKEN_SUCCESS',
@@ -70,24 +70,24 @@ function* KipTokenSaga(){
 }
 
 function* reqKipToken(){
-    yield takeLatest('KIP_TOKEN_REQUEST',KipTokenSaga)
+    yield takeLatest('KIP_TOKEN_REQUEST',kipTokenSaga)
 }
 
 /* mintNFT */
 
-function KipSwapAPI() {
+function kipSwapAPI() {
     return axios.post(`http://localhost:4000/mint/kipswap`)
 }
 
 
-function* KipSwapSaga(){
-    const result = yield call(KipSwapAPI)
+function* kipSwapSaga(){
+    const result = yield call(kipSwapAPI)
 
  
 }
 
 function* reqKipSwap(){
-    yield takeLatest('KIP_SWAP_REQUEST',KipSwapSaga)
+    yield takeLatest('KIP_SWAP_REQUEST',kipSwapSaga)
 }
 
 export default function* MintSaga(){

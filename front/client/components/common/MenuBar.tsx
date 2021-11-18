@@ -54,17 +54,11 @@ const MenuBar = () => {
     const kaikasLogin = async () => {
         const wallet = await window.klaytn.enable()
         const klaytnAddress = window.klaytn.selectedAddress
-        console.log("로그인 눌렀을 때 ==== ", klaytnAddress);
 
         if (klaytnAddress != undefined) {
             let AddressArr = []
             AddressArr.push(klaytnAddress)
             setKaikasAddress(AddressArr)
-
-            
-            dispatch(UserLogin_REQUEST(klaytnAddress))
-            console.log("signupBoolean ===== ", User.signupBool);
-
 
             // 카이카스 로그인 후 서명
             const account = window.klaytn.selectedAddress
@@ -85,12 +79,6 @@ const MenuBar = () => {
         }
     }
 
-
-    useEffect(() => {
-        const klaytnAddress = window.klaytn.selectedAddress
-        // dispatch(UserLogin_REQUEST(klaytnAddress))
-    }, [Load])
-
     const onClick = () => {
         if (!window.klaytn) {
             return
@@ -100,9 +88,10 @@ const MenuBar = () => {
         kaikasLogin()
 
     }
+
     useEffect(() => {
         setLoginState(false)
-        
+
         if (User.loginBool === true) {
             setLoginState(true)
             setLogin(false)
@@ -111,10 +100,14 @@ const MenuBar = () => {
 
     }, [])
 
+    const login = () => {
+        setLoginState(true)
+        setLogin(true)
+        setFlag(false)
 
-    // if (kaikasAddress.length > 0) {
-    //     return (<div></div>)
-    // }
+        const klaytnAddress = window.klaytn.selectedAddress
+        dispatch(UserLogin_REQUEST(klaytnAddress))
+    }
 
     const logout = () => {
         setLoginState(false)
@@ -140,7 +133,7 @@ const MenuBar = () => {
                     <li><Link href="/"><a>탐색하기</a></Link></li>
                     {loginState ? <LOG onClick={() => createBtn()}><Link href="/item/additem"><a>발행하기</a></Link></LOG> : <LOG onClick={() => createBtn()}>발행하기</LOG>}
                     {loginState ? <LOG><Link href="/user/mynftall"><a>나의NFT</a></Link></LOG> : <LOG></LOG>}
-                    {loginState ? <LOG onClick={() => { logout() }}>LogOut</LOG> : <LOG onClick={() => { loginClick() }}>Login</LOG>}
+                    {loginState ? <LOG onClick={() => { logout() }}>LogOut</LOG> : <LOG onClick={() => { login() }}>Login</LOG>}
 
 
                 </ul>

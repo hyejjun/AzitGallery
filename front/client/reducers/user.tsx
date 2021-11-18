@@ -110,7 +110,8 @@ export const UserLogout_SUCCESS = (data) => {
     return {
         type: USER_LOGOUT_SUCCESS,
         UserAddress : 'kaikasAddress',
-        loginBool : false
+        loginBool : false,
+        signupBool : false,
     }
 }
 export const UserLogout_ERROR = () => {
@@ -213,7 +214,6 @@ export const Userlist_REQUEST = () => {
 }
 
 export const UserList_SUCCESS = (data) => {
-    console.log(data)
     return {
         type: USER_LIST_SUCCESS,
         data: data
@@ -346,12 +346,9 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
                 signupBool : action.signupBool
             }
 
-        case USER_LOGIN_ERROR:
-            console.log("로그인 에러 ==== ",action.signupBool);
-            
+        case USER_LOGIN_ERROR:          
             return {
                 ...state,
-                // data: action.error
                 signupBool : action.signupBool
             }
 
@@ -453,13 +450,11 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
                 ...state,
             }
         case NICKNAME_POST_SUCCESS:
-            console.log(action.type, "====3====")
             return {
                 ...state,
                 nicknameChkBool: true
             }
         case NICKNAME_POST_ERROR:
-            console.log(action.type, "====4====")
             return {
                 ...state,
                 nicknameChkBool: false
