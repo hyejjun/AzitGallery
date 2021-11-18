@@ -25,7 +25,6 @@ function* selectCategory(action){
     
     
     const result = yield call(selectCategoryAPI, action.data)
-    console.log('saga')
     yield put({
         type:'ITEM_GENDER_SUCCESS',
         data:result.data.ARR
