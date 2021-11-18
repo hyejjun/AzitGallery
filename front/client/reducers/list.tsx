@@ -567,7 +567,7 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
          
             }
         case ITEM_GENDER_SUCCESS:
-            console.log(action.data)
+            // console.log(action.data)
             return{
                 ...state,
                 itemList: action.data

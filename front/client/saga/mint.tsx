@@ -2,7 +2,7 @@ import axios from 'axios';
 import {all,put,takeEvery,takeLatest,fork,call} from "redux-saga/effects";
 import {url} from './url'
 /* mintNFT */
-function MintNftAPI(action) {
+function mintNftAPI(action) {
     let {data} = action
     let mainImgLink
     // s3에서 리턴받은 주소를 넣을 배열
@@ -39,25 +39,25 @@ function MintNftAPI(action) {
     })
 }
 
-function* MintNftSaga(action){
+function* mintNftSaga(action){
     
-    let result = yield call(MintNftAPI,action)
+    let result = yield call(mintNftAPI,action)
     console.log(result.data,'mintnftsaga')
    
 }
 
 function* reqMintNft(){
-    yield takeLatest('MINT_NFT_REQUEST',MintNftSaga)
+    yield takeLatest('MINT_NFT_REQUEST',mintNftSaga)
 }
 
 /* mintNFT */
 
-function KipTokenAPI() {
+function kipTokenAPI() {
     return axios.post(`http://localhost:4000/mint/kiptransfer`)
 }
 
-function* KipTokenSaga(){
-    const result = yield call(KipTokenAPI)
+function* kipTokenSaga(){
+    const result = yield call(kipTokenAPI)
 
     yield put({
         type:'KIP_TOKEN_SUCCESS',
@@ -66,24 +66,24 @@ function* KipTokenSaga(){
 }
 
 function* reqKipToken(){
-    yield takeLatest('KIP_TOKEN_REQUEST',KipTokenSaga)
+    yield takeLatest('KIP_TOKEN_REQUEST',kipTokenSaga)
 }
 
 /* mintNFT */
 
-function KipSwapAPI() {
+function kipSwapAPI() {
     return axios.post(`http://localhost:4000/mint/kipswap`)
 }
 
 
-function* KipSwapSaga(){
-    const result = yield call(KipSwapAPI)
+function* kipSwapSaga(){
+    const result = yield call(kipSwapAPI)
 
  
 }
 
 function* reqKipSwap(){
-    yield takeLatest('KIP_SWAP_REQUEST',KipSwapSaga)
+    yield takeLatest('KIP_SWAP_REQUEST',kipSwapSaga)
 }
 
 export default function* MintSaga(){

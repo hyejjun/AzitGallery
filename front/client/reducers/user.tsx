@@ -16,7 +16,7 @@ export interface UserState {
     userList: Array<any>;
     loginBool: boolean;
     nicknameChkBool: boolean;
-    userInfo:{};
+    userInfo: {};
 }
 
 export const initialState: UserState = {
@@ -32,7 +32,7 @@ export const initialState: UserState = {
     userList: [],
     loginBool: false,
     nicknameChkBool: false,
-    userInfo:{},
+    userInfo: {},
 };
 
 
@@ -41,11 +41,15 @@ export const USER_LOGIN_REQUEST = "USER_LOGIN_REQUEST" as const;
 export const USER_LOGIN_SUCCESS = "USER_LOGIN_SUCCESS" as const;
 export const USER_LOGIN_ERROR = "USER_LOGIN_ERROR" as const;
 
+export const USER_LOGOUT_REQUEST = "USER_LOGOUT_REQUEST" as const;
+export const USER_LOGOUT_SUCCESS = "USER_LOGOUT_SUCCESS" as const;
+export const USER_LOGOUT_ERROR = "USER_LOGOUT_ERROR" as const;
+
 export const SELLER_ADMIN_REQUEST = "SELLER_ADMIN_REQUEST" as const;
 export const SELLER_ADMIN_SUCCESS = "SELLER_ADMIN_SUCCESS" as const;
 export const SELLER_ADMIN_ERROR = "SELLER_ADMIN_ERROR" as const;
 
-export const SELLER_ADMIN_WAIT_REQUEST= "SELLER_ADMIN_WAIT_REQUEST" as const;
+export const SELLER_ADMIN_WAIT_REQUEST = "SELLER_ADMIN_WAIT_REQUEST" as const;
 export const SELLER_ADMIN_WAIT_SUCCESS = "SELLER_ADMIN_WAIT_SUCCESS" as const;
 export const SELLER_ADMIN_WAIT_ERROR = "SELLER_ADMIN_WAIT_ERROR" as const;
 
@@ -77,21 +81,45 @@ export const USER_INFO_ERROR = "USER_INFO_ERROR" as const;
 export const UserLogin_REQUEST = (UserAddress) => {
     return {
         type: USER_LOGIN_REQUEST,
+        loginBool : false,
         data: UserAddress
     }
 }
-export const UserLogin_SUCCESS = (klaytnAddress) => {
+export const UserLogin_SUCCESS = (data) => {   
     return {
         type: USER_LOGIN_SUCCESS,
-        data: klaytnAddress.UserAddress
+        loginBool : true,
+        UserAddress : data.UserAddress,
+        signupBool : data.signupBool
     }
 }
-export const UserLogin_ERROR = (error) => {
+export const UserLogin_ERROR = (data) => {
     return {
         type: USER_LOGIN_ERROR,
-        error: error,
+        signupBool : data.signupBool
     }
 }
+
+/* 로그아웃 */
+export const UserLogout_REQUEST = () => {
+    return {
+        type: USER_LOGOUT_REQUEST,
+    }
+}
+export const UserLogout_SUCCESS = (data) => {
+    return {
+        type: USER_LOGOUT_SUCCESS,
+        UserAddress : 'kaikasAddress',
+        loginBool : false,
+        signupBool : false,
+    }
+}
+export const UserLogout_ERROR = () => {
+    return {
+        type: USER_LOGOUT_ERROR,
+    }
+}
+
 
 /* seller admin req */
 export const SellerAdminWait_REQUEST = (data) => {
@@ -163,18 +191,17 @@ export const Nickname_REQUEST = (data) => {
 }
 
 export const Nickname_SUCCESS = () => {
-
     return {
-        
+
         type: NICKNAME_POST_SUCCESS,
-        
+
     }
 }
 
 export const Nickname_ERROR = () => {
     return {
         type: NICKNAME_POST_ERROR,
-        
+
     }
 }
 
@@ -187,7 +214,6 @@ export const Userlist_REQUEST = () => {
 }
 
 export const UserList_SUCCESS = (data) => {
-    console.log(data)
     return {
         type: USER_LIST_SUCCESS,
         data: data
@@ -204,7 +230,7 @@ export const UserList_ERROR = () => {
 export const SellerAdminAccess_REQUEST = (data) => {
     return {
         type: SELLER_ADMIN_ACCESS_REQUEST,
-        data:data
+        data: data
     }
 }
 export const SellerAdminAccess_SUCCESS = () => {
@@ -224,7 +250,7 @@ export const SellerAdminAccess_ERROR = () => {
 export const SellerAdminDeny_REQUEST = (data) => {
     return {
         type: SELLER_ADMIN_DENY_REQUEST,
-        data:data
+        data: data
     }
 }
 export const SellerAdminDeny_SUCCESS = () => {
@@ -244,14 +270,14 @@ export const SellerAdminDeny_ERROR = () => {
 export const UserInfo_REQUEST = (data) => {
     return {
         type: USER_INFO_REQUEST,
-        data:data
+        data: data
     }
 }
 
 export const UserInfo_SUCCESS = (userInfo) => {
     return {
         type: USER_INFO_SUCCESS,
-        data:userInfo
+        data: userInfo
     }
 }
 
@@ -267,6 +293,10 @@ type UserAction =
     | ReturnType<typeof UserLogin_REQUEST>
     | ReturnType<typeof UserLogin_SUCCESS>
     | ReturnType<typeof UserLogin_ERROR>
+
+    | ReturnType<typeof UserLogout_REQUEST>
+    | ReturnType<typeof UserLogout_SUCCESS>
+    | ReturnType<typeof UserLogout_ERROR>
 
     | ReturnType<typeof SellerAdmin_REQUEST>
     | ReturnType<typeof SellerAdmin_SUCCESS>
@@ -311,16 +341,35 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
         case USER_LOGIN_SUCCESS:
             return {
                 ...state,
-                data: action.data
+                loginBool : true,
+                UserAddress : action.UserAddress,
+                signupBool : action.signupBool
             }
 
-        case USER_LOGIN_ERROR:
+        case USER_LOGIN_ERROR:          
             return {
                 ...state,
-                data: action.error
+                signupBool : action.signupBool
             }
 
-                    /********* */
+        /* 로그아웃 */
+        case USER_LOGOUT_REQUEST:
+            return {
+                ...state,
+            }
+        case USER_LOGOUT_SUCCESS:
+            return {
+                ...state,
+                UserAddress : action.UserAddress,
+                loginBool : false
+            }
+
+        case USER_LOGOUT_ERROR:
+            return {
+                ...state,
+            }
+
+        /********* */
         case SELLER_ADMIN_WAIT_REQUEST:
             return {
                 ...state,
@@ -361,11 +410,11 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
         case SELLER_ADMIN_ACCESS_SUCCESS:
             return {
                 ...state,
-            } 
+            }
         case SELLER_ADMIN_ACCESS_ERROR:
             return {
                 ...state,
-            } 
+            }
         /*********** */
         case SELLER_ADMIN_DENY_REQUEST:
             return {
@@ -374,11 +423,11 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
         case SELLER_ADMIN_DENY_SUCCESS:
             return {
                 ...state,
-            } 
+            }
         case SELLER_ADMIN_DENY_ERROR:
             return {
-                 ...state,
-            } 
+                ...state,
+            }
         /* 회원가입 */
         case SIGNUP_POST_REQUEST:
             return {
@@ -401,13 +450,11 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
                 ...state,
             }
         case NICKNAME_POST_SUCCESS:
-            console.log(action.type,"====3====")
             return {
                 ...state,
                 nicknameChkBool: true
             }
         case NICKNAME_POST_ERROR:
-            console.log(action.type,"====4====")
             return {
                 ...state,
                 nicknameChkBool: false
@@ -432,18 +479,18 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
                 ...state,
                 data: action.data
             }
-        case USER_INFO_SUCCESS: 
+        case USER_INFO_SUCCESS:
             return {
                 ...state,
-                NickName:action.data.nick_name,
-                Address:action.data.kaikas_address,
-                Email:action.data.email
+                NickName: action.data.nick_name,
+                Address: action.data.kaikas_address,
+                Email: action.data.email
             }
-        case USER_INFO_ERROR: 
+        case USER_INFO_ERROR:
             return {
                 ...state,
-            
-            }      
+
+            }
 
         default:
             return state;
