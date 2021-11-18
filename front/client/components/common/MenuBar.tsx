@@ -1,12 +1,25 @@
-import React, { useState} from 'react';
+import React, { useState, useEffect} from 'react';
 import Styled from 'styled-components';
 import RequireLogin from '../RequireLogin';
 import LoginForm from './login/LoginForm';
 import Link from 'next/link';
+//import AddItemComponent from '../item/AddItemComponent';
+//import Btn from './Btn';
+import { useDispatch, useSelector } from 'react-redux';
+import { UserLogin_REQUEST, UserLogout_REQUEST } from '../../reducers/user';
+import { RootState } from '../../reducers';
+//import axios from 'axios';
+
+declare global {
+    interface Window {
+        klaytn: any;
+        caver: any;
+    }
+}
 
 
 const MenuBar = () => {
-    
+
     const [loginState, setLoginState] = useState<boolean>(false)
     const [flag, setFlag] = useState<boolean>(false)
     const [Login, setLogin] = useState<boolean>(false)
@@ -29,16 +42,96 @@ const MenuBar = () => {
         setLogin(prev => !prev)
     }
 
+    /* 카이카스 로그인 */
+    const [clicked, setClicked] = React.useState<boolean>(false)
+    const [kaikasAddress, setKaikasAddress] = React.useState<string[]>([])
+    const [Load, setLoad] = React.useState<boolean>(false)
+    const User = useSelector((state: RootState) => state.user);
+    const dispatch = useDispatch()
+
+    const signupBool = useSelector((state: RootState) => state.user.signupBool)
+
+    const kaikasLogin = async () => {
+        const wallet = await window.klaytn.enable()
+        const klaytnAddress = window.klaytn.selectedAddress
+        console.log("로그인 눌렀을 때 ==== ", klaytnAddress);
+
+        if (klaytnAddress != undefined) {
+            let AddressArr = []
+            AddressArr.push(klaytnAddress)
+            setKaikasAddress(AddressArr)
+
+            
+            dispatch(UserLogin_REQUEST(klaytnAddress))
+            console.log("signupBoolean ===== ", User.signupBool);
+
+
+            // 카이카스 로그인 후 서명
+            const account = window.klaytn.selectedAddress
+            const message = 'Login User'
+            const signedMessage = await window.caver.klay.sign(message, account)
+            setLoad(true)
+
+            if (signupBool == false) {
+                window.location.href = "/signup"
+            } else if (signupBool == true) {
+                // window.location.href = "/"
+                setLoginState(true)
+                setLogin(false)
+                setFlag(false)
+            } else {
+
+            }
+        }
+    }
+
+
+    useEffect(() => {
+        const klaytnAddress = window.klaytn.selectedAddress
+        // dispatch(UserLogin_REQUEST(klaytnAddress))
+    }, [Load])
+
+    const onClick = () => {
+        if (!window.klaytn) {
+            return
+        }
+        setClicked(true)
+
+        kaikasLogin()
+
+    }
+    useEffect(() => {
+        setLoginState(false)
+        
+        if (User.loginBool === true) {
+            setLoginState(true)
+            setLogin(false)
+            setFlag(false)
+        }
+
+    }, [])
+
+
+    // if (kaikasAddress.length > 0) {
+    //     return (<div></div>)
+    // }
+
+    const logout = () => {
+        setLoginState(false)
+        setLogin(false)
+        setFlag(false)
+        dispatch(UserLogout_REQUEST())
+    }
+
     return (
         <>
             {
                 flag
                     ?
                     <RequireLogin flag={flag} openBtn={requireOpenBtn} loginOpenBtn={loginOpenBtn} />
-  
                     : Login
                         ?
-                        <LoginForm closeLogin={Login} closeLoginBtn={closeLoginForm} />
+                        <LoginForm closeLogin={Login} closeLoginBtn={closeLoginForm} onClick={onClick} />
                         : <></>
             }
             <MenubarWrapper>
@@ -47,7 +140,7 @@ const MenuBar = () => {
                     <li><Link href="/"><a>탐색하기</a></Link></li>
                     {loginState ? <LOG onClick={() => createBtn()}><Link href="/item/additem"><a>발행하기</a></Link></LOG> : <LOG onClick={() => createBtn()}>발행하기</LOG>}
                     {loginState ? <LOG><Link href="/user/mynftall"><a>나의NFT</a></Link></LOG> : <LOG></LOG>}
-                    {loginState ? <LOG onClick={() => { loginClick() }}>LogOut</LOG> : <LOG onClick={() => { loginClick() }}>Login</LOG>}
+                    {loginState ? <LOG onClick={() => { logout() }}>LogOut</LOG> : <LOG onClick={() => { loginClick() }}>Login</LOG>}
 
 
                 </ul>
