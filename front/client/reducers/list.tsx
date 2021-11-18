@@ -11,6 +11,7 @@ export interface ListState {
     mynftList: Array<any>;
     soldnftList: Array<any>;
     notsellnftList : Array<any>;
+    view: boolean;
 }
 
 export const initialState : ListState = {
@@ -21,6 +22,7 @@ export const initialState : ListState = {
     mynftList : [],
     soldnftList : [],
     notsellnftList : [],
+    view: false
 };
 
 
@@ -65,6 +67,10 @@ export const ITEM_RECENT_ERROR = "ITEM_RECENT_ERROR" as const;
 export const MY_NFT_ALL_REQUEST = "MY_NFT_ALL_REQUEST" as const;
 export const MY_NFT_ALL_SUCCESS = "MY_NFT_ALL_SUCCESS" as const;
 export const MY_NFT_ALL_ERROR = "MY_NFT_ALL_ERROR" as const;
+
+export const MYNFT_VIEW_REQUEST = "MYNFT_VIEW_REQUEST" as const;
+export const MYNFT_VIEW_SUCCESS = "MYNFT_VIEW_SUCCESS" as const;
+export const MYNFT_VIEW_ERROR = "MYNFT_VIEW_ERROR" as const;
 
 export const SOLD_NFT_REQUEST = "SOLD_NFT_REQUEST" as const;
 export const SOLD_NFT_SUCCESS = "SOLD_NFT_SUCCESS" as const;
@@ -175,9 +181,28 @@ export const PlusAuctionlist_ERROR = () => {
     }
 }
 
+/* mynft구매자 판매자 뷰 나누기 */
+export const myNft_view_REQUEST = (data) => {
+    return {
+        type: MYNFT_VIEW_REQUEST,
+        data: data
+    }
+}
+
+export const myNft_view_SUCCESS = (data) => {
+    return {
+        type: MYNFT_VIEW_SUCCESS,
+
+    }
+}
+
+export const myNft_view_ERROR = () => {
+    return {
+        type: MYNFT_VIEW_ERROR,
+    }
+}
 
 /* query에 해당하는 상품만 */
-
 export const SetQuery_REQUEST = (data) => {
     return {
         type: SET_QUERY_REQUEST,
@@ -323,13 +348,6 @@ export const hits_not_sell_ERROR = () => {
     }
 }
 
-
-
-
-
-
-
-
 /* query에 해당하는 상품만 */
 
 export const ItemGender_REQUEST = () => {
@@ -422,6 +440,9 @@ type ListAction =
 | ReturnType<typeof myNft_all_REQUEST>
 | ReturnType<typeof myNft_all_SUCCESS>
 | ReturnType<typeof myNft_all_ERROR>
+| ReturnType<typeof myNft_view_REQUEST>
+| ReturnType<typeof myNft_view_SUCCESS>
+| ReturnType<typeof myNft_view_ERROR>
 | ReturnType<typeof sold_nft_REQUEST>
 | ReturnType<typeof sold_nft_SUCCESS>
 | ReturnType<typeof sold_nft_ERROR>
@@ -481,6 +502,21 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
                 ...state,
          
             }
+        // mynft 구매자 판매자 뷰 나누기
+        case MYNFT_VIEW_REQUEST:
+            return{
+                ...state,
+                data:action.data
+            }
+        case MYNFT_VIEW_SUCCESS:
+            return{
+                ...state,
+            }
+        case MYNFT_VIEW_ERROR:
+            return{
+                ...state
+            }
+
         case ITEM_AUCTION_REQUEST:
             return{
                 ...state,
@@ -571,6 +607,8 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
             return{
                 ...state
             }
+
+      
         // /user/mynftall페이지 판매된 nft
         case SOLD_NFT_REQUEST:
             return{

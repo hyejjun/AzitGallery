@@ -41,6 +41,23 @@ function* reqpluslistitem(){
     yield takeLatest('PLUS_ITEM_LIST_REQUEST',pluslistitemSaga)
 }
 
+/* mynft 구매자 판매자 뷰 나누기 */
+function mynftviewAPI(action){
+    return axios.post(`http://localhost:4000/list/mynftview`,JSON.stringify(action.data))
+}
+function* mynftviewsaga(action){
+    console.log(action);
+    const result = yield call(mynftviewAPI,action)
+    yield put({
+        type:'MYNFT_VIEW_SUCCESS',
+        data:result.data
+    })
+}
+
+function* reqmynftview(){
+    yield takeLatest('MYNFT_VIEW_REQUEST',mynftviewsaga)
+}
+
 
 /* 경매 */
 
@@ -259,6 +276,7 @@ export default function* MintSaga(){
             fork(reqnotsellnft),
             fork(reqmynftbyhits),
             fork(reqsellnftbyhits),
-            fork(reqnotsellnftbyhits)
+            fork(reqnotsellnftbyhits),
+            fork(reqmynftview)
         ])
 }
