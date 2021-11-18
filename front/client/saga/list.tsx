@@ -266,7 +266,6 @@ function* reqNotSellNftByHits(){
 
 export default function* MintSaga(){
         yield all([
-<<<<<<< HEAD
             fork(reqlistitem),
             fork(reqpluslistitem),
             fork(reqauctionitem),
@@ -279,18 +278,5 @@ export default function* MintSaga(){
             fork(reqsellnftbyhits),
             fork(reqnotsellnftbyhits),
             fork(reqmynftview)
-=======
-            fork(reqListItem),
-            fork(reqPlusListItem),
-            fork(reqAuctionItem),
-            fork(reqPlusAuctionItem),
-            fork(reqQueryItem),
-            fork(reqMyNftAll),
-            fork(reqSoldNft),
-            fork(reqNotSellNft),
-            fork(reqMyNftByHits),
-            fork(reqSellNftByHits),
-            fork(reqNotSellNftByHits)
->>>>>>> e5c6ee34ddc78b3915c4ed9386ef947cd57c760b
         ])
 }
