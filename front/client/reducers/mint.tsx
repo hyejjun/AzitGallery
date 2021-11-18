@@ -42,9 +42,10 @@ export const MintNFT_REQUEST = (data) => {
     }
 }
 
-export const MintNFT_SUCCESS = () => {
+export const MintNFT_SUCCESS = (data) => {
     return{
         type:MINT_NFT_SUCCESS,
+        data:data
     }
 }
 export const MintNFT_ERROR = () => {
@@ -108,8 +109,10 @@ const reducer = (state:MintState=initialState, action:MintAction) => {
                 verify:'reducer?'
             }
         case MINT_NFT_SUCCESS:
+            console.log(action.data,'reducer에서 data')
             return{
                 ...state,
+                data:action.data,
                 verify:'return?'
             }
         case MINT_NFT_ERROR:

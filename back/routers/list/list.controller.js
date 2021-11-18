@@ -153,7 +153,10 @@ let sold_nft_post = async (req,res) => {
     let keyObject = JSON.parse(key)
     let query = 
     `
-    select * from buyer_list as a join item_info as b on substring(a.item_code,1,16)=b.item_code where a.buyer_idx=1
+    select a.item_code,b.title,b.item_hits from item_detail as a join item_info as b 
+    on a.item_info_idx=b.item_id join user as c 
+    on c.user_idx=b.creator 
+    where c.kaikas_address='${keyObject}' and a.product_status=1 
     order by b.registered_at;
     `
     queryset(req,res,query)
