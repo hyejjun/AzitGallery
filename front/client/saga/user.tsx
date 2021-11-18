@@ -2,34 +2,53 @@
 
 import { ContactlessOutlined } from '@mui/icons-material';
 import axios from 'axios';
-import {all,put,takeEvery,takeLatest,fork,call} from "redux-saga/effects";
+import { all, put, takeEvery, takeLatest, fork, call } from "redux-saga/effects";
 
 
 /* 로그인 중복 확인 */
-function loginAPI(action){
-    return axios.post(`http://localhost:4000/user/addressdbcheck`,JSON.stringify(action.data))
-    
+function loginAPI(action) {
+    return axios.post(`http://localhost:4000/user/addressdbcheck`, JSON.stringify(action.data))
+
 }
 
-function* login(action){
-
-    let result = yield call(loginAPI,action)
-    console.log(result)
-    if(result.data.signupBoolean == true){
+function* login(action) {
+    console.log("로그인 체크 사가 ======",action);
+    
+    let result = yield call(loginAPI, action)
+    console.log("login succ ==========",result)
+    if (result.data.signupBool === true) {
         yield put({
-            type:'SIGNUP_POST_SUCCESS',
-      
+            // type: 'SIGNUP_POST_SUCCESS',
+            type: 'USER_LOGIN_SUCCESS',
+            signupBool : result.data.signupBool,
+            UserAddress : result.data.kaikas_address
         })
-    }else{
+    } else {
         yield put({
-            type:'SIGNUP_POST_ERROR',
-        
+            // type: 'SIGNUP_POST_ERROR',
+            type: 'USER_LOGIN_ERROR',
+            signupBool : result.data.signupBool
         })
     }
 }
 
-function* reqLogin(){
-    yield takeLatest('USER_LOGIN_REQUEST',login)
+function* reqLogin() {
+    yield takeLatest('USER_LOGIN_REQUEST', login)
+}
+
+/* 로그아웃 */
+function* logout() {
+    console.log('로그아웃 사가 =============');
+    
+    yield put({
+        type: 'USER_LOGOUT_SUCCESS',
+        loginBool: false,
+        UserAddress: 'kaikasAddress'
+    })
+}
+
+function* reqLogout() {
+    yield takeLatest('USER_LOGOUT_REQUEST', logout)
 }
 
 /* 이메일 인증 */
@@ -38,71 +57,71 @@ function sellerAdminAPI(action) {
     return axios.post(`http://localhost:4000/user/selleradmin`)
 }
 
-function* sellerAdminSaga(action){
-    const result = yield call(sellerAdminAPI,action)     
+function* sellerAdminSaga(action) {
+    const result = yield call(sellerAdminAPI, action)
 
-    
+
 }
 
-function* reqAdminEmail(){
-    yield takeLatest('SELLER_ADMIN_REQUEST',sellerAdminSaga)
+function* reqAdminEmail() {
+    yield takeLatest('SELLER_ADMIN_REQUEST', sellerAdminSaga)
 }
 
 
 
 /* 이메일 대기 */
 
-function sellerWaitAPI(action):any {
-    return axios.post(`http://localhost:4000/user/selleradminwait`,JSON.stringify(action.data))
+function sellerWaitAPI(action): any {
+    return axios.post(`http://localhost:4000/user/selleradminwait`, JSON.stringify(action.data))
 }
 
-function* sellerWaitSaga(action){
-    const result = yield call(sellerWaitAPI,action)     
+function* sellerWaitSaga(action) {
+    const result = yield call(sellerWaitAPI, action)
 
-    
+
 }
 
-function* reqWaitEmail(){
-    yield takeLatest('SELLER_ADMIN_WAIT_REQUEST',sellerWaitSaga)
+function* reqWaitEmail() {
+    yield takeLatest('SELLER_ADMIN_WAIT_REQUEST', sellerWaitSaga)
 }
 
 
 /* 회원 가입 post */
 function signupAPI(action) {
-    return axios.post(`http://localhost:4000/user/signup`,JSON.stringify(action.data))
+    return axios.post(`http://localhost:4000/user/signup`, JSON.stringify(action.data))
 }
 
-function* signupSaga(action){
-    const result = yield call(signupAPI,action)
+function* signupSaga(action) {
+    const result = yield call(signupAPI, action)
 
 }
 
-function* reqSignup(){
-    yield takeLatest('SIGNUP_POST_REQUEST',signupSaga)
+function* reqSignup() {
+    yield takeLatest('SIGNUP_POST_REQUEST', signupSaga)
 }
 
 /* 회원가입 nickname 중복체크 */
 
-function nicknameAPI(action):any {
-    return axios.post(`http://localhost:4000/user/nicknamechk`,JSON.stringify(action.data))
+function nicknameAPI(action): any {
+    return axios.post(`http://localhost:4000/user/nicknamechk`, JSON.stringify(action.data))
 }
 
-function* nicknameSaga(action){
-    const result = yield call(nicknameAPI,action)
-    if(result.data.nicknameChkBool == true){
+function* nicknameSaga(action) {
+    const result = yield call(nicknameAPI, action)
+    if (result.data.nicknameChkBool == true) {
         yield put({
-            type:'NICKNAME_POST_SUCCESS',
+            type: 'NICKNAME_POST_SUCCESS',
         })
-    }else{
+    } else {
         yield put({
-            type:'NICKNAME_POST_ERROR',
+            type: 'NICKNAME_POST_ERROR',
         })
     }
 
 }
 
-function* reqNickname(){
-    yield takeLatest('NICKNAME_POST_REQUEST',nicknameSaga)
+function* reqNickname() {
+    yield takeLatest('NICKNAME_POST_REQUEST', nicknameSaga)
 }
 
 
@@ -113,71 +132,72 @@ function userListAPI() {
     return axios.get(`http://localhost:4000/user/userlist`)
 }
 
-function* userListSaga(){
+function* userListSaga() {
     const result = yield call(userListAPI)
     // console.log(result.data)
-    console.log("result ===== ",result);
-    
+    console.log("result ===== ", result);
+
     console.log(result.data.ARR)
     yield put({
-        type:'USER_LIST_SUCCESS',
-        data:result.data.ARR
-    })    
+        type: 'USER_LIST_SUCCESS',
+        data: result.data.ARR
+    })
 
 }
 
-function* reqUserList(){
-    yield takeLatest('USER_LIST_REQUEST',userListSaga)
+function* reqUserList() {
+    yield takeLatest('USER_LIST_REQUEST', userListSaga)
 }
 
 /* 관리자 페이지 user list req */
 
-function adminAccessAPI(action):any {
-    return axios.post(`http://localhost:4000/user/selleradminaccess`,JSON.stringify(action.data))
+function adminAccessAPI(action): any {
+    return axios.post(`http://localhost:4000/user/selleradminaccess`, JSON.stringify(action.data))
 }
 
-function* sellerAdminAccessSaga(action){
-    const result = yield call(adminAccessAPI,action)
-    
+function* sellerAdminAccessSaga(action) {
+    const result = yield call(adminAccessAPI, action)
+
 }
 
-function* reqSellerAdminAccess(){
-    yield takeLatest('SELLER_ADMIN_ACCESS_REQUEST',sellerAdminAccessSaga)
+function* reqSellerAdminAccess() {
+    yield takeLatest('SELLER_ADMIN_ACCESS_REQUEST', sellerAdminAccessSaga)
 }
 
 /* 관리자 페이지 user list req */
 
 function adminDenyAPI(action) {
-    return axios.post(`http://localhost:4000/user/selleradmindeny`,JSON.stringify(action.data))
+    return axios.post(`http://localhost:4000/user/selleradmindeny`, JSON.stringify(action.data))
 }
 
-function* sellerAdminDenySaga(action){
-    const result = yield call(adminDenyAPI,action)
+function* sellerAdminDenySaga(action) {
+    const result = yield call(adminDenyAPI, action)
 }
 
-function* reqSellerAdminDeny(){
-    yield takeLatest('SELLER_ADMIN_DENY_REQUEST',sellerAdminDenySaga)
+function* reqSellerAdminDeny() {
+    yield takeLatest('SELLER_ADMIN_DENY_REQUEST', sellerAdminDenySaga)
 }
 
 /* user/uesr페이지 user info req */
-function userInfoAPI(action):any{
-    return axios.post(`http://localhost:4000/user/userinfo`,JSON.stringify(action.data))
+function userInfoAPI(action): any {
+    return axios.post(`http://localhost:4000/user/userinfo`, JSON.stringify(action.data))
 }
 
-function* userInfoSaga(action){
-    const userinfo = yield call(userInfoAPI,action)
+function* userInfoSaga(action) {
+    const userinfo = yield call(userInfoAPI, action)
     yield put({
-        type:'USER_INFO_SUCCESS',
-        data:userinfo.data
+        type: 'USER_INFO_SUCCESS',
+        data: userinfo.data
     })
 }
-function* reqUesrInfo(){
-    yield takeLatest('USER_INFO_REQUEST',userInfoSaga)
+function* reqUesrInfo() {
+    yield takeLatest('USER_INFO_REQUEST', userInfoSaga)
 }
 
-export default function* userSaga(){
+export default function* userSaga() {
     yield all([
         fork(reqLogin),
+        fork(reqLogout),
         fork(reqSignup),
         fork(reqAdminEmail),
         fork(reqUserList),
@@ -185,6 +205,6 @@ export default function* userSaga(){
         fork(reqSellerAdminDeny),
         fork(reqWaitEmail),
         fork(reqUesrInfo),
-        fork(reqNickname) 
+        fork(reqNickname)
     ])
 }

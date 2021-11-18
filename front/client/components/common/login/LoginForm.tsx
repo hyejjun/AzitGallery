@@ -4,77 +4,10 @@ import { connect } from 'react-redux'
 import React from 'react'
 import Link from 'next/link'
 import CloseIcon from '@mui/icons-material/Close';
-import { useSelector, useDispatch } from 'react-redux'
-import { useEffect } from "react"
-import { UserLogin_REQUEST } from "../../../reducers/user";
-import { RootState } from "../../../reducers"
 
-declare global {
-    interface Window {
-        klaytn: any;
-        caver: any;
-    }
-}
+
 
 const LoginForm = (props) =>{
-    const [clicked, setClicked] = React.useState<boolean>(false)
-    const [kaikasAddress, setKaikasAddress] = React.useState<string[]>([])
-    const [Load,setLoad] = React.useState<boolean>(false)
-    const User = useSelector((state:RootState) => state.user);
-    const dispatch = useDispatch()
-
-    const kaikasLogin = async () => {
-        
-    // 카이카스 로그인 
-      const wallet = await window.klaytn.enable()
-      const klaytnAddress = window.klaytn.selectedAddress
-      if( klaytnAddress != undefined){
-        let AddressArr = []
-        AddressArr.push(klaytnAddress)
-        setKaikasAddress(AddressArr)
-        //dispatch({type:USER_LOGIN_REQUEST,payload:klaytnAddress})
-        dispatch(UserLogin_REQUEST(klaytnAddress))
-      // 카이카스 로그인 후 서명
-        const account = window.klaytn.selectedAddress
-        const message = 'Login User'
-        const signedMessage = await window.caver.klay.sign(message, account)
-        setLoad(true)
-      if(User.signupBool == false){
-        
-          window.location.href = "/signup"
-      } else if(User.signupBool == true){
-          window.location.href = "/"
-      }else {
-          
-      }
-      }
-      
-
-    }
-
-    useEffect(()=>{
-        const klaytnAddress = window.klaytn.selectedAddress
-        dispatch(UserLogin_REQUEST(klaytnAddress))
-    },[Load])
-    const onClick = () => {
-        if (!window.klaytn) {
-            return
-        }
-        setClicked(true)
-
-        kaikasLogin()
-
-    }
-
-    if (kaikasAddress.length > 0) {
-      return (<div></div>)
-      
-    }
-
-
-
-
-
     return (
         <>
             <ModalBackground>
@@ -83,7 +16,7 @@ const LoginForm = (props) =>{
                     <ul>
                         <li>로그인</li>
                         <li>지갑을 이용하여 AzitGallery에 로그인합니다.<br />아래 지갑 중 사용할 지갑을 선택해주세요</li>
-                        <li><button onClick={onClick} className="kaikasBtn">Kaikas로그인</button></li>
+                        <li><button onClick={props.onClick} className="kaikasBtn">Kaikas로그인</button></li>
                         <li>사용중인 지갑이 없으신가요? <span><Astyle href="https://chrome.google.com/webstore/detail/kaikas/jblndlipeogpafnldhgmapagcccfchpi">kaikas다운로드</Astyle></span></li>
                     </ul>
                 </LoginFormWrapper>
