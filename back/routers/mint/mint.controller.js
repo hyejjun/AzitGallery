@@ -57,7 +57,7 @@ let mint_nft_post = async (req,res) => {
         }
         item_info_arr.push(item_info_obj)
         console.log(item_info_arr)
-
+        let add_to_item_info = await ItemInfo.create({ creator: get_user_id.dataValues.user_idx, item_code: `${new Date().getTime()}${smallCategory}`, description: desc,  title: name, sell_type, size: size.join(','), color: color.join(','), category_id: bigCategory })
         // 대표이미지
         let item_img_arr = []
         let item_img_obj = {}
@@ -255,11 +255,12 @@ let mint_nft_post = async (req,res) => {
 
     //주석이 너무 길어 맨 아래에 따로 빼놓겠습니다
     async function getNFT(name, color, size, idx, link){
+        //https://baobab.wallet.klaytn.com/access?next=faucet
         let strname = String(name)
         let strcolor = String(color)
         let strsize = String(size)
-        let privateKey = "0x07ea3560faca009fdbaf6cee2ea6ee87aaf22bd1f381f3afd312e79ff45f122b" // DB에서 가져와야 함
-        let accountAddress = "0x89e204fcbad4c4197a9e3971c7bb3c32f46cc458"
+        let privateKey = "0x994a5e7b465b385dc120f6c8d74dcf1e7ca893101bf8a0552c892b15dbc1afec" // DB에서 가져와야 함
+        let accountAddress = "0xe4a849bf6f0b43c09524b5b652cd187d81df9b1a"
   
         const keyring = caver.wallet.keyring.createFromPrivateKey(
             privateKey

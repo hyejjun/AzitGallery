@@ -164,7 +164,7 @@ const ItemListAuction = (props) => {
                     <Link href= {ele.url}>
                         <a>
                             <NFTImg>
-                                 <IMG src = {ele.img.split('?')[0]}/>
+                                 {/* <IMG src = {ele.img.split('?')[0]}/> */}
                             </NFTImg>
                         </a>
                     </Link>

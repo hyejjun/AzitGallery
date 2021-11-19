@@ -31,7 +31,7 @@ let all_list_get =  async (req,res) => {
     const ARR = []
 
     for(let i=0; i<result.length; i++){
-        ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url: `/sell/${result[i].item_id}`,img:result2[i].item_img_link})
+        ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url: `/sell/${result[i].item_id}`})
     }
 
     console.log(ARR)
@@ -74,7 +74,7 @@ let all_auction_get =  async (req,res) => {
     const ARR = []
 
     for(let i=0; i<result.length; i++){
-        ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url: `/auction/${result[i].item_id}`,img:result2[i].item_img_link})
+        ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url: `/auction/${result[i].item_id}`})
     }
     console.log(ARR)
     let data = {
