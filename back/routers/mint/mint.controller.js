@@ -419,9 +419,9 @@ const klaytn_test = async (req, res) => {
     //     return parseInt(value, 16)
     // }
     // //privateKey = 0xb6a4306091a3f4203b497cf461f22624f372c3cffe31d8c0f874ef75a7d1881f
-    accAddress =  "0x54e034470ab35768c24607bb847870d776e10de4"
+    accAddress =  "0x54e034470aB35768C24607Bb847870D776E10DE4"
     // let getBal = await caver.rpc.klay.getBalance(accAddress)
-    let getAcc = await caver.rpc.klay.getAccount("0x54e034470ab35768c24607bb847870d776e10de4")
+    let getAcc = await caver.rpc.klay.getAccount("0x54e034470aB35768C24607Bb847870D776E10DE4")
     // /* getAcc 리턴 예시
     // {
     //     accType: 1,
