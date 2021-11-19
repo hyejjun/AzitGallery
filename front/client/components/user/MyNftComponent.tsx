@@ -23,6 +23,12 @@ const MyNftComponent = () => {
     const [sellerChk, setSellerChk] = useState<boolean>(false);
     const user:UserState = useSelector((state:RootState) => state.user);
     const list:ListState = useSelector((state:RootState) => state.list);
+   
+    useEffect(()=>{
+        if(list.view){
+            setSellerChk(true);
+        }
+    },[list.view])
 
     const btn1 = () => {
         dispatch(myNft_all_REQUEST(user.UserAddress))
@@ -47,21 +53,7 @@ const MyNftComponent = () => {
     }
 
     const test = async () => {
-        // let result = await axios.post(`${url}/list/mynftview`,JSON.stringify(user.UserAddress))
-        // if(result.data){
-        //     setSellerChk(true)
-        // }else{
-        //     setSellerChk(false)
-        // }
-
-        dispatch(myNft_view_REQUEST(user.UserAddress))      
-        let result = list.view;
-        console.log(result,"3333333");
-        if(result){
-            setSellerChk(true);
-        }else{
-            setSellerChk(false)
-        }
+        
     }
 
     const mynftView = async () => {  
@@ -103,7 +95,6 @@ const MyNftComponent = () => {
     useEffect(()=>{
         dispatch(myNft_all_REQUEST(user.UserAddress))
         mynftView()
-        mynftView()
        
         
     },[])
@@ -129,7 +120,6 @@ const MyNftComponent = () => {
 
         dispatch(KipSwap_REQUEST())
     }
-
 
     return(
         <>  
