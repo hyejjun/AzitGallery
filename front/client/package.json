@@ -20,6 +20,7 @@
     "@mui/icons-material": "^5.0.4",
     "@mui/material": "^5.0.4",
     "@mui/styled-engine-sc": "^5.0.3",
+    "@truffle/hdwallet-provider": "^1.7.0",
     "@types/react-redux": "^7.1.20",
     "@types/react-slick": "^0.23.7",
     "@zeit/next-sass": "^1.0.1",
@@ -47,6 +48,7 @@
     "slick-carousel": "^1.8.1",
     "store": "^2.0.12",
     "styled-components": "^5.3.3",
+    "truffle": "^5.4.21",
     "truffle-hdwallet-provider-klaytn": "^1.4.1",
     "web3": "^1.6.0"
   },

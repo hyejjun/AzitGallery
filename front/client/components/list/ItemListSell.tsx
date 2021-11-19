@@ -194,7 +194,7 @@ const ItemListSell = (props) => {
                     <a>
                         <NFTImg>
                             {/* <div><img src={require('../../src/지도.jpg').default} /></div> */}
-                            <IMG src = {ele.img.split('?')[0]}/>
+                            {/* <IMG src = {ele.img.split('?')[0]}/> */}
                         </NFTImg>
                     </a>
                 </Link>
