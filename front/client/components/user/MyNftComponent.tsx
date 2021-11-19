@@ -103,6 +103,7 @@ const MyNftComponent = () => {
     useEffect(()=>{
         dispatch(myNft_all_REQUEST(user.UserAddress))
         mynftView()
+        mynftView()
        
         
     },[])
