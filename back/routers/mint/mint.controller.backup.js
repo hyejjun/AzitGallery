@@ -112,17 +112,18 @@ let mint_nft_post = async (req,res) => {
                     console.log(color_size_item[i],'color_size_item_iiiiiiiiiiiiiiiiii')
                     
                     getNFT(color_size_item[i].name, color_size_item[i].color, color_size_item[i].size, color_size_item[i].idx, mainImgLink)
-                    if(getNFT(color_size_item[i].name, color_size_item[i].color, color_size_item[i].size, color_size_item[i].idx, mainImgLink) == true){
-                        console.log('여기는 와?')
+                    if(getNFT(color_size_item[i].name, color_size_item[i].color, color_size_item[i].size, color_size_item[i].idx, mainImgLink)){
+                        console.log('여기는 와?=============================')
                         next_step_test = true 
                     } else{
-                        next_step_test = true 
+                        next_step_test = false
                     }
                 },500*i)
             }
         }
 
-        nft_working().then(async data=>{
+        nft_working().then( data=>{
+            console.log('여기는 와??????????????')
             if(next_step_test == true){
                 console.log('nft_working().then까지는 옴')
                 sell_auc()
@@ -138,14 +139,14 @@ let mint_nft_post = async (req,res) => {
         })
         async function sell_auc(){
             // 일반구매일 때
-            console.log(get_user_id)
-            
+            console.log(get_user_id,'id는 있어????????????????')
+            console.log(get.user_id.length,'get.user_id.length',ifSell)
             if(ifSell == true && get_user_id.length !== 0){
                 // direct deal에 추가하기 -> 경매와 다름
+
                 await DirectDeal.create({
                     direct_deal_idx: add_to_item_info.dataValues.item_id,
-                    price: Number(price),
-                    currency
+                    price: Number(price), 
                 })
 
                 data = {
@@ -270,14 +271,15 @@ let mint_nft_post = async (req,res) => {
                     { from: keyring.address }
                 ).then(async (data)=>{
                     let nftValue = data.events.Transfer.address
-                    await ItemDetail.update({nft: 'ㅁㄴㅇㄹ'},
+                    await ItemDetail.update({nft: nftValue},
                         {where:{nft_idx:idx}})
-                    console.log(data.events.Transfer.address,'여기는 와')
+                    console.log(data.events.Transfer.address,'여기는 와??')
                     return true
                 })            
             }
             return true
         } else{
+
             return false
         }
     }

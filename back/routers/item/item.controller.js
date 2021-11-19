@@ -1,11 +1,13 @@
 const { sequelize, User, ItemInfo, ItemDetail, ItemImg, Auction, DirectDeal, AuctionHistory, Category, SubCategory} = require('../../models/index')
-const { generate_url } = require('../../s3')
+//const { generate_url } = require('../../s3')
 const express = require('express')
 
 const upload_pics = async (req, res) => {
     console.log('uploadpics')
     try{
-        const link = await generate_url();
+        //const link = await generate_url();
+        const link =`https://dfassf-bucket-test.s3.ap-northeast-2.amazonaws.com/a6304a2e2ef5267d43afd70bd668bea4?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIATLYMKQDTTUOV4MEZ%2F20211119%2Fap-northeast-2%2Fs3%2Faws4_request&X-Amz-Date=20211119T024827Z&X-Amz-Expires=900&X-Amz-Signature=be16c373e26c9805a816636f3910d6581da444a7e328affce9446da724c78f3d&X-Amz-SignedHeaders=host`
+        console.log(link,'linkkkkkkkkkkkkkkkkkkkkkkk')
         res.json({ link })
     } catch(e) {
         console.log(e)

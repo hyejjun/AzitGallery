@@ -5,7 +5,7 @@ const {User,Orders, OrderDetail, ShipInfo, ItemInfo} = require('../../models')
 let get_shipinfo = async (req,res)=>{
 
     const {orderer,receiver,phoneNum,address,postNumber,addressDetail,memo,inputStatus,UserAddress,params} = req.body
-
+    console.log(orderer,receiver,phoneNum,address,postNumber,addressDetail,memo,inputStatus,UserAddress,params)
     const buyerAddress = address+addressDetail
     const USERRESULT = await User.findOne({where:{kaikas_address:UserAddress}})
     // const params_item = await ItemInfo.findOne({where:{item_id :params}})

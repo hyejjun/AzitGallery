@@ -3,8 +3,7 @@ let mint_nft_post = async (req,res) => {
     try{
         /*
         수량 부분
-        꼭 고려
-        
+        꼭 고려        
         */
         const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, aucTime, extension, gender, bigCategory, smallCategory, mainImgIdx} = req.body[0]
         // const {qty} = req.body

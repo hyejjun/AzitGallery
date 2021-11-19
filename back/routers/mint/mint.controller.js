@@ -25,7 +25,7 @@ let mint_nft_post = async (req,res) => {
 
     const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, aucTime, extension, gender, bigCategory, smallCategory, mainImgIdx} = req.body[0]
     //      bool    str    str       str   str    str      obj     obj   str       str      bool      str      str           str
-    console.log('result',ifSell, price, currency, name, desc, itemType, color, size, aucPrice, aucTime, extension, gender, bigCategory, smallCategory, mainImgIdx)
+    console.log('result line 28',ifSell, price, currency, name, desc, itemType, color, size, aucPrice, aucTime, extension, gender, bigCategory, smallCategory, mainImgIdx)
     const imagesLink = req.body[1]
     const mainImgLink = req.body[2]
     let sell_type
