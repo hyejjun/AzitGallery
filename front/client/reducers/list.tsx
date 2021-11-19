@@ -192,7 +192,7 @@ export const myNft_view_REQUEST = (data) => {
 export const myNft_view_SUCCESS = (data) => {
     return {
         type: MYNFT_VIEW_SUCCESS,
-
+        data:data
     }
 }
 
@@ -511,6 +511,7 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
         case MYNFT_VIEW_SUCCESS:
             return{
                 ...state,
+                view:action.data.flag
             }
         case MYNFT_VIEW_ERROR:
             return{

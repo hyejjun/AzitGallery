@@ -1,6 +1,6 @@
 import { ConstructionOutlined } from '@mui/icons-material';
 import axios from 'axios';
-import {all,put,takeEvery,takeLatest,fork,call} from "redux-saga/effects";
+import {all,put,takeEvery,takeLatest,fork,call, takeLeading} from "redux-saga/effects";
 
 /* 일반 */
 
@@ -43,10 +43,9 @@ function* reqPlusListItem(){
 
 /* mynft 구매자 판매자 뷰 나누기 */
 function mynftviewAPI(action){
-    return axios.post(`http://localhost:4000/list/mynftview`,JSON.stringify(action.data))
+    return axios.post(`http://localhost:4000/list/mynftview`,JSON.stringify(action.data));
 }
 function* mynftviewsaga(action){
-    console.log(action);
     const result = yield call(mynftviewAPI,action)
     yield put({
         type:'MYNFT_VIEW_SUCCESS',
@@ -55,7 +54,7 @@ function* mynftviewsaga(action){
 }
 
 function* reqmynftview(){
-    yield takeLatest('MYNFT_VIEW_REQUEST',mynftviewsaga)
+    yield takeLeading('MYNFT_VIEW_REQUEST',mynftviewsaga)
 }
 
 
@@ -266,17 +265,17 @@ function* reqNotSellNftByHits(){
 
 export default function* MintSaga(){
         yield all([
-            fork(reqlistitem),
-            fork(reqpluslistitem),
-            fork(reqauctionitem),
-            fork(reqplusauctionitem),
-            fork(reqqueryitem),
-            fork(reqmynftall),
-            fork(reqsoldnft),
-            fork(reqnotsellnft),
-            fork(reqmynftbyhits),
-            fork(reqsellnftbyhits),
-            fork(reqnotsellnftbyhits),
+            fork(reqListItem),
+            fork(reqPlusListItem),
+            fork(reqAuctionItem),
+            fork(reqPlusAuctionItem),
+            fork(reqQueryItem),
+            fork(reqMyNftAll),
+            fork(reqSoldNft),
+            fork(reqNotSellNft),
+            fork(reqMyNftByHits),
+            fork(reqSellNftByHits),
+            fork(reqNotSellNftByHits),
             fork(reqmynftview)
         ])
 }

@@ -143,7 +143,7 @@ let mynft_view = async(req,res) => {
                 result_msg: 'ok',
                 msg: '판매자 승인',
                 where: '/mynftall',
-                flag2: true
+                flag: true
             }
             res.json(data)
         }else{
@@ -151,7 +151,7 @@ let mynft_view = async(req,res) => {
                 result_msg: 'fail',
                 msg: '판매자 승인되지 않음',
                 where: '/mynftall',
-                flag2:false
+                flag:false
             }
             res.json(data)
         }
@@ -161,6 +161,7 @@ let mynft_view = async(req,res) => {
             result_msg: 'fail',
             msg: '판매자 승인되지 않음',
             where: '/mynftall',
+            flag:false
         }
         res.json(data)
     }   

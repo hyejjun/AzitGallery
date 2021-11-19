@@ -7,12 +7,13 @@ import Notselled from './NotSelled'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from "../../reducers"
 import {UserState} from "../../reducers/user"
+import {ListState} from "../../reducers/list"
 import { KipSwap_REQUEST } from "../../reducers/mint";
 import { Userlist_REQUEST } from '../../reducers/user'
 import { myNft_view_REQUEST, myNft_all_REQUEST,sold_nft_REQUEST,not_selled_REQUEST,hits_buy_REQUEST,hits_sell_REQUEST,hits_not_sell_REQUEST} from '../../reducers/list'
 import axios from 'axios'
 import { url } from '../../saga/url'
-import { QuestionAnswer } from '@mui/icons-material'
+import { CountertopsOutlined, QuestionAnswer } from '@mui/icons-material'
  
 const MyNftComponent = () => {
 
@@ -21,6 +22,7 @@ const MyNftComponent = () => {
     const [likeBtn, setLikeBtn] = useState<number>(0);
     const [sellerChk, setSellerChk] = useState<boolean>(false);
     const user:UserState = useSelector((state:RootState) => state.user);
+    const list:ListState = useSelector((state:RootState) => state.list);
 
     const btn1 = () => {
         dispatch(myNft_all_REQUEST(user.UserAddress))
@@ -45,22 +47,28 @@ const MyNftComponent = () => {
     }
 
     const test = async () => {
-        let result = await axios.post(`${url}/list/mynftview`,JSON.stringify(user.UserAddress))
-        console.log(result, "22222222");
-        if(result.data == true){
-            setSellerChk(true)
+        // let result = await axios.post(`${url}/list/mynftview`,JSON.stringify(user.UserAddress))
+        // if(result.data){
+        //     setSellerChk(true)
+        // }else{
+        //     setSellerChk(false)
+        // }
+
+        dispatch(myNft_view_REQUEST(user.UserAddress))      
+        let result = list.view;
+        console.log(result,"3333333");
+        if(result){
+            setSellerChk(true);
         }else{
             setSellerChk(false)
         }
     }
 
-    const mynftView = async () => {        
-        let result = await axios.post(`${url}/list/mynftview`,JSON.stringify(user.UserAddress))
-        console.log(result.data, "22222222");
-        let result2 = result.data.flag2
-        console.log(result2,"3333333")
-        if(result2 == true){
-            setSellerChk(true)
+    const mynftView = async () => {  
+        dispatch(myNft_view_REQUEST(user.UserAddress))      
+        let result = list.view;
+        if(result){
+            setSellerChk(true);
         }else{
             setSellerChk(false)
         }
@@ -138,35 +146,21 @@ const MyNftComponent = () => {
                         <Menu>
                             <Menu1 onClick={btn1}>구매한 NFT</Menu1>
                         </Menu>
-        { sellerChk ?  <div className= "displayNone">
-                        <Menu>
+        { sellerChk ?  <>
+                            <Menu>
                             <Menu1>|</Menu1>
-                        </Menu>
-                        <Menu>
-                            <Menu1 onClick={btn2}>판매된 NFT</Menu1>
-                        </Menu>
-                        <Menu>
-                            <Menu1>|</Menu1>
-                        </Menu>
-                        <Menu>
-                            <Menu1 onClick={btn3}>미판매된 NFT</Menu1>
-                        </Menu>
-                        </div> : 
-                        <>
-                         <Menu>
-                         <Menu1>|</Menu1>
-                        </Menu>
-                        <Menu>
-                            <Menu1 onClick={btn2}>판매된 NFT</Menu1>
-                        </Menu>
-                        <Menu>
-                            <Menu1>|</Menu1>
-                        </Menu>
-                        <Menu>
-                            <Menu1 onClick={btn3}>미판매된 NFT</Menu1>
-                        </Menu>
+                            </Menu>
+                            <Menu>
+                                <Menu1 onClick={btn2}>판매된 NFT</Menu1>
+                            </Menu>
+                            <Menu>
+                                <Menu1>|</Menu1>
+                            </Menu>
+                            <Menu>
+                                <Menu1 onClick={btn3}>미판매된 NFT</Menu1>
+                            </Menu>
                         </>
-                        }
+                        : <></> }
                     </MenuBar>
                     <SelectBoxHeader>
                     
