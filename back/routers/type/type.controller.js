@@ -1,6 +1,8 @@
-const {ItemInfo, Category, SubCategory, ItemImg} = require('../../models')
+const {ItemInfo, Category, SubCategory, ItemImg, ItemDetail} = require('../../models')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op;
+const mysql = require('mysql')
+const pool = require('../pool')
 /*
     @ 전체 값 다 보내는 이유?
     판매에서 여성복 선택하는 경우
@@ -147,11 +149,104 @@ let get_sub_category_list = async (req,res)=>{
 
 }
 
+let get_categorys = async (req,res) => {
+    let data
+    try{
+        let result = await Category.findAll()
+        data = {
+        result_msg:'OK',
+        result
+        }
+    }catch(e){
+        console.log('type.controller.js 에러========================',e)
+        data = {
+            result_msg:'Fail',
+            msg:'페이지가 존재하지 안습니다.'
+        }
+    }   
+    res.json(data)
+}
+let get_sub_category = async (req,res) => {
+    let data
+    try{
+        let result = await SubCategory.findAll({where:{main_category_idx:req.body.data}})
+        data = {
+        result_msg:'OK',
+        result
+        }
+    }catch(e){
+        console.log('type.controller.js 에러========================',e)
+        data = {
+            result_msg:'Fail',
+            msg:'페이지가 존재하지 안습니다.'
+        }
+    }   
+    res.json(data)
+}
+
+let all_list_get =  async (req,res) => {
+    console.log(req.body.data)
+    let {sell_type,list_length} = req.body.data
+    //console.log(req.body)
+    // let result = await ItemInfo.findAll({ where:{sell_type:false}, limit:3 })
+    // let result2 = await ItemImg.findAll({ limit:3 })
+    // const ARR = []
+
+    // for(let i=0; i<result.length; i++){
+    //     ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url: `/sell/${result[i].item_id}`,img:result2[i].item_img_link})
+    // }
+
+    // console.log(ARR)
+    // let data = {
+    //     ARR:ARR,
+    // }
+
+    // res.json(data)
+
+    let query =`
+    select a.item_id,a.sell_type,a.item_code,a.title,a.likes,b.nick_name,a.product_status,c.item_img_link 
+    from item_info as a join user as b 
+    on a.creator = b.user_idx join item_img as c 
+    on a.item_id=c.item_img_idx
+    where a.sell_type=${sell_type}
+    order by a.registered_At desc
+    limit ${list_length+3};
+    `
+    queryset(req,res,query)
+}
+
+let queryset = (req,res,query) => {
+    let data = {}
+    pool.getConnection((err,connection)=>{
+        connection.query(            
+            query            
+        ,function(err,result,fields){
+            if(err) throw err;
+            if(result==undefined){
+                data = {
+                    result_msg:'Fail',
+                    msg:'상품이 존재하지 않습니다.'
+                }
+            }else{
+                data = {
+                    result_msg:'OK',
+                    result
+                }
+                res.json(data)
+            }
+            connection.release()
+        })
+    })   
+}
+
 module.exports = {
     get_selltype,
     get_category,
     get_search,
     get_sort,
     get_category_list,
-    get_sub_category_list
+    get_sub_category_list,
+    get_categorys,
+    get_sub_category,
+    all_list_get
 }

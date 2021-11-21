@@ -9,4 +9,8 @@ router.post('/sort', controller.get_sort)
 router.post('/categorylist', controller.get_category_list)
 router.post('/subcategorylist', controller.get_sub_category_list)
 
+router.get('/categorys',controller.get_categorys)
+router.post('/sub',controller.get_sub_category)
+router.post('/allitem',controller.all_list_get)
+
 module.exports = router

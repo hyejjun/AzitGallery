@@ -355,11 +355,29 @@ let kipswap_post = async () => {
 }
 
 const klaytn_test = async (req, res) => {
-    
-    accAddress =  "0x54e034470ab35768c24607bb847870d776e10de4"
-    
-    let getAcc = await caver.rpc.klay.getAccount("0x54e034470ab35768c24607bb847870d776e10de4")
-    
+    // let data = await caver.rpc.klay.fromPeb(caver.rpc.klay.getBalance("0x89e204fcbad4c4197a9e3971c7bb3c32f46cc458"), "KLAY")
+
+    // function hex(value){
+    //     return parseInt(value, 16)
+    // }
+    // //privateKey = 0xb6a4306091a3f4203b497cf461f22624f372c3cffe31d8c0f874ef75a7d1881f
+    accAddress =  "0x54e034470aB35768C24607Bb847870D776E10DE4"
+    // let getBal = await caver.rpc.klay.getBalance(accAddress)
+    let getAcc = await caver.rpc.klay.getAccount("0x54e034470aB35768C24607Bb847870D776E10DE4")
+    // /* getAcc 리턴 예시
+    // {
+    //     accType: 1,
+    //     account: {
+    //     nonce: 112,
+    //     balance: '0xbae2fdb76a9200', // getBal의 리턴값, hex함수 이용하면 52603925000000000와 같은 값이 나옴
+    //     humanReadable: false,
+    //     key: { keyType: 1, key: {} }
+    // }
+    // */
+
+    console.log(hex(data))
+    console.log(data)
+    // // 0xbae2fdb76a9200 값의 의미?
     let resData = hex(data)
     
     res.send(resData.toString())
