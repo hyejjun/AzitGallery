@@ -26,8 +26,8 @@ let deal_post = (req,res) => {
                 }else{
                     connection.query(`
                         update item_detail set product_status=1
-                         where item_code=(select a.item_code from item_detail as a 
-                            where a.item_info_idx='${item_id} and a.size='${size}' and a.color='${color}');
+                        where item_code=(select a.item_code from item_detail as a 
+                        where a.item_info_idx='${item_id}' and a.size='${size}' and a.color='${color}');
                     `,function(errr,result3,fields){
                         console.log(result3)
                     })

@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Styled from 'styled-components'
 import CloseIcon from '@mui/icons-material/Close';
-import Link from 'next/link'
-import Router from "next/router"
-import { ModalWrapper, OrderTitle, OrderContent, OrderForm, OrderBtn } from "../sell/Order";
+import { ModalWrapper, OrderTitle, OrderContent, OrderBtn } from "../sell/Order";
 // import useInput from "../../../hooks/useInput";
 
 
@@ -86,7 +84,7 @@ const JoinAcution = (props) => {
 export default JoinAcution
 
 
-const AuctionForm = Styled.div`   
+const AuctionForm = Styled.div<{flag:boolean}>`   
     width : 700px;
     height: 650px;
     top: 50%;

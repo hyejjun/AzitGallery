@@ -1,10 +1,9 @@
 import Styled from 'styled-components'
 import React, { useState } from 'react'
-import Link from 'next/link'
+import { useSelector,useDispatch } from 'react-redux';
 import Alert from '@mui/material/Alert';
 import Waybill from '../view/Waybill';
 import useInput from '../../hooks/useInput';
-import { useDispatch, useSelector } from 'react-redux';
 import { deliveryInfo_REQUEST } from '../../reducers/ship';
 import { RootState } from '../../reducers';
 
@@ -31,20 +30,7 @@ const Selled = () => {
             Like: 0,
             alert: '신고하기'
         },
-        {
-            id: 2,
-            subject: 'asdg',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
-        {
-            id: 3,
-            subject: 'asdg',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
+        
 
     ]);
 
@@ -57,27 +43,7 @@ const Selled = () => {
             Like: 0,
             alert: '신고하기'
         },
-        {
-            id: 5,
-            subject: 'asdg',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
-        {
-            id: 6,
-            subject: 'gahhfdsh',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
-        {
-            id: 7,
-            subject: 'gahhfdsh',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
+
     ]);
 
     // @ 배송등록하기

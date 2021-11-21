@@ -1,10 +1,8 @@
 import Styled from 'styled-components'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import { useState } from 'react';
 import useInput from '../../hooks/useInput';
 import { TextField } from '@mui/material';
 import Router from 'next/router';
-import { SellerAdmin_REQUEST } from '../../reducers/user'
 import { RootState } from "../../reducers"
 import { useSelector, useDispatch } from 'react-redux';
 

@@ -193,7 +193,10 @@ let sold_nft_post = async (req,res) => {
     let keyObject = JSON.parse(key)
     let query = 
     `
-    select * from buyer_list as a join item_info as b on substring(a.item_code,1,16)=b.item_code where a.buyer_idx=1
+    select a.item_code,b.title,b.item_hits from item_detail as a join item_info as b 
+    on a.item_info_idx=b.item_id join user as c 
+    on c.user_idx=b.creator 
+    where c.kaikas_address='${keyObject}' and a.product_status=1 
     order by b.registered_at;
     `
     queryset(req,res,query)
@@ -255,8 +258,11 @@ let sellnft_hit_post = (req,res) => {
     let { userAddress } = req.body
     let query =
     `
-    select * from buyer_list as a join item_info as b on substring(a.item_code,1,16)=b.item_code where a.buyer_idx=1
-    order by b.item_hits desc;
+    select a.item_code,b.title,b.item_hits from item_detail as a join item_info as b 
+    on a.item_info_idx=b.item_id join user as c 
+    on c.user_idx=b.creator 
+    where c.kaikas_address=${userAddress} and a.product_status=1 
+    order by b.item_hits;
     `
     queryset(req,res,query)
 }
@@ -285,7 +291,8 @@ let queryset = (req,res,query) => {
             if(err) throw err;
             if(result==undefined){
                 data = {
-                    result_msg:'Fail'
+                    result_msg:'Fail',
+                    msg:'상품이 존재하지 않습니다.'
                 }
             }else{
                 data = {

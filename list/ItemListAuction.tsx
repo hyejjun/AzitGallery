@@ -1,4 +1,3 @@
-import Styled from 'styled-components'
 import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import Category from '../common/Category'
@@ -86,74 +85,8 @@ const ItemListAuction = (props) => {
             Like: 0,
             alert: '신고하기',
             url:`/sell/1`
-        },
-        {   id: 2,
-            subject: 'adsfdsf',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기',
-            url:`/sell/2`
-
-        },
-        {
-            id: 3,
-            subject: 'adsff',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기',
-            url:`/sell/3`
-
-        },
-        {
-            id: 4,
-            subject: 'adsg',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기',
-            url:`/sell/4`
-
-        },
-        {
-            id: 5,
-            subject: 'adg',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기',
-            url:`/sell/5`
-
-        },
-        {
-            id: 6,
-            subject: 'asdgsdg',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기',
-            url:`/sell/6`
-        },
-        {
-            id: 7,
-            subject: 'adsg',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기',
-            url:`/sell/7`
-        },
-        {
-            id: 8,
-            subject: 'asdgsdg',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기',
-            url:`/sell/8`
-        },
-        {
-            id: 9,
-            subject: 'asdgsdg',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기',
-            url:`/sell/9`
-        },
+        }
+        
       ]);
 
 

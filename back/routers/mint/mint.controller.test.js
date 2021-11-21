@@ -1,7 +1,10 @@
 let mint_nft_post = async (req,res) => {
     let data // res.json 리턴용
     try{
-
+        /*
+        수량 부분
+        꼭 고려        
+        */
         const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, aucTime, extension, gender, bigCategory, smallCategory, mainImgIdx} = req.body[0]
 
         const imagesLink = req.body[1]

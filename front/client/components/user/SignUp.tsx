@@ -1,18 +1,13 @@
 // 메인 페이지에 있는 새 NFT 등록하기 배너
 
 import Styled from 'styled-components'
-import Link from 'next/link'
 import React,{ useState } from 'react'
-import useInput from '../../hooks/useInput'
 import SucJoin from './SucJoin'
 import { useSelector, useDispatch } from 'react-redux'
 import { SignUp_REQUEST } from "../../reducers/user"
-import { Nickname_REQUEST } from "../../reducers/user"
 import { Userlist_REQUEST } from "../../reducers/user"
-import { setUncaughtExceptionCaptureCallback } from 'process'
 import Router from 'next/router'
 import { RootState } from "../../reducers"
-import { truncate } from 'fs'
 import { url } from '../../saga/url'
 import axios from 'axios'
 

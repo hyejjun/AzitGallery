@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Styled from 'styled-components'
 import ModalForm from '../common/ModalForm'
 import ModalBackground from '../common/ModalBackground'
 import SucNft from './SucNft'

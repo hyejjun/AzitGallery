@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "next",
-    "build": "next build",
+    "build": " GENERATE_SOURCEMAP=false next build",
     "start": "next start",
     "link-contracts": "cd lib && ln -s ../../build/contracts contracts"
   },
@@ -53,9 +53,9 @@
     "web3": "^1.6.0"
   },
   "devDependencies": {
-    "@types/node": "^16.11.1",
-    "@types/react": "^17.0.30",
+    "@types/node": "^16.11.8",
+    "@types/react": "^17.0.35",
     "babel-plugin-styled-components": "^1.13.3",
-    "typescript": "^4.4.4"
+    "typescript": "^4.5.2"
   }
 }

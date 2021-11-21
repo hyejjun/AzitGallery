@@ -111,7 +111,8 @@ function* subcategorySaga(action){
 }
 
 function* reqSubCategory(){
-    yield takeLatest('SUB_CATEGORY_REQUEST',subcategorySaga)
+    //yield takeLatest('SUB_CATEGORY_REQUEST',subcategorySaga)
+    // mein이랑 겹쳐서 잠시 주석
 }
 
 export default function* typeSaga(){

@@ -6,7 +6,7 @@ import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import { SellerAdmin_REQUEST, SellerAdminWait_REQUEST, UserInfo_REQUEST } from '../../reducers/user'
 import { RootState } from "../../reducers"
 import { useSelector, useDispatch } from 'react-redux'
-import {UserState} from "../../reducers/user"
+
 
 
 const User = () => {
@@ -194,48 +194,7 @@ const UserWrapper = Styled.div`
         color:black;
         font-weight:bold;
     }
-    /* ul{
-        margin-left:80px;
-    }
-    li{
-        margin-bottom:20px;
-    }
-    li > p:nth-child(2){
-        margin-left:120px;
-        margin-top:10px;
-        width:380px;
-        height:25px;
-        background-color:white;
-        border-radius:1%;
-        font-size:14px;
-    }
-    li:nth-child(3){
-        margin-bottom:50px;
-    }   
-    li:nth-child(4){
-        width:120px;
-        height:42px;
-        line-height:43px;
-        margin-left:120px;
-        text-align:center;
-        border:1px solid black;
-        border-radius:4%;
-        margin-bottom:40px; 
-    }
-
-    li:nth-child(5) span, li:nth-child(5) a{
-        width:100px;
-        height:40px;
-        padding:10px;
-        margin-right:10px;
-        background-color:white;
-        border-radius:3%;
-        font-size:12px;
-        font-weight:600;
     
-    } */
-
-
 
 
 `

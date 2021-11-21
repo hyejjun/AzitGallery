@@ -6,7 +6,7 @@ const option = {
         {
             name: "Authorization",
             //https://console.klaytnapi.com/ko/security/credential 여기서 발급
-            value: "Basic " + Buffer.from("KASKKDRR6BVLSCRAM4I6PRPS" + ":" + "_uFWVwECedWHBsugbvH9EBMhUbHxKKvXG9covs42").toString("base64"),
+            value: "Basic " + Buffer.from("KASKOJ6MC0O3O63U7YQMLBHL" + ":" + "PjAzWdm1ROLdbHgFegoX3PMkltgpdVIgCD4ea0sG").toString("base64"),
         },
         { name: "x-krn", value: "krn:1001:node" },
     ],
@@ -22,7 +22,8 @@ const caver = new Caver(
 
 let mint_nft_post = async (req,res) => {
     // 나중에는 creator 도 가져와야함..
-    const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, aucTime, extension, gender, bigCategory, smallCategory, mainImgIdx} = req.body[0]
+    console.log(req.body[0],'값 확인========================')
+    const {userAddress, ifSell, price, currency, name, desc, gender, bigCategory, smallCategory, color, size, mainImgIdx} = req.body[0]
 
     //      bool    str    str       str   str    str      obj     obj   str       str      bool      str      str           str
   
@@ -36,7 +37,7 @@ let mint_nft_post = async (req,res) => {
         // user_idx 받아오기
         let get_user_id = await User.findOne({
             where: {
-                user_idx:1// from req.body
+                kaikas_address:userAddress// from req.body
         }})
 
         // category 가져오기 아마 필요없을 듯?
@@ -88,7 +89,7 @@ let mint_nft_post = async (req,res) => {
                     color: color[i],
                     nft:`${Number(`${new Date().getTime()}101`)}${size[j]}${color[i]}`, //임시로
                     item_code:`${add_to_item_info.dataValues.item_code}${last_digits_for_detail}`,
-                    product_status:'ready' //임시로
+                    product_status:0 //임시로
                 })    
                 // 아래 함수 인자값은 이름, 색상, 사이즈를 바탕으로 토큰 발행을 하기 위함이며
                 // idx는 getNFT함수 안에서 item_detail 테이블에서 nft_idx에 맞게 nft값을 업데이트 하기 위함임
@@ -108,18 +109,23 @@ let mint_nft_post = async (req,res) => {
                 setTimeout(()=>{
                     // 동시에 실행되면 known transaction 오류가 나기 때문에 setTimeout을 통해 딜레이를 줌
                     // 500ms정도면 괜찮은 것 같음..
+                    console.log(color_size_item[i],'color_size_item_iiiiiiiiiiiiiiiiii')
+                    
                     getNFT(color_size_item[i].name, color_size_item[i].color, color_size_item[i].size, color_size_item[i].idx, mainImgLink)
-                    if(getNFT(color_size_item[i].name, color_size_item[i].color, color_size_item[i].size, color_size_item[i].idx, mainImgLink) == true){
+                    if(getNFT(color_size_item[i].name, color_size_item[i].color, color_size_item[i].size, color_size_item[i].idx, mainImgLink)){
+                        console.log('여기는 와?=============================')
                         next_step_test = true 
                     } else{
-                        next_step_test = false 
+                        next_step_test = false
                     }
                 },500*i)
             }
         }
 
-        nft_working().then(async data=>{
+        nft_working().then( data=>{
+            console.log('여기는 와??????????????')
             if(next_step_test == true){
+                console.log('nft_working().then까지는 옴')
                 sell_auc()
             } else{
                 data = {
@@ -133,12 +139,14 @@ let mint_nft_post = async (req,res) => {
         })
         async function sell_auc(){
             // 일반구매일 때
+            console.log(get_user_id,'id는 있어????????????????')
+            console.log(get.user_id.length,'get.user_id.length',ifSell)
             if(ifSell == true && get_user_id.length !== 0){
                 // direct deal에 추가하기 -> 경매와 다름
+
                 await DirectDeal.create({
                     direct_deal_idx: add_to_item_info.dataValues.item_id,
-                    price: Number(price),
-                    currency
+                    price: Number(price), 
                 })
 
                 data = {
@@ -202,8 +210,8 @@ let mint_nft_post = async (req,res) => {
         let strname = String(name)
         let strcolor = String(color)
         let strsize = String(size)
-        let privateKey = "0x07ea3560faca009fdbaf6cee2ea6ee87aaf22bd1f381f3afd312e79ff45f122b" // DB에서 가져와야 함
-        let accountAddress = "0x89e204fcbad4c4197a9e3971c7bb3c32f46cc458"
+        let privateKey = "0xd22e0cc154ed32abcd8e13cb5ba24bba940205509824b57f4220e944eee8d075" // DB에서 가져와야 함
+        let accountAddress = "0x2618f9B36086912B479bA6A6FFF6ABCfCC032398"
   
         const keyring = caver.wallet.keyring.createFromPrivateKey(
             privateKey
@@ -265,10 +273,11 @@ let mint_nft_post = async (req,res) => {
                     let nftValue = data.events.Transfer.address
                     await ItemDetail.update({nft: nftValue},
                         {where:{nft_idx:idx}})
-                    console.log(data.events.Transfer.address)
+                    console.log(data.events.Transfer.address,'여기는 와??')
                     return true
                 })            
             }
+            return true
         } else{
 
             return false
