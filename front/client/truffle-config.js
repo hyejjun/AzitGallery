@@ -1,5 +1,5 @@
 const HDWalletProvider = require("truffle-hdwallet-provider-klaytn");
-const privateKey = "0x07ea3560faca009fdbaf6cee2ea6ee87aaf22bd1f381f3afd312e79ff45f122b" // Enter your private key;
+const privateKey = "0x994a5e7b465b385dc120f6c8d74dcf1e7ca893101bf8a0552c892b15dbc1afec" // Enter your private key;
 
 module.exports = {
   networks: {
@@ -15,7 +15,7 @@ module.exports = {
       gasPrice: null
     },
     mainnet: {
-      provider: () => new HDWalletProvider(privateKey, "https://your.cypress.en.url:8651"),
+      provider: () => new HDWalletProvider(privateKey, "https://kaikas.cypress.klaytn.net:8651/"),
       network_id: '8217', //Klaytn mainnet's network id
       gas: '8500000',
       gasPrice: null

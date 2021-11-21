@@ -17,10 +17,10 @@ VALUES
 # user
 INSERT INTO user(nick_name,kaikas_address,contact,address,email)
 VALUES
-('mihee','address1',0100000000,'homeaddress1','email@naver.com'),
-('miheeA','address2',0200000000,'homeaddress2','email2@naver.com'),
-('miheeB','address3',0300000000,'homeaddress3','email3@naver.com'),
-('miheeC','address4',0400000000,'homeaddress4','email4@naver.com');
+('seo','address1',0100000000,'homeaddress1','email@naver.com'),
+('eom','address2',0200000000,'homeaddress2','email2@naver.com'),
+('kim','address3',0300000000,'homeaddress3','email3@naver.com'),
+('jeong','address4',0400000000,'homeaddress4','email4@naver.com');
 
 INSERT INTO user(nick_name,kaikas_address,contact,address,email)
 VALUES('mihsee','0x2618f9b36086912b479ba6a6fff6abcfcc032398',01000000100,'homeaddrsess1','email@navesr.com'),
