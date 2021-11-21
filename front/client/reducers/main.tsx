@@ -26,6 +26,10 @@ export const MAIN_ALL_REQUEST = "MAIN_ALL_REQUEST" as const
 export const MAIN_ALL_SUCCESS = "MAIN_ALL_SUCCESS" as const
 export const MAIN_ALL_ERROR = "MAIN_ALL_ERROR" as const
 
+export const CATEGORY_SELECT_ITEM_REQUEST = "CATEGORY_SELECT_ITEM_REQUEST"  as const
+export const CATEGORY_SELECT_ITEM_SUCCESS = "CATEGORY_SELECT_ITEM_SUCCESS" as const
+export const CATEGORY_SELECT_ITEM_ERROR = "CATEGORY_SELECT_ITEM_ERROR" as const
+
 export const all_category_REQUEST = () => {
     return{
         type: ALL_CATEGORY_REQUEST 
@@ -51,7 +55,6 @@ export const sub_category_REQUEST = (data) => {
     }
 }
 export const sub_category_SUCCESS = (data) => {
-    console.log('reducer sub')
     return{
         type: SUB_CATEGORY_SUCCESS,
         data:data
@@ -80,6 +83,24 @@ export const main_all_ERROR = () => {
         type:MAIN_ALL_ERROR
     }
 }
+
+export const category_select_item_REQUEST = (data) => {
+    return{
+        type:CATEGORY_SELECT_ITEM_REQUEST,
+        data:data
+    }
+}
+export const category_select_item_SUCCESS = (data) => {
+    return{
+        type:CATEGORY_SELECT_ITEM_SUCCESS,
+        data:data
+    }
+}
+export const category_select_item_ERROR = () => {
+    return{
+        type:CATEGORY_SELECT_ITEM_ERROR
+    }
+}
 type MainAction = 
     | ReturnType<typeof all_category_REQUEST>
     | ReturnType<typeof all_category_SUCCESS>
@@ -90,6 +111,9 @@ type MainAction =
     | ReturnType<typeof main_all_REQUEST>
     | ReturnType<typeof main_all_SUCCESS>
     | ReturnType<typeof main_all_ERROR>
+    | ReturnType<typeof category_select_item_REQUEST>
+    | ReturnType<typeof category_select_item_SUCCESS>
+    | ReturnType<typeof category_select_item_ERROR>
 
 const reducer = (state:mainState = initialState, action:MainAction) => {
     switch(action.type){
@@ -131,6 +155,20 @@ const reducer = (state:mainState = initialState, action:MainAction) => {
                 mainitemList:action.data
             }
         case MAIN_ALL_ERROR :
+            return{
+                ...state
+            }
+        case CATEGORY_SELECT_ITEM_REQUEST :
+            return{
+                ...state,
+                data:action.data
+            }
+        case CATEGORY_SELECT_ITEM_SUCCESS :
+            return{
+                ...state,
+                mainitemList:action.data
+            }
+        case CATEGORY_SELECT_ITEM_ERROR :
             return{
                 ...state
             }

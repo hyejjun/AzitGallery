@@ -26,22 +26,27 @@ const ItemListSell = (props) => {
         MoreNFT,
         AStyle,
     } = ItemListCSS
-    console.log(props.sellState,'sellstate')
     
     const dispatch = useDispatch()
     const main = useSelector((state:RootState) => state.main);
-    const [listLength,setListLength] = useState<number>(main.mainitemList.length)
+    const [listLength,setListLength] = useState<number>(0)
     
     
     const moreClick = () => {
-        dispatch(main_all_REQUEST({sell_type:props.sellState,list_length:main.mainitemList.length}))
-
+        dispatch(main_all_REQUEST({sell_type:props.sellState,list_length:main.mainitemList.length+3}))
+        setListLength(main.mainitemList.length)
+        if(!props.sellState){
+            setListLength(0)
+        }else if(props.sellState){
+            setListLength(0)
+        }
+        
     }
     
-
     useEffect(() => {
-        dispatch(main_all_REQUEST({sell_type:props.sellState,list_length:main.mainitemList.length}))
-        //setListLength(main.mainitemList.length)
+        setListLength(0)
+        dispatch(main_all_REQUEST({sell_type:props.sellState,list_length:listLength+3}))
+        setListLength(0)
     },[props.sellState])
 
     const nameList: any = main.mainitemList.map((ele) =>
@@ -79,8 +84,7 @@ const ItemListSell = (props) => {
                             <Link href = {`auction/${ele.item_id}`}><AStyle><NFTSubject>{ele.title}</NFTSubject></AStyle></Link>
                             :
                             <Link href = {`sell/${ele.item_id}`}><AStyle><NFTSubject>{ele.title}</NFTSubject></AStyle></Link>
-                        }
-                             
+                        }                             
                         <NFTartist>{ele.nick_name}</NFTartist>
                     </NFTOneList>
                     <NFTOneImg>
@@ -116,8 +120,7 @@ const ItemListSell = (props) => {
                 </SelectBox>
             </div>
             <NFTComponent>
-                {/* <Category CategoryState={props.CategoryState}/> */}
-                <Category/>
+                <Category sellState={props.sellState} listLength={listLength}/>
                 <div>
                     <div>
                         <ul>
@@ -126,7 +129,6 @@ const ItemListSell = (props) => {
                     </div>
                 </div>
             </NFTComponent>
-            {/* <MoreNFT onClick = {handleClick}>more</MoreNFT> */}
             <MoreNFT onClick = {()=>{moreClick()}}>more</MoreNFT>
         </>
     )

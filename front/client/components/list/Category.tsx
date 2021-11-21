@@ -3,32 +3,33 @@ import { useDispatch, useSelector } from 'react-redux';
 import React, { useState, useEffect } from 'react'
 import { category_REQUEST } from '../../reducers/type';
 import { RootState } from "../../reducers"
-import { all_category_REQUEST,sub_category_REQUEST } from '../../reducers/main'
+import { all_category_REQUEST,sub_category_REQUEST,category_select_item_REQUEST } from '../../reducers/main'
 
-const Category = () => {
+const Category = (props) => {
 
     const dispatch = useDispatch()
     const Main = useSelector((state:RootState) => state.main);
     const CategoryType = Main.categoryList
     const SubType = Main.subList
     const [List, setList] = useState<number>(-1);
-    //console.log(SubType,'ssssssssssssssss')
+
 
     useEffect(()=>{
         dispatch(all_category_REQUEST())
     },[])
-    //const categoryList: any = CategoryType.map((ele))
+
     const handleList = (e) => {
         if(e.id-1==List){
             setList(-1)
         }else{
             setList(e.id-1)
-        }
-        
+        } 
         dispatch(sub_category_REQUEST(e.id))
     }
     const subSelect = (e) => {
-        console.log(e,'eeeeeeeeeeeeeeeeeee')
+        //console.log(e,'eeeeeeeeeeeeeeeeeee')
+        //if()
+        dispatch(category_select_item_REQUEST({e:e,sell_type:props.sellState,listLength:props.listLength+3}))
     }
     const subCategory:any = SubType.map((ele,key)=>
         <React.Fragment key={ele.id}>
@@ -42,7 +43,7 @@ const Category = () => {
             <React.Fragment key={ele.id}>
                 <Ul>
                     <Line></Line>
-                    <Subject onClick={()=>{handleList(ele)}}>{ele.category_name}</Subject>
+                    <Subject onClick={()=>{handleList(ele),subSelect(ele)}}>{ele.category_name}</Subject>
                     <Line></Line>
                 </Ul>
                 {List==key

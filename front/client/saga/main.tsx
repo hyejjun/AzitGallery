@@ -4,14 +4,34 @@ import { setDefaultResultOrder } from 'dns/promises';
 import {all,put,takeEvery,takeLatest,fork,call} from "redux-saga/effects";
 import {url} from './url'
 
+function reqCategorySelectItemAPI(data){
+    return axios.post(`${url}/type/selectitem`,data.data)
+}
+
+function* reqCategorySelectItemSaga(data){  
+    const result = yield call(reqCategorySelectItemAPI,data)
+    if (result.data.result_msg=="OK"){
+        yield put({
+            type:'CATEGORY_SELECT_ITEM_SUCCESS',
+            data:result.data.result
+        })
+    }else{
+        yield put({
+            type:'CATEGORY_SELECT_ITEM_ERROR'
+        })
+    }
+}
+
+function* reqCategorySelectItem(){
+    yield takeLatest('CATEGORY_SELECT_ITEM_REQUEST',reqCategorySelectItemSaga)
+}
+
 function reqMainItemAPI(data){
-    console.log('main saga api나와?')
     return axios.post(`${url}/type/allitem`,data)
 }
 
 function* reqMainItemSaga(data){
     const result = yield call(reqMainItemAPI,data)
-    console.log(result.data.result)
     if (result.data.result_msg=="OK"){
         yield put({
             type:'MAIN_ALL_SUCCESS',
@@ -77,6 +97,7 @@ export default function* mainSaga(){
     yield all([
         fork(reqMain),
         fork(reqSub),
-        fork(reqMainItem)
+        fork(reqMainItem),
+        fork(reqCategorySelectItem)
     ])
 }

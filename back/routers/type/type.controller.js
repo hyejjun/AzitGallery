@@ -186,33 +186,50 @@ let get_sub_category = async (req,res) => {
 
 let all_list_get =  async (req,res) => {
     console.log(req.body.data)
-    let {sell_type,list_length} = req.body.data
-    //console.log(req.body)
-    // let result = await ItemInfo.findAll({ where:{sell_type:false}, limit:3 })
-    // let result2 = await ItemImg.findAll({ limit:3 })
-    // const ARR = []
-
-    // for(let i=0; i<result.length; i++){
-    //     ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url: `/sell/${result[i].item_id}`,img:result2[i].item_img_link})
-    // }
-
-    // console.log(ARR)
-    // let data = {
-    //     ARR:ARR,
-    // }
-
-    // res.json(data)
-
+    let {sell_type,list_length} = req.body.data    
     let query =`
-    select a.item_id,a.sell_type,a.item_code,a.title,a.likes,b.nick_name,a.product_status,c.item_img_link 
-    from item_info as a join user as b 
-    on a.creator = b.user_idx join item_img as c 
-    on a.item_id=c.item_img_idx
-    where a.sell_type=${sell_type}
-    order by a.registered_At desc
-    limit ${list_length+3};
+        select a.item_id,a.sell_type,a.item_code,a.title,a.likes,b.nick_name,a.product_status,c.item_img_link 
+        from item_info as a join user as b 
+        on a.creator = b.user_idx join item_img as c 
+        on a.item_id=c.item_img_idx
+        where a.sell_type=${sell_type}
+        order by a.registered_At desc
+        limit ${list_length};
     `
     queryset(req,res,query)
+}
+let select_item_get = (req,res) => {
+    console.log(req.body,'reqpppppppppppppppppp')
+    let query
+    if(req.body.e.main_category_code){
+        let {main_category_code} = req.body.e
+        let {listLength,sell_type} = req.body
+        query = `
+            select a.item_id,a.sell_type,a.item_code,a.title,a.likes,b.nick_name,a.product_status,c.item_img_link
+            from item_info as a join user as b 
+            on a.creator = b.user_idx join item_img as c 
+            on a.item_id=c.item_img_idx 
+            where a.category_id=${main_category_code} 
+            and a.sell_type=${sell_type}
+            order by a.registered_At 
+            desc limit ${listLength};   
+        `  
+    }else if(req.body.e.sub_category_code){
+        let {item_code} = req.body.e
+        let {listLength,sell_type} = req.body
+        query = `
+            select a.item_id,a.sell_type,a.item_code,a.title,a.likes,b.nick_name,a.product_status,c.item_img_link
+            from item_info as a join user as b 
+            on a.creator = b.user_idx join item_img as c 
+            on a.item_id=c.item_img_idx 
+            where substring(a.item_code,14,3)=${item_code} 
+            and a.sell_type=${sell_type}
+            order by a.registered_At 
+            desc limit ${listLength};
+        `
+    }
+    queryset(req,res,query)
+
 }
 
 let queryset = (req,res,query) => {
@@ -248,5 +265,6 @@ module.exports = {
     get_sub_category_list,
     get_categorys,
     get_sub_category,
-    all_list_get
+    all_list_get,
+    select_item_get
 }
