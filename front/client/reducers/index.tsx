@@ -42,19 +42,11 @@ export interface State {
     list:ListState,
     auction:AuctionState,
     deal:DealState,
-<<<<<<< HEAD
     like:LikeState
 }
 
 const combinedReducers = combineReducers({
-    user, mint, ship, type, view, list, auction, deal, like
-=======
-    main:mainState,
-}
-
-const combinedReducers = combineReducers({
-    user, mint, ship, type, view, list, auction, deal, main
->>>>>>> 2ecc4458a1a487a168a5811cfd90636990021e76
+    user, mint, ship, type, view, list, auction, deal, like, main
 })
 
 export const rootReducer:Reducer<State,AnyAction> = (state,action) => {
