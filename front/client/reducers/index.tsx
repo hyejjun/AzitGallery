@@ -42,7 +42,8 @@ export interface State {
     list:ListState,
     auction:AuctionState,
     deal:DealState,
-    like:LikeState
+    like:LikeState,
+    main:mainState
 }
 
 const combinedReducers = combineReducers({

@@ -30,12 +30,12 @@ let auction_current_post = async (req,res)=>{
     console.log(`useeffect 작동 여부${params}`)
 
     let result = await AuctionHistory.findAll({where:{auc_history_idx:params}})
-    let Auction = await Auction.findOne({where:{auction_idx:params}})
-    console.log(result[result.length-1].bid_price)
-    console.log(Auction)
+    let result2 = await Auction.findOne({where:{auction_idx:params}})
+    // console.log("여기 1 =======",result[result.length-1].bid_price)
+    // console.log("여기 2 =======",result2)
     let bid_price = result[result.length-1].bid_price
 
-    if(endDate.bid_boolean == 1){
+    if(result2.dataValues.bid_boolean == 1){
         let UpdateAuction = await Auction.update({bid_boolean:2},{where:{auction_idx:params}})
 
         // 구매자에게서 관리자로 토큰 이동
@@ -93,8 +93,8 @@ let auction_current_post = async (req,res)=>{
     }
     let data = {
         current:bid_price,
-        endDate:Auction.end_date,
-        bid_boolean:Auction.bid_boolean
+        endDate:result2.dataValues.end_date,
+        bid_boolean:result2.dataValues.bid_boolean
     }
     res.json(data)
 }
