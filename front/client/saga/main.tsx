@@ -27,6 +27,7 @@ function* reqCategorySelectItem(){
 }
 
 function reqMainItemAPI(data){
+    console.log(data,'dasssssssssssssssssssssssss')
     return axios.post(`${url}/type/allitem`,data)
 }
 

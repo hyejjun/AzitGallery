@@ -30,6 +30,8 @@ const ItemListSell = (props) => {
     const dispatch = useDispatch()
     const main = useSelector((state:RootState) => state.main);
     const [listLength,setListLength] = useState<number>(0)
+    const [categorySt,setCategorySt] = useState<Object>({})
+    
     
     
     const moreClick = () => {
@@ -40,9 +42,15 @@ const ItemListSell = (props) => {
         }else if(props.sellState){
             setListLength(0)
         }
-        
     }
     
+    const handleChange = (e) => {
+        console.log(e.target.value)
+        let value = e.target.value
+        console.log(categorySt,'categorysttttttttttttttt')
+        dispatch(main_all_REQUEST({sell_type:props.sellState,list_length:main.mainitemList.length,orderBy:value,categorySt:categorySt}))
+    }
+
     useEffect(() => {
         setListLength(0)
         dispatch(main_all_REQUEST({sell_type:props.sellState,list_length:listLength+3}))
@@ -110,17 +118,14 @@ const ItemListSell = (props) => {
                 <PictureNumberNotice>
                     전체 NFT 리스트 (총 {/*count*/}개 발행됨)
                 </PictureNumberNotice>
-                <SelectBox>
-                    <SelectOption value="sell_recent">
-                        좋아요 순
-                    </SelectOption>
-                    <SelectOption value="sell_likes">
-                        최근 발행 순
-                    </SelectOption>
-                </SelectBox>
             </div>
             <NFTComponent>
-                <Category sellState={props.sellState} listLength={listLength}/>
+                <Category 
+                    sellState={props.sellState} 
+                    listLength={listLength}
+                    setCategorySt={setCategorySt}
+                    
+                />
                 <div>
                     <div>
                         <ul>
