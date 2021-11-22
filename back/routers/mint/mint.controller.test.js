@@ -1,3 +1,34 @@
+/*
+
+바디값을 받아온다
+유저id를 받아온다
+
+s3이미지 링크를 받아온다 -> s3에 업로드 하지 않고 fail띄울 수 있는 방법이 있을까?
+ㄴ 이건 아이디어 좀..
+
+getbalance가 제대로 개념이 잡혀야 하는데
+현재 Invalid JSON RPC response: {"code":1010009,"message":"The credential you provided does not match in our record."} 
+이런 오류가 나는 상태
+
+우선 큰그림은 
+
+1. 바디값으로 받아온 데이터들을 모두 배열에 넣고
+2. result를 반환하는 토큰 발행 함수를 만들어(성공시 어드레스, 실패시 실패 유형 반환)
+3. 제일 세부 항목들인 컬러 사이즈 항목들이 있는 배열에 대해 for loop을 돌려 토큰 발행을 한다
+4. 오류로 인해 토큰 발행이 안되면 result에 어드레스가 떨어지지 않음
+
+지금부터는 미완성인 부분(구상만)
+next_step이라는 변수를 만들어 스위치로 이용할 예정
+result 값을 넣는 배열을 만들어 위 for loop 중에 어드레스가 하나라도 undefined되면 next_step이 false가 되어 다음 단계인 db입력이 되지 않음
+모두 성공적일 때만 진행
+
+이 경우 문제점: 블록체인 상에는 전체 데이터의 일부가 등록되고 나머지는 등록되지 않게 처리가 되나, DB상으론 아예 등록이 되지 않은 것으로 처리됨. 판매자에게 큰 손해를 가져다줄 수 있음
+해결법: getbalance 작동법을 제대로 파악하면 프론트에서 등록 버튼 눌렀을 때 getbalance를 이용하여 잔액 - color * size * gas 계산해서 처리하면 s3 이미지 전송도 막을 수 있음
+
+
+
+*/
+
 let mint_nft_post = async (req,res) => {
     let data // res.json 리턴용
     try{
