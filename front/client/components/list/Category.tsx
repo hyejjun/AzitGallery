@@ -12,6 +12,8 @@ const Category = (props) => {
     const CategoryType = Main.categoryList
     const SubType = Main.subList
     const [List, setList] = useState<number>(-1);
+    
+    
 
 
     useEffect(()=>{
@@ -27,8 +29,8 @@ const Category = (props) => {
         dispatch(sub_category_REQUEST(e.id))
     }
     const subSelect = (e) => {
-        //console.log(e,'eeeeeeeeeeeeeeeeeee')
-        //if()
+        console.log(e)
+        props.setCategorySt(e)
         dispatch(category_select_item_REQUEST({e:e,sell_type:props.sellState,listLength:props.listLength+3}))
     }
     const subCategory:any = SubType.map((ele,key)=>

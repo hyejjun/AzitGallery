@@ -144,9 +144,7 @@ let get_sub_category_list = async (req,res)=>{
         let data = {
             ARR:ARR
         }
-    
         res.json(data)
-
 }
 
 let get_categorys = async (req,res) => {
@@ -186,7 +184,8 @@ let get_sub_category = async (req,res) => {
 
 let all_list_get =  async (req,res) => {
     console.log(req.body.data)
-    let {sell_type,list_length} = req.body.data    
+    let {sell_type,list_length} = req.body.data
+
     let query =`
         select a.item_id,a.sell_type,a.item_code,a.title,a.likes,b.nick_name,a.product_status,c.item_img_link 
         from item_info as a join user as b 
@@ -229,7 +228,6 @@ let select_item_get = (req,res) => {
         `
     }
     queryset(req,res,query)
-
 }
 
 let queryset = (req,res,query) => {

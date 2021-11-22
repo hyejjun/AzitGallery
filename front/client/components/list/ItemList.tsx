@@ -2,6 +2,7 @@ import Styled from 'styled-components'
 import MyNft from './MyNFT'
 import ItemListSell from './ItemListSell'
 import {useState} from 'react'
+import SearchBar from './SearchBar'
 
 
 const ItemList = (props) => {
@@ -22,6 +23,7 @@ const ItemList = (props) => {
                 <Menu>
                     <SellTab onClick={()=>{setSellState(true)}}>경매</SellTab>
                 </Menu>
+                <SearchBar/>
             </MenuBar>
             <div>
                 <ItemListSell sellState={sellState}/>
