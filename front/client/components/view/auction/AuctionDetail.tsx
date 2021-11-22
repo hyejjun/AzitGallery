@@ -91,10 +91,10 @@ const AuctionDetail = (props) => {
         console.log(`종료 일 ${Auction.endDate}`)
           console.log(`현재 일 ${Auction.now.toISOString()}`)
           
-    //    if(Auction.endDate.toString()<Auction.now.toISOString().toString()){
-    //        alert('경매 종료')
-    //        setEndBool(true)
-    //    }
+       if(Auction.endDate.toString()<Auction.now.toISOString().toString()){
+           alert('경매 종료')
+           setEndBool(true)
+       }
     },[Auction.endDate])
     const auctionValue = {
         maxPrice,

@@ -7,28 +7,39 @@ import Notselled from './NotSelled'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from "../../reducers"
 import {UserState} from "../../reducers/user"
+import {ListState} from "../../reducers/list"
 import { KipSwap_REQUEST } from "../../reducers/mint";
 import { Userlist_REQUEST } from '../../reducers/user'
-import { myNft_all_REQUEST,sold_nft_REQUEST,not_selled_REQUEST,hits_buy_REQUEST,hits_sell_REQUEST,hits_not_sell_REQUEST} from '../../reducers/list'
-
+import { myNft_view_REQUEST, myNft_all_REQUEST,sold_nft_REQUEST,not_selled_REQUEST,hits_buy_REQUEST,hits_sell_REQUEST,hits_not_sell_REQUEST} from '../../reducers/list'
+import axios from 'axios'
+import { url } from '../../saga/url'
+import { CountertopsOutlined, QuestionAnswer } from '@mui/icons-material'
+ 
 const MyNftComponent = () => {
 
     const dispatch = useDispatch()
     const [tabBtn, settabBtn] = useState<number>(1);
     const [likeBtn, setLikeBtn] = useState<number>(0);
+    const [sellerChk, setSellerChk] = useState<boolean>(false);
     const user:UserState = useSelector((state:RootState) => state.user);
-    
+    const list:ListState = useSelector((state:RootState) => state.list);
+   
+    useEffect(()=>{
+        if(list.view){
+            setSellerChk(true);
+        }
+    },[list.view])
 
     const btn1 = () => {
         dispatch(myNft_all_REQUEST(user.UserAddress))
         settabBtn(1);
         setLikeBtn(0);
     }
+
     const btn2 = () => {
         dispatch(sold_nft_REQUEST(user.UserAddress))
         settabBtn(2);
         setLikeBtn(0);
-        
     }
     
     const btn3 = () => {
@@ -40,10 +51,24 @@ const MyNftComponent = () => {
     const handleChange = (e) => {
         setLikeBtn(e.target.value)
     }
-    const test = () => {        
+
+    const test = async () => {
         
     }
+
+    const mynftView = async () => {  
+        dispatch(myNft_view_REQUEST(user.UserAddress))      
+        let result = list.view;
+        if(result){
+            setSellerChk(true);
+        }else{
+            setSellerChk(false)
+        }
+    }
+
     let data:{}
+    
+    
 
     const orderByLikeBtn = () => {
         if(likeBtn==1){
@@ -69,6 +94,8 @@ const MyNftComponent = () => {
     // @ 여기서 NFT (구매한 , 판매된 , 미판매된 ) 가져옴 - dispatch 로 요청
     useEffect(()=>{
         dispatch(myNft_all_REQUEST(user.UserAddress))
+        mynftView()
+       
         
     },[])
 
@@ -94,7 +121,6 @@ const MyNftComponent = () => {
         dispatch(KipSwap_REQUEST())
     }
 
-
     return(
         <>  
             <MyInfo> 
@@ -111,18 +137,21 @@ const MyNftComponent = () => {
                         <Menu>
                             <Menu1 onClick={btn1}>구매한 NFT</Menu1>
                         </Menu>
-                        <Menu>
+        { sellerChk ?  <>
+                            <Menu>
                             <Menu1>|</Menu1>
-                        </Menu>
-                        <Menu>
-                            <Menu1 onClick={btn2}>판매된 NFT</Menu1>
-                        </Menu>
-                        <Menu>
-                            <Menu1>|</Menu1>
-                        </Menu>
-                        <Menu>
-                            <Menu1 onClick={btn3}>미판매된 NFT</Menu1>
-                        </Menu>
+                            </Menu>
+                            <Menu>
+                                <Menu1 onClick={btn2}>판매된 NFT</Menu1>
+                            </Menu>
+                            <Menu>
+                                <Menu1>|</Menu1>
+                            </Menu>
+                            <Menu>
+                                <Menu1 onClick={btn3}>미판매된 NFT</Menu1>
+                            </Menu>
+                        </>
+                        : <></> }
                     </MenuBar>
                     <SelectBoxHeader>
                     
@@ -154,6 +183,8 @@ const MyNftComponent = () => {
 }
 
 export default MyNftComponent
+
+
 
 const MyInfo = Styled.div`
     margin:0 auto;
@@ -203,6 +234,10 @@ const MyNft = Styled.div`
 
 const Header = Styled.div`
     display:block;
+    .displayNone{
+        display:none;
+        background: red;
+    }
 `
 const Menu = Styled.li`
 color:#2d3741;
@@ -215,6 +250,7 @@ float:left;
 
 `
 const MenuBar = Styled.ul`
+width: 400px;
 clear:both;
 margin-bottom:70px;
 display:inline-block;
@@ -226,6 +262,7 @@ const Menu1 = Styled.div`
     &:hover{
         color:#055fec;
     }
+    
 `
 
 const SelectBoxHeader = Styled.div`

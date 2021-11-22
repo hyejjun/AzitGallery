@@ -1,15 +1,15 @@
 import { ConstructionOutlined } from '@mui/icons-material';
 import axios from 'axios';
-import {all,put,takeEvery,takeLatest,fork,call} from "redux-saga/effects";
+import {all,put,takeEvery,takeLatest,fork,call, takeLeading} from "redux-saga/effects";
 
 /* 일반 */
 
-function listitemAPI() {
+function listItemAPI() {
     return axios.get(`http://localhost:4000/list/alllist`)
 }
 
-function* listitemSaga(){
-    const result = yield call(listitemAPI)
+function* listItemSaga(){
+    const result = yield call(listItemAPI)
 
     yield put({
         type:'ITEM_LIST_SUCCESS',
@@ -18,17 +18,17 @@ function* listitemSaga(){
     })
 }
 
-function* reqlistitem(){
-    yield takeLatest('ITEM_LIST_REQUEST',listitemSaga)
+function* reqListItem(){
+    yield takeLatest('ITEM_LIST_REQUEST',listItemSaga)
 }
 
 
-function pluslistitemAPI(action) {
+function plusListItemAPI(action) {
     return axios.post(`http://localhost:4000/list/pluslist`,JSON.stringify(action.data))
 }
 
-function* pluslistitemSaga(action){
-    const result = yield call(pluslistitemAPI,action)
+function* plusListItemSaga(action){
+    const result = yield call(plusListItemAPI,action)
    
     yield put({
         type:'PLUS_ITEM_LIST_SUCCESS',
@@ -37,19 +37,35 @@ function* pluslistitemSaga(action){
     })
 }
 
-function* reqpluslistitem(){
-    yield takeLatest('PLUS_ITEM_LIST_REQUEST',pluslistitemSaga)
+function* reqPlusListItem(){
+    yield takeLatest('PLUS_ITEM_LIST_REQUEST',plusListItemSaga)
+}
+
+/* mynft 구매자 판매자 뷰 나누기 */
+function mynftviewAPI(action){
+    return axios.post(`http://localhost:4000/list/mynftview`,JSON.stringify(action.data));
+}
+function* mynftviewsaga(action){
+    const result = yield call(mynftviewAPI,action)
+    yield put({
+        type:'MYNFT_VIEW_SUCCESS',
+        data:result.data
+    })
+}
+
+function* reqmynftview(){
+    yield takeLeading('MYNFT_VIEW_REQUEST',mynftviewsaga)
 }
 
 
 /* 경매 */
 
-function listauctionAPI() {
+function listAuctionAPI() {
     return axios.get(`http://localhost:4000/list/allauction`)
 }
 
-function* lisauctionSaga(){
-    const result = yield call(listauctionAPI)
+function* lisAuctionSaga(){
+    const result = yield call(listAuctionAPI)
    
     yield put({
         type:'ITEM_AUCTION_SUCCESS',
@@ -57,17 +73,17 @@ function* lisauctionSaga(){
     })
 }
 
-function* reqauctionitem(){
-    yield takeLatest('ITEM_AUCTION_REQUEST',lisauctionSaga)
+function* reqAuctionItem(){
+    yield takeLatest('ITEM_AUCTION_REQUEST',lisAuctionSaga)
 }
 
 
-function plusauctionitemAPI(action) {
+function plusAuctionItemAPI(action) {
     return axios.post(`http://localhost:4000/list/plusauction`,JSON.stringify(action.data))
 }
 
-function* plusauctionitemSaga(action){
-    const result = yield call(plusauctionitemAPI,action)
+function* plusAuctionItemSaga(action){
+    const result = yield call(plusAuctionItemAPI,action)
     console.log(`saga 까지 작동 여부 ${result.data.Pluslength}`)
     yield put({
         type:'PLUS_AUCTION_LIST_SUCCESS',
@@ -76,20 +92,20 @@ function* plusauctionitemSaga(action){
     })
 }
 
-function* reqplusauctionitem(){
-    yield takeLatest('PLUS_AUCTION_LIST_REQUEST',plusauctionitemSaga)
+function* reqPlusAuctionItem(){
+    yield takeLatest('PLUS_AUCTION_LIST_REQUEST',plusAuctionItemSaga)
 }
 
 
 
 /* query  */
 
-function queryitemAPI(action) {
+function queryItemAPI(action) {
     return axios.post(`http://localhost:4000/list/queryitem`,JSON.stringify(action.data))
 }
 
-function* queryitemSaga(action){
-    const result = yield call(queryitemAPI,action.dadta)
+function* queryItemSaga(action){
+    const result = yield call(queryItemAPI,action.dadta)
    
     yield put({
         type:'SET_QUERY_SUCCESS',
@@ -97,18 +113,18 @@ function* queryitemSaga(action){
     })
 }
 
-function* reqqueryitem(){
-    yield takeLatest('SET_QUERY_REQUEST',queryitemSaga)
+function* reqQueryItem(){
+    yield takeLatest('SET_QUERY_REQUEST',queryItemSaga)
 }
 
 /* 구매한 nft가져오기  */
-function getmynftAPI(data){
+function getMyNftAPI(data){
     return axios.post(`http://localhost:4000/list/mynftall`,JSON.stringify(data.data))
 }
 
-function* getmynftSaga(data){    
+function* getMyNftSaga(data){    
 
-    const result = yield call(getmynftAPI,data)
+    const result = yield call(getMyNftAPI,data)
     if(result.data.result_msg=='OK'){
         yield put({
             type:'MY_NFT_ALL_SUCCESS',
@@ -121,17 +137,17 @@ function* getmynftSaga(data){
     }
 }
 
-function* reqmynftall(){
-    yield takeLatest('MY_NFT_ALL_REQUEST',getmynftSaga)
+function* reqMyNftAll(){
+    yield takeLatest('MY_NFT_ALL_REQUEST',getMyNftSaga)
 }
 
 /* 판매한 nft가져오기  */
-function getsoldnftAPI(data){
+function getSoldNftAPI(data){
     return axios.post('http://localhost:4000/list/soldnft',JSON.stringify(data.data))
 }
 
-function* getsoldnftSaga(data){
-    const result = yield call(getsoldnftAPI,data)
+function* getSoldNftSaga(data){
+    const result = yield call(getSoldNftAPI,data)
     if(result.data.result_msg=='OK'){
         yield put({
             type:'SOLD_NFT_SUCCESS',
@@ -142,19 +158,19 @@ function* getsoldnftSaga(data){
     }
 }
 
-function* reqsoldnft(){
-    yield takeLatest('SOLD_NFT_REQUEST',getsoldnftSaga)
+function* reqSoldNft(){
+    yield takeLatest('SOLD_NFT_REQUEST',getSoldNftSaga)
 }
 
 
 /* 미판매된 nft가져오기  */
-function getnotsellnftAPI(data){
+function getNotSellNftAPI(data){
     return axios.post('http://localhost:4000/list/notsellnft',JSON.stringify(data.data))
 }
 
-function* getnotsellnftSaga(data){
+function* getNotSellNftSaga(data){
 
-    const result = yield call(getnotsellnftAPI,data)
+    const result = yield call(getNotSellNftAPI,data)
     if(result.data.result_msg=='OK'){
         yield put({
             type:'NOT_SELLED_SUCCESS',
@@ -167,18 +183,18 @@ function* getnotsellnftSaga(data){
     }
 }
 
-function* reqnotsellnft(){
-    yield takeLatest('NOT_SELLED_REQUEST',getnotsellnftSaga)
+function* reqNotSellNft(){
+    yield takeLatest('NOT_SELLED_REQUEST',getNotSellNftSaga)
 }
 /* 구매한 nft 조회수 순으로 가져오기  */
-function getmynftbyhitsAPI(data){
+function getMyNftByHitsAPI(data){
     let userAddress = JSON.stringify(data.data.userAddress)
     let likeState = data.data.likeBtn
     return axios.post('http://localhost:4000/list/mynftbyhits',{userAddress:userAddress,likeState:likeState})
 
 }
-function* getmynftbyhitsSaga(data){
-    const result = yield call(getmynftbyhitsAPI,data)
+function* getMyNftByHitsSaga(data){
+    const result = yield call(getMyNftByHitsAPI,data)
     if(result.data.result_msg=='OK'){
         yield put({
             type:'HITS_BUY_SUCCESS',
@@ -191,20 +207,20 @@ function* getmynftbyhitsSaga(data){
     } 
 }
 
-function* reqmynftbyhits(){
-    yield takeLatest('HITS_BUY_REQUEST',getmynftbyhitsSaga)
+function* reqMyNftByHits(){
+    yield takeLatest('HITS_BUY_REQUEST',getMyNftByHitsSaga)
 }
 
 /* 판매된 nft 조회수 순으로 가져오기  */
-function getsellnftbyhitsAPI(data){
+function getSellNftByHitsAPI(data){
     let userAddress = JSON.stringify(data.data.userAddress)
     let likeState = data.data.likeBtn
     return axios.post('http://localhost:4000/list/sellnftbyhits',{userAddress:userAddress,likeState:likeState})
 
 }
 
-function* getsellnftbyhitsSaga(data){
-    const result = yield call(getsellnftbyhitsAPI,data)
+function* getSellNftByHitsSaga(data){
+    const result = yield call(getSellNftByHitsAPI,data)
     if(result.data.result_msg=='OK'){
         yield put({
             type:'HITS_SELL_SUCCESS',
@@ -217,20 +233,20 @@ function* getsellnftbyhitsSaga(data){
     } 
 }
 
-function* reqsellnftbyhits(){
-    yield takeLatest('HITS_SELL_REQUEST',getsellnftbyhitsSaga)
+function* reqSellNftByHits(){
+    yield takeLatest('HITS_SELL_REQUEST',getSellNftByHitsSaga)
 }
 
 /* 미판매된 nft 조회수 순으로 가져오기  */
-function getnotsellnftbyhitsAPI(data){
+function getNotSellNftByHitsAPI(data){
     let userAddress = JSON.stringify(data.data.userAddress)
     let likeState = data.data.likeBtn
     return axios.post('http://localhost:4000/list/notsellnftbyhits',{userAddress:userAddress,likeState:likeState})
 
 }
 
-function* getnotsellnftbyhitsSaga(data){
-    const result = yield call(getnotsellnftbyhitsAPI,data)
+function* getNotSellNftByHitsSaga(data){
+    const result = yield call(getNotSellNftByHitsAPI,data)
     if(result.data.result_msg=='OK'){
         yield put({
             type:'HITS_NOT_SELL_SUCCESS',
@@ -243,22 +259,23 @@ function* getnotsellnftbyhitsSaga(data){
     } 
 }
 
-function* reqnotsellnftbyhits(){
-    yield takeLatest('HITS_NOT_SELL_REQUEST',getnotsellnftbyhitsSaga)
+function* reqNotSellNftByHits(){
+    yield takeLatest('HITS_NOT_SELL_REQUEST',getNotSellNftByHitsSaga)
 }
 
 export default function* MintSaga(){
         yield all([
-            fork(reqlistitem),
-            fork(reqpluslistitem),
-            fork(reqauctionitem),
-            fork(reqplusauctionitem),
-            fork(reqqueryitem),
-            fork(reqmynftall),
-            fork(reqsoldnft),
-            fork(reqnotsellnft),
-            fork(reqmynftbyhits),
-            fork(reqsellnftbyhits),
-            fork(reqnotsellnftbyhits)
+            fork(reqListItem),
+            fork(reqPlusListItem),
+            fork(reqAuctionItem),
+            fork(reqPlusAuctionItem),
+            fork(reqQueryItem),
+            fork(reqMyNftAll),
+            fork(reqSoldNft),
+            fork(reqNotSellNft),
+            fork(reqMyNftByHits),
+            fork(reqSellNftByHits),
+            fork(reqNotSellNftByHits),
+            fork(reqmynftview)
         ])
 }

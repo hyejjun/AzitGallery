@@ -3,11 +3,10 @@ let mint_nft_post = async (req,res) => {
     try{
         /*
         수량 부분
-        꼭 고려
-        
+        꼭 고려        
         */
         const {ifSell, price, currency, name, desc, itemType, color, size, aucPrice, aucTime, extension, gender, bigCategory, smallCategory, mainImgIdx} = req.body[0]
-        // const {qty} = req.body
+
         const imagesLink = req.body[1]
         const mainImgLink = req.body[2]
         let sell_type
@@ -31,7 +30,6 @@ let mint_nft_post = async (req,res) => {
         // nft 만들 때 필요한 것: 아이템 이름, 색상, 컬러
         for(let i = 0; i<color.length; i++){
             for(let j = 0; j<size.length; j++){
-                // for(let j = 0; k<qty; k++){
                     // 색과 사이즈를 00~99로 해서 자릿수를 맞춰준다
                     let last_digits_for_detail
                     if(i == 0 && j == 0){
@@ -47,14 +45,14 @@ let mint_nft_post = async (req,res) => {
                         color: color[i],
                         size: size[j],
                         item_last_digit: `${last_digits_for_detail}`,
-                        qty_idx: k
                     })
-                // }
             }
         }  
         console.log(item_color_size_arr,'item_color_size_arr')
 
         // 토큰발행함수
+        // 본 함수에서 리턴되는 결과값은 result_msg : OK 또는 Fail
+        // msg: 실패 이유, 성공시에는 nft 어드레스
         async function getNFT(name, color, size, link, quantity){
             let strname = String(name)
             let strcolor = String(color)
@@ -62,8 +60,6 @@ let mint_nft_post = async (req,res) => {
             let strqty = String(quantity)
             let privateKey = "0x07ea3560faca009fdbaf6cee2ea6ee87aaf22bd1f381f3afd312e79ff45f122b" // DB에서 가져와야 함
             let accountAddress = "0x89e204fcbad4c4197a9e3971c7bb3c32f46cc458"
-            // 본 함수에서 리턴되는 결과값은 result_msg : OK 또는 Fail
-            // msg: 실패 이유, 성공시에는 nft 어드레스
             let result = {
                 result_msg: '',
                 msg: ''

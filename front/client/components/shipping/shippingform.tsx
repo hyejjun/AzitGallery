@@ -25,6 +25,7 @@ const Shippingfrom = () => {
     // @ 주소 찾는 창
     const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false)
     const User = useSelector((state:RootState) => state.user);
+    console.log(User)
     // @ 팝업창 열기
     const openPostCode = () => {
         setIsPopupOpen(true)
@@ -65,7 +66,7 @@ const Shippingfrom = () => {
     const dispatch = useDispatch()
     let UserAddress = User.UserAddress
     // @ dispatch 할 때 보내줄 data 들
-
+    console.log(UserAddress)
     const handelSubmit = ()=>{
         const params = JSON.stringify(window.location.href).split('ip/')[1].replace("\"", "")
         
@@ -85,6 +86,7 @@ const Shippingfrom = () => {
         // 여기서 dispatch로 날리고
     
         dispatch(shipInfo_REQUEST(shippingData))
+        console.log('왜 안나와?')
         console.log(UserAddress)
 
         

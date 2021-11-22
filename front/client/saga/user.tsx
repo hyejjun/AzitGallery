@@ -54,17 +54,15 @@ function sellerAdminAPI(action) {
 
 function* sellerAdminSaga(action) {
     const result = yield call(sellerAdminAPI, action)
-
-
 }
 
 function* reqAdminEmail() {
-    yield takeLatest('SELLER_ADMIN_REQUEST', sellerAdminSaga)
+    yield takeLatest('SELLER_ADMIN_REQUEST', sellerAdminSaga);  
 }
 
 
 
-/* 이메일 대기 */
+/* 이메일 대기    */
 
 function sellerWaitAPI(action): any {
     return axios.post(`${url}/user/selleradminwait`, JSON.stringify(action.data))
@@ -72,14 +70,11 @@ function sellerWaitAPI(action): any {
 
 function* sellerWaitSaga(action) {
     const result = yield call(sellerWaitAPI, action)
-
-
 }
 
 function* reqWaitEmail() {
     yield takeLatest('SELLER_ADMIN_WAIT_REQUEST', sellerWaitSaga)
 }
-
 
 /* 회원 가입 post */
 function signupAPI(action) {
@@ -88,7 +83,6 @@ function signupAPI(action) {
 
 function* signupSaga(action) {
     const result = yield call(signupAPI, action)
-
 }
 
 function* reqSignup() {
@@ -112,13 +106,11 @@ function* nicknameSaga(action) {
             type: 'NICKNAME_POST_ERROR',
         })
     }
-
 }
 
 function* reqNickname() {
     yield takeLatest('NICKNAME_POST_REQUEST', nicknameSaga)
 }
-
 
 
 /* 관리자 페이지 user list req */
@@ -134,7 +126,6 @@ function* userListSaga() {
         type: 'USER_LIST_SUCCESS',
         data: result.data.ARR
     })
-
 }
 
 function* reqUserList() {
@@ -182,7 +173,7 @@ function* userInfoSaga(action) {
         data: userinfo.data
     })
 }
-function* reqUesrInfo() {
+function* reqUserInfo() {
     yield takeLatest('USER_INFO_REQUEST', userInfoSaga)
 }
 
@@ -196,7 +187,7 @@ export default function* userSaga() {
         fork(reqSellerAdminAccess),
         fork(reqSellerAdminDeny),
         fork(reqWaitEmail),
-        fork(reqUesrInfo),
+        fork(reqUserInfo),
         fork(reqNickname)
     ])
 }

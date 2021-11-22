@@ -1,6 +1,5 @@
 import Styled from 'styled-components'
-import React, { useState } from 'react'
-import Link from 'next/link'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from "../../reducers"
 
@@ -23,26 +22,6 @@ const NotSelled = () => {
             subject: 'see',
             artist: 'daminal',
             Like: 0,
-            alert: '신고하기'
-        },
-        {   id: 2,
-            subject: 'se',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
-        {
-            id: 3,
-            subject: 'adssef',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
-        {
-            id: 4,
-            subject: 'sefesfase',
-            artist: 'daminal',
-            Like: 5,
             alert: '신고하기'
         },
       ]);

@@ -4,7 +4,7 @@ import NFTAuction from "../../components/view/auction/NFTAuction"
 import {useRouter} from 'next/router'
 import { auctionView_REQUEST } from "../../reducers/view"
 import { useEffect } from "react"
-import { useSelector, useDispatch } from "react-redux"
+import { useDispatch } from "react-redux"
 
 
 const AuctionView = () =>{

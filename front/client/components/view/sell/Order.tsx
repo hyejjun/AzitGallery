@@ -1,11 +1,10 @@
 import React, { useState,useEffect } from "react";
 import Styled from 'styled-components'
 import CloseIcon from '@mui/icons-material/Close';
-import Link from 'next/link'
 import { KipToken_REQUEST } from "../../../reducers/mint";
 import { direct_deal_REQUEST } from "../../../reducers/deal";
-import { useSelector, useDispatch } from 'react-redux'
-import router from "next/router";
+import {  useDispatch } from 'react-redux'
+
 
 declare global {
     interface Window {
@@ -59,7 +58,7 @@ const Order = (props) => {
 
     const Purchase = () => {
         dispatch(direct_deal_REQUEST(data))
-        //dispatch(KipToken_REQUEST())
+        dispatch(KipToken_REQUEST())
         alert('EPI로 거래되셨습니다!')
         console.log(JSON.stringify(window.location.href).split('ell/')[1].replace("\"", ""))
         let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
@@ -125,7 +124,7 @@ const Order = (props) => {
 
 export default Order
 
-export const ModalWrapper = Styled.div`
+export const ModalWrapper = Styled.div<{flag:boolean}>`
     box-sizing: border-box;
     display: ${(props) => (props.flag ? 'block' : 'none')};
     position: fixed;
@@ -137,7 +136,7 @@ export const ModalWrapper = Styled.div`
     z-index: 999;
 `
 
-export const OrderForm = Styled.div`   
+export const OrderForm = Styled.div<{flag:boolean}>`   
     width : 700px;
     height: 580px;
     top: 50%;

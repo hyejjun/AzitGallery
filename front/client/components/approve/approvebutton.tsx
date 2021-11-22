@@ -1,5 +1,5 @@
 import Styled from 'styled-components'
-import React, { useState } from 'react'
+import React from 'react'
 import { SellerAdminWait_REQUEST } from '../../reducers/user'
 import { RootState } from "../../reducers"
 import { useSelector, useDispatch } from 'react-redux'
