@@ -4,7 +4,7 @@ import Styled from 'styled-components'
 import React,{ useState } from 'react'
 import SucJoin from './SucJoin'
 import { useSelector, useDispatch } from 'react-redux'
-import { SignUp_REQUEST } from "../../reducers/user"
+import { Email_REQUEST, SignUp_REQUEST } from "../../reducers/user"
 import { Userlist_REQUEST } from "../../reducers/user"
 import Router from 'next/router'
 import { RootState } from "../../reducers"
@@ -65,6 +65,7 @@ const SignUp = () => {
 
     const change2 = e => {
         const value = e.target.value;
+        dispatch(Email_REQUEST(value));
         setEmail(value);
         setEmailErr(value === "");
     }

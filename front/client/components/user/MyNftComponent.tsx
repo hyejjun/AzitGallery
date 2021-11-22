@@ -1,7 +1,7 @@
 import Styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import Own from './Own'
+import Own from './own'
 import Selled from './Selled'
 import Notselled from './NotSelled'
 import { useSelector, useDispatch } from 'react-redux'

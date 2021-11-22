@@ -131,6 +131,13 @@ let nickname_check = async (req, res) => {
     }
 }
 
+let email_check = async (req,res) =>{
+    let key = Object.keys(req.body);
+    let email = JSON.parse(key);
+    console.log(email,"11111");
+    
+}
+
 /* 모든 회원들 정보를 불러오기 */
 
 let userlist_get = async (req, res) => {
@@ -218,5 +225,6 @@ module.exports = {
     selleradmin_access,
     selleradmin_deny,
     selleradmin_wait,
-    user_info
+    user_info,
+    email_check
 }

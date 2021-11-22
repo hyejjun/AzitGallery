@@ -71,6 +71,10 @@ export const NICKNAME_POST_REQUEST = "NICKNAME_POST_REQUEST" as const;
 export const NICKNAME_POST_SUCCESS = "NICKNAME_POST_SUCCESS" as const;
 export const NICKNAME_POST_ERROR = "NICKNAME_POST_ERROR" as const;
 
+export const EMAIL_POST_REQUEST = "EMAIL_POST_REQUEST" as const;
+export const EMAIL_POST_SUCCESS = "EMAIL_POST_SUCCESS" as const;
+export const EMAIL_POST_ERROR = "EMAIL_POST_ERROR" as const;
+
 export const USER_LIST_REQUEST = "USER_LIST_REQUEST" as const;
 export const USER_LIST_SUCCESS = "USER_LIST_SUCCESS" as const;
 export const USER_LIST_ERROR = "USER_LIST_ERROR" as const;
@@ -203,6 +207,31 @@ export const Nickname_SUCCESS = () => {
     }
 }
 
+
+/* signup email chk succ */
+export const Email_REQUEST = (data) => {
+    console.log(data,"오나?");
+    return {
+        type: EMAIL_POST_REQUEST,
+        data
+    }
+}
+
+export const Email_SUCCESS = () => {
+    return {
+
+        type: EMAIL_POST_SUCCESS,
+
+    }
+}
+
+export const Email_ERROR = () => {
+    return {
+        type: EMAIL_POST_ERROR,
+
+    }
+}
+
 export const Nickname_ERROR = () => {
     return {
         type: NICKNAME_POST_ERROR,
@@ -315,6 +344,10 @@ type UserAction =
     | ReturnType<typeof Nickname_SUCCESS>
     | ReturnType<typeof Nickname_ERROR>
 
+    | ReturnType<typeof Email_REQUEST>
+    | ReturnType<typeof Email_SUCCESS>
+    | ReturnType<typeof Email_ERROR>
+
     | ReturnType<typeof Userlist_REQUEST>
     | ReturnType<typeof UserList_SUCCESS>
     | ReturnType<typeof UserList_ERROR>
@@ -358,6 +391,7 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
                 signupBool : action.signupBool
             }
 
+
         /* 로그아웃 */
         case USER_LOGOUT_REQUEST:
             return {
@@ -374,6 +408,7 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
             return {
                 ...state,
             }
+
 
         /********* */
         case SELLER_ADMIN_WAIT_REQUEST:
@@ -408,6 +443,8 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
             return {
                 ...state,
             }
+
+
         /*********** */
         case SELLER_ADMIN_ACCESS_REQUEST:
             return {
@@ -421,6 +458,8 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
             return {
                 ...state,
             }
+
+
         /*********** */
         case SELLER_ADMIN_DENY_REQUEST:
             return {
@@ -434,6 +473,8 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
             return {
                 ...state,
             }
+
+
         /* 회원가입 */
         case SIGNUP_POST_REQUEST:
             return {
@@ -450,6 +491,7 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
                 signupBool: false
             }
 
+
         /* 회원가입 닉네임 중복체크 */
         case NICKNAME_POST_REQUEST:
             return {
@@ -464,6 +506,22 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
             return {
                 ...state,
                 nicknameChkBool: false
+            }
+
+
+        /* 회원가입 이메일 중복체크 */
+        case EMAIL_POST_REQUEST:
+            console.log(action,"오오나?")
+            return {
+                ...state,
+            }
+        case EMAIL_POST_SUCCESS:
+            return {
+                ...state,
+            }
+        case EMAIL_POST_ERROR:
+            return {
+                ...state,
             }
         /* User list req */
         case USER_LIST_REQUEST:
