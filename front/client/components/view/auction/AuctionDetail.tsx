@@ -4,9 +4,16 @@ import { useSelector, useDispatch } from 'react-redux'
 import { BuyBtnCSS } from '../sell/NFTdetail';
 import { EndBtnCSS } from '../sell/NFTdetail';
 import JoinAcution from './JoinAuction';
-import { Auction_Price_REQUEST } from "../../../reducers/auction"
-import { Auction_Current_REQUEST } from "../../../reducers/auction"
+import { Auction_Price_REQUEST, getBalance_REQUEST, Auction_Current_REQUEST } from "../../../reducers/auction"
 import { RootState } from "../../../reducers"
+
+declare global {
+    interface Window {
+        klaytn: any;
+        caver: any;
+    }
+}
+
 
 const AuctionDetail = (props) => {
     const dispatch = useDispatch()
@@ -21,7 +28,8 @@ const AuctionDetail = (props) => {
     const auctionOpen = () => {
         setOpenAuction(prev => !prev)
     }
-
+    console.log(Auction.yourBalacne);
+    
     /* props로 전달할 값 */
     const [auctionPrice, setAuctionPrice] = useState<number>(0);
     const priceChange = (e) => {
@@ -29,12 +37,18 @@ const AuctionDetail = (props) => {
     }
 
     const maxPrice = 0.6;           // useSelector 로 maxprice
-    const yourBalance = 0.7;        // 이걸 나중에 useSelector 로 가져올거임
+    const yourBalance = Auction.yourBalacne;        // 이걸 나중에 useSelector 로 가져올거임
     const [balacne, setBalance] = useState<number>(0);
     const [balanceCheck, setBalanceCheck] = useState<boolean>(false);       // 잔액확인
 
     useEffect (()=>{
-        setBalance(yourBalance)
+        // 로그인이 되어 있다면
+        if(User.UserAddress !== 'kaikasAddress'){
+            dispatch(getBalance_REQUEST(User.UserAddress))
+        }
+        if(Auction.yourBalacne !== undefined){
+            setBalance(Auction.yourBalacne)
+        }
     },[])
 
     const lowBalance = () => {
@@ -56,8 +70,8 @@ const AuctionDetail = (props) => {
             params: params,
         }
         dispatch(Auction_Current_REQUEST(data2))
-        console.log(`현재가 책정 ${auctionPrice}`)
-        console.log(`최고가 책정 ${Auction.current}`)
+        // console.log(`현재가 책정 ${auctionPrice}`)
+        // console.log(`최고가 책정 ${Auction.current}`)
         if(Number(auctionPrice) <= Number(Auction.current)){
             alert('현재가보다 높게 제시해주세요')
             setOpenAuction(prev => !prev)
@@ -88,8 +102,8 @@ const AuctionDetail = (props) => {
             params: params,
         }
         dispatch(Auction_Current_REQUEST(data))
-        console.log(`종료 일 ${Auction.endDate}`)
-          console.log(`현재 일 ${Auction.now.toISOString()}`)
+        // console.log(`종료 일 ${Auction.endDate}`)
+        //   console.log(`현재 일 ${Auction.now.toISOString()}`)
           
        if(Auction.endDate.toString()<Auction.now.toISOString().toString()){
            alert('경매 종료')
@@ -104,7 +118,8 @@ const AuctionDetail = (props) => {
         setBalance,
         setBalanceCheck,
         lowBalance,
-        auctionPrice
+        auctionPrice,
+        balacne
     }
 
     return (
@@ -117,7 +132,7 @@ const AuctionDetail = (props) => {
                 </ul>
                 <ul className="auctionContent">
                     <li>{num}</li>
-                    <li>{Auction.current}ETH</li>
+                    <li>{Auction.current}KLAY</li>
                     <li>{Auction.endDate.toString()}</li>
                 </ul>
                 <BtnWrap>

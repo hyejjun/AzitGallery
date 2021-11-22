@@ -41,7 +41,7 @@ function auctionViewAPI(idx){
 
 function* auctionView(action){
     const result = yield call(auctionViewAPI, action.idx)
-    console.log("경매 view result ===",result);
+    // console.log("경매 view result ===",result);
     
 
     const {nick_name, title, description, result_msg, msg} = result.data
