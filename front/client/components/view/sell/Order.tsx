@@ -75,7 +75,7 @@ const Order = (props) => {
             <ModalWrapper flag={props.open}>
                 <OrderForm flag={props.open}>
                     <OrderTitle>
-                        <span>Complelete Checkout</span>
+                        <span>즉시 판매</span>
                         <span onClick={props.orderOpen}> <CloseIcon /> </span>
                     </OrderTitle>
                     <OrderContent>
@@ -83,14 +83,14 @@ const Order = (props) => {
                             <div>Item</div>
                             <div>Subtotal</div>
                         </div>
-                        <div className="orderContentImage">
+                        {/* <div className="orderContentImage">
                             <div>
                                 <img alt="상품 작은 이미지" />
                             </div>
                             <div>
                                 {props.price}{props.currency}
                             </div>
-                        </div>
+                        </div> */}
                         <div className="orderTotalPrice">
                             <div>Total</div>
                             <div>{props.price}{props.currency}</div>

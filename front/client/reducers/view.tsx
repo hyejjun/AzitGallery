@@ -71,7 +71,7 @@ export const directDealView_ERROR = () => {
 
 /* 경매 view 가져오기 */
 export const auctionView_REQUEST = (idx) => {
-    console.log("경매 뷰 ==== idx == ",idx);
+    // console.log("경매 뷰 ==== idx == ",idx);
     
     return {
         type: AUCTION_VIEW_REQUEST,

@@ -21,7 +21,8 @@ const JoinAcution = (props) => {
         setAuctionPrice, 
         setBalance, 
         setBalanceCheck, 
-        lowBalance 
+        lowBalance,
+        balacne 
     } = props.auctionValue
 
 
@@ -38,23 +39,23 @@ const JoinAcution = (props) => {
                             <div>Item</div>
                             <div>Subtotal</div>
                         </div>
-                        <div className="orderContentImage">
+                        {/* <div className="orderContentImage">
                             <div>
                                 <img alt="상품 이미지" />
                             </div>
-                        </div>
+                        </div> */}
                         <div className="orderTotalPrice">
                             <div>현재 최고가</div>
-                            <div>{props.bid_price} ETH</div>
+                            <div>{props.bid_price} KLAY</div>
                         </div>
                         <div className="yourBalance">
                             <div>잔액</div>
-                            <div>{yourBalance} ETH</div>
+                            <div>{yourBalance} KLAY</div>
                         </div>
                         <div className="joinAuction">
                             <div>입찰가</div>
                             <div>
-                                <input type="text" onChange={priceChange} /> ETH
+                                <input type="text" onChange={priceChange} /> KLAY
                             </div>
                         </div>
                         <div className="orderAgreement">
