@@ -113,6 +113,31 @@ function* reqNickname() {
 }
 
 
+/* 회원가입 email 중복체크 */
+
+function emailAPI(action): any {
+    console.log(action,"22222222");
+    return axios.post(`${url}/user/emailchk`, JSON.stringify(action.data))
+}
+
+function* emailSaga(action) {
+    console.log(action,"오오오나?")
+    const result = yield call(emailAPI, action)
+    if (result.data.nicknameChkBool == true) {
+        yield put({
+            type: 'EMAIL_POST_SUCCESS',
+        })
+    } else {
+        yield put({
+            type: 'EMAIL_POST_ERROR',
+        })
+    }
+}
+
+function* reqEmail() {
+    yield takeLatest('EMAIL_POST_REQUEST', emailSaga)
+}
+
 /* 관리자 페이지 user list req */
 
 function userListAPI() {
