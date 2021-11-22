@@ -377,9 +377,7 @@ const AddItemComponent = () => {
     const dispatch = useDispatch()
     const mint = useSelector((state:RootState) => state.mint);
     const [nftCreateState,setnftCreateState] = useState<boolean>(false);
-    const createNftCh = () => {
-
-            // 
+    const createNftCh = () => { 
             setnftCreateState(prev=>!prev)
     }
 
@@ -430,8 +428,7 @@ const AddItemComponent = () => {
                         <CloseButton
                         onClick = {()=>{deleteItem(k,"size")}}
                         >&#10006;</CloseButton>
-                    </ColorSizeItem>
-                    
+                    </ColorSizeItem>                    
                     )
                 })}
             </BarWrapper>
