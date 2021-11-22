@@ -1,6 +1,8 @@
-const {ItemInfo, Category, SubCategory, ItemImg} = require('../../models')
+const {ItemInfo, Category, SubCategory, ItemImg, ItemDetail} = require('../../models')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op;
+const mysql = require('mysql')
+const pool = require('../pool')
 /*
     @ 전체 값 다 보내는 이유?
     판매에서 여성복 선택하는 경우
@@ -142,9 +144,114 @@ let get_sub_category_list = async (req,res)=>{
         let data = {
             ARR:ARR
         }
-    
         res.json(data)
+}
 
+let get_categorys = async (req,res) => {
+    let data
+    try{
+        let result = await Category.findAll()
+        data = {
+        result_msg:'OK',
+        result
+        }
+    }catch(e){
+        console.log('type.controller.js 에러========================',e)
+        data = {
+            result_msg:'Fail',
+            msg:'페이지가 존재하지 안습니다.'
+        }
+    }   
+    res.json(data)
+}
+let get_sub_category = async (req,res) => {
+    let data
+    try{
+        let result = await SubCategory.findAll({where:{main_category_idx:req.body.data}})
+        data = {
+        result_msg:'OK',
+        result
+        }
+    }catch(e){
+        console.log('type.controller.js 에러========================',e)
+        data = {
+            result_msg:'Fail',
+            msg:'페이지가 존재하지 안습니다.'
+        }
+    }   
+    res.json(data)
+}
+
+let all_list_get =  async (req,res) => {
+    console.log(req.body.data)
+    let {sell_type,list_length} = req.body.data
+
+    let query =`
+        select a.item_id,a.sell_type,a.item_code,a.title,a.likes,b.nick_name,a.product_status,c.item_img_link 
+        from item_info as a join user as b 
+        on a.creator = b.user_idx join item_img as c 
+        on a.item_id=c.item_img_idx
+        where a.sell_type=${sell_type}
+        order by a.registered_At desc
+        limit ${list_length};
+    `
+    queryset(req,res,query)
+}
+let select_item_get = (req,res) => {
+    console.log(req.body,'reqpppppppppppppppppp')
+    let query
+    if(req.body.e.main_category_code){
+        let {main_category_code} = req.body.e
+        let {listLength,sell_type} = req.body
+        query = `
+            select a.item_id,a.sell_type,a.item_code,a.title,a.likes,b.nick_name,a.product_status,c.item_img_link
+            from item_info as a join user as b 
+            on a.creator = b.user_idx join item_img as c 
+            on a.item_id=c.item_img_idx 
+            where a.category_id=${main_category_code} 
+            and a.sell_type=${sell_type}
+            order by a.registered_At 
+            desc limit ${listLength};   
+        `  
+    }else if(req.body.e.sub_category_code){
+        let {item_code} = req.body.e
+        let {listLength,sell_type} = req.body
+        query = `
+            select a.item_id,a.sell_type,a.item_code,a.title,a.likes,b.nick_name,a.product_status,c.item_img_link
+            from item_info as a join user as b 
+            on a.creator = b.user_idx join item_img as c 
+            on a.item_id=c.item_img_idx 
+            where substring(a.item_code,14,3)=${item_code} 
+            and a.sell_type=${sell_type}
+            order by a.registered_At 
+            desc limit ${listLength};
+        `
+    }
+    queryset(req,res,query)
+}
+
+let queryset = (req,res,query) => {
+    let data = {}
+    pool.getConnection((err,connection)=>{
+        connection.query(            
+            query            
+        ,function(err,result,fields){
+            if(err) throw err;
+            if(result==undefined){
+                data = {
+                    result_msg:'Fail',
+                    msg:'상품이 존재하지 않습니다.'
+                }
+            }else{
+                data = {
+                    result_msg:'OK',
+                    result
+                }
+                res.json(data)
+            }
+            connection.release()
+        })
+    })   
 }
 
 module.exports = {
@@ -153,5 +260,9 @@ module.exports = {
     get_search,
     get_sort,
     get_category_list,
-    get_sub_category_list
+    get_sub_category_list,
+    get_categorys,
+    get_sub_category,
+    all_list_get,
+    select_item_get
 }

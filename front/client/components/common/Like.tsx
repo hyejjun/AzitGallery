@@ -2,19 +2,20 @@ import React, { useState } from "react";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import Styled from 'styled-components'
+import {useRouter} from 'next/router'
+import { useSelector, useDispatch } from 'react-redux'
+import { RootState } from "../../reducers";
+import { likeInsert_REQUEST } from "../../reducers/like";
+import { useEffect } from "react";
 
-const Like = () => {
-    const [like, setLike] = useState<boolean>(false);
-
-    const doLike = () => {
-        setLike(prev => !prev)
-    }
-
+const Like = (props) => {
+    const {likeList, params, likeState, doLike} = props
+   
     return (
         <>
             <LikeBtn onClick={doLike}>
                 {
-                    like
+                    likeState
                     ? <button><FavoriteIcon /></button>
                     : <button><FavoriteBorderIcon /></button>
                 }

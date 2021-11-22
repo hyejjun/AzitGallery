@@ -1,9 +1,7 @@
 import Styled from 'styled-components'
-import React, { useState } from 'react'
-import Link from 'next/link'
+import React from 'react'
 import { useSelector } from 'react-redux'
 import { RootState } from "../../reducers"
-import { ListState } from "../../reducers/list"
 
 const Own = () => {
 
@@ -27,26 +25,7 @@ const Own = () => {
             Like: 0,
             alert: '신고하기asdfasf'
         },
-        {   id: 2,
-            subject: 'adsfdsf',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
-        {
-            id: 3,
-            subject: 'adsff',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
-        {
-            id: 4,
-            subject: 'adsff',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
+
       ]);
 
 

@@ -1,8 +1,7 @@
 import Styled from 'styled-components'
 import ModalForm from '../../components/common/ModalForm'
 import ModalBackground from '../../components/common/ModalBackground'
-import useInput from '../../hooks/useInput'
-import { useState } from 'react'
+
 
 const Waybill = (props) => {
     const { setClose, deliveryCompnay, deliveryNum, onChangeDeliveryNum } = props

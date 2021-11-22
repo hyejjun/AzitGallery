@@ -2,8 +2,7 @@ import ModalForm from "../common/ModalForm";
 import ModalBackground from "../common/ModalBackground";
 import Styled from 'styled-components'
 import Link from 'next/link'
-import LoginForm from '../common/login/LoginForm';
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React from 'react';
 
 const SucJoin = (props) => {
 

@@ -2,8 +2,12 @@ import axios from 'axios';
 import {all,put,takeEvery,takeLatest,fork,call} from "redux-saga/effects";
 import {url} from './url'
 /* mintNFT */
-function mintNftAPI(action) {
-    let {data} = action
+
+function MintNftAPI(action) {
+    console.log('here is mint api action',action.data)
+
+    let data = action.data
+    console.log(data,'here is mint apiiiiiiiiiiiiiiiiii')
     let mainImgLink
     // s3에서 리턴받은 주소를 넣을 배열
     let fileArr = []
@@ -12,7 +16,6 @@ function mintNftAPI(action) {
         // data[1]의 파일들을 s3에 각각 올리고 업로드 주소값을 받아 배열에 넣는다
         let fileArray = data[1].map(async (items, key)=>{
             const response = await fetch(`${url}/item/uploadpics`)
-            console.log(response,'response')
             const { link } = await response.json()
             await fetch(link, {
                 method: "PUT",
@@ -39,15 +42,16 @@ function mintNftAPI(action) {
     })
 }
 
-function* mintNftSaga(action){
-    
-    let result = yield call(mintNftAPI,action)
+function* MintNftSaga(action){
+    console.log('mint saga왔어??')
+    let result = yield call(MintNftAPI,action)
     console.log(result.data,'mintnftsaga')
    
 }
 
 function* reqMintNft(){
-    yield takeLatest('MINT_NFT_REQUEST',mintNftSaga)
+    console.log('here is reqmint')
+    yield takeLatest('MINT_NFT_REQUEST',MintNftSaga)
 }
 
 /* mintNFT */

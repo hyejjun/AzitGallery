@@ -95,10 +95,12 @@ let address_db_check = async (req, res) => {
 
     try {
         let result = await User.findOne({ where: { kaikas_address: keyObject } })
+        console.log(result);
         if (result !== null) {
             data = {
                 signupBool: true,
-                kaikas_address: result.dataValues.kaikas_address
+                kaikas_address: result.dataValues.kaikas_address,
+                user_idx: result.dataValues.user_idx
             }
         } else {
             data = {
@@ -127,6 +129,13 @@ let nickname_check = async (req, res) => {
     } else {
         res.json(false)
     }
+}
+
+let email_check = async (req,res) =>{
+    let key = Object.keys(req.body);
+    let email = JSON.parse(key);
+    console.log(email,"11111");
+    
 }
 
 /* 모든 회원들 정보를 불러오기 */
@@ -216,5 +225,6 @@ module.exports = {
     selleradmin_access,
     selleradmin_deny,
     selleradmin_wait,
-    user_info
+    user_info,
+    email_check
 }

@@ -1,17 +1,14 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import Styled from 'styled-components';
-import { setFlagsFromString } from 'v8';
-import ModalBackground from './ModalBackground';
 import RequireLogin from '../RequireLogin';
 import LoginForm from './login/LoginForm';
-import NeedCert from './login/NeedCert';
 import Link from 'next/link';
-import AddItemComponent from '../item/AddItemComponent';
-import Btn from './Btn';
+//import AddItemComponent from '../item/AddItemComponent';
+//import Btn from './Btn';
 import { useDispatch, useSelector } from 'react-redux';
 import { UserLogin_REQUEST, UserLogout_REQUEST } from '../../reducers/user';
 import { RootState } from '../../reducers';
-import axios from 'axios';
+//import axios from 'axios';
 
 declare global {
     interface Window {

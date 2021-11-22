@@ -54,9 +54,7 @@ export const directDealView_REQUEST = (idx) => {
     }
 }
 
-export const directDealView_SUCCESS = (list) => {
-    console.log("리듀서 ==== ",list);
-    
+export const directDealView_SUCCESS = (list) => {  
     return {
         type: DIRECTDEAL_VIEW_SUCCESS,
         list
@@ -73,6 +71,8 @@ export const directDealView_ERROR = () => {
 
 /* 경매 view 가져오기 */
 export const auctionView_REQUEST = (idx) => {
+    // console.log("경매 뷰 ==== idx == ",idx);
+    
     return {
         type: AUCTION_VIEW_REQUEST,
         idx

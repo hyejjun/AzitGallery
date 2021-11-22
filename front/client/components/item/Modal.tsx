@@ -1,5 +1,4 @@
 import Styled from 'styled-components'
-import ModalBackground from '../common/ModalBackground'
 
 
 const Modal = ({children}) => {
@@ -67,8 +66,5 @@ const CancelNftWrapper = Styled.div`
         border-color: #1e73fa;
     }
 `
-// 아니요 예버튼 사이즈가 조정되지 않음....
-// additemcomponent에 넣어야 함...
-
 
 

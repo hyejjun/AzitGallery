@@ -12,13 +12,14 @@ function loginAPI(action) {
 }
 
 function* login(action) {  
-    let result = yield call(loginAPI, action)
+    let result = yield call(loginAPI, action)  
 
     if (result.data.signupBool === true) {
         yield put({
             type: 'USER_LOGIN_SUCCESS',
             signupBool : result.data.signupBool,
-            UserAddress : result.data.kaikas_address
+            UserAddress : result.data.kaikas_address,
+            userIdx : result.data.user_idx
         })
     } else {
         yield put({
@@ -53,17 +54,15 @@ function sellerAdminAPI(action) {
 
 function* sellerAdminSaga(action) {
     const result = yield call(sellerAdminAPI, action)
-
-
 }
 
 function* reqAdminEmail() {
-    yield takeLatest('SELLER_ADMIN_REQUEST', sellerAdminSaga)
+    yield takeLatest('SELLER_ADMIN_REQUEST', sellerAdminSaga);  
 }
 
 
 
-/* 이메일 대기 */
+/* 이메일 대기    */
 
 function sellerWaitAPI(action): any {
     return axios.post(`${url}/user/selleradminwait`, JSON.stringify(action.data))
@@ -71,14 +70,11 @@ function sellerWaitAPI(action): any {
 
 function* sellerWaitSaga(action) {
     const result = yield call(sellerWaitAPI, action)
-
-
 }
 
 function* reqWaitEmail() {
     yield takeLatest('SELLER_ADMIN_WAIT_REQUEST', sellerWaitSaga)
 }
-
 
 /* 회원 가입 post */
 function signupAPI(action) {
@@ -87,7 +83,6 @@ function signupAPI(action) {
 
 function* signupSaga(action) {
     const result = yield call(signupAPI, action)
-
 }
 
 function* reqSignup() {
@@ -111,7 +106,6 @@ function* nicknameSaga(action) {
             type: 'NICKNAME_POST_ERROR',
         })
     }
-
 }
 
 function* reqNickname() {
@@ -119,6 +113,30 @@ function* reqNickname() {
 }
 
 
+/* 회원가입 email 중복체크 */
+
+function emailAPI(action): any {
+    console.log(action,"22222222");
+    return axios.post(`${url}/user/emailchk`, JSON.stringify(action.data))
+}
+
+function* emailSaga(action) {
+    console.log(action,"오오오나?")
+    const result = yield call(emailAPI, action)
+    if (result.data.nicknameChkBool == true) {
+        yield put({
+            type: 'EMAIL_POST_SUCCESS',
+        })
+    } else {
+        yield put({
+            type: 'EMAIL_POST_ERROR',
+        })
+    }
+}
+
+function* reqEmail() {
+    yield takeLatest('EMAIL_POST_REQUEST', emailSaga)
+}
 
 /* 관리자 페이지 user list req */
 
@@ -133,7 +151,6 @@ function* userListSaga() {
         type: 'USER_LIST_SUCCESS',
         data: result.data.ARR
     })
-
 }
 
 function* reqUserList() {
