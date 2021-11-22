@@ -12,13 +12,14 @@ function loginAPI(action) {
 }
 
 function* login(action) {  
-    let result = yield call(loginAPI, action)
+    let result = yield call(loginAPI, action)  
 
     if (result.data.signupBool === true) {
         yield put({
             type: 'USER_LOGIN_SUCCESS',
             signupBool : result.data.signupBool,
-            UserAddress : result.data.kaikas_address
+            UserAddress : result.data.kaikas_address,
+            userIdx : result.data.user_idx
         })
     } else {
         yield put({

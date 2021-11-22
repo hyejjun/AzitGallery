@@ -6,7 +6,7 @@ const option = {
         {
             name: "Authorization",
             //https://console.klaytnapi.com/ko/security/credential 여기서 발급
-            value: "Basic " + Buffer.from("KASKOJ6MC0O3O63U7YQMLBHL" + ":" + "PjAzWdm1ROLdbHgFegoX3PMkltgpdVIgCD4ea0sG").toString("base64"),
+            value: "Basic " + Buffer.from("KASKM8QOTZAB0C0K7WG17ZPG" + ":" + "P2ijsyAG278_rHnAOQ8WQWIq6aVQW7q8IaDyW22Q").toString("base64"),
         },
         { name: "x-krn", value: "krn:1001:node" },
     ],
@@ -210,8 +210,8 @@ let mint_nft_post = async (req,res) => {
         let strname = String(name)
         let strcolor = String(color)
         let strsize = String(size)
-        let privateKey = "0xd22e0cc154ed32abcd8e13cb5ba24bba940205509824b57f4220e944eee8d075" // DB에서 가져와야 함
-        let accountAddress = "0x2618f9B36086912B479bA6A6FFF6ABCfCC032398"
+        let privateKey = "0x6aaf5c8af80503a0737f02f107e7a38ef1474abf32d2c8df0e36ddc53fd8ef97" // DB에서 가져와야 함
+        let accountAddress = "0x62B8769D6eDc718d90CB8884cA7F390e9b9C7466"
   
         const keyring = caver.wallet.keyring.createFromPrivateKey(
             privateKey

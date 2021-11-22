@@ -80,6 +80,7 @@ let all_auction_get =  async (req,res) => {
     let data = {
         ARR:ARR
     }
+    console.log("경매 list ===",data);
 
     res.json(data)
 }

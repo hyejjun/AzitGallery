@@ -10,6 +10,7 @@ const viewRouter = require('./view/index')
 const listRouter = require('./list/index')
 const auctionRouter = require('./auction/index')
 const dealRouter = require('./deal/index')
+const likeRouter = require('./like/index')
 
 router.use('/', mainRouter)
 router.use('/user', userRouter)
@@ -21,5 +22,6 @@ router.use('/view',viewRouter)
 router.use('/list',listRouter)
 router.use('/auction',auctionRouter)
 router.use('/deal',dealRouter)
+router.use('/like',likeRouter)
 
 module.exports = router

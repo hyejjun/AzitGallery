@@ -17,6 +17,7 @@ export interface UserState {
     loginBool: boolean;
     nicknameChkBool: boolean;
     userInfo: {};
+    userIdx : number
 }
 
 export const initialState: UserState = {
@@ -33,6 +34,7 @@ export const initialState: UserState = {
     loginBool: false,
     nicknameChkBool: false,
     userInfo: {},
+    userIdx : 0
 };
 
 
@@ -85,12 +87,15 @@ export const UserLogin_REQUEST = (UserAddress) => {
         data: UserAddress
     }
 }
-export const UserLogin_SUCCESS = (data) => {   
+export const UserLogin_SUCCESS = (data) => { 
+    console.log("user login 성공 ======",data);
+      
     return {
         type: USER_LOGIN_SUCCESS,
         loginBool : true,
         UserAddress : data.UserAddress,
-        signupBool : data.signupBool
+        signupBool : data.signupBool,
+        userIdx : data.userIdx
     }
 }
 export const UserLogin_ERROR = (data) => {
@@ -338,12 +343,13 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
                 ...state,
                 UserAddress: action.data
             }
-        case USER_LOGIN_SUCCESS:
+        case USER_LOGIN_SUCCESS:      
             return {
                 ...state,
                 loginBool : true,
                 UserAddress : action.UserAddress,
-                signupBool : action.signupBool
+                signupBool : action.signupBool,
+                userIdx : action.userIdx
             }
 
         case USER_LOGIN_ERROR:          

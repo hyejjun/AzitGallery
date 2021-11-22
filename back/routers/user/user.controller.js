@@ -95,10 +95,12 @@ let address_db_check = async (req, res) => {
 
     try {
         let result = await User.findOne({ where: { kaikas_address: keyObject } })
+        console.log(result);
         if (result !== null) {
             data = {
                 signupBool: true,
-                kaikas_address: result.dataValues.kaikas_address
+                kaikas_address: result.dataValues.kaikas_address,
+                user_idx: result.dataValues.user_idx
             }
         } else {
             data = {
