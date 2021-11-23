@@ -104,6 +104,8 @@ type MintAction =
 const reducer = (state:MintState=initialState, action:MintAction) => {
     switch (action.type){
         case MINT_NFT_REQUEST:
+            console.log("mint =======",action.data);
+            
             return{
                 ...state,
                 verify:'reducer?'

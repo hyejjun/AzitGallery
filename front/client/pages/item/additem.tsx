@@ -1,5 +1,5 @@
 import React from 'react'
-import AddItemComponent from '../../components/item/AdditemComponent_fake'
+import AddItemComponent from '../../components/item/AddItemComponent'
 
 
 const addItem = () =>{

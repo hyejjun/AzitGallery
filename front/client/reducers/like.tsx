@@ -46,7 +46,7 @@ export const likeInsert_REQUEST = (data) => {
 }
 
 export const likeInsert_SUCCESS = (data) => {
-    console.log(data);
+    // console.log(data);
 
     return {
         type: LIKE_INSERT_SUCCESS,
@@ -126,8 +126,6 @@ const reducer = (state: LikeState = initialState, action: LikeAction) => {
                 // data: action.data
             }
         case LIKE_LIST_SUCCESS:
-            console.log("리듀서 ======",action);
-            
             return {
                 ...state,
                 likeList : action.likeList

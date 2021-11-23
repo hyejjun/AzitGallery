@@ -30,10 +30,10 @@ function likeListAPI(data){
 }
 
 function* likeListSaga(action){
-    console.log(action);
+    // console.log(action);
     
     const result = yield call(likeListAPI, action.data)
-    console.log(result);
+    // console.log(result);
     
 
   

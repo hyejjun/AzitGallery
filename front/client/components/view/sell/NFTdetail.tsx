@@ -14,6 +14,7 @@ import { likeInsert_REQUEST, likeList_REQUEST } from "../../../reducers/like";
 
 
 const NFTdetail = ({ children }) => {
+    const User = useSelector((state:RootState) => state.user);    
 
     const [colorpic, setColor] = useState<string>('')
     const [sizepic, setSize] = useState<string>('')
@@ -22,11 +23,14 @@ const NFTdetail = ({ children }) => {
     let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
 
 
-
-
     const [open, setOpen] = useState<boolean>(false);
     const orderOpen = () => {
-        setOpen(prev => !prev)
+        if(User.UserAddress !== 'kaikasAddress'){
+            setOpen(prev => !prev)
+        }else {
+            alert('로그인 해주세요')
+        }
+        
     }
 
     const nickname = useSelector((state: RootState) => state.view.nick_name);
@@ -47,7 +51,7 @@ const NFTdetail = ({ children }) => {
     const itemIdx = useSelector((state: RootState) => state.like.itemIdx)
     const likeList = useSelector((state: RootState) => state.like.likeList)
 
-    console.log(likeList);
+    // console.log(likeList);
 
 
 
@@ -67,7 +71,6 @@ const NFTdetail = ({ children }) => {
     useEffect(() => {
         // dispatch(likeInsert_REQUEST(data))
         // dispatch(likeList_REQUEST(userIdx))
-
     }, [like])
 
     const [likeState,setLikeState] = useState<boolean>(false);
@@ -77,8 +80,6 @@ const NFTdetail = ({ children }) => {
     },[likeList])
 
     const checkLikeStatus = () => {
-        console.log(likeList, params);
-        
         for (let i = 0; i < likeList.length; i++) {
             if (likeList[i].toString() === params) {
                 console.log('일치함');
@@ -90,9 +91,7 @@ const NFTdetail = ({ children }) => {
         }
     }
 
-    console.log(likeState);
-
-
+    // console.log(likeState);
     
     let data = {
         view,
@@ -101,27 +100,11 @@ const NFTdetail = ({ children }) => {
         likeState
     }
     
-    
-
-    
-
 
     useEffect(() => {
         dispatch(directDealView_REQUEST(params))
         dispatch(likeList_REQUEST(userIdx))
-        // dispatch(likeInsert_REQUEST(data))
-
-        // console.log(likeList, params);
-
-        // const testInterval = setInterval(function() {
-        //     console.log("2초마다 반복 실행됩니다.");
-        //     checkLikeStatus()
-
-        // },2000);
         
-        // setTimeout(function() {
-        //     clearTimeout(testInterval);
-        // },7000);
 
 
     }, [])

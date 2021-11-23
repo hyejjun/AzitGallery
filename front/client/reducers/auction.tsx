@@ -36,8 +36,6 @@ export const AUCTION_CURRENT_ERROR = "AUCTION_CURRENT_ERROR" as const;
 
 /* 경매 참여자 잔액 확인 */
 export const getBalance_REQUEST = (data) => {
-    console.log("들어옴 ===== ",data);
-    
     return {
         type: GET_BALANCE_REQUEST,
         data
