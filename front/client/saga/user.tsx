@@ -116,22 +116,15 @@ function* reqNickname() {
 /* 회원가입 email 중복체크 */
 
 function emailAPI(action): any {
-    console.log(action,"22222222");
     return axios.post(`${url}/user/emailchk`, JSON.stringify(action.data))
 }
 
 function* emailSaga(action) {
-    console.log(action,"오오오나?")
     const result = yield call(emailAPI, action)
-    if (result.data.nicknameChkBool == true) {
-        yield put({
-            type: 'EMAIL_POST_SUCCESS',
-        })
-    } else {
-        yield put({
-            type: 'EMAIL_POST_ERROR',
-        })
-    }
+    yield put({
+        type:'EMAIL_POST_SUCCESS',
+        data:result.data
+    })
 }
 
 function* reqEmail() {
@@ -213,6 +206,7 @@ export default function* userSaga() {
         fork(reqSellerAdminDeny),
         fork(reqWaitEmail),
         fork(reqUserInfo),
-        fork(reqNickname)
+        fork(reqNickname),
+        fork(reqEmail),
     ])
 }
