@@ -6,7 +6,7 @@ const option = {
         {
             name: "Authorization",
             //https://console.klaytnapi.com/ko/security/credential 여기서 발급
-            value: "Basic " + Buffer.from("KASKD04FHIK5IQTRA09S21UY" + ":" + "BZH4r2SbX1kD1urckoFdJu_4p2-RJiMxqeWVY2eG").toString("base64"),
+            value: "Basic " + Buffer.from("KASKH4VQRJ9MD3757G20ND9M" + ":" + "tX4x44sLAHD96i0sOHNobNXe7Q5znluuWyFR_po9").toString("base64"),
         },
         { name: "x-krn", value: "krn:1001:node" },
     ],
@@ -234,8 +234,8 @@ let mint_nft_post = async (req,res) => {
         let strname = String(name)
         let strcolor = String(color)
         let strsize = String(size)
-        let privateKey = "0x134618916af638425b4f8388b3dfde42a7f41e26e24729edd3d3d08b42777eca" // DB에서 가져와야 함
-        let accountAddress = "0xae6df220a8f8cae0c23b1ea800b59f788673fbd1"
+        let privateKey = "0x6aaf5c8af80503a0737f02f107e7a38ef1474abf32d2c8df0e36ddc53fd8ef97" // DB에서 가져와야 함
+        let accountAddress = "0x62B8769D6eDc718d90CB8884cA7F390e9b9C7466"
         console.log('beforeKeyRing')
 
         // 개인키를 바탕으로 keyring을 생성합니다.

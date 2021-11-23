@@ -9,6 +9,7 @@ export interface ViewState {
     UserAddress: string;
     verify: number;
     nick_name, title, description,size,color,price,bid_price, currency, left_time: string;
+    item_img_link : Array<string>,
     directView: {};
 
 }
@@ -29,6 +30,7 @@ export const initialState: ViewState = {
     bid_price : '',
     currency : '',
     left_time : '',
+    item_img_link: [],
     directView: {},
 };
 
@@ -118,6 +120,7 @@ const reducer = (state: ViewState = initialState, action: ViewAction) => {
                 color : action.list.color,
                 price : action.list.price,
                 currency : action.list.currency,
+                item_img_link: action.list.item_img_link,
             }
 
 
