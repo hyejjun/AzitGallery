@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import Styled from 'styled-components'
 
-const adminlogincomponent = () => {
+const Adminlogincomponent = () => {
 
 
     return (
@@ -19,7 +19,7 @@ const adminlogincomponent = () => {
     )
 }
 
-export default adminlogincomponent
+export default Adminlogincomponent
 
 const Wrap = Styled.div`
     margin:0 auto;
