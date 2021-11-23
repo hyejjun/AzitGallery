@@ -93,7 +93,7 @@ const Line = Styled.li`
     margin-bottom:10px;
 `
 
-const Ul = Styled.ul`
+const Ul = Styled.ul<{flag:boolean}>`
     .female{
         color: ${props => (props.flag == 1 ? '#000000' : '#777')};
         font-weight: ${props => (props.flag == 1 ? 'bold' : 'none')};

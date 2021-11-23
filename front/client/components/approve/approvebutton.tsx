@@ -5,7 +5,7 @@ import { RootState } from "../../reducers"
 import { useSelector, useDispatch } from 'react-redux'
 import Link from 'next/link'
 
-const approvebutton = () => {
+const Approvebutton = () => {
     const dispatch = useDispatch()
     const User = useSelector((state:RootState) => state.user);
     const SellerAdmin = () => {
@@ -18,7 +18,7 @@ const approvebutton = () => {
     )
 }
 
-export default approvebutton
+export default Approvebutton
 
 const BUTTON = Styled.button`
     color:grey;

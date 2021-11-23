@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": " GENERATE_SOURCEMAP=false next build",
     "dev": "webpack server --env -development"
   },
   "author": "",

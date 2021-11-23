@@ -92,7 +92,7 @@ export default LoginForm
 
 
 
-const LoginFormWrapper = Styled.div`
+const LoginFormWrapper = Styled.div<{closeLogin:boolean}>`
     display: ${(props) => (props.closeLogin ? "block" : "none")} 
     box-sizing:border-box;
     position:absolute;

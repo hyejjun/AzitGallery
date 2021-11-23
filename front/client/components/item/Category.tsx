@@ -38,14 +38,15 @@ const Category = ({handleCategory, category, bigCategory, smallCategory}) => {
             <SmallTitle>
                 카테고리 
             </SmallTitle>
-            <SmallerTitle>성별</SmallerTitle>
+            {/* 아래부분이상 없으면 나중에 지울 것 */}
+            {/* <SmallerTitle>성별</SmallerTitle>
             <select className = "category" onChange = {(e)=>handleCategory(e,"gender")}>
             <option>선택</option>
                 <option value = "female">여성</option>
                 <option value = "male">남성</option>
                 <option value = "kids">아동</option>
                 <option value = "common">남녀 공용</option>
-            </select>
+            </select> */}
             <SmallerTitle>대분류</SmallerTitle>
             <select className = "category" onChange = {(e)=>handleCategory(e,"bigc")}>
             <option>선택</option>

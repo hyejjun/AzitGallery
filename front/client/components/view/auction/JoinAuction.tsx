@@ -86,7 +86,7 @@ const JoinAcution = (props) => {
 export default JoinAcution
 
 
-const AuctionForm = Styled.div`   
+const AuctionForm = Styled.div<{flag:boolean}>`   
     width : 700px;
     height: 650px;
     top: 50%;
