@@ -11,7 +11,7 @@ router.post('/addressdbcheck',controller.address_db_check)
 
 router.post('/nicknamechk',controller.nickname_check)
 
-router.post('./emailchk', controller.email_check)
+router.post('/emailchk', controller.email_check)
 
 router.get('/userlist',controller.userlist_get)
 

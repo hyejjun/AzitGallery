@@ -1,7 +1,7 @@
 // 메인 페이지에 있는 새 NFT 등록하기 배너
 
 import Styled from 'styled-components'
-import React,{ useState } from 'react'
+import React,{ useState, useEffect } from 'react'
 import SucJoin from './SucJoin'
 import { useSelector, useDispatch } from 'react-redux'
 import { Email_REQUEST, SignUp_REQUEST } from "../../reducers/user"
@@ -23,6 +23,7 @@ const SignUp = () => {
 
     const [emailErr, setEmailErr] = useState<boolean>(true); 
     const [email2Err, setEmail2Err] = useState<boolean>(true)
+    const [emailOverlap, setEmailOverlap] = useState<boolean>(true)
     const [checked1,setChecked1] = useState<boolean>(false);
     const [checked2,setChecked2] = useState<boolean>(false);
     const [checked3,setChecked3] = useState<boolean>(false);
@@ -30,6 +31,15 @@ const SignUp = () => {
     // const [loading, setLoading] = useState<string>("");
 
     const User = useSelector((state:RootState) => state.user);
+   
+
+    useEffect(()=>{
+        if(User.emailBool){
+            setEmailOverlap(true);
+        }else{
+            setEmailOverlap(false);
+        }
+    },[User.emailBool])
 
     const nickChk1 = async e => {
         const value = e.target.value;
@@ -68,6 +78,13 @@ const SignUp = () => {
         dispatch(Email_REQUEST(value));
         setEmail(value);
         setEmailErr(value === "");
+
+        let result = User.emailBool;
+        if(result){
+            setEmailOverlap(true) //이메일 가입 가능
+        }else{
+            setEmailOverlap(false) //이메일 중복
+        }
     }
 
     const checkEmail = (e) => {
@@ -97,7 +114,8 @@ const SignUp = () => {
             nickSignErr === true ||
             emailErr === true ||
             email2Err !== true ||
-            nickOverlapErr === true            
+            nickOverlapErr === true ||
+            emailOverlap !== true           
             ){
             alert("내용을 확인해주세요.")
             return ;
@@ -192,8 +210,10 @@ const SignUp = () => {
                                     <tr>
                                         <td>
                                             <input type="email" className="InputBox" value={email} onChange={change2} onBlur={checkEmail} name="email" placeholder="이메일 주소를 입력해주세요." />
-                                            { emailErr ? <div className="error">이메일 주소를 입력해주세요.</div> : <></>}
-                                            { email2Err ? <></>  : <div className="error">유효한 이메일 주소가 아닙니다. 이메일 주소를 다시 확인해주세요.</div>}
+                                            { emailErr ? <div className="error">이메일 주소를 입력해주세요.</div> 
+                                            : <>  { email2Err ? <></>  : <div className="error">유효한 이메일 주소가 아닙니다. 이메일 주소를 다시 확인해주세요.</div>}</>}
+                                          
+                                            { emailOverlap ? <></> : <div className="error">이미 가입된 이메일 주소입니다. 이메일 주소를 다시 확인해주세요.</div>}
                                         </td>
                                     </tr>
                                     <tr>
