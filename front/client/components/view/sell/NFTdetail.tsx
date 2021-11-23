@@ -15,12 +15,34 @@ import { likeInsert_REQUEST, likeList_REQUEST } from "../../../reducers/like";
 
 const NFTdetail = ({ children }) => {
 
+    useEffect(() => {
+        
+        let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
+
+        dispatch(directDealView_REQUEST(params))
+        dispatch(likeList_REQUEST(userIdx))
+        dispatch(likeInsert_REQUEST(data))
+
+        console.log(likeList, params);
+
+        const testInterval = setInterval(function() {
+            console.log("2초마다 반복 실행됩니다.");
+            checkLikeStatus()
+
+        },2000);
+        
+        setTimeout(function() {
+            clearTimeout(testInterval);
+        },7000);
+
+
+    }, [])
+
     const [colorpic, setColor] = useState<string>('')
     const [sizepic, setSize] = useState<string>('')
 
     const dispatch = useDispatch()
-    let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
-
+   
 
 
 
@@ -77,6 +99,8 @@ const NFTdetail = ({ children }) => {
     },[likeList])
 
     const checkLikeStatus = () => {
+        let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
+
         console.log(likeList, params);
         
         for (let i = 0; i < likeList.length; i++) {
@@ -106,25 +130,8 @@ const NFTdetail = ({ children }) => {
     
 
 
-    useEffect(() => {
-        dispatch(directDealView_REQUEST(params))
-        dispatch(likeList_REQUEST(userIdx))
-        dispatch(likeInsert_REQUEST(data))
+    let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
 
-        console.log(likeList, params);
-
-        const testInterval = setInterval(function() {
-            console.log("2초마다 반복 실행됩니다.");
-            checkLikeStatus()
-
-        },2000);
-        
-        setTimeout(function() {
-            clearTimeout(testInterval);
-        },7000);
-
-
-    }, [])
 
     return (
         <>

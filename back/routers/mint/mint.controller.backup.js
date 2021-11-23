@@ -285,10 +285,10 @@ let mint_nft_post = async (req,res) => {
     }
 }
 
-let KIP7Token_transfer = async () => {
+let KIP7Token_transfer = async (req,res) => {
 
   // 해당 토큰으로 구매하기
-
+  console.log(`앞 단에서 값이 제대로 ${req.body.price}`)
   const keyring = caver.wallet.keyring.createFromPrivateKey(
     "0x07ea3560faca009fdbaf6cee2ea6ee87aaf22bd1f381f3afd312e79ff45f122b"
   );
@@ -314,29 +314,29 @@ let KIP7Token_transfer = async () => {
 
   // 구매 완료 후 nft transfer
 
-  let senderPrivateKey = "0x07ea3560faca009fdbaf6cee2ea6ee87aaf22bd1f381f3afd312e79ff45f122b";
-  const senderKeyring = caver.wallet.keyring.createFromPrivateKey(
-    senderPrivateKey
-  );
-  // wallet에 keyring이 추가되지 않은 경우에만 keyring을 추가합니다.
-  if (!caver.wallet.getKeyring(senderKeyring.address)) {
-    const singleKeyRing = caver.wallet.keyring.createFromPrivateKey(
-      senderPrivateKey
-    );
-    caver.wallet.add(singleKeyRing);
-  }
+//   let senderPrivateKey = "0x07ea3560faca009fdbaf6cee2ea6ee87aaf22bd1f381f3afd312e79ff45f122b";
+//   const senderKeyring = caver.wallet.keyring.createFromPrivateKey(
+//     senderPrivateKey
+//   );
+//   // wallet에 keyring이 추가되지 않은 경우에만 keyring을 추가합니다.
+//   if (!caver.wallet.getKeyring(senderKeyring.address)) {
+//     const singleKeyRing = caver.wallet.keyring.createFromPrivateKey(
+//       senderPrivateKey
+//     );
+//     caver.wallet.add(singleKeyRing);
+//   }
 
-    let contractAddr = "0x8f56a4664a46957a06f0edd47bba25d0224df5ff";
+//     let contractAddr = "0x8f56a4664a46957a06f0edd47bba25d0224df5ff";
 
-        const KIP_17 = new caver.kct.kip17(contractAddr);
+//         const KIP_17 = new caver.kct.kip17(contractAddr);
 
-        transferResult = await KIP_17.transferFrom(
-          senderKeyring.address,
-          "0xadbEC8669bbfBd1481aaD736f98De590d37b26Ce",
-          5511296877575945,
-          { from: senderKeyring.address, gas: 200000 }
-        );
-        console.log(transferResult);
+//         transferResult = await KIP_17.transferFrom(
+//           senderKeyring.address,
+//           "0xadbEC8669bbfBd1481aaD736f98De590d37b26Ce",
+//           5511296877575945,
+//           { from: senderKeyring.address, gas: 200000 }
+//         );
+//         console.log(transferResult);
     
 
 }

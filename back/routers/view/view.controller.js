@@ -3,21 +3,23 @@ const Sequelize = require('sequelize')
 const Op = Sequelize.Op
 
 let get_directdeal_view = async (req, res) => {
+  
     let key = Object.keys(req.body)
-    let idx = JSON.parse(key)
+    let previdx = JSON.parse(key)
+    let idx = previdx.replace('}',' ')
+    console.log(`맨 처음시 작동 되기는 하니toto??${idx.replace('}',' ')}`)
     // @ user 에 대한 정보 가져와서 like 조회해야함.
     // @ idx 로 해당 view 조회하기
     let data = {};
 
-    try {
         let result = await ItemInfo.findOne({ where: { item_id: idx, sell_type: 0 } })
         const { creator, description, title, registered_at, size, color } = result.dataValues
-
+        console.log(` 하니toto??${creator}`)
         let result2 = await User.findOne({ where: { user_idx: creator }, attributes: ['nick_name'] })
         const { nick_name } = result2.dataValues
         
-        let result3 = await DirectDeal.findOne({where:{direct_deal_idx:idx}})
-        const {price, currency} = result3.dataValues
+        // let result3 = await DirectDeal.findOne({where:{direct_deal_idx:idx}})
+        // const {price, currency} = result3.dataValues
 
         let result4 = await ItemImg.findAll({where:{item_id:idx}})
 
@@ -28,25 +30,19 @@ let get_directdeal_view = async (req, res) => {
             item_img_link.push(v.dataValues.item_img_link)
         })
 
-        data = {
+        send = {
             result_msg: 'OK',
             nick_name,
             description,
             title,
             size,
             color,
-            price,
-            currency,
+            // price,
+            // currency,
             item_img_link
         }
-
-    } catch (error) {
-        data = {
-            result_msg: 'Fail',
-            msg: '해당 페이지가 없어요'
-        }
-    }
-    res.json(data)
+        console.log(`데이터 제대로 찾았니?${data}`)
+    res.json(send)
 }
 
 let get_auction_view = async (req, res) => {

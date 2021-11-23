@@ -55,22 +55,22 @@ const Order = (props) => {
         color:props.flagcolor,
         size:props.flagsize,
         item_id:props.item_id,
-        price:props.price,
+        price:40,
         currency:props.currency
     }
-    //dispatch(direct_deal_REQUEST(data))
+    // dispatch(direct_deal_REQUEST(data))
 
-    // const Purchase = (props) => {
-    //     let data = {
-    //         price:props
-    //     }
-    //     // dispatch(direct_deal_REQUEST(data))
-    //     // dispatch(KipToken_REQUEST(props))
-    //     alert('EPI로 거래되셨습니다!')
-    //     console.log(JSON.stringify(window.location.href).split('ell/')[1].replace("\"", ""))
-    //     let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
-    //     window.location.href = `/ship/${params}`
-    // }
+    const Purchase = () => {
+        let senddata = {
+            price:40
+        }
+        // dispatch(direct_deal_REQUEST(data))
+        dispatch(KipToken_REQUEST(senddata))
+        alert('EPI로 거래되셨습니다!')
+        console.log(JSON.stringify(window.location.href).split('ell/')[1].replace("\"", ""))
+        let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
+        window.location.href = `/ship/${params}`
+    }
     let NEXT =()=>{
         // dispatch(direct_deal_REQUEST(data))
         let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
@@ -110,9 +110,9 @@ const Order = (props) => {
                                 <Payment onClick = {Klaytn}>
                                     klaytn으로 결제
                                 </Payment>
-                                {/* <Payment onClick = {Purchase(props.price)}>
+                                <Payment onClick = {Purchase}>
                                     EPI(자체 토큰)으로 결제
-                                </Payment> */}
+                                </Payment>
                         </div>
                     </OrderContent>
                     <OrderBtn>
