@@ -1,4 +1,4 @@
-import DeliveryForm from "./deliveryForm";
+import DeliveryForm from "./DeliveryForm";
 
 const DeliveryInfo = () => {
     

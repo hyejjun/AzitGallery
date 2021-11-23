@@ -155,7 +155,7 @@ const MenuBar = Styled.ul`
     height: 100px;
 `
 
-const SellTab = Styled.div`
+const SellTab = Styled.div<{flag:boolean}>`
     cursor:pointer;
     font-size: 23px;
     color: ${props => (props.flag == 1 ? '#000000b3' : '#a0a0a0b3')};

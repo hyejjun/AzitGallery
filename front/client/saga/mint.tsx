@@ -54,7 +54,7 @@ function* reqMintNft(){
 /* mintNFT */
 
 function KipTokenAPI() {
-    return axios.post(`http://localhost:4000/mint/kiptransfer`)
+    return axios.post(`${url}/mint/kiptransfer`)
 }
 
 function* KipTokenSaga(){
@@ -73,7 +73,7 @@ function* reqKipToken(){
 /* mintNFT */
 
 function KipSwapAPI() {
-    return axios.post(`http://localhost:4000/mint/kipswap`)
+    return axios.post(`${url}/mint/kipswap`)
 }
 
 

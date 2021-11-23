@@ -1,7 +1,7 @@
 import Styled from 'styled-components'
 import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
-import Own from './own'
+import Own from './Own'
 import Selled from './Selled'
 import Notselled from './NotSelled'
 import { useSelector, useDispatch } from 'react-redux'
@@ -125,15 +125,6 @@ const MyNftComponent = () => {
                         </Menu>
                     </MenuBar>
                     <SelectBoxHeader>
-                    
-                        <SelectBox value={likeBtn} onChange={handleChange} onClick={orderByLikeBtn}>
-                            <SelectOption value="0">
-                                최근 발행 순
-                            </SelectOption>
-                            <SelectOption value="1">
-                                 조회수 순
-                            </SelectOption>
-                        </SelectBox>
                         <Notice>*KraftSpace에서 발행한 NFT만 표시합니다.</Notice>
                     </SelectBoxHeader>
                 </Header>

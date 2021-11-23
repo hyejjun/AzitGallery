@@ -120,7 +120,7 @@ const Order = (props) => {
 
 export default Order
 
-export const ModalWrapper = Styled.div`
+export const ModalWrapper = Styled.div<{flag:boolean}>`
     box-sizing: border-box;
     display: ${(props) => (props.flag ? 'block' : 'none')};
     position: fixed;
@@ -132,7 +132,7 @@ export const ModalWrapper = Styled.div`
     z-index: 999;
 `
 
-export const OrderForm = Styled.div`   
+export const OrderForm = Styled.div<{flag:boolean}>`   
     width : 700px;
     height: 580px;
     top: 50%;
