@@ -1,10 +1,11 @@
 import axios from 'axios';
 import {all,put,takeEvery,takeLatest,fork,call} from "redux-saga/effects";
+import {url} from './url'
 
 
 function DealAPI(data){
     console.log(data.data)
-    return axios.post(`http://localhost:4000/deal/direct`, data.data)
+    return axios.post(`${url}/deal/direct`, data.data)
 
 }
 function* reqDealSaga(data){

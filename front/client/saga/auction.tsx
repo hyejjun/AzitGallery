@@ -5,7 +5,7 @@ import {url} from './url'
 /* mintNFT */
 
 function AuctionPriceAPI(data) {
-    return axios.post(`http://localhost:4000/auction/auctionprice`, data)
+    return axios.post(`${url}/auction/auctionprice`, data)
 }
 
 
@@ -22,7 +22,7 @@ function* reqAuctionPrice(){
 /* mintNFT */
 
 function AuctionCurrentAPI(data) {
-    return axios.post(`http://localhost:4000/auction/auctioncurrent`, data)
+    return axios.post(`${url}/auction/auctioncurrent`, data)
 }
 
 

@@ -204,9 +204,6 @@ const ItemListSell = (props) => {
                         <Link href = {ele.url}><AStyle><NFTSubject>{ele.subject}</NFTSubject></AStyle></Link>     
                         <NFTartist>{ele.artist}</NFTartist>
                     </NFTOneList>
-                    <NFTOneImg>
-                        <img></img>
-                    </NFTOneImg>
                 </NFTOne>
                 <NFTOne>
                     <NFTOneList>
@@ -228,14 +225,6 @@ const ItemListSell = (props) => {
                 <PictureNumberNotice>
                     전체 NFT 리스트 (총 {count}개 발행됨)
                 </PictureNumberNotice>
-                <SelectBox onChange={props.selectChange}>
-                    <SelectOption value="sell_recent">
-                        좋아요 순
-                    </SelectOption>
-                    <SelectOption value="sell_likes">
-                        최근 발행 순
-                    </SelectOption>
-                </SelectBox>
             </div>
             <NFTComponent>
                 <Category CategoryState={props.CategoryState}/>
