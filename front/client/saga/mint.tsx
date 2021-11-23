@@ -56,12 +56,12 @@ function* reqMintNft(){
 
 /* mintNFT */
 
-function kipTokenAPI() {
-    return axios.post(`http://localhost:4000/mint/kiptransfer`)
+function kipTokenAPI(data) {
+    return axios.post(`http://localhost:4000/mint/kiptransfer`, data)
 }
 
-function* kipTokenSaga(){
-    const result = yield call(kipTokenAPI)
+function* kipTokenSaga(action){
+    const result = yield call(kipTokenAPI, action.data)
 
     yield put({
         type:'KIP_TOKEN_SUCCESS',

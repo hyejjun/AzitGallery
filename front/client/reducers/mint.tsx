@@ -55,9 +55,10 @@ export const MintNFT_ERROR = () => {
 }
 
 
-export const KipToken_REQUEST = () => {
+export const KipToken_REQUEST = (props) => {
     return{
         type:KIP_TOKEN_REQUEST,
+        data:props
     }
 }
 export const KipToken_SUCCESS = () => {

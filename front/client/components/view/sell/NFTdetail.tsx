@@ -65,8 +65,8 @@ const NFTdetail = ({ children }) => {
     const userIdx = useSelector((state: RootState) => state.user.userIdx);
 
     useEffect(() => {
-        // dispatch(likeInsert_REQUEST(data))
-        // dispatch(likeList_REQUEST(userIdx))
+        dispatch(likeInsert_REQUEST(data))
+        dispatch(likeList_REQUEST(userIdx))
 
     }, [like])
 
@@ -109,19 +109,19 @@ const NFTdetail = ({ children }) => {
     useEffect(() => {
         dispatch(directDealView_REQUEST(params))
         dispatch(likeList_REQUEST(userIdx))
-        // dispatch(likeInsert_REQUEST(data))
+        dispatch(likeInsert_REQUEST(data))
 
-        // console.log(likeList, params);
+        console.log(likeList, params);
 
-        // const testInterval = setInterval(function() {
-        //     console.log("2초마다 반복 실행됩니다.");
-        //     checkLikeStatus()
+        const testInterval = setInterval(function() {
+            console.log("2초마다 반복 실행됩니다.");
+            checkLikeStatus()
 
-        // },2000);
+        },2000);
         
-        // setTimeout(function() {
-        //     clearTimeout(testInterval);
-        // },7000);
+        setTimeout(function() {
+            clearTimeout(testInterval);
+        },7000);
 
 
     }, [])

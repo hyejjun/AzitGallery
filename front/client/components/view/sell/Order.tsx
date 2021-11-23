@@ -26,12 +26,12 @@ const Order = (props) => {
     }
 
     const Klaytn = () => {
-
+        alert('klaytn')
         window.caver.klay
         .sendTransaction({
           type: 'VALUE_TRANSFER',
           from: window.klaytn.selectedAddress,
-          to: '0xadbEC8669bbfBd1481aaD736f98De590d37b26Ce',
+          to: '0x325B6d2a7eE98a868ad576fD261f561E36F097B1',
           value: window.caver.utils.toPeb('1', 'KLAY'),
           gas: 8000000
         })
@@ -45,6 +45,10 @@ const Order = (props) => {
           console.log('error', error)
         })
 
+        console.log(JSON.stringify(window.location.href).split('ell/')[1].replace("\"", ""))
+        let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
+        window.location.href = `/ship/${params}`
+
     }
     let data 
     data = {
@@ -56,16 +60,19 @@ const Order = (props) => {
     }
     //dispatch(direct_deal_REQUEST(data))
 
-    const Purchase = () => {
-        dispatch(direct_deal_REQUEST(data))
-        dispatch(KipToken_REQUEST())
-        alert('EPI로 거래되셨습니다!')
-        console.log(JSON.stringify(window.location.href).split('ell/')[1].replace("\"", ""))
-        let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
-        window.location.href = `/ship/${params}`
-    }
+    // const Purchase = (props) => {
+    //     let data = {
+    //         price:props
+    //     }
+    //     // dispatch(direct_deal_REQUEST(data))
+    //     // dispatch(KipToken_REQUEST(props))
+    //     alert('EPI로 거래되셨습니다!')
+    //     console.log(JSON.stringify(window.location.href).split('ell/')[1].replace("\"", ""))
+    //     let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
+    //     window.location.href = `/ship/${params}`
+    // }
     let NEXT =()=>{
-        dispatch(direct_deal_REQUEST(data))
+        // dispatch(direct_deal_REQUEST(data))
         let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
         window.location.href = `/ship/${params}`
     }
@@ -103,9 +110,9 @@ const Order = (props) => {
                                 <Payment onClick = {Klaytn}>
                                     klaytn으로 결제
                                 </Payment>
-                                <Payment onClick = {Purchase}>
+                                {/* <Payment onClick = {Purchase(props.price)}>
                                     EPI(자체 토큰)으로 결제
-                                </Payment>
+                                </Payment> */}
                         </div>
                     </OrderContent>
                     <OrderBtn>
