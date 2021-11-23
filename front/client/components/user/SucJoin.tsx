@@ -5,7 +5,7 @@ import Link from 'next/link'
 import React from 'react';
 
 const SucJoin = (props) => {
-
+  
 
     return(
         <SizeWrapper>
@@ -15,7 +15,7 @@ const SucJoin = (props) => {
                     <div>AzitGallery 회원가입을 환영합니다.<br/><br/></div>
                     <div>
                         <span>로그인</span>
-                        <span><Link href="/"><a>메인</a></Link></span>
+                        <Link href="/"><span ><a>메인</a></span></Link>
                     </div>
                 </ModalForm>
             </ModalBackground>

@@ -212,7 +212,6 @@ const SignUp = () => {
                                             <input type="email" className="InputBox" value={email} onChange={change2} onBlur={checkEmail} name="email" placeholder="이메일 주소를 입력해주세요." />
                                             { emailErr ? <div className="error">이메일 주소를 입력해주세요.</div> 
                                             : <>  { email2Err ? <></>  : <div className="error">유효한 이메일 주소가 아닙니다. 이메일 주소를 다시 확인해주세요.</div>}</>}
-                                          
                                             { emailOverlap ? <></> : <div className="error">이미 가입된 이메일 주소입니다. 이메일 주소를 다시 확인해주세요.</div>}
                                         </td>
                                     </tr>

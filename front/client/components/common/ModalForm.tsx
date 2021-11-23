@@ -81,6 +81,10 @@ const FormWrapper = Styled.div<{flag:boolean}>`
         font-weight:500;
         
     }
-
+    button{
+        text-decoration:none;
+        background-color:#1e73fa;
+        color:white;
+    }
     
 `
