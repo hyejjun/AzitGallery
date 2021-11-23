@@ -15,20 +15,27 @@ function MintNftAPI(action) {
     async function putImagesLink(){
         // data[1]의 파일들을 s3에 각각 올리고 업로드 주소값을 받아 배열에 넣는다
         let fileArray = data[1].map(async (items, key)=>{
-            const response = await fetch(`${url}/item/uploadpics`)
-            const { link } = await response.json()
-            await fetch(link, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "multipart/form-data"
-                },
-                body: items
-            })
-            const imageURL = link.split('?')[0];
-            fileArr.push(imageURL)
-            if(key == data[0].mainImgIdx){
-                mainImgLink = imageURL
-            }
+            const response = await fetch(`${url}/item/uploadpics`)  
+            // console.log(response.json().then());
+            let data = response.json().then(console.log)
+            console.log(data);
+            
+                      
+            // const { link } = await response.json()
+            // console.log(link);
+            
+            // await fetch(link, {
+            //     method: "PUT",
+            //     headers: {
+            //         "Content-Type": "multipart/form-data"
+            //     },
+            //     body: items
+            // })
+            // const imageURL = link.split('?')[0];
+            // fileArr.push(imageURL)
+            // if(key == data[0].mainImgIdx){
+            //     mainImgLink = imageURL
+            // }
         })
         // 모든 파일에 대해 값을 받아온 뒤 시행한다
         await Promise.all(fileArray)
@@ -43,14 +50,15 @@ function MintNftAPI(action) {
 }
 
 function* MintNftSaga(action){
-    console.log('mint saga왔어??')
+    // console.log('mint saga왔어??')
     let result = yield call(MintNftAPI,action)
-    console.log(result.data,'mintnftsaga')
+    // console.log(result.data,'mintnftsaga')
+    // console.log("mint saga =======",action);
+    
    
 }
 
 function* reqMintNft(){
-    console.log('here is reqmint')
     yield takeLatest('MINT_NFT_REQUEST',MintNftSaga)
 }
 

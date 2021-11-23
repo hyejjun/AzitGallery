@@ -132,11 +132,41 @@ let nickname_check = async (req, res) => {
 }
 
 let email_check = async (req,res) =>{
+
+    try{
     let key = Object.keys(req.body);
     let email = JSON.parse(key);
-    console.log(email,"11111");
-    
+    let result = await User.findAll({where:{email}})
+    if (result.length == 0) {
+        let data ={
+            result_msg: 'ok',
+            msg: '이메일 가능',
+            where: '/emailchk',
+            flag: true
+        }
+        res.json(data)
+    } else {
+        let data ={
+            result_msg: 'fail',
+            msg: '이메일 중복',
+            where: '/emailchk',
+            flag: false
+        }
+        res.json(data)
+    }
+    }catch(e){
+        console.log(e);
+        let data ={
+            result_msg: 'fail',
+            msg: '이메일 불가',
+            where: '/emailchk',
+            flag:false
+        }
+        res.json(data)
+    }   
+
 }
+
 
 /* 모든 회원들 정보를 불러오기 */
 

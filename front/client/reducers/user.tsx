@@ -17,7 +17,9 @@ export interface UserState {
     loginBool: boolean;
     nicknameChkBool: boolean;
     userInfo: {};
-    userIdx : number
+    userIdx : number;
+    emailBool: boolean;
+
 }
 
 export const initialState: UserState = {
@@ -34,7 +36,8 @@ export const initialState: UserState = {
     loginBool: false,
     nicknameChkBool: false,
     userInfo: {},
-    userIdx : 0
+    userIdx : 0,
+    emailBool: false
 };
 
 
@@ -207,20 +210,27 @@ export const Nickname_SUCCESS = () => {
     }
 }
 
+export const Nickname_ERROR = () => {
+    return {
+        type: NICKNAME_POST_ERROR,
 
-/* signup email chk succ */
+    }
+}
+
+
+/* signup email overlap chk  */
 export const Email_REQUEST = (data) => {
-    console.log(data,"오나?");
     return {
         type: EMAIL_POST_REQUEST,
         data
     }
 }
 
-export const Email_SUCCESS = () => {
+export const Email_SUCCESS = (data) => {
     return {
 
         type: EMAIL_POST_SUCCESS,
+        data:data
 
     }
 }
@@ -228,13 +238,6 @@ export const Email_SUCCESS = () => {
 export const Email_ERROR = () => {
     return {
         type: EMAIL_POST_ERROR,
-
-    }
-}
-
-export const Nickname_ERROR = () => {
-    return {
-        type: NICKNAME_POST_ERROR,
 
     }
 }
@@ -511,13 +514,13 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
 
         /* 회원가입 이메일 중복체크 */
         case EMAIL_POST_REQUEST:
-            console.log(action,"오오나?")
             return {
                 ...state,
             }
         case EMAIL_POST_SUCCESS:
             return {
                 ...state,
+                emailBool:action.data.flag
             }
         case EMAIL_POST_ERROR:
             return {

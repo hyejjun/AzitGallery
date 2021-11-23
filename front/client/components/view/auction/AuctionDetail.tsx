@@ -25,10 +25,14 @@ const AuctionDetail = (props) => {
     const [limitTime, setlimitTime] = useState<number>(5);
     const [endBool, setEndBool] = useState<boolean>(false)
     const [openAuction, setOpenAuction] = useState<boolean>(false);
-    const auctionOpen = () => {
-        setOpenAuction(prev => !prev)
+
+    const auctionOpen = () => { 
+        if(User.UserAddress !== 'kaikasAddress'){
+            setOpenAuction(prev => !prev)
+        }else {
+            alert('로그인 해주세요')
+        }        
     }
-    console.log(Auction.yourBalacne);
     
     /* props로 전달할 값 */
     const [auctionPrice, setAuctionPrice] = useState<number>(0);
