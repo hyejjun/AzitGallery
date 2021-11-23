@@ -8,9 +8,10 @@ function directDealAPI(idx){
 }
 
 function* directDealView(action){      
+    console.log("direactdealview saga ==== ",action.idx);
     const result = yield call(directDealAPI, action.idx)
     const {nick_name, title, description, result_msg, msg} = result.data
-    // console.log("saga ==== ",result.data);
+    console.log("direactdealview saga ==== ",result.data);
     
 
     if(result_msg==="OK"){

@@ -16,12 +16,34 @@ import { likeInsert_REQUEST, likeList_REQUEST } from "../../../reducers/like";
 const NFTdetail = ({ children }) => {
     const User = useSelector((state:RootState) => state.user);    
 
+    useEffect(() => {
+        
+        let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
+
+        dispatch(directDealView_REQUEST(params))
+        dispatch(likeList_REQUEST(userIdx))
+        dispatch(likeInsert_REQUEST(data))
+
+        console.log(likeList, params);
+
+        const testInterval = setInterval(function() {
+            console.log("2초마다 반복 실행됩니다.");
+            checkLikeStatus()
+
+        },2000);
+        
+        setTimeout(function() {
+            clearTimeout(testInterval);
+        },7000);
+
+
+    }, [])
+
     const [colorpic, setColor] = useState<string>('')
     const [sizepic, setSize] = useState<string>('')
 
     const dispatch = useDispatch()
-    let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
-
+   
 
     const [open, setOpen] = useState<boolean>(false);
     const orderOpen = () => {
@@ -69,8 +91,14 @@ const NFTdetail = ({ children }) => {
     const userIdx = useSelector((state: RootState) => state.user.userIdx);
 
     useEffect(() => {
+<<<<<<< HEAD
+        dispatch(likeInsert_REQUEST(data))
+        dispatch(likeList_REQUEST(userIdx))
+
+=======
         // dispatch(likeInsert_REQUEST(data))
         // dispatch(likeList_REQUEST(userIdx))
+>>>>>>> fbb3832355c0c054f472154a7c1fb1d09fc8e750
     }, [like])
 
     const [likeState,setLikeState] = useState<boolean>(false);
@@ -80,6 +108,13 @@ const NFTdetail = ({ children }) => {
     },[likeList])
 
     const checkLikeStatus = () => {
+<<<<<<< HEAD
+        let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
+
+        console.log(likeList, params);
+        
+=======
+>>>>>>> fbb3832355c0c054f472154a7c1fb1d09fc8e750
         for (let i = 0; i < likeList.length; i++) {
             if (likeList[i].toString() === params) {
                 console.log('일치함');
@@ -101,13 +136,16 @@ const NFTdetail = ({ children }) => {
     }
     
 
+<<<<<<< HEAD
+    let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
+=======
     useEffect(() => {
         dispatch(directDealView_REQUEST(params))
         dispatch(likeList_REQUEST(userIdx))
         
 
+>>>>>>> fbb3832355c0c054f472154a7c1fb1d09fc8e750
 
-    }, [])
 
     return (
         <>
