@@ -25,6 +25,8 @@ nunjucks.configure('views', {
     express:app,
 })
 
+axios.defaults.baseURL = process.env.NODE_ENV === 'development' ? '/' : '18.223.106.190/';
+
 app.use(cors({
 	origin: true, 
     credentials: true,  

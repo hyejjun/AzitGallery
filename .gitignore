@@ -4,3 +4,6 @@
 ./front/package-lock.json
 back/db_config.json
 */.env
+*/AzitGallery.pem
+./front/AzitGallery.pem**
+./back/AzitGallery.pem**

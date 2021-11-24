@@ -9,7 +9,7 @@ import { RootState } from "../../reducers"
 import {UserState} from "../../reducers/user"
 import { KipSwap_REQUEST } from "../../reducers/mint";
 import { Userlist_REQUEST } from '../../reducers/user'
-import { myNft_all_REQUEST,sold_nft_REQUEST,not_selled_REQUEST,hits_buy_REQUEST,hits_sell_REQUEST,hits_not_sell_REQUEST} from '../../reducers/list'
+import { myNft_all_REQUEST,sold_nft_REQUEST,not_selled_REQUEST} from '../../reducers/list'
 
 const MyNftComponent = () => {
 
@@ -45,26 +45,7 @@ const MyNftComponent = () => {
     }
     let data:{}
 
-    const orderByLikeBtn = () => {
-        if(likeBtn==1){
-            data = {
-                userAddress:user.UserAddress,
-                likeBtn:likeBtn
-            }
-            if(tabBtn==1){
-                // 구매한 nft가 선택된 상황에서 조회수 순
-                dispatch(hits_buy_REQUEST(data))
-            }else if(tabBtn==2){
-                // 판매된 nft가 선택된 상황에서 조회수 순
-                dispatch(hits_sell_REQUEST(data))
-            }else if(tabBtn==3){
-                // 미판매된 nft가 선택된 상황에서 조회수 순
-                dispatch(hits_not_sell_REQUEST(data))
-            }
-        }
-        // 조회수로 정렬하고 좋아요 부분에 대한 것은 옆에 리스트를 따로 빼는 게 좋을 듯... 
-
-    }
+    
 
     // @ 여기서 NFT (구매한 , 판매된 , 미판매된 ) 가져옴 - dispatch 로 요청
     useEffect(()=>{
