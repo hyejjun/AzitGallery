@@ -92,22 +92,45 @@ let address_db_check = async (req,res) => {
     let keyObject = JSON.parse(key)
     console.log(keyObject)
 
-    let result = await User.findAll({where:{kaikas_address:keyObject}})
+    //let result = await User.findAll({where:{kaikas_address:keyObject}})
+    let data = {}
 
-    if(result.length != 0) {
-        console.log(result.length)
-        let data = {
-            signupBoolean:true
+    // if(result.length != 0) {
+    //     console.log(result.length)
+    //     let data = {
+    //         signupBoolean:true
+    //     }
+
+    //     res.json(data)
+    // }else{
+    //     console.log(result.length)
+    //     let data = {
+    //         signupBoolean:false
+    //     }
+    //     res.json(data)
+    // }
+    // console.log(result)
+    try {
+        let result = await User.findOne({where:{kaikas_address:keyObject}})
+        if(result !== null){
+            data = {
+                signupBool: true,
+                kaikas_address: result.dataValues.kaikas_address,
+                user_idx: result.dataValues.user_idx
+            }
+        }else{
+            data = {
+                signupBool: false
+            }
         }
-        res.json(data)
-    }else{
-        console.log(result.length)
-        let data = {
-            signupBoolean:false
+    } catch(error){
+        console.log(error);
+        data = {
+            signupBool: false,
+            msg : 'Error'
         }
-        res.json(data)
     }
-    console.log(result)
+    res.json(data)
 
 }
 
