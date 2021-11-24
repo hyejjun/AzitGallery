@@ -17,6 +17,7 @@ export interface UserState {
     loginBool: boolean;
     nicknameChkBool: boolean;
     userInfo:{};
+    userIdx : number;
 }
 
 export const initialState: UserState = {
@@ -33,6 +34,7 @@ export const initialState: UserState = {
     loginBool: false,
     nicknameChkBool: false,
     userInfo:{},
+    userIdx : 0
 };
 
 
@@ -40,6 +42,10 @@ export const initialState: UserState = {
 export const USER_LOGIN_REQUEST = "USER_LOGIN_REQUEST" as const;
 export const USER_LOGIN_SUCCESS = "USER_LOGIN_SUCCESS" as const;
 export const USER_LOGIN_ERROR = "USER_LOGIN_ERROR" as const;
+
+export const USER_LOGOUT_REQUEST = "USER_LOGOUT_REQUEST" as const;
+export const USER_LOGOUT_SUCCESS = "USER_LOGOUT_SUCCESS" as const;
+export const USER_LOGOUT_ERROR = "USER_LOGOUT_ERROR" as const;
 
 export const SELLER_ADMIN_REQUEST = "SELLER_ADMIN_REQUEST" as const;
 export const SELLER_ADMIN_SUCCESS = "SELLER_ADMIN_SUCCESS" as const;
@@ -77,19 +83,46 @@ export const USER_INFO_ERROR = "USER_INFO_ERROR" as const;
 export const UserLogin_REQUEST = (UserAddress) => {
     return {
         type: USER_LOGIN_REQUEST,
-        data: UserAddress
+        data: UserAddress,
+        loginBool : false,
     }
 }
-export const UserLogin_SUCCESS = (klaytnAddress) => {
+export const UserLogin_SUCCESS = (data) => {
     return {
         type: USER_LOGIN_SUCCESS,
-        data: klaytnAddress.UserAddress
+        //data: klaytnAddress.UserAddress
+        loginBool : true,
+        UserAddress : data.UserAddress,
+        signupBool : data.signupBool,
+        userIdx : data.userIdx
     }
 }
-export const UserLogin_ERROR = (error) => {
+export const UserLogin_ERROR = (data) => {
     return {
         type: USER_LOGIN_ERROR,
-        error: error,
+        //error: error,
+        signupBool : data.signupBool,
+        
+    }
+}
+
+/* User Logout req */
+export const UserLogout_REQUEST = () => {
+    return {
+        type: USER_LOGOUT_REQUEST,
+    }
+}
+export const UserLogout_SUCCESS = (data) => {
+    return {
+        type: USER_LOGOUT_SUCCESS,
+        UserAddress : 'kaikasAddress',
+        loginBool : false,
+        signupBool : false,
+    }
+}
+export const UserLogout_ERROR = () => {
+    return {
+        type: USER_LOGOUT_ERROR,
     }
 }
 
@@ -268,6 +301,10 @@ type UserAction =
     | ReturnType<typeof UserLogin_SUCCESS>
     | ReturnType<typeof UserLogin_ERROR>
 
+    | ReturnType<typeof UserLogout_REQUEST>
+    | ReturnType<typeof UserLogout_SUCCESS>
+    | ReturnType<typeof UserLogout_ERROR>
+
     | ReturnType<typeof SellerAdmin_REQUEST>
     | ReturnType<typeof SellerAdmin_SUCCESS>
     | ReturnType<typeof SellerAdmin_ERROR>
@@ -311,13 +348,34 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
         case USER_LOGIN_SUCCESS:
             return {
                 ...state,
-                data: action.data
+                //data: action.data
+                loginBool : true,
+                UserAddress : action.UserAddress,
+                signupBool : action.signupBool,
+                userIdx : action.userIdx
             }
 
         case USER_LOGIN_ERROR:
             return {
                 ...state,
-                data: action.error
+                //data: action.error
+                signupBool : action.signupBool
+            }
+
+        case USER_LOGOUT_REQUEST:
+            return {
+                ...state,
+            }
+        case USER_LOGOUT_SUCCESS:
+            return {
+                ...state,
+                UserAddress : action.UserAddress,
+                loginBool : false
+            }
+
+        case USER_LOGOUT_ERROR:
+            return {
+                ...state,
             }
 
                     /********* */
