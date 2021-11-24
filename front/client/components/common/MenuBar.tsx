@@ -77,36 +77,44 @@ const MenuBar = () => {
     const signupBool = useSelector((state: RootState) => state.user.signupBool) 
 
     const kaikasLogin = async () => {
-        const wallet = await window.klaytn.enable()
-        const klaytnAddress = window.klaytn.selectedAddress
+        
+        try {
+            const wallet = await window.klaytn.enable()
+            const klaytnAddress = window.klaytn.selectedAddress
 
-        if (klaytnAddress != undefined) {
-            let AddressArr = []
-            AddressArr.push(klaytnAddress)
-            setKaikasAddress(AddressArr)
-
-
-            //dispatch(UserLogin_REQUEST(klaytnAddress))
-            //console.log("signupBoolean ===== ", User.signupBool);
+            if (klaytnAddress != undefined) {
+                let AddressArr = []
+                AddressArr.push(klaytnAddress)
+                setKaikasAddress(AddressArr)
 
 
-            // 카이카스 로그인 후 서명
-            const account = window.klaytn.selectedAddress
-            const message = 'Login User'
-            const signedMessage = await window.caver.klay.sign(message, account)
-            setLoad(true)
+                //dispatch(UserLogin_REQUEST(klaytnAddress))
+                //console.log("signupBoolean ===== ", User.signupBool);
 
-            if (signupBool == false) {
-                window.location.href = "/signup"
-            } else if (signupBool == true) {
-                // window.location.href = "/"
-                setLoginState(true)
-                setLogin(false)
-                setFlag(false)
-            } else {
 
+                // 카이카스 로그인 후 서명
+                const account = window.klaytn.selectedAddress
+                const message = 'Login User'
+                const signedMessage = await window.caver.klay.sign(message, account)
+                setLoad(true)
+
+                if (signupBool == false) {
+                    window.location.href = "/signup"
+                } else if (signupBool == true) {
+                    // window.location.href = "/"
+                    setLoginState(true)
+                    setLogin(false)
+                    setFlag(false)
+                } else {
+
+                }
             }
+        }catch(err){
+            alert('로그인 실패')
         }
+        
+        
+        
     }
     useEffect(() => {
         const klaytnAddress = window.klaytn.selectedAddress
@@ -122,9 +130,9 @@ const MenuBar = () => {
         kaikasLogin()
 
     }
+
     useEffect(() => {
         setLoginState(false)
-
         if (User.loginBool === true) {
             setLoginState(true)
             setLogin(false)
@@ -134,7 +142,8 @@ const MenuBar = () => {
     }, [])
 
     const login = () => {
-        setLoginState(true)
+        
+        //setLoginState(true)
         setLogin(true)
         setFlag(false)
 
