@@ -9,7 +9,12 @@ module.exports = class Nft extends Sequelize.Model{
             },
             nft_img:{
                 type:Sequelize.TEXT,
-            }
+            },
+            product_status:{
+                type:Sequelize.STRING,
+                comment:'현재 판매 중 인지 여부'
+            },
+
         },{
             sequelize,
             timestamps:false,

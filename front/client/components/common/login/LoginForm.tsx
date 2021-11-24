@@ -8,15 +8,17 @@ import { useSelector, useDispatch } from 'react-redux'
 import { useEffect } from "react"
 import { UserLogin_REQUEST } from "../../../reducers/user";
 import { RootState } from "../../../reducers"
-
+/*
 declare global {
     interface Window {
         klaytn: any;
         caver: any;
     }
 }
+*/
 
 const LoginForm = (props) =>{
+    /*
     const [clicked, setClicked] = React.useState<boolean>(false)
     const [kaikasAddress, setKaikasAddress] = React.useState<string[]>([])
     const User = useSelector((state:RootState) => state.user);
@@ -64,10 +66,10 @@ const LoginForm = (props) =>{
       return (<div></div>)
       
     }
+*/
 
 
-
-
+/*
 
     return (
         <>
@@ -84,6 +86,22 @@ const LoginForm = (props) =>{
             </ModalBackground>
         </>
     )
+    */
+   return(
+       <>
+            <ModalBackground>
+                <LoginFormWrapper closeLogin={props.closeLogin}>
+                    <div onClick={props.closeLoginBtn}><CloseIcon /></div>
+                    <ul>
+                        <li>로그인</li>
+                        <li>지갑을 이용하여 AzitGallery에 로그인합니다.<br />아래 지갑 중 사용할 지갑을 선택해주세요</li>
+                        <li><button onClick={props.onClick} className="kaikasBtn">Kaikas로그인</button></li>
+                        <li>사용중인 지갑이 없으신가요? <span><Astyle href="https://chrome.google.com/webstore/detail/kaikas/jblndlipeogpafnldhgmapagcccfchpi">kaikas다운로드</Astyle></span></li>
+                    </ul>
+                </LoginFormWrapper>
+            </ModalBackground>
+       </>
+   )
 }
 
 export default LoginForm

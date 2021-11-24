@@ -15,15 +15,20 @@ function loginAPI(action){
 function* login(action){
 
     let result = yield call(loginAPI,action)
-    console.log(result)
-    if(result.data.signupBoolean == true){
+
+    if(result.data.signupBool == true){
         yield put({
-            type:'SIGNUP_POST_SUCCESS',
-      
+            //type:'SIGNUP_POST_SUCCESS',
+            type: 'USER_LOGIN_SUCCESS',
+            signupBool : result.data.signupBool,
+            UserAddress : result.data.kaikas_address   ,
+            userIdx : result.data.user_idx   
         })
     }else{
         yield put({
-            type:'SIGNUP_POST_ERROR',
+            //type:'SIGNUP_POST_ERROR',
+            type: 'USER_LOGIN_ERROR',
+            signupBool : result.data.signupBool
         
         })
     }
@@ -32,6 +37,22 @@ function* login(action){
 function* reqLogin(){
     yield takeLatest('USER_LOGIN_REQUEST',login)
 }
+
+/* 로그아웃 */
+function* logout() {
+    console.log('로그아웃 사가 =============');
+
+    yield put({
+        type: 'USER_LOGOUT_SUCCESS',
+        loginBool: false,
+        UserAddress: 'kaikasAddress'
+    })
+}
+
+function* reqLogout() {
+    yield takeLatest('USER_LOGOUT_REQUEST', logout)
+}
+
 
 /* 이메일 인증 */
 
@@ -179,6 +200,7 @@ function* reqUesrInfo(){
 export default function* userSaga(){
     yield all([
         fork(reqLogin),
+        fork(reqLogout),
         fork(reqSignup),
         fork(reqAdminEmail),
         fork(reqUserList),
