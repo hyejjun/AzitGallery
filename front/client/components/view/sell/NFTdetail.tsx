@@ -61,7 +61,7 @@ const NFTdetail = ({children}) => {
                     <BuyBtnCSS onClick={orderOpen}>
                         <button>{children}</button>
                     </BuyBtnCSS>
-                    <Order open={open} orderOpen={orderOpen} price={price} currency={currency} flagcolor={colorpic} flagsize={sizepic} item_id={params}/>
+                    <Order open={open} orderOpen={orderOpen} price={price} currency={currency} flagcolor={colorpic} flagsize={sizepic} item_id={params} item_img_link={item_img_link}/>
                 </NFTBuy>
                 <NFTTitle title={title}/>
                 <NFTexplanation nickname={nickname} description={description}/>

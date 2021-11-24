@@ -64,8 +64,8 @@ const Order = (props) => {
         console.log(JSON.stringify(window.location.href).split('ell/')[1].replace("\"", ""))
         let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
         window.location.href = `/ship/${params}`
-    }
-    
+    }    
+
     return (
         <>
             <ModalWrapper flag={props.open}>
@@ -81,7 +81,7 @@ const Order = (props) => {
                         </div>
                         <div className="orderContentImage">
                             <div>
-                                <img alt="상품 작은 이미지" />
+                                <img src={props.item_img_link[0]} />
                             </div>
                             <div>
                                 {props.price}{props.currency}

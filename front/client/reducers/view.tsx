@@ -146,7 +146,8 @@ const reducer = (state: ViewState = initialState, action: ViewAction) => {
                 color : action.list.color,
                 bid_price : action.list.bid_price,
                 currency : action.list.currency,
-                left_time : action.list.left_time,
+                // left_time : action.list.left_time,
+                item_img_link: action.list.item_img_link,
             }
         case AUCTION_VIEW_ERROR:
             return {

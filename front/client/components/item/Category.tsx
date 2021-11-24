@@ -5,6 +5,7 @@ const Category = ({handleCategory, category, bigCategory, smallCategory}) => {
     // console.log(category)
     const loadBigCategory = () => {
 // {id: 2, main_category_idx: 1, item_code: '102', sub_category_code: '2', sub_category_name: '블라우스'}
+
         if(category.length>0){
             return(<>
                 {category[0].map((x,k)=>{
@@ -18,10 +19,9 @@ const Category = ({handleCategory, category, bigCategory, smallCategory}) => {
 
     const loadSmallCategory = (type) => {
         if(category.length>0){
-
             if(category[1].length>0){
                 return(<>
-                    {category[1].map((x,k)=>{
+                    {category[1].map((x,k)=>{                        
                         if(type === x.main_category_idx.toString()){
                             return(
                                 <option value ={x.item_code} key = {k}>{x.sub_category_name}</option>
