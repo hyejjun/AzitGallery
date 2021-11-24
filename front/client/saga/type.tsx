@@ -2,6 +2,7 @@ import axios from 'axios';
 import {all,put,takeLatest,fork,call} from "redux-saga/effects";
 import {url} from './url'
 
+
 /* 판매 경매 선택 */
 function sellTypeAPI(data){
     return axios.post (`${url}/type/selltype`,data)

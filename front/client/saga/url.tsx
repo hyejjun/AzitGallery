@@ -1,5 +1,5 @@
 //배포용 
-// const url = '18.223.106.190'
+//export const url = 'http://18.223.106.190'
 // export const url = 'https://api.hyejun.co.kr'
 
 
