@@ -148,7 +148,7 @@ function* reqsoldnft(){
 
 /* 미판매된 nft가져오기  */
 function getnotsellnftAPI(data){
-    return axios.post(`http://localhost:4000/list/notsellnft`,JSON.stringify(data.data))
+    return axios.post(`${url}/list/notsellnft`,JSON.stringify(data.data))
 }
 
 function* getnotsellnftSaga(data){
