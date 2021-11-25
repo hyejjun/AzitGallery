@@ -7,6 +7,7 @@ import viewSaga from './view'
 import listSaga from './list'
 import auctionSaga from './auction'
 import deal from './deal'
+import main from './main'
 
 export default function* rootSaga(){
         yield all([
@@ -17,7 +18,8 @@ export default function* rootSaga(){
         fork(viewSaga),
         fork(listSaga),
         fork(auctionSaga),
-        fork(deal)
+        fork(deal),
+        fork(main)
         ])        
 
 }
