@@ -1,6 +1,6 @@
 import { ConstructionOutlined } from '@mui/icons-material';
 import axios from 'axios';
-import {all,put,takeEvery,takeLatest,fork,call} from "redux-saga/effects";
+import {all,put,takeEvery,takeLatest,fork,call,takeLeading} from "redux-saga/effects";
 import {url} from './url'
 /* 일반 */
 
@@ -79,6 +79,23 @@ function* reqplusauctionitem(){
     yield takeLatest('PLUS_AUCTION_LIST_REQUEST',plusauctionitemSaga)
 }
 
+
+/* mynft 구매자 판매자 뷰 나누기 */
+function mynftviewAPI(action){
+    return axios.post(`${url}/list/mynftview`,JSON.stringify(action.data));
+}
+
+function* mynftviewsaga(action){
+    const result = yield call(mynftviewAPI,action)
+    yield put({
+        type:'MYNFT_VIEW_SUCCESS',
+        data:result.data
+    })
+}
+
+function* reqmynftview(){
+    yield takeLeading('MYNFT_VIEW_REQUEST',mynftviewsaga)
+}
 
 
 /* query  */
@@ -186,6 +203,6 @@ export default function* MintSaga(){
             fork(reqmynftall),
             fork(reqsoldnft),
             fork(reqnotsellnft),
-
+            fork(reqmynftview),
         ])
 }

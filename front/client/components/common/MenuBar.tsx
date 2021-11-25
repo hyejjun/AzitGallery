@@ -118,7 +118,10 @@ const MenuBar = () => {
     }
     useEffect(() => {
         const klaytnAddress = window.klaytn.selectedAddress
-        dispatch(UserLogin_REQUEST(klaytnAddress))
+        //dispatch(UserLogin_REQUEST(klaytnAddress))
+        if(window.klaytn.autoRefreshOnNetworkChange==false){
+            alert('계정이 변경되었습니다.')
+        }
     }, [Load])
 
     const onClick = () => {
@@ -126,7 +129,6 @@ const MenuBar = () => {
             return
         }
         setClicked(true)
-
         kaikasLogin()
 
     }
