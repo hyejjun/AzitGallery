@@ -1,4 +1,4 @@
-const {ItemInfo,ItemDetail,ItemImg} = require('../../models');
+const {User, Seller, ItemInfo,ItemDetail,ItemImg} = require('../../models');
 const mysql = require('mysql')
 const pool = require('../pool');
 const { user_info } = require('../user/user.controller');
@@ -108,6 +108,46 @@ let query_item_post =  async (req,res) => {
 
     res.json(data)
 }
+
+// 판매자 구매자 뷰 나누기
+let mynft_view = async(req,res) => {
+
+    try{
+        let key = Object.keys(req.body)
+        let keyObject = JSON.parse(key)
+        let user = await User.findAll({where:{kaikas_address:keyObject}})
+        let user_idx = user[0].dataValues.user_idx
+
+        let seller = await Seller.findAll({where:{user_idx}})
+        let approval = seller[0].dataValues.admin_approval
+        if( approval == 2){
+            let data ={
+                result_msg: 'ok',
+                msg: '판매자 승인',
+                where: '/mynftall',
+                flag: true
+            }
+            res.json(data)
+        }else{
+            let data ={
+                result_msg: 'fail',
+                msg: '판매자 승인되지 않음',
+                where: '/mynftall',
+                flag:false
+            }
+            res.json(data)
+        }
+    }catch(e){
+        let data ={
+            result_msg: 'fail',
+            msg: '판매자 승인되지 않음',
+            where: '/mynftall',
+            flag:false
+        }
+        res.json(data)
+    }   
+}
+
 
 // 구매한 nft
 let my_nft_all_post = async (req,res) => {
@@ -251,5 +291,6 @@ module.exports = {
     not_sell_post,
     mynft_hit_post,
     sellnft_hit_post,
-    notsellnft_hit_post
+    notsellnft_hit_post,
+    mynft_view,
 }

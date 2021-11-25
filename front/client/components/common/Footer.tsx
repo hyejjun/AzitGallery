@@ -11,8 +11,6 @@ const Footer = () => {
                 <div id="topInFooter">
                     <span>Azit Gallery</span>
                     <span>
-                        <p><Link href="/feedback"><a>의견 남기기</a></Link></p>
-                        <p><Link href="/"><a>문의하기</a></Link></p>
                         {/* <p><Link href="/"><a>한국어</a></Link></p> */}
                     </span>
                 </div>

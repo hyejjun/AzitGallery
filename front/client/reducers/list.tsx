@@ -11,6 +11,7 @@ export interface ListState {
     mynftList: Array<any>;
     soldnftList: Array<any>;
     notsellnftList : Array<any>;
+    view: boolean;
 }
 
 export const initialState : ListState = {
@@ -21,6 +22,7 @@ export const initialState : ListState = {
     mynftList : [],
     soldnftList : [],
     notsellnftList : [],
+    view: false,
 };
 
 
@@ -70,6 +72,9 @@ export const SOLD_NFT_REQUEST = "SOLD_NFT_REQUEST" as const;
 export const SOLD_NFT_SUCCESS = "SOLD_NFT_SUCCESS" as const;
 export const SOLD_NFT_ERROR = "SOLD_NFT_ERROR" as const;
 
+export const MYNFT_VIEW_REQUEST = "MYNFT_VIEW_REQUEST" as const;
+export const MYNFT_VIEW_SUCCESS = "MYNFT_VIEW_SUCCESS" as const;
+export const MYNFT_VIEW_ERROR = "MYNFT_VIEW_ERROR" as const;
 
 
 
@@ -159,6 +164,28 @@ export const PlusAuctionlist_SUCCESS = (data,Pluslength) => {
 export const PlusAuctionlist_ERROR = () => {
     return {
         type: PLUS_AUCTION_LIST_ERROR,
+    }
+}
+
+
+/* mynft구매자 판매자 뷰 나누기 */
+export const myNft_view_REQUEST = (data) => {
+    return {
+        type: MYNFT_VIEW_REQUEST,
+        data: data
+    }
+}
+
+export const myNft_view_SUCCESS = (data) => {
+    return {
+        type: MYNFT_VIEW_SUCCESS,
+        data:data
+    }
+}
+
+export const myNft_view_ERROR = () => {
+    return {
+        type: MYNFT_VIEW_ERROR,
     }
 }
 
@@ -367,7 +394,9 @@ type ListAction =
 | ReturnType<typeof Item_List_Search_REQUEST>
 | ReturnType<typeof Item_List_Search_SUCCESS>
 | ReturnType<typeof Item_List_Search_ERROR>
-
+| ReturnType<typeof myNft_view_REQUEST>
+| ReturnType<typeof myNft_view_SUCCESS>
+| ReturnType<typeof myNft_view_ERROR>
 
 
 const reducer = (state:ListState=initialState, action:ListAction) => {
@@ -498,6 +527,25 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
             return{
                 ...state
             }
+
+
+        // mynft 구매자 판매자 뷰 나누기
+        case MYNFT_VIEW_REQUEST:
+            return{
+                ...state,
+                data:action.data
+            }
+        case MYNFT_VIEW_SUCCESS:
+            return{
+                ...state,
+                view:action.data.flag
+            }
+        case MYNFT_VIEW_ERROR:
+            return{
+                ...state
+            }
+
+
         // /user/mynftall페이지 판매된 nft
         case SOLD_NFT_REQUEST:
             return{

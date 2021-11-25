@@ -7,17 +7,24 @@ import Notselled from './NotSelled'
 import { useSelector, useDispatch } from 'react-redux'
 import { RootState } from "../../reducers"
 import {UserState} from "../../reducers/user"
+import {ListState} from "../../reducers/list"
 import { KipSwap_REQUEST } from "../../reducers/mint";
-import { Userlist_REQUEST } from '../../reducers/user'
-import { myNft_all_REQUEST,sold_nft_REQUEST,not_selled_REQUEST} from '../../reducers/list'
+import { myNft_view_REQUEST, myNft_all_REQUEST,sold_nft_REQUEST,not_selled_REQUEST} from '../../reducers/list'
 
 const MyNftComponent = () => {
 
     const dispatch = useDispatch()
     const [tabBtn, settabBtn] = useState<number>(1);
     const [likeBtn, setLikeBtn] = useState<number>(0);
+    const [sellerChk, setSellerChk] = useState<boolean>(false);
     const user:UserState = useSelector((state:RootState) => state.user);
-    
+    const list:ListState = useSelector((state:RootState) => state.list);
+
+    useEffect(()=>{
+        if(list.view){
+            setSellerChk(true);
+        }
+    },[list.view])
 
     const btn1 = () => {
         dispatch(myNft_all_REQUEST(user.UserAddress))
@@ -28,7 +35,6 @@ const MyNftComponent = () => {
         dispatch(sold_nft_REQUEST(user.UserAddress))
         settabBtn(2);
         setLikeBtn(0);
-        
     }
     
     const btn3 = () => {
@@ -45,12 +51,23 @@ const MyNftComponent = () => {
     }
     let data:{}
 
-    
+
+    // 판매자 구매자별 뷰 화면 
+    const mynftView = async () => {  
+        dispatch(myNft_view_REQUEST(user.UserAddress))      
+        let result = list.view;
+        if(result){
+            setSellerChk(true);
+        }else{
+            setSellerChk(false)
+        }
+    }
+
 
     // @ 여기서 NFT (구매한 , 판매된 , 미판매된 ) 가져옴 - dispatch 로 요청
     useEffect(()=>{
         dispatch(myNft_all_REQUEST(user.UserAddress))
-        
+        mynftView()
     },[])
 
     const FROMklayToEPI = () => {
@@ -80,11 +97,9 @@ const MyNftComponent = () => {
         <>  
             <MyInfo> 
                 {/* <MyIMG><img src = {require('../../src/지도.jpg')}/></MyIMG> */}
-                <MyIMG> <img alt="이미지" /> </MyIMG>
                 <MyName onClick = {test}>원금회복</MyName>
                 <MyAddress>{user.UserAddress}</MyAddress>
                 <MySwap onClick = {FROMklayToEPI}>klay에서 EPI로 토큰 스왑</MySwap>
-                <Link href = "/user/user"><AStyle><MyProfile>프로필 편집</MyProfile></AStyle></Link>
             </MyInfo>
             <MyNft>
                 <Header>
@@ -92,18 +107,22 @@ const MyNftComponent = () => {
                         <Menu>
                             <Menu1 onClick={btn1}>구매한 NFT</Menu1>
                         </Menu>
-                        <Menu>
+                        { sellerChk ?  
+                            <>
+                            <Menu>
                             <Menu1>|</Menu1>
-                        </Menu>
-                        <Menu>
-                            <Menu1 onClick={btn2}>판매된 NFT</Menu1>
-                        </Menu>
-                        <Menu>
-                            <Menu1>|</Menu1>
-                        </Menu>
-                        <Menu>
-                            <Menu1 onClick={btn3}>미판매된 NFT</Menu1>
-                        </Menu>
+                            </Menu>
+                            <Menu>
+                                <Menu1 onClick={btn2}>판매된 NFT</Menu1>
+                            </Menu>
+                            <Menu>
+                                <Menu1>|</Menu1>
+                            </Menu>
+                            <Menu>
+                                <Menu1 onClick={btn3}>미판매된 NFT</Menu1>
+                            </Menu>
+                            </>
+                            : <></> }
                     </MenuBar>
                     <SelectBoxHeader>
                         <Notice>*KraftSpace에서 발행한 NFT만 표시합니다.</Notice>
