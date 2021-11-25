@@ -128,6 +128,24 @@ function* reqNickname(){
 }
 
 
+/* 이메일 인증 */
+function emailAPI(action) {
+    return axios.post(`${url}/user/emailchk`, JSON.stringify(action.data))
+}
+
+function* emailSaga(action){
+    const result = yield call(emailAPI, action)
+    yield put({
+        type:'EMAIL_POST_SUCCESS',
+        data:result.data
+    })
+    
+}
+
+function* reqEmail(){
+    yield takeLatest('EMAIL_POST_REQUEST',emailSaga)
+}
+
 
 /* 관리자 페이지 user list req */
 
@@ -208,6 +226,7 @@ export default function* userSaga(){
         fork(reqSellerAdminDeny),
         fork(reqWaitEmail),
         fork(reqUesrInfo),
-        fork(reqNickname) 
+        fork(reqNickname),
+        fork(reqEmail), 
     ])
 }

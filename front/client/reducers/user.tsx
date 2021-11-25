@@ -18,6 +18,7 @@ export interface UserState {
     nicknameChkBool: boolean;
     userInfo:{};
     userIdx : number;
+    emailBool: boolean;
 }
 
 export const initialState: UserState = {
@@ -34,7 +35,8 @@ export const initialState: UserState = {
     loginBool: false,
     nicknameChkBool: false,
     userInfo:{},
-    userIdx : 0
+    userIdx : 0,
+    emailBool: false
 };
 
 
@@ -70,6 +72,10 @@ export const SIGNUP_POST_ERROR = "SIGNUP_POST_ERROR" as const;
 export const NICKNAME_POST_REQUEST = "NICKNAME_POST_REQUEST" as const;
 export const NICKNAME_POST_SUCCESS = "NICKNAME_POST_SUCCESS" as const;
 export const NICKNAME_POST_ERROR = "NICKNAME_POST_ERROR" as const;
+
+export const EMAIL_POST_REQUEST = "EMAIL_POST_REQUEST" as const;
+export const EMAIL_POST_SUCCESS = "EMAIL_POST_SUCCESS" as const;
+export const EMAIL_POST_ERROR = "EMAIL_POST_ERROR" as const;
 
 export const USER_LIST_REQUEST = "USER_LIST_REQUEST" as const;
 export const USER_LIST_SUCCESS = "USER_LIST_SUCCESS" as const;
@@ -211,6 +217,29 @@ export const Nickname_ERROR = () => {
     }
 }
 
+/* 회원가입 이메일중복 체크  */
+export const Email_REQUEST = (data) => {
+    return {
+        type: EMAIL_POST_REQUEST,
+        data
+    }
+}
+
+export const Email_SUCCESS = (data) => {
+    return {
+
+        type: EMAIL_POST_SUCCESS,
+        data:data
+    }
+}
+
+export const Email_ERROR = (data) => {
+    return {
+        type: EMAIL_POST_ERROR,
+        data:data
+    }
+}
+
 
 /* user list req */
 export const Userlist_REQUEST = () => {
@@ -316,6 +345,10 @@ type UserAction =
     | ReturnType<typeof Nickname_REQUEST>
     | ReturnType<typeof Nickname_SUCCESS>
     | ReturnType<typeof Nickname_ERROR>
+
+    | ReturnType<typeof Email_REQUEST>
+    | ReturnType<typeof Email_SUCCESS>
+    | ReturnType<typeof Email_ERROR>
 
     | ReturnType<typeof Userlist_REQUEST>
     | ReturnType<typeof UserList_SUCCESS>
@@ -453,23 +486,40 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
                 signupBool: false
             }
 
+
         /* 회원가입 닉네임 중복체크 */
         case NICKNAME_POST_REQUEST:
             return {
                 ...state,
             }
         case NICKNAME_POST_SUCCESS:
-            console.log(action.type,"====3====")
             return {
                 ...state,
                 nicknameChkBool: true
             }
         case NICKNAME_POST_ERROR:
-            console.log(action.type,"====4====")
             return {
                 ...state,
                 nicknameChkBool: false
             }
+
+
+        /* 회원가입 이메일 중복체크 */
+        case EMAIL_POST_REQUEST:
+            return {
+                ...state,
+            }
+        case EMAIL_POST_SUCCESS:
+            return {
+                ...state,
+                emailBool:action.data.flag
+            }
+        case EMAIL_POST_ERROR:
+            return {
+                ...state,
+            }
+
+
         /* User list req */
         case USER_LIST_REQUEST:
             return {
