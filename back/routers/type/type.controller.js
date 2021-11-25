@@ -1,6 +1,7 @@
 const {ItemInfo, Category, SubCategory, ItemImg} = require('../../models')
 const Sequelize = require('sequelize')
 const Op = Sequelize.Op;
+const pool = require('../pool');
 /*
     @ 전체 값 다 보내는 이유?
     판매에서 여성복 선택하는 경우
@@ -146,6 +147,112 @@ let get_sub_category_list = async (req,res)=>{
         res.json(data)
 
 }
+let get_categorys = async (req,res) => {
+    let data
+    try{
+        let result = await Category.findAll()
+        data = {
+        result_msg:'OK',
+        result
+        }
+    }catch(e){
+        console.log('type.controller.js 에러========================',e)
+        data = {
+            result_msg:'Fail',
+            msg:'페이지가 존재하지 안습니다.'
+        }
+    }   
+    res.json(data)
+}
+let get_sub_category = async (req,res) => {
+    let data
+    try{
+        let result = await SubCategory.findAll({where:{main_category_idx:req.body.data}})
+        data = {
+        result_msg:'OK',
+        result
+        }
+    }catch(e){
+        console.log('type.controller.js 에러========================',e)
+        data = {
+            result_msg:'Fail',
+            msg:'페이지가 존재하지 안습니다.'
+        }
+    }   
+    res.json(data)
+}
+
+let all_list_direct_get =  async (req,res) => {
+    let query
+    //console.log(typeof(req.body.data.list))
+    console.log(req.body.data)
+    //let {sell_type} = req.body.data
+    let {sell_type,list_length} = req.body.data
+    if(req.body.data.list==0){
+        query = `
+            select a.item_id,a.title,b.nick_name,a.size,a.color,a.main_img
+            from item_info as a join user as b 
+            on a.creator=b.user_idx where a.sell_type=${sell_type}
+            order by a.registered_At desc
+            limit ${list_length};
+        `
+        queryset(req,res,query)
+    }else if(typeof(req.body.data.list)==typeof(1)){
+        console.log('number')
+        query = `
+        select a.item_id,a.title,b.nick_name,a.color,a.main_img 
+        from item_info as a join user as b 
+        on a.creator=b.user_idx join category as c 
+        on c.main_category_code=a.category_id 
+        where a.sell_type=${sell_type}
+        and c.main_category_code=${req.body.data.list}
+        order by a.registered_At desc
+        limit ${list_length};
+    `
+        ;
+
+    queryset(req,res,query)
+    }else if(typeof(req.body.data.list)==typeof('a')){
+        console.log(req.body.data.list)
+        query = `
+        select a.item_id,a.title,b.nick_name,a.color,a.main_img 
+        from item_info as a join user as b 
+        on a.creator=b.user_idx join sub_category as c 
+        on c.item_code=right(a.item_code,3) 
+        where a.sell_type=${sell_type}
+        and c.item_code=${req.body.data.list}
+        order by a.registered_At desc
+        limit ${list_length};
+    `
+    queryset(req,res,query)
+    }
+    
+}
+
+let queryset = (req,res,query) => {
+    let data = {}
+    pool.getConnection((err,connection)=>{
+        connection.query(            
+            query            
+        ,function(err,result,fields){
+            if(err) throw err;
+            if(result==undefined){
+                data = {
+                    result_msg:'Fail',
+                    msg:'상품이 존재하지 않습니다.'
+                }
+            }else{
+                data = {
+                    result_msg:'OK',
+                    result
+                }
+                //console.log(result)
+                res.json(data)
+            }
+            connection.release()
+        })
+    })   
+}
 
 module.exports = {
     get_selltype,
@@ -153,5 +260,8 @@ module.exports = {
     get_search,
     get_sort,
     get_category_list,
-    get_sub_category_list
+    get_sub_category_list,
+    get_categorys,
+    get_sub_category,
+    all_list_direct_get
 }
