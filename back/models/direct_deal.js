@@ -17,7 +17,8 @@ module.exports = class DirectDeal extends Sequelize.Model{
             },
             currency:{
                 type:Sequelize.STRING(30)
-            }             
+            },
+                  
         },{
             sequelize,
             timestamps:false,

@@ -33,7 +33,7 @@ const ItemListAuction = (props) => {
         <React.Fragment key={ele.item_id}>
             <NFTFourList>
                 <NFT>
-                    <Link href = {`sell/${ele.item_id}`}>
+                    <Link href = {`auction/${ele.item_id}`}>
                         <a>
                             <NFTImg>
                                 <IMG src = {ele.main_img}/>
@@ -43,7 +43,7 @@ const ItemListAuction = (props) => {
                     <Line></Line>
                     <NFTOne>
                         <NFTOneList>
-                        <Link href = {`sell/${ele.item_id}`}><AStyle><NFTSubject>{ele.title}</NFTSubject></AStyle></Link>
+                        <Link href = {`auction/${ele.item_id}`}><AStyle><NFTSubject>{ele.title}</NFTSubject></AStyle></Link>
                         <NFTartist>{ele.nick_name}</NFTartist>
                         </NFTOneList>
                         <NFTDeclaration>

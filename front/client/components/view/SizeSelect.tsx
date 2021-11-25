@@ -1,8 +1,13 @@
 import Styled from 'styled-components'
+import { RootState } from "../../reducers";
+import { useSelector } from 'react-redux';
+import { select } from '@redux-saga/core/effects';
 
 const SizeSelect = (props) => {
+    const selected = useSelector((state:RootState) => state.view.selected);
     const optionArr = [...props.sizeArr]
     optionArr.unshift('SIZE')
+
     let sizeList = optionArr.map((v,k)=>{
         return(
             <option value={v} key={k}>
@@ -10,9 +15,13 @@ const SizeSelect = (props) => {
             </option>
         )
     })   
+
     const handleChange = (e) =>{
+        selected.size = e.target.value
         props.flagsetsize(e.target.value)
     } 
+    console.log(selected)
+
     return (
         <SizeSelectCSS value={props.flagsize} onChange={handleChange}>
             {sizeList}

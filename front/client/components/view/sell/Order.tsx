@@ -6,6 +6,7 @@ import { KipToken_REQUEST } from "../../../reducers/mint";
 import { direct_deal_REQUEST } from "../../../reducers/deal";
 import { useSelector, useDispatch } from 'react-redux'
 import router from "next/router";
+import { RootState } from "../../../reducers";
 
 declare global {
     interface Window {
@@ -15,6 +16,11 @@ declare global {
 }
 
 const Order = (props) => {
+    const selected = useSelector((state:RootState) => state.view.selected);
+    const userAddress = useSelector((state:RootState) => state.user.UserAddress);
+    const userIdx = useSelector((state:RootState) => state.user.userIdx);
+    const creator = useSelector((state:RootState) => state.view.nick_name);
+   
     const dispatch = useDispatch()
     const [checked, setChecked] = useState<boolean>(false);
     const checkAgreement = (checkedState) => {
@@ -49,11 +55,15 @@ const Order = (props) => {
     }
     let data 
     data = {
-        color:props.flagcolor,
-        size:props.flagsize,
         item_id:props.item_id,
         price:props.price,
-        currency:props.currency
+        currency:props.currency,
+        selected,
+        userAddress:userAddress,
+        userIdx:userIdx,
+        creator:creator
+        
+        
     }
     //dispatch(direct_deal_REQUEST(data))
 

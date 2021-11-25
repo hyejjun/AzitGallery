@@ -2,31 +2,34 @@ import Styled from 'styled-components'
 import { RootState } from "../../reducers";
 import { useSelector } from 'react-redux';
 
-const ColorSelect = (props) => {
+
+const QtySelect = (props) => {
     const selected = useSelector((state:RootState) => state.view.selected);
-    const optionArr = [...props.colorArr]
-    optionArr.unshift('COLOR')
-    let colorList = optionArr.map((v,k)=>{
+
+    const optionArr = [...props.qtyArr]
+    optionArr.unshift('QTY')
+    let QtyList = optionArr.map((v,k)=>{
         return(
             <option value={v} key={k}>
                 {v}
             </option>
         )
     })
-    const handleChange = (e) =>{
-        selected.color = e.target.value
-        props.flagsetcolor(e.target.value)
+    const handleChange = (e) => {
+        selected.qty = e.target.value
+        props.flagsetqty(e.target.value)
     }
-    return (
-        <ColorSelectCSS value={props.flagcolor} onChange={handleChange}>            
-            {colorList}
-        </ColorSelectCSS>
+    return(
+        <QtySelectCSS value={props.flagqty} onChange={handleChange} >
+            {QtyList}
+        </QtySelectCSS>
+        
     )
+
 }
-export default ColorSelect
+export default QtySelect
 
-
-const ColorSelectCSS = Styled.select`
+const QtySelectCSS = Styled.select`
     margin-right:10px;
     width:100px;
     font-size:22px;

@@ -10,7 +10,15 @@ export interface ViewState {
     verify: number;
     nick_name, title, description,size,color,price,bid_price, currency, left_time: string;
     item_img_link : Array<string>,
-    directView: {};
+    directView: {
+        
+    };
+    qty:Array<number>;
+    selected:{
+        qty:number,
+        color:string,
+        size:string
+    };
 
 }
 
@@ -30,8 +38,15 @@ export const initialState: ViewState = {
     bid_price : '',
     currency : '',
     left_time : '',
+    qty: [],
     item_img_link: [],
     directView: {},
+    selected:{
+        qty:0,
+        color:'',
+        size:''
+    }
+    
 };
 
 /* 즉시 판매 view 가져오기 */
@@ -121,6 +136,7 @@ const reducer = (state: ViewState = initialState, action: ViewAction) => {
                 price : action.list.price,
                 currency : action.list.currency,
                 item_img_link: action.list.item_img_link,
+                qty:action.list.qty
             }
 
 

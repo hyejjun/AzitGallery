@@ -25,6 +25,8 @@ let get_directdeal_view = async (req, res) => {
         const { price, currency } = result3.dataValues
 
         let result4 = await ItemImg.findAll({ where: { item_id: idx } })
+        let result5 = await ItemDetail.findOne({where:{color:color,size:size,item_info_idx:result.item_id},attributes:['qty']})
+        const { qty } = result5.dataValues
 
         let pic_array = [...result4]
         let item_img_link = []
@@ -32,6 +34,16 @@ let get_directdeal_view = async (req, res) => {
         pic_array.forEach((v, k) => {
             item_img_link.push(v.dataValues.item_img_link)
         })
+
+        let qtyArr = []
+        for(i=1;i<=qty;i++){
+            qtyArr.push(i)
+        }
+        
+        console.log(color)
+        console.log(size)
+        console.log(result.item_id)
+        console.log(qtyArr)
 
         data = {
             result_msg: 'OK',
@@ -42,7 +54,8 @@ let get_directdeal_view = async (req, res) => {
             color,
             price,
             currency,
-            item_img_link
+            item_img_link,
+            qty:qtyArr
         }
 
     } catch (error) {

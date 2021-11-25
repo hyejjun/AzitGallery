@@ -9,7 +9,7 @@ function directDealAPI(idx){
 
 function* directDealView(action){      
     const result = yield call(directDealAPI, action.idx)
-    const {nick_name, title, description, result_msg, msg} = result.data
+    const {nick_name, title, description, result_msg, qty, msg} = result.data
 
     console.log(result.data);
 

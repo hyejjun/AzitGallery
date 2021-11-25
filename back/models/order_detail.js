@@ -28,6 +28,9 @@ module.exports = class OrderDetail extends Sequelize.Model{
                 autoIncrement:true,
                 primaryKey:true,
             },
+            sell_Type:{
+                type:Sequelize.BOOLEAN,
+            }
         },{
             sequelize,
             timestamps:false,
