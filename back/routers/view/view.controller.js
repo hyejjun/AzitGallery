@@ -136,7 +136,7 @@ let get_auction_view = async (req, res) => {
             color,
             bid_price,
             currency,
-            item_img_link
+            item_img_link,
         }
 
     } catch (error) {

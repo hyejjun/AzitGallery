@@ -36,7 +36,7 @@ const ItemListAuction = (props) => {
                     <Link href = {`auction/${ele.item_id}`}>
                         <a>
                             <NFTImg>
-                                <IMG src = {ele.main_img}/>
+                                <IMG src = {ele.main_img_link}/>
                             </NFTImg>
                         </a>
                     </Link>
