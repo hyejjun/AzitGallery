@@ -55,6 +55,9 @@ module.exports = class ItemInfo extends Sequelize.Model{
                 type:Sequelize.STRING,
                 comment:'현재 판매 중 인지 여부'
             },
+            main_img_link:{
+                type:Sequelize.TEXT,
+            }
         },{
             sequelize,
             timestamps:false,

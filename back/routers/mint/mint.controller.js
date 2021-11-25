@@ -1,4 +1,4 @@
-const { sequelize, User, ItemInfo, ItemDetail, ItemImg, Auction, DirectDeal, AuctionHistory, SubCategory } = require('../../models')
+const { sequelize, User, ItemInfo, ItemDetail, ItemImg, Auction, DirectDeal, AuctionHistory, SubCategory, Nft } = require('../../models')
 const express = require('express')
 //https://baobab.scope.klaytn.com/account/0xdfaf037869bb807239e8c46d3b3472ac72adbaef?tabId=txList
 const option = {
@@ -25,20 +25,34 @@ let mint_nft_post = async (req, res) => {
   console.log('NFT')
 
   // 나중에는 creator 도 가져와야함..
-  console.log("body ==========", req.body);
-  const { ifSell, price, currency, name, desc, itemType, aucPrice, aucTime, extension, gender, bigCategory, smallCategory, mainImgIdx, totalColorSizeQty } = req.body[0]
-  console.log(totalColorSizeQty);
+  // console.log("body ==========", req.body);
+  const { ifSell, price, currency, name, desc, itemType, aucPrice, aucTime, extension, gender, bigCategory, smallCategory, mainImgIdx, totalColorSizeQty, userAddress } = req.body[0]
 
   let color_all = []
   let size_all = []
+  let idx_all = []
   let qty_all = []
+
+  // [ 'red_s_1', 'red_s_2', 'red_s_3', 'blue_m_1', 'blue_m_2' ]
+  let nft_all = []
 
   let color = []
   let size = []
 
+  let nft_color_arr = []
+  let nft_size_arr = []
+
   totalColorSizeQty.map((v, k) => {
     color_all.push(v.color)
     size_all.push(v.size)
+    qty_all.push(v.qty)
+
+    for (let i = 0; i < v.qty; i++) {
+      nft_all.push(String(`${v.color}_${v.size}_${i + 1}`))
+      idx_all.push(`${i}`)
+      nft_color_arr.push(v.color)
+      nft_size_arr.push(v.size)
+    }
   })
 
   color_all.forEach((element) => {
@@ -113,7 +127,7 @@ let mint_nft_post = async (req, res) => {
 
   const imagesLink = req.body[1]
   const mainImgLink = req.body[2]
-  //console.log(mainImgLink)
+  // console.log("메인 이미지 링크 ====",mainImgLink)
   let sell_type
   ifSell == true ? sell_type = false : sell_type = true
   let data // res.json 리턴용
@@ -122,18 +136,14 @@ let mint_nft_post = async (req, res) => {
     // user_idx 받아오기
     let get_user_id = await User.findOne({
       where: {
-        user_idx: 1// from req.body
+        kaikas_address: userAddress
       }
     })
-
-    // category 가져오기 아마 필요없을 듯?
-    // let get_subcategory = await SubCategory.findOne({
-
-    // })
+    const { user_idx } = get_user_id.dataValues
 
     // 받은 id로 item_info table에 추가
     let add_to_item_info = await ItemInfo.create({
-      creator: get_user_id.dataValues.user_idx,
+      creator: user_idx,
       item_code: `${new Date().getTime()}${smallCategory}`,
       description: desc,
       title: name,
@@ -141,6 +151,7 @@ let mint_nft_post = async (req, res) => {
       size: size.join(','),
       color: color.join(','),
       category_id: bigCategory,
+      main_img_link: mainImgLink
     })
 
     // 대표이미지
@@ -155,12 +166,48 @@ let mint_nft_post = async (req, res) => {
       })
     })
 
-    // 색과 사이즈 별로 넣기
-    let color_size_item = []
-    for (let i = 0; i < color.length; i++) {
 
+    // item detail 넣기
+    for (let i = 0; i < totalColorSizeQty.length; i++) {
+      let add_to_item_detail = await ItemDetail.create({
+        item_info_idx: add_to_item_info.dataValues.item_id,
+        size: totalColorSizeQty[i].size,
+        color: totalColorSizeQty[i].color,
+        qty: parseInt(totalColorSizeQty[i].qty),
+        product_status: '판매중'
+      })
+    }
+
+
+    let item_detail_idx = await ItemDetail.findAll({ where: { item_info_idx: add_to_item_info.dataValues.item_id }, attributes: ['nft_idx', 'qty'] })
+    let item_detail_idx_arr = []
+    let nft_idx_arr = []
+    item_detail_idx.map((v, k) => {
+      item_detail_idx_arr.push(v.dataValues.nft_idx)
+      for (let i = 0; i < v.dataValues.qty; i++) {
+        nft_idx_arr.push(v.dataValues.nft_idx)
+      }
+    })
+
+    let nft_insert_result = []
+    // nft 넣기
+    for (let i = 0; i < nft_idx_arr.length; i++) {
+      let nft_insert = await Nft.create({
+        nft_img_idx: nft_idx_arr[i],
+        nft: nft_all[i],
+        product_status: '판매중'
+      })
+      nft_insert_result.push(nft_insert.dataValues)
+    }
+
+    // 색과 사이즈 별로 넣기
+
+    let color_size_item = []
+
+    let last_digits_for_detail_arr = []
+    for (let i = 0; i < color.length; i++) {
       for (let j = 0; j < size.length; j++) {
-        console.log('sooon', i, j)
+        // console.log('sooon', i, j)
         // 색과 사이즈를 00~99로 해서 자릿수를 맞춰준다
         let last_digits_for_detail
         if (i == 0 && j == 0) {
@@ -170,33 +217,27 @@ let mint_nft_post = async (req, res) => {
         } else if (i * size.length + j >= 10 || i * size.length + j + 1 < 100) {
           last_digits_for_detail = `${i * size.length + j}`
         }
-
-        // 오류해결
-        let add_to_item_detail = await ItemDetail.create({
-          item_info_idx: add_to_item_info.dataValues.item_id,
-          size: size[j],
-          color: color[i],
-          nft: `${Number(`${new Date().getTime()}101`)}${size[j]}${color[i]}`, //임시로
-          item_code: `${add_to_item_info.dataValues.item_code}${last_digits_for_detail}`,
-          product_status: 'ready' //임시로
-        })
         // 아래 함수 인자값은 이름, 색상, 사이즈를 바탕으로 토큰 발행을 하기 위함이며
         // idx는 getNFT함수 안에서 item_detail 테이블에서 nft_idx에 맞게 nft값을 업데이트 하기 위함임
-        color_size_item.push({
-          idx: add_to_item_detail.dataValues.nft_idx,
-          name: name,
-          color: color[i],
-          size: size[j]
-        })
-      }
 
+        last_digits_for_detail_arr.push(last_digits_for_detail)
+      }
     }
 
-    for (let i = 0; i < color_size_item.length; i++) {
+    for (let i = 0; i < item_detail_idx_arr.length; i++) {
+      await ItemDetail.update({ item_code: `${add_to_item_info.dataValues.item_code}${last_digits_for_detail_arr[i]}` }, { where: { nft_idx: item_detail_idx_arr[i] } })
+    }
+
+    for (let i = 0; i < nft_insert_result.length; i++) {
+      let colot_nft = nft_color_arr[i]
+      let size_nft = nft_size_arr[i]
+      let idx_nft = parseInt(idx_all[i])+1
+      let name_nft = `${name}_${nft_color_arr[i]}_${nft_size_arr[i]}_${idx_nft}`
+      
       setTimeout(() => {
         // 동시에 실행되면 known transaction 오류가 나기 때문에 setTimeout을 통해 딜레이를 줌
         // 500ms정도면 괜찮은 것 같음..
-        getNFT(color_size_item[i].name, color_size_item[i].color, color_size_item[i].size, color_size_item[i].idx, mainImgLink)
+        getNFT(nft_insert_result[i].id, mainImgLink, nft_all, colot_nft, size_nft, idx_nft, name_nft, name)
       }, 500 * i)
     }
 
@@ -256,10 +297,11 @@ let mint_nft_post = async (req, res) => {
     }
     res.send(data)
   }
-  async function getNFT(name, color, size, idx, link) {
+  async function getNFT(idx, link, nft_all, colot_nft, size_nft, idx_nft, name_nft, name) {
     let strname = String(name)
-    let strcolor = String(color)
-    let strsize = String(size)
+    // let strcolor = String(color)
+    // let strsize = String(size)
+    let stridx = String(idx_nft)
     let privateKey = "0x6aaf5c8af80503a0737f02f107e7a38ef1474abf32d2c8df0e36ddc53fd8ef97" // DB에서 가져와야 함
     let accountAddress = "0x62B8769D6eDc718d90CB8884cA7F390e9b9C7466"
     console.log('beforeKeyRing')
@@ -283,11 +325,13 @@ let mint_nft_post = async (req, res) => {
 
     const kip17 = await caver.kct.kip17.deploy(
       {
-        name: `${strname}${strcolor}${strsize}`,
+        title : strname,
+        name: name_nft,
         symbol: 'EPI',
       },
       keyring.address
     );
+
     // console.log(kip17)
     // console.log(kip17.options.address);
     // 컨트랙트 주소 기반으로 KIP-17 오브젝트를 생성합니다.
@@ -307,10 +351,10 @@ let mint_nft_post = async (req, res) => {
       // 본 예제에서는 임의의 sellerID와 productID를 json 형태로 저장합니다.
       // 토큰 이미지 URL이나 기타 정보를 tokenURI에 저장할 수 있습니다.
       tokenURI = JSON.stringify({
-        name: strname,
-        color: strcolor,
-        size: strsize,
-        link: link
+        title : strname,
+        color: colot_nft,
+        size: size_nft,
+        idx: stridx
       });
       // KIP-17.mintWithTokenURI를 이용해서 새로운 토큰을 발행합니다.
       // 자세한 내용은 https://ko.docs.klaytn.com/bapp/sdk/caver-js/api-references/caver.kct/KIP-17#KIP-17-mintwithtokenuri 를 참고하세요.
@@ -326,11 +370,11 @@ let mint_nft_post = async (req, res) => {
         try {
 
           let nftValue = data.events.Transfer.address
-          await ItemDetail.update({
+          await Nft.update({
             nft: nftValue
           }, {
             where: {
-              nft_idx: idx
+              id: idx
             }
           })
           //console.log(data.events.Transfer.address)
@@ -339,6 +383,7 @@ let mint_nft_post = async (req, res) => {
       })
 
     }
+
   }
 
 }

@@ -190,7 +190,7 @@ let all_list_direct_get =  async (req,res) => {
     let {sell_type,list_length} = req.body.data
     if(req.body.data.list==0){
         query = `
-            select a.item_id,a.title,b.nick_name,a.size,a.color,a.main_img
+            select a.item_id,a.title,b.nick_name,a.size,a.color,a.main_img_link
             from item_info as a join user as b 
             on a.creator=b.user_idx where a.sell_type=${sell_type}
             order by a.registered_At desc
@@ -200,7 +200,7 @@ let all_list_direct_get =  async (req,res) => {
     }else if(typeof(req.body.data.list)==typeof(1)){
         console.log('number')
         query = `
-        select a.item_id,a.title,b.nick_name,a.color,a.main_img 
+        select a.item_id,a.title,b.nick_name,a.color,a.main_img_link 
         from item_info as a join user as b 
         on a.creator=b.user_idx join category as c 
         on c.main_category_code=a.category_id 
@@ -215,7 +215,7 @@ let all_list_direct_get =  async (req,res) => {
     }else if(typeof(req.body.data.list)==typeof('a')){
         console.log(req.body.data.list)
         query = `
-        select a.item_id,a.title,b.nick_name,a.color,a.main_img 
+        select a.item_id,a.title,b.nick_name,a.color,a.main_img_link 
         from item_info as a join user as b 
         on a.creator=b.user_idx join sub_category as c 
         on c.item_code=right(a.item_code,3) 

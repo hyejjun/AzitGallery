@@ -23,10 +23,8 @@ module.exports = class ItemDetail extends Sequelize.Model{
                 type:Sequelize.STRING(30),
                 defaultValue:'one color'
             },
-            nft:{
-                type:Sequelize.STRING(255),
-                allowNull:false,
-                unique:true
+            qty:{
+                type:Sequelize.INTEGER
             },
             item_code:{
                 type:Sequelize.STRING(100),
