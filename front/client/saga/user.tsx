@@ -197,15 +197,23 @@ function* reqSellerAdminDeny(){
 }
 
 /* user/uesr페이지 user info req */
-function userInfoAPI(action):any{
+function userInfoAPI(action){
     return axios.post(`${url}/user/userinfo`,JSON.stringify(action.data))
 }
 
 function* userInfoSaga(action){
     const userinfo = yield call(userInfoAPI,action)
+    console.log("사가 응답 ===",userinfo);
+    const {admin_approval,email_validation,result } =userinfo.data
+
+    let userdata = {
+        result,
+        admin_approval,
+        email_validation
+    }
     yield put({
         type:'USER_INFO_SUCCESS',
-        data:userinfo.data
+        data:userdata,
     })
 }
 function* reqUesrInfo(){

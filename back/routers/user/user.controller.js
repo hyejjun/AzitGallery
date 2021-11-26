@@ -235,9 +235,31 @@ let user_info = async (req,res) => {
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
     console.log(keyObject,'user_info')
-    let result = await User.findAll({where:{kaikas_address:keyObject}})
-    res.json(result[0])
+    let data = {}
 
+    try {
+        let result = await User.findOne({where:{kaikas_address:keyObject}})
+        let result2 = await Seller.findOne({where:{user_idx: result.dataValues.user_idx}})
+        if(result2!==null){
+            const {admin_approval, email_validation} = result2.dataValues
+            data = {
+                result,
+                admin_approval,
+                email_validation
+            }
+        }else{
+            data = {
+                result
+            }
+        }
+    } catch (error) {
+        console.log(error);
+        data ={
+            msg : "Fail"
+        }
+    }
+    
+    res.json(data)
 }
 
 module.exports = {

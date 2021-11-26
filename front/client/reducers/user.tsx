@@ -19,6 +19,8 @@ export interface UserState {
     userInfo:{};
     userIdx : number;
     emailBool: boolean;
+    adminApproval : number;
+    emailValidation : boolean;
 }
 
 export const initialState: UserState = {
@@ -36,7 +38,9 @@ export const initialState: UserState = {
     nicknameChkBool: false,
     userInfo:{},
     userIdx : 0,
-    emailBool: false
+    emailBool: false,
+    adminApproval : 0,
+    emailValidation : false,
 };
 
 
@@ -313,9 +317,11 @@ export const UserInfo_REQUEST = (data) => {
 }
 
 export const UserInfo_SUCCESS = (userInfo) => {
+    console.log("성공 =====",userInfo);
+    
     return {
         type: USER_INFO_SUCCESS,
-        data:userInfo
+        data : userInfo
     }
 }
 
@@ -548,9 +554,11 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
         case USER_INFO_SUCCESS: 
             return {
                 ...state,
-                NickName:action.data.nick_name,
-                Address:action.data.kaikas_address,
-                Email:action.data.email
+                adminApproval : action.data.admin_approval,
+                emailValidation : action.data.email_validation,
+                NickName:action.data.result.nick_name,
+                Address:action.data.result.kaikas_address,
+                Email:action.data.result.email
             }
         case USER_INFO_ERROR: 
             return {
