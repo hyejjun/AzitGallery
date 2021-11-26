@@ -6,6 +6,7 @@ import { KipToken_REQUEST } from "../../../reducers/mint";
 import { direct_deal_REQUEST } from "../../../reducers/deal";
 import { useSelector, useDispatch } from 'react-redux'
 import router from "next/router";
+import { RootState } from "../../../reducers";
 
 declare global {
     interface Window {
@@ -15,6 +16,14 @@ declare global {
 }
 
 const Order = (props) => {
+    const selected = useSelector((state:RootState) => state.view.selected);
+    const userAddress = useSelector((state:RootState) => state.user.UserAddress);
+    const userIdx = useSelector((state:RootState) => state.user.userIdx);
+    const creator = useSelector((state:RootState) => state.view.nick_name);
+    const price = useSelector((state:RootState) => state.view.price)
+    const dealOrderdata = useSelector((state:RootState) => state.deal.orderInfo)
+
+
     const dispatch = useDispatch()
     const [checked, setChecked] = useState<boolean>(false);
     const checkAgreement = (checkedState) => {
@@ -33,7 +42,7 @@ const Order = (props) => {
           type: 'VALUE_TRANSFER',
           from: window.klaytn.selectedAddress,
           to: '0xadbEC8669bbfBd1481aaD736f98De590d37b26Ce',
-          value: window.caver.utils.toPeb('1', 'KLAY'),
+          value: window.caver.utils.toPeb(price, 'KLAY'),
           gas: 8000000
         })
         .once('transactionHash', transactionHash => {
@@ -49,21 +58,26 @@ const Order = (props) => {
     }
     let data 
     data = {
-        color:props.flagcolor,
-        size:props.flagsize,
         item_id:props.item_id,
         price:props.price,
-        currency:props.currency
+        currency:props.currency,
+        selected,
+        userAddress:userAddress,
+        userIdx:userIdx,
+        creator:creator
+        
+        
     }
     //dispatch(direct_deal_REQUEST(data))
 
     const Purchase = () => {
         dispatch(direct_deal_REQUEST(data))
-        //dispatch(KipToken_REQUEST())
+        dispatch(KipToken_REQUEST())
         alert('EPI로 거래되셨습니다!')
-        console.log(JSON.stringify(window.location.href).split('ell/')[1].replace("\"", ""))
+        // console.log(JSON.stringify(window.location.href).split('ell/')[1].replace("\"", ""))
         let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
         window.location.href = `/ship/${params}`
+       console.log(dealOrderdata)
     }    
 
     return (

@@ -130,7 +130,6 @@ const reducer = (state:MainState = initialState, action:MainAction) => {
                 ...state
             }
         case SUB_CATEGORY_LIST_REQUEST:
-            console.log(action.data)
             return{
                 ...state,
                 listId:action.data,

@@ -25,6 +25,8 @@ const Shippingfrom = () => {
     // @ 주소 찾는 창
     const [isPopupOpen, setIsPopupOpen] = useState<boolean>(false)
     const User = useSelector((state:RootState) => state.user);
+    const DealOrderInfo = useSelector((state:RootState) => state.deal.orderInfo)
+    console.log(DealOrderInfo,'orderinfo')
     // @ 팝업창 열기
     const openPostCode = () => {
         setIsPopupOpen(true)
@@ -79,16 +81,17 @@ const Shippingfrom = () => {
             memo,
             inputStatus,
             UserAddress,
-            params
+            params,
+            
         }
     
         // 여기서 dispatch로 날리고
     
         dispatch(shipInfo_REQUEST(shippingData))
-        console.log(UserAddress)
+      
 
         
-        console.log(params)
+ 
         window.location.href = `/paymentend/${params}`
 
     }

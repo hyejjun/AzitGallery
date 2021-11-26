@@ -192,7 +192,8 @@ let all_list_direct_get =  async (req,res) => {
         query = `
             select a.item_id,a.title,b.nick_name,a.size,a.color,a.main_img_link
             from item_info as a join user as b 
-            on a.creator=b.user_idx where a.sell_type=${sell_type}
+            on a.creator=b.user_idx 
+            where a.sell_type=${sell_type} and a.product_status=0
             order by a.registered_At desc
             limit ${list_length};
         `
@@ -204,7 +205,7 @@ let all_list_direct_get =  async (req,res) => {
         from item_info as a join user as b 
         on a.creator=b.user_idx join category as c 
         on c.main_category_code=a.category_id 
-        where a.sell_type=${sell_type}
+        where a.sell_type=${sell_type} and a.product_status=0
         and c.main_category_code=${req.body.data.list}
         order by a.registered_At desc
         limit ${list_length};
@@ -219,7 +220,7 @@ let all_list_direct_get =  async (req,res) => {
         from item_info as a join user as b 
         on a.creator=b.user_idx join sub_category as c 
         on c.item_code=right(a.item_code,3) 
-        where a.sell_type=${sell_type}
+        where a.sell_type=${sell_type} and a.product_status=0
         and c.item_code=${req.body.data.list}
         order by a.registered_At desc
         limit ${list_length};

@@ -67,7 +67,6 @@ function plusauctionitemAPI(action) {
 
 function* plusauctionitemSaga(action){
     const result = yield call(plusauctionitemAPI,action)
-    console.log(`saga 까지 작동 여부 ${result.data.Pluslength}`)
     yield put({
         type:'PLUS_AUCTION_LIST_SUCCESS',
         data:result.data.ARR,

@@ -15,8 +15,6 @@ const Approvecomponent = () => {
 
     useEffect(()=>{
         dispatch(Userlist_REQUEST())
-        console.log(user.error)
-        console.log(user.userList)
         setArr(user.userList)
     },[])
 
@@ -43,7 +41,6 @@ const Approvecomponent = () => {
                 document.querySelector(`.${ArrID}`).innerHTML = '반려됨'
                 dispatch(SellerAdminDeny_REQUEST(ele.user_idx))
             }
-            console.log(ele.id)
         }
 
         return(

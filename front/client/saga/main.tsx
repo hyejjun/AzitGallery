@@ -25,13 +25,11 @@ function* reqCategorySelectItem(){
 }
 
 function reqMainItemAPI(data){
-    console.log('main saga api나와?',data)
     return axios.post(`${url}/type/allitem`,data)
 }
 
 function* reqMainItemSaga(data){
     const result = yield call(reqMainItemAPI,data)
-    console.log(result.data.result)
     if (result.data.result_msg=="OK"){
         yield put({
             type:'MAIN_ALL_DIRECT_SUCCESS',

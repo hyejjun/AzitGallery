@@ -9,9 +9,8 @@ function directDealAPI(idx){
 
 function* directDealView(action){      
     const result = yield call(directDealAPI, action.idx)
-    const {nick_name, title, description, result_msg, msg} = result.data
+    const {nick_name, title, description, result_msg, qty, msg} = result.data
 
-    console.log(result.data);
 
     if(result_msg==="OK"){
         yield put({
@@ -62,11 +61,62 @@ function* reqAuctionView(){
     yield takeLatest('AUCTION_VIEW_REQUEST',auctionView)
 }
 
+function getMatchQtyAPI(data){
+    return axios.post (`${url}/view/getqty`,data.data)
+}
+
+function* getMatchQty(data){
+    const result = yield call(getMatchQtyAPI, data)
+    if(result.data.result_msg=="OK"){
+        yield put({
+            type:'GET_MATCH_QTY_SUCCESS',
+            data:result.data.result
+        })
+    }else{
+        yield put({
+            type:'GET_MATCH_QTY_ERROR',
+        })
+
+    }
+
+}
+
+function* reqGetMatchQty(){
+    yield takeLatest('GET_MATCH_QTY_REQUEST',getMatchQty)
+}
+
+
+
+function getMatchColorAPI(data){
+    return axios.post (`${url}/view/getsize`,data.data)
+}
+
+function* getMatchColor(data){
+    const result = yield call(getMatchColorAPI, data)
+    if(result.data.result_msg=="OK"){
+        yield put({
+                type:'GET_MATCH_SIZE_SUCCESS',
+                data:result.data.result
+            })
+        }else{
+            yield put({
+                type:'GET_MATCH_SIZE_ERROR',
+            })
+
+        }
+
+}
+
+function* reqGetMatchColor(){
+    yield takeLatest('GET_MATCH_SIZE_REQUEST',getMatchColor)
+}
 
 
 export default function* viewSaga(){
     yield all([
         fork(reqDirectDealView),
-        fork(reqAuctionView)
+        fork(reqAuctionView),
+        fork(reqGetMatchQty),
+        fork(reqGetMatchColor)
     ])
 }

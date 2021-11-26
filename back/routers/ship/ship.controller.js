@@ -3,28 +3,38 @@ const {User,Orders, OrderDetail, ShipInfo, ItemInfo} = require('../../models')
 /* 배송 정보 */
 
 let get_shipinfo = async (req,res)=>{
-
+    
+    console.log('나오니??????????????????????????????????')
+    console.log(req.body)
     const {orderer,receiver,phoneNum,address,postNumber,addressDetail,memo,inputStatus,UserAddress,params} = req.body
-
+    console.log(orderer,receiver,phoneNum,address,postNumber,addressDetail,memo,inputStatus,UserAddress,params)
     const buyerAddress = address+addressDetail
-    const USERRESULT = await User.findOne({where:{kaikas_address:UserAddress}})
-    // const params_item = await ItemInfo.findOne({where:{item_id :params}})
+
+
+
+
+
+
+
+    
+    //const USERRESULT = await User.findOne({where:{kaikas_address:UserAddress}})
+    //const params_item = await ItemInfo.findOne({where:{item_id :params}})
 
     console.log(params)
 
-        await OrderDetail.create({
-            size:'blue',color:'orderer',order_qty:45,shipper_idx:45,item_code:'phoneNum',price:1,item_id:params
-        })
+    //     await OrderDetail.create({
+    //         size:'blue',color:'orderer',order_qty:45,shipper_idx:45,item_code:'phoneNum',price:1,item_id:params
+    //     })
 
-       const result =  await Orders.create({
-            total_price:55500,buyer:orderer,receiver:receiver,receiver_address:buyerAddress,receiver_contact:phoneNum,final_order_state:true,memo:memo,user_idx:USERRESULT.user_idx
-        })
+    //    const result =  await Orders.create({
+    //         total_price:55500,buyer:orderer,receiver:receiver,receiver_address:buyerAddress,receiver_contact:phoneNum,final_order_state:true,memo:memo,user_idx:USERRESULT.user_idx
+    //     })
 
-        await ShipInfo.create({
-            delivery_company:'55500',post_num:'orderer',item_delivery_state:'배송 중'
-        })
+    //     await ShipInfo.create({
+    //         delivery_company:'55500',post_num:'orderer',item_delivery_state:'배송 중'
+    //     })
 
-        res.json()
+    //     res.json()
 }
 
 /* 구매 정보 */

@@ -13,4 +13,5 @@ router.get('/categorys',controller.get_categorys)
 router.post('/sub',controller.get_sub_category)
 router.post('/allitem',controller.all_list_direct_get)
 
+
 module.exports = router

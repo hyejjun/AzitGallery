@@ -14,7 +14,6 @@ const test = () => {
         test:{}
     }
     const test = useSelector((state:RootState )=> state.user)
-    console.log(test)
         const dispatch = useDispatch()
         useEffect(() => {
             dispatch(UserLogin_REQUEST({test:'testtttt'}))

@@ -56,14 +56,13 @@ const AuctionDetail = (props) => {
             alert('현재가보다 높게 제시해주세요')
             setOpenAuction(prev => !prev)
         } else {
-            console.log(JSON.stringify(window.location.href).split('ion/')[1].replace("\"", ""))
             let params = JSON.stringify(window.location.href).split('ion/')[1].replace("\"", "")
                     let data = {
                 params: params,
                 user: User.UserAddress,
                 price: auctionPrice
             }
-            console.log(data)
+           
 
             dispatch(Auction_Price_REQUEST(data))
             alert('입찰 되셨습니다!')

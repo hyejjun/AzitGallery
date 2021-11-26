@@ -12,7 +12,6 @@ const Category = (props) => {
     const CategoryType = Main.categoryList
     const SubType = Main.subList
     const [List, setList] = useState<number>(-1);
-    //console.log(SubType,'ssssssssssssssss')
 
     useEffect(()=>{
         dispatch(all_category_REQUEST())
@@ -25,7 +24,6 @@ const Category = (props) => {
     }
 
     useEffect(()=>{
-        console.log(Main,'testmain')
         dispatch(main_all_direct_REQUEST(sendData))
     },[Main.listId])
     
@@ -39,7 +37,6 @@ const Category = (props) => {
         dispatch(main_all_direct_REQUEST(sendData))
     }
     const subSelect = (e) => {
-        console.log(e.item_code)
         sendData = {
             sell_type:props.sell_type,
             list_length:3,

@@ -1,20 +1,30 @@
 import axios from 'axios';
 import {all,put,takeEvery,takeLatest,fork,call} from "redux-saga/effects";
+import { isRegExp } from 'util/types';
 import {url} from './url'
 
 
-function DealAPI(data){
-    console.log(data.data)
-    return axios.post(`${url}/deal/direct`, data.data)
 
+function DealAPI(data){
+    return axios.post(`${url}/deal/direct`, data.data) 
 }
 function* reqDealSaga(data){
-    const result = yield call(DealAPI,data) 
+    
+    const result = yield call(DealAPI,data)
     console.log(result)
-    yield put({
-        type:'DIRECT_DEAL_SUCCESS',
-        data:result
-    })
+    console.log(result.data.result,'deallllllllllllllllllllllllllllllllllllllllllllllll')
+    if(result.data.result_msg=='OK'){
+        yield put({
+            type:'DIRECT_DEAL_SUCCESS',
+            data:result.data.result
+        })
+    }else{
+        yield put({
+            type:'DIRECT_DEAL_ERROR'
+        })
+    }
+
+
 }
 
 function* reqDeal(){

@@ -12,7 +12,7 @@ const SliderItem = styled.div`
   img{
     max-width: 100%;
     min-height: 400px;
-    height: auto;
+    height: 500px;
     margin : 0 auto;
   }
 `;
