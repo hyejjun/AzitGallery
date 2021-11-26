@@ -57,13 +57,13 @@ function* reqLogout() {
 /* 이메일 인증 */
 
 function sellerAdminAPI(action) {
-    return axios.post(`${url}/user/selleradmin`)
+    return axios.post(`${url}/user/selleradmin`, action.data)
 }
 
 function* sellerAdminSaga(action){
-    const result = yield call(sellerAdminAPI,action)     
-
-    
+    const result = yield call(sellerAdminAPI,action)   
+    console.log("이메일 인증 결과  ===== ",result);
+          
 }
 
 function* reqAdminEmail(){
@@ -74,14 +74,12 @@ function* reqAdminEmail(){
 
 /* 이메일 대기 */
 
-function sellerWaitAPI(action):any {
-    return axios.post(`${url}/user/selleradminwait`,JSON.stringify(action.data))
+function sellerWaitAPI(action) {
+    return axios.post(`${url}/user/selleradminwait`,JSON.stringify(action))
 }
 
-function* sellerWaitSaga(action){
-    const result = yield call(sellerWaitAPI,action)     
-
-    
+function* sellerWaitSaga(action){    
+    const result = yield call(sellerWaitAPI,action.data)    
 }
 
 function* reqWaitEmail(){
@@ -155,13 +153,12 @@ function userListAPI() {
 
 function* userListSaga(){
     const result = yield call(userListAPI)
-    // console.log(result.data)
-    console.log("result ===== ",result);
+    console.log("유저리스트 ===== ",result);
     
-    console.log(result.data.ARR)
+    console.log(result.data)
     yield put({
         type:'USER_LIST_SUCCESS',
-        data:result.data.ARR
+        data:result.data
     })    
 
 }
@@ -172,12 +169,12 @@ function* reqUserList(){
 
 /* 관리자 페이지 user list req */
 
-function adminAccessAPI(action):any {
-    return axios.post(`${url}/user/selleradminaccess`,JSON.stringify(action.data))
+function adminAccessAPI(action){
+    return axios.post(`${url}/user/selleradminaccess`,JSON.stringify(action))
 }
 
 function* sellerAdminAccessSaga(action){
-    const result = yield call(adminAccessAPI,action)
+    const result = yield call(adminAccessAPI,action.data)
     
 }
 
@@ -200,15 +197,23 @@ function* reqSellerAdminDeny(){
 }
 
 /* user/uesr페이지 user info req */
-function userInfoAPI(action):any{
+function userInfoAPI(action){
     return axios.post(`${url}/user/userinfo`,JSON.stringify(action.data))
 }
 
 function* userInfoSaga(action){
     const userinfo = yield call(userInfoAPI,action)
+    console.log("사가 응답 ===",userinfo);
+    const {admin_approval,email_validation,result } =userinfo.data
+
+    let userdata = {
+        result,
+        admin_approval,
+        email_validation
+    }
     yield put({
         type:'USER_INFO_SUCCESS',
-        data:userinfo.data
+        data:userdata,
     })
 }
 function* reqUesrInfo(){

@@ -1,40 +1,54 @@
 import Styled from 'styled-components'
-import React,{useEffect} from 'react'
+import React, { useEffect } from 'react'
 import Link from 'next/link'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
 import { SellerAdmin_REQUEST, SellerAdminWait_REQUEST, UserInfo_REQUEST } from '../../reducers/user'
 import { RootState } from "../../reducers"
 import { useSelector, useDispatch } from 'react-redux'
-import {UserState} from "../../reducers/user"
+import { UserState } from "../../reducers/user"
+import Button from '@mui/material/Button';
 
 
-const User = () => {
+const UserInfo = () => {
     const dispatch = useDispatch()
-    const user = useSelector((state:RootState) => state.user);
-    
-    
+    const user = useSelector((state: RootState) => state.user);
+    const userEmail = useSelector((state: RootState) => state.user.Email);
+    const UserAddress = useSelector((state: RootState) => state.user.UserAddress);
+    const NickName = useSelector((state: RootState) => state.user.NickName);
+    const adminApproval = useSelector((state: RootState) => state.user.adminApproval);
+    const emailValidation = useSelector((state: RootState) => state.user.emailValidation);
 
 
-    useEffect(()=>{
+    console.log("adminApproval ====", adminApproval);
+    console.log("emailValidation ====", emailValidation);
+    
+
+    useEffect(() => {
         dispatch(UserInfo_REQUEST(user.UserAddress))
-    },[])
-    
-    
+    }, [])
+
+
 
     const SellerAdmin = () => {
-        alert('인증을 위해서 이메일을 확인해주세요')
+        alert('해당 이메일에서 인증해주세요')
         // dispatch(SellerAdminWait_REQUEST(user.UserAddress))
-        dispatch(SellerAdmin_REQUEST(user.UserAddress))
-      
+
+        let data = {
+            userEmail,
+            UserAddress,
+            NickName
+        }
+        dispatch(SellerAdmin_REQUEST(data))
+
     }
 
 
-    return(
+    return (
         <UserWrapper>
             <div>
                 <p>나의 프로필</p>
-                <p><AccountCircleIcon/></p>
+                <p><AccountCircleIcon /></p>
                 <span>
                     <ul>
                         <li>
@@ -46,37 +60,45 @@ const User = () => {
                             <p>&nbsp;{/*wallet account*/}{user.Address}</p>
                         </li>
                         <li>
+                            <p>이메일</p>
+                            <p>&nbsp;{/*email account*/}{user.Email}</p>
+                        </li>
+                        <li>
                             <p>
-                                이메일주소
+                                판매자 인증
                                 {
-                                    user.verify == 0
-                                    ?   <span><VerifiedUserIcon/>인증완료</span>
-                                    :   ( user.verify == 1
+                                    adminApproval == 3
+                                        ? <span><VerifiedUserIcon />인증완료</span>
+                                        : (adminApproval == 1
                                             ? <span>대기중</span>
                                             : (
-                                                user.verify == 2
-                                                ? <span>반려됨</span>
-                                                : <span></span>
+                                                adminApproval == 2
+                                                    ? <span className="rejected">반려됨</span>
+                                                    : <span></span>
                                             )
                                         )
                                 }
-                                
                             </p>
-                            <p>&nbsp;{/*email account*/}{user.Email}</p>
                         </li>
-                        <li onClick = {SellerAdmin}>판매 신청</li>
-                        <li>
+                        <li className="sellerReq" >
+                            {
+                                adminApproval !== undefined
+                                ? <></>
+                                : <Button variant="contained" onClick={SellerAdmin}>판매 신청</Button>
+                            }
+                        </li>
+                        {/* <li>
                             <button><Link href="/user/edit"><a>프로필편집</a></Link></button>
                             <button>회원탈퇴</button>
-                        </li>
+                        </li> */}
                     </ul>
                 </span>
-            </div>        
+            </div>
         </UserWrapper>
     )
 }
 
-export default User
+export default UserInfo
 
 const UserWrapper = Styled.div`
     box-sizing:border-box;
@@ -194,48 +216,9 @@ const UserWrapper = Styled.div`
         color:black;
         font-weight:bold;
     }
-    /* ul{
-        margin-left:80px;
-    }
-    li{
-        margin-bottom:20px;
-    }
-    li > p:nth-child(2){
-        margin-left:120px;
-        margin-top:10px;
-        width:380px;
-        height:25px;
-        background-color:white;
-        border-radius:1%;
-        font-size:14px;
-    }
-    li:nth-child(3){
-        margin-bottom:50px;
-    }   
-    li:nth-child(4){
-        width:120px;
-        height:42px;
-        line-height:43px;
-        margin-left:120px;
-        text-align:center;
-        border:1px solid black;
-        border-radius:4%;
-        margin-bottom:40px; 
-    }
 
-    li:nth-child(5) span, li:nth-child(5) a{
-        width:100px;
-        height:40px;
-        padding:10px;
-        margin-right:10px;
-        background-color:white;
-        border-radius:3%;
-        font-size:12px;
-        font-weight:600;
-    
-    } */
-
-
-
+    div>span>ul>li>p:nth-child(1)>.rejected{
+        color : red;
+    }
 
 `
