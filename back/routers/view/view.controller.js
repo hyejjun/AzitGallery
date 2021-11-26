@@ -1,5 +1,6 @@
 const { NftImg, ItemDetail, LikeList, AuctionHistory, Item, ItemInfo, ItemImg, User, Auction, DirectDeal } = require('../../models')
 const Sequelize = require('sequelize')
+const { createHash } = require('crypto')
 const Op = Sequelize.Op
 
 let get_directdeal_view = async (req, res) => {
@@ -10,13 +11,44 @@ let get_directdeal_view = async (req, res) => {
     console.log("idx =====", idx)
     // @ user 에 대한 정보 가져와서 like 조회해야함.
     // @ idx 로 해당 view 조회하기
+    let directView = await ItemInfo.findOne({where:{item_id:idx}})
+    console.log(directView)
+    let price = await DirectDeal.findOne({where:{direct_deal_idx:idx}})
+    let user = await User.findOne({where:{user_idx:directView.creator}})
+    let img = await ItemImg.findAll({where:{item_img_idx:idx}})
+
+    let imgArr = []
+    for(let i=0;i<img.length;i++){
+        imgArr.push(img[i].item_img_link)
+    } 
 
 
     let data = {};
+    try{
+        data = {
+            result_msg: 'OK',
+            nick_name:user.nick_name,
+            description:directView.description,
+            title:directView.title,
+            size:directView.size,
+            color:directView.color,
+            price:price.price,
+            currency:price.currency,
+            item_img_link:imgArr,
+            qty:[]
+            
+            //qty:qtyArr
+            //qty:[1,2,3,4,5,6]
+        }
+
+    }catch(e){
+
+    }
+    /*
 
     try {
         let result = await ItemInfo.findOne({ where: { item_id: idx, sell_type: 0 } })
-        const { creator, description, title, registered_at, size, color } = result.dataValues
+        const { creator, description, title, registered_at, size, color, main_img_link } = result.dataValues
 
         let result2 = await User.findOne({ where: { user_idx: creator }, attributes: ['nick_name'] })
         const { nick_name } = result2.dataValues
@@ -24,7 +56,6 @@ let get_directdeal_view = async (req, res) => {
         let result3 = await DirectDeal.findOne({ where: { direct_deal_idx: idx } })
         const { price, currency } = result3.dataValues
 
-        let result4 = await ItemImg.findAll({ where: { item_id: idx } })
         let result5 = await ItemDetail.findOne({where:{color:color,size:size,item_info_idx:result.item_id},attributes:['qty']})
         const { qty } = result5.dataValues
 
@@ -64,6 +95,7 @@ let get_directdeal_view = async (req, res) => {
             msg: '해당 페이지가 없어요'
         }
     }
+    */
     res.json(data)
 }
 
@@ -149,7 +181,58 @@ let get_auction_view = async (req, res) => {
 
 }
 
+let get_qty = async (req,res) => {
+    let data
+    try{
+        let {item_id} = req.body
+        let {size,color} = req.body.selected
+        console.log(size,color)
+        let qty = await ItemDetail.findOne({where:{item_info_idx:item_id,size:size,color:color}})
+        let qtyArr = []
+        for(let i=1;i<=qty.qty;i++){
+            qtyArr.push(i)
+        }
+        data = {
+            result_msg:'OK',
+            result:qtyArr
+        }
+    }catch(e){
+        data = {
+            result_msg:'Fail',
+            msg:'페이지가 존재하지 않습니다.'
+        }
+    }
+    res.json(data)
+}
+
+
+let get_size = async (req,res) => {
+    let data
+    try{
+        let { item_id } = req.body
+        let { color } = req.body.selected
+        let size = await ItemDetail.findAll({where:{color:color,item_info_idx:item_id}})
+        let sizeArr = []
+        for(let i=0;i<size.length;i++){
+            sizeArr.push(size[i].size)
+        }
+        data = {
+            result_msg:'OK',
+            result:sizeArr
+        }
+        
+    }catch(e){
+        data = {
+            result_msg:'Fail',
+            msg:'페이지가 존재하지 않습니다.'
+        }
+    }
+    res.json(data)
+}
+
 module.exports = {
     get_directdeal_view,
     get_auction_view,
+    get_qty,
+    get_size
 }

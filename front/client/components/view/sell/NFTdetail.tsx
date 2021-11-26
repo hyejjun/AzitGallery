@@ -23,7 +23,7 @@ const NFTdetail = ({children}) => {
 
     const router = useRouter()
     const {view} = router.query // 카테고리 이름
-    console.log(view);
+ 
     
     
     const dispatch = useDispatch()
@@ -51,22 +51,24 @@ const NFTdetail = ({children}) => {
     const description = useSelector((state:RootState) => state.view.description);
     const color = useSelector((state:RootState) => state.view.color);
     const size = useSelector((state:RootState) => state.view.size);
+    const sizedata = useSelector((state:RootState) => state.view.sizedata)
     const qty = useSelector((state:RootState) => state.view.qty);
+    const qtydata = useSelector((state:RootState) => state.view.qtydata);
     const price = useSelector((state:RootState) => state.view.price);
     const currency = useSelector((state:RootState) => state.view.currency);
     const item_img_link = useSelector((state:RootState) => state.view.item_img_link);
-
+   
     const colorArr = color.split(",")
-    const sizeArr = size.split(",")
-    
+    //const sizeArr = size.split(",")
+
     return (
         
         <>
             <NFTdetailWrap>
                 <NFTBuy>
                     <ColorSelect colorArr={colorArr} flagsetcolor={setColor} flagcolor={colorpic}/>
-                    <SizeSelect sizeArr={sizeArr} flagsetsize={setSize} flagsize={sizepic}/>
-                    <QtySelect qtyArr={qty} flagsetqty={setQty} flagqty={qtypic}/>
+                    <SizeSelect sizeArr={sizedata} flagsetsize={setSize} flagsize={sizepic}/>
+                    <QtySelect qtyArr={qtydata} flagsetqty={setQty} flagqty={qtypic}/>
                    
                     <Like/>
                     <BuyBtnCSS onClick={orderOpen}>

@@ -69,7 +69,7 @@ const Order = (props) => {
 
     const Purchase = () => {
         dispatch(direct_deal_REQUEST(data))
-        //dispatch(KipToken_REQUEST())
+        dispatch(KipToken_REQUEST())
         alert('EPI로 거래되셨습니다!')
         console.log(JSON.stringify(window.location.href).split('ell/')[1].replace("\"", ""))
         let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")

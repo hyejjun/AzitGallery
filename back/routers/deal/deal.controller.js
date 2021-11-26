@@ -8,7 +8,7 @@ let deal_post = async (req,res) => {
     let {item_id,price,currency,userAddress,userIdx,creator} = req.body
     let data = {}
     for(let i=1; i<=qty; i++){
-        let result1 = await ItemDetail.findOne({where:{item_info_idx:item_id}})
+        let result1 = await ItemDetail.findOne({where:{item_info_idx:item_id,size:size,color:color}})
         console.log(result1,'result111111111111111111111111111111')
         let result2 = await Nft.findOne({where:{nft_img_idx:result1.nft_idx,product_status:'판매중'}})
         console.log(result2,'result222222222222222222222222222222')
@@ -45,7 +45,6 @@ let deal_post = async (req,res) => {
     }
     
 
-    //console.log(result5,'result5555555555555555555555555555555555555')
 
 
 
@@ -63,49 +62,7 @@ let deal_post = async (req,res) => {
 
 
 
-
-
-
-
-
-
-
-
-    // pool.getConnection((err,connection)=>{
-    //     connection.query(            
-    //         `
-    //         insert into order_detail values('${size}','${color}',3,(select a.item_code from item_detail as a where a.item_info_idx=${item_id} and a.size='${size}' and a.color='${color}'),3000,default,'${item_id}');
-    //         `     
-    //     ,function(err,result,fields){
-    //         if(err) throw err;
-    //         connection.query(`
-    //         insert into orders(total_price,order_num) values('${price}',(select max(order_num) from order_detail));
-    //         `,function(error,result2,fields){
-    //             if(error) throw error
-    //             if(result2==undefined){
-
-    //             data = {
-    //                 result_msg:'Fail'
-    //             }
-    //             }else{
-    //                 connection.query(`
-    //                     update item_detail set product_status=1
-    //                      where item_code=(select a.item_code from item_detail as a 
-    //                         where a.item_info_idx='${item_id} and a.size='${size}' and a.color='${color}');
-    //                 `,function(errr,result3,fields){
-    //                     console.log(result3)
-    //                 })
-    //                 console.log(result2)
-    //                 data = {
-    //                     result_msg:'OK',
-    //                     result
-    //                 }
-                
-    //             }
-    //         })
-    //         connection.release()
-    //     })
-    // }) 
+ 
     res.json({data:'test'})
 
 }

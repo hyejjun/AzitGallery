@@ -5,14 +5,15 @@ export interface ViewState {
     loadding: boolean;
     data: Array<string | number | Object>;
     payload: {};
+    qtydata:Array<number>;
+    sizedata:Array<string>
     error: string;
     UserAddress: string;
     verify: number;
     nick_name, title, description,size,color,price,bid_price, currency, left_time: string;
     item_img_link : Array<string>,
-    directView: {
-        
-    };
+    directView: {};
+    directIdx:number
     qty:Array<number>;
     selected:{
         qty:number,
@@ -26,6 +27,8 @@ export const initialState: ViewState = {
     loadding: false,
     data: [],
     payload: {},
+    qtydata:[],
+    sizedata:[],
     error: '',
     UserAddress: 'kaikasAddress',
     verify: 200,
@@ -45,7 +48,8 @@ export const initialState: ViewState = {
         qty:0,
         color:'',
         size:''
-    }
+    },
+    directIdx:0
     
 };
 
@@ -58,6 +62,14 @@ export const DIRECTDEAL_VIEW_ERROR = "DIRECTDEAL_VIEW_ERROR" as const;
 export const AUCTION_VIEW_REQUEST = "AUCTION_VIEW_REQUEST" as const;
 export const AUCTION_VIEW_SUCCESS = "AUCTION_VIEW_SUCCESS" as const;
 export const AUCTION_VIEW_ERROR = "AUCTION_VIEW_ERROR" as const;
+
+export const GET_MATCH_SIZE_REQUEST = "GET_MATCH_SIZE_REQUEST" as const;
+export const GET_MATCH_SIZE_SUCCESS = "GET_MATCH_SIZE_SUCCESS" as const;
+export const GET_MATCH_SIZE_ERROR = "GET_MATCH_SIZE_ERROR" as const;
+
+export const GET_MATCH_QTY_REQUEST = "GET_MATCH_QTY_REQUEST" as const;
+export const GET_MATCH_QTY_SUCCESS = "GET_MATCH_QTY_SUCCESS" as const;
+export const GET_MATCH_QTY_ERROR = "GET_MATCH_QTY_ERROR" as const;
 
 
 
@@ -105,8 +117,43 @@ export const auctionView_ERROR = () => {
     }
 }
 
+export const getMatchQty_REQUEST = (data) => {
+    return {
+        type:GET_MATCH_QTY_REQUEST,
+        data:data
+    }
+}
+export const getMatchQty_SUCCESS = (data) => {
+    return {
+        type:GET_MATCH_QTY_SUCCESS,
+        data:data
 
+    }
+}
+export const getMatchQty_ERROR = () => {
+    return {
+        type:GET_MATCH_QTY_ERROR
+    }
+} 
 
+export const getMatchSize_REQUEST = (data) => {
+    return {
+        type:GET_MATCH_SIZE_REQUEST,
+        data:data
+    }
+}
+export const getMatchSize_SUCCESS = (data) => {
+    return {
+        type:GET_MATCH_SIZE_SUCCESS,
+        data:data
+
+    }
+}
+export const getMatchSize_ERROR = () => {
+    return {
+        type:GET_MATCH_SIZE_ERROR
+    }
+}
 
 type ViewAction =
     | ReturnType<typeof directDealView_REQUEST>
@@ -115,6 +162,13 @@ type ViewAction =
     | ReturnType<typeof auctionView_REQUEST>
     | ReturnType<typeof auctionView_SUCCESS>
     | ReturnType<typeof auctionView_ERROR>
+    | ReturnType<typeof getMatchQty_REQUEST>
+    | ReturnType<typeof getMatchQty_SUCCESS>
+    | ReturnType<typeof getMatchQty_ERROR>
+    | ReturnType<typeof getMatchSize_REQUEST>
+    | ReturnType<typeof getMatchSize_SUCCESS>
+    | ReturnType<typeof getMatchSize_ERROR>
+
 
 const reducer = (state: ViewState = initialState, action: ViewAction) => {
     switch (action.type) {
@@ -168,6 +222,34 @@ const reducer = (state: ViewState = initialState, action: ViewAction) => {
         case AUCTION_VIEW_ERROR:
             return {
                 ...state,
+            }
+        case GET_MATCH_QTY_REQUEST:
+            return {
+                ...state,
+                payload:action.data
+            }
+        case GET_MATCH_QTY_SUCCESS:
+            return {
+                ...state,
+                qtydata:action.data
+            }
+        case GET_MATCH_QTY_ERROR:
+            return {
+                ...state
+            }
+        case GET_MATCH_SIZE_REQUEST:
+            return {
+                ...state,
+                payload:action.data
+            }
+        case GET_MATCH_SIZE_SUCCESS:
+            return {
+                ...state,
+                sizedata:action.data
+            }
+        case GET_MATCH_SIZE_ERROR:
+            return {
+                ...state
             }
         default:
             return state;
