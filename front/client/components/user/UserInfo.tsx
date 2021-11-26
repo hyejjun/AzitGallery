@@ -9,9 +9,12 @@ import { useSelector, useDispatch } from 'react-redux'
 import {UserState} from "../../reducers/user"
 
 
-const User = () => {
+const UserInfo = () => {
     const dispatch = useDispatch()
     const user = useSelector((state:RootState) => state.user);
+    const userEmail = useSelector((state:RootState) => state.user.Email);
+    const UserAddress = useSelector((state:RootState) => state.user.UserAddress);
+    const NickName = useSelector((state:RootState) => state.user.NickName);
     
     
 
@@ -23,9 +26,15 @@ const User = () => {
     
 
     const SellerAdmin = () => {
-        alert('인증을 위해서 이메일을 확인해주세요')
+        alert('해당 이메일에서 인증해주세요')
         // dispatch(SellerAdminWait_REQUEST(user.UserAddress))
-        dispatch(SellerAdmin_REQUEST(user.UserAddress))
+
+        let data = {
+            userEmail,
+            UserAddress,
+            NickName
+        }
+        dispatch(SellerAdmin_REQUEST(data))
       
     }
 
@@ -76,7 +85,7 @@ const User = () => {
     )
 }
 
-export default User
+export default UserInfo
 
 const UserWrapper = Styled.div`
     box-sizing:border-box;

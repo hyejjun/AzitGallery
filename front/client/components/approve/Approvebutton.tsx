@@ -13,7 +13,7 @@ const Approvebutton = () => {
     }
     return (
         <>
-            <Link href = "/user/user"><a><BUTTON onClick = {SellerAdmin}>승인완료</BUTTON></a></Link>
+            <Link href = "/user/user"><a><BUTTON onClick = {SellerAdmin}>이메일 인증 완료</BUTTON></a></Link>
         </>
     )
 }

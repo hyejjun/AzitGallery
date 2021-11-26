@@ -11,6 +11,8 @@ const { auction, deliver, item, User, Seller, OrderDetail } = require("../../mod
 
 let seller_admin = async (req,res) => {
     console.log('왓다')
+    console.log("이메일 =====",req.body);
+    const {userEmail, UserAddress, NickName} = req.body
     let transporter = nodemailer.createTransport({
         service: 'Gmail',
         auth: {
@@ -22,9 +24,9 @@ let seller_admin = async (req,res) => {
     let url = `http://localhost:3000/admin/approvebtn`;
     let options = {
         from: 'simbianartist@gmail.com',
-        to:'simbianartist@gmail.com',//임시로, 나중에는 body에서 가져오게끔한다
+        to:`${userEmail}`,//임시로, 나중에는 body에서 가져오게끔한다
         subject: '이메일 인증 완료를 위해 아래 url을 클릭해주세요.',
-        html: `서영님, 안녕하세요. <br/>이메일 인증을 위해 아래 URL을 클릭해주세요. <br/> ${url}`
+        html: `${NickName}님, 안녕하세요. <br/>이메일 인증을 위해 아래 URL을 클릭해주세요. <br/> ${url}`
     }
 
     transporter.sendMail(options, function (err, res) {
@@ -185,67 +187,47 @@ let email_check = async (req,res) =>{
 /* 모든 회원들 정보를 불러오기 */
 
 let userlist_get = async (req,res) => {
+    let result = await Seller.findAll({})
 
-    //select b.item_code from orders as a 
-    //join order_detail as b 
-    //on a.order_num = b.order_num 
-    //join item_detail as c 
-    //on b.item_code=c.item_code 
-    //where a.buyer=2;
-
-    let result = await OrderDetail.findAll({})
-    console.log(result,'====================================')
-  
-
-    const ARR = []
-
-    for(let i=0; i<result.length; i++){
-        ARR.push({id:`Arr${i+1}`,name:result[i].user_idx, kaikas_address:result[i].seller_code, kycAuthorized:result[i].admin_approval })
-    }
-    //console.log(ARR)
-    let data = {
-        ARR:ARR
-    }
+    let data = []
+    result.forEach (async (v) => {
+        data.push(v.dataValues)
+    });
 
     res.json(data)
-
 }
 
 /* 반려 또는 승인 */
 
 let selleradmin_access = async (req,res) => {
-
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
-    console.log(keyObject)
 
-    let result = await Seller.update({admin_approval:3},{where:{seller_code:keyObject}})
-
+    let result = await Seller.update({admin_approval:3},{where:{user_idx:keyObject}})
 }
 
 let selleradmin_deny = async (req,res) => {
-
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
-    console.log(keyObject)
 
-    let result = await Seller.update({admin_approval:2},{where:{seller_code:keyObject}})
-
+    let result = await Seller.update({admin_approval:2},{where:{user_idx:keyObject}})
 }
 
 /* 일반 구매자를 판매자 테이블로 이동 */
 
 let selleradmin_wait = async (req,res) => {
-
     let key = Object.keys(req.body)
     const keyObject = JSON.parse(key)
-    console.log(keyObject)
-    const name = 1
-    let admin_approval = 1
-    let email_validation = true
-    let brand_name = 'NULL'
-    let result = await Seller.create({user_idx:name,seller_code:keyObject,admin_approval,email_validation,brand_name})
 
+    let find_user = await User.findOne({where:{kaikas_address:keyObject}})
+    const {user_idx, nick_name} = find_user.dataValues
+
+    let seller_insert = await Seller.create({
+        user_idx,
+        nick_name,
+        admin_approval : 1,
+        email_validation : true,
+    })
 }
 
 let user_info = async (req,res) => {
@@ -255,7 +237,6 @@ let user_info = async (req,res) => {
     console.log(keyObject,'user_info')
     let result = await User.findAll({where:{kaikas_address:keyObject}})
     res.json(result[0])
-
 
 }
 
