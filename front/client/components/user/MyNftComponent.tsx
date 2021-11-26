@@ -96,7 +96,6 @@ const MyNftComponent = () => {
     return(
         <>  
             <MyInfo> 
-                {/* <MyIMG><img src = {require('../../src/지도.jpg')}/></MyIMG> */}
                 <MyName onClick = {test}>원금회복</MyName>
                 <MyAddress>{user.UserAddress}</MyAddress>
                 <MySwap onClick = {FROMklayToEPI}>klay에서 EPI로 토큰 스왑</MySwap>
