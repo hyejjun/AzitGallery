@@ -118,7 +118,7 @@ const MenuBar = () => {
     }
     useEffect(() => {
         const klaytnAddress = window.klaytn.selectedAddress
-        //dispatch(UserLogin_REQUEST(klaytnAddress))
+        // dispatch(UserLogin_REQUEST(klaytnAddress))
         if(window.klaytn.autoRefreshOnNetworkChange==false){
             alert('계정이 변경되었습니다.')
         }
@@ -129,6 +129,7 @@ const MenuBar = () => {
             return
         }
         setClicked(true)
+
         kaikasLogin()
 
     }
@@ -178,7 +179,7 @@ const MenuBar = () => {
                     <li><Link href="/"><a>탐색하기</a></Link></li>
                     {loginState ? <LOG onClick={() => createBtn()}><Link href="/item/additem"><a>발행하기</a></Link></LOG> : <LOG onClick={() => createBtn()}>발행하기</LOG>}
                     {loginState ? <LOG><Link href="/user/mynftall"><a>나의NFT</a></Link></LOG> : <LOG></LOG>}
-                    {loginState ? <LOG onClick={() => { logout() }}>LogOut</LOG> : <LOG onClick={() => { login() }}>Login</LOG>}
+                    {loginState ? <Link href="/"><LOG onClick={() => { logout() }}>LogOut</LOG></Link> : <LOG onClick={() => { login() }}>Login</LOG>}
                 </ul>
             </MenubarWrapper>
 
