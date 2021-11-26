@@ -16,7 +16,7 @@ const AuctionDetail = (props) => {
     const [price, setPrice] = useState<number>(0);
 
     const [limitTime, setlimitTime] = useState<number>(5);
-    const [endBool, setEndBool] = useState<boolean>(false)
+    const [endBool, setEndBool] = useState<Boolean>(false);
     const [openAuction, setOpenAuction] = useState<boolean>(false);
     const auctionOpen = () => {
         setOpenAuction(prev => !prev)
@@ -52,11 +52,11 @@ const AuctionDetail = (props) => {
         //     }
         // }
 
-        if(auctionPrice <= Auction.current){
+        if(Number(auctionPrice) <= Number(Auction.current)){
             alert('현재가보다 높게 제시해주세요')
             setOpenAuction(prev => !prev)
         } else {
-            console.log(JSON.stringify(window.location.href).split('ion/')[1].replace("\"", ""))
+            
             let params = JSON.stringify(window.location.href).split('ion/')[1].replace("\"", "")
                     let data = {
                 params: params,
@@ -82,14 +82,40 @@ const AuctionDetail = (props) => {
             params: params,
         }
         dispatch(Auction_Current_REQUEST(data))
-        console.log(`종료 일 ${Auction.endDate}`)
-          console.log(`현재 일 ${Auction.now.toISOString()}`)
-          
-    //    if(Auction.endDate < Auction.now.toISOString()){
-    //        alert('경매 종료')
-    //        setEndBool(true)
-    //    }
-    },[Auction.endDate])
+        console.log(`호로로로롤로로 종료 일 ${Auction.endDate}`)
+        console.log(`호로로로롤로로 종료 일 ${Auction.buyer}`)
+        setEndBool(Auction.endDate)
+        console.log(`호로로로롤로로 불리언 값변화 ${endBool}`)
+        if(Auction.buyer != undefined && Auction.buyer == window.klaytn.selectedAddress){
+            window.caver.klay
+            .sendTransaction({
+              type: 'VALUE_TRANSFER',
+              from: window.klaytn.selectedAddress,
+              to: '0x325B6d2a7eE98a868ad576fD261f561E36F097B1',
+              value: window.caver.utils.toPeb('1', 'KLAY'),
+              gas: 8000000
+            })
+            .once('transactionHash', transactionHash => {
+              console.log('txHash', transactionHash)
+            })
+            .once('receipt', receipt => {
+              console.log('receipt', receipt)
+            })
+            .once('error', error => {
+              console.log('error', error)
+            })
+    
+            console.log(JSON.stringify(window.location.href).split('ell/')[1].replace("\"", ""))
+            let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
+            window.location.href = `/ship/${params}`
+        }
+        if(Auction.endDate == true){
+            alert('경매 종료')
+
+        }
+    },[])
+
+
     const auctionValue = {
         maxPrice,
         yourBalance,

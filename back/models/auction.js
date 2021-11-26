@@ -21,6 +21,13 @@ module.exports = class Auction extends Sequelize.Model{
                 type:Sequelize.DATE,
                 defaultValue:sequelize.literal('now()')
             },  
+            bid_boolean:{
+                type:Sequelize.INTEGER,
+                defaultValue:0
+                //0 : 경매 종료 전
+                //1 : 경매 종료 후 bidder에게 안 넘어감
+                //2 : 경매 종료 후 bidder에게 넘어감
+            }
         },{
             sequelize,
             timestamps:false,

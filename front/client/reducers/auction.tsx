@@ -3,14 +3,16 @@ import { HYDRATE } from 'next-redux-wrapper';
 
 export interface AuctionState {
     current:number
-    endDate:Date
+    endDate:Boolean
     now:Date
+    buyer:string
 }
 
 export const initialState: AuctionState = {
     current:0,
-    endDate:new Date(),
-    now:new Date()
+    endDate:false,
+    now:new Date(),
+    buyer:'kai'
 };
 
 /* 판매 경매 선택 */
@@ -32,11 +34,12 @@ export const Auction_Current_REQUEST = (data) => {
     }
 }
 
-export const Auction_Current_SUCCESS = (current,endDate) => {
+export const Auction_Current_SUCCESS = (current,endDate, buyer) => {
     return {
         type: AUCTION_CURRENT_SUCCESS,
         current: current,
-        endDate: endDate
+        endDate: endDate,
+        buyer: buyer
     }
 }
 
@@ -103,10 +106,12 @@ const reducer = (state: AuctionState = initialState, action: AuctionAction) => {
             }
         case AUCTION_CURRENT_SUCCESS:
         console.log(`여기까지도 되나?${action.endDate}`)
+        console.log(`여기까지도 되나?${action.buyer}`)
             return {
                 ...state,
                 current:action.current,
-                endDate:action.endDate
+                endDate:action.endDate,
+                buyer:action.buyer
             }
         case AUCTION_CURRENT_ERROR:
             return {

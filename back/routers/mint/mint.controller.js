@@ -405,7 +405,7 @@ let KIP7Token_transfer = async () => {
     );
     caver.wallet.add(singleKeyRing);
   }
-
+ console.log(`이르음 제데ㅐ로 나오겠지 ${kip7Instance.name().then(console.log)}`)
   const kip7Instance = new caver.kct.kip7('0xbd929FED827F26E84ca8b66A35Ef694F5829f9De')
   kip7Instance.name().then(console.log)
   const opts = { from: keyring.address }

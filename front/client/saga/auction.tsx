@@ -29,10 +29,12 @@ function AuctionCurrentAPI(data) {
 function* AuctionCurrentSaga(action){
     const result = yield call(AuctionCurrentAPI, action.data)
     console.log(`여기까지 작도잉 되나?${result.data.endDate}`)
+    console.log(`여기까지 작도잉 되나?${result.data.buyer}`)
         yield put({
             type:'AUCTION_CURRENT_SUCCESS',
             current:result.data.current,
-            endDate:result.data.endDate
+            endDate:result.data.endDate,
+            buyer:result.data.buyer
         })
 
  
