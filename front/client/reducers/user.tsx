@@ -19,6 +19,8 @@ export interface UserState {
     userInfo:{};
     userIdx : number;
     emailBool: boolean;
+    adminApproval : number;
+    emailValidation : boolean;
 }
 
 export const initialState: UserState = {
@@ -36,7 +38,9 @@ export const initialState: UserState = {
     nicknameChkBool: false,
     userInfo:{},
     userIdx : 0,
-    emailBool: false
+    emailBool: false,
+    adminApproval : 0,
+    emailValidation : false,
 };
 
 
@@ -243,12 +247,15 @@ export const Email_ERROR = (data) => {
 
 /* user list req */
 export const Userlist_REQUEST = () => {
+    console.log('요청됨 =====');
+    
     return {
         type: USER_LIST_REQUEST,
     }
 }
 
 export const UserList_SUCCESS = (data) => {
+    console.log("관리자 인증을 위한 ",data)
     return {
         type: USER_LIST_SUCCESS,
         data: data
@@ -310,9 +317,11 @@ export const UserInfo_REQUEST = (data) => {
 }
 
 export const UserInfo_SUCCESS = (userInfo) => {
+    console.log("성공 =====",userInfo);
+    
     return {
         type: USER_INFO_SUCCESS,
-        data:userInfo
+        data : userInfo
     }
 }
 
@@ -431,9 +440,11 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
 
         /*********** */
         case SELLER_ADMIN_REQUEST:
+            console.log("이메일 인증 ==== ",action.data);
+            
             return {
                 ...state,
-
+                data : action.data
             }
         case SELLER_ADMIN_SUCCESS:
             return {
@@ -447,6 +458,7 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
         case SELLER_ADMIN_ACCESS_REQUEST:
             return {
                 ...state,
+                data : action.data
             }
         case SELLER_ADMIN_ACCESS_SUCCESS:
             return {
@@ -524,7 +536,7 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
             return {
                 ...state,
             }
-        case USER_LIST_SUCCESS:
+        case USER_LIST_SUCCESS:            
             return {
                 ...state,
                 userList: action.data
@@ -542,9 +554,11 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
         case USER_INFO_SUCCESS: 
             return {
                 ...state,
-                NickName:action.data.nick_name,
-                Address:action.data.kaikas_address,
-                Email:action.data.email
+                adminApproval : action.data.admin_approval,
+                emailValidation : action.data.email_validation,
+                NickName:action.data.result.nick_name,
+                Address:action.data.result.kaikas_address,
+                Email:action.data.result.email
             }
         case USER_INFO_ERROR: 
             return {

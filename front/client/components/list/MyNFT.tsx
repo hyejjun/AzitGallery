@@ -23,19 +23,15 @@ const MyNFT = ()=>{
         </>
     )
 }
-
 export default MyNFT
-
 const MyNFTAll = Styled.ul`
     height:480px;
     cursor : default;
-
     @media screen and (max-width : 1095px) {
         display:none;
 }
     
 `
-
 const Menu = Styled.li`
     color:#2d3741;
     font-size:24px;
@@ -44,7 +40,6 @@ const Menu = Styled.li`
     list-style:none;
     margin-right:20px;
     float:left;
-
     & > a {
         margin-top:100px;
         display : inline-block;
@@ -54,9 +49,7 @@ const Menu = Styled.li`
         height : 50px;
         
     }
-
 `
-
 const MenuImg = Styled.li`
     color:#2d3741;
     font-size:24px;
@@ -72,7 +65,6 @@ const MenuImg = Styled.li`
     width:280px;
     height:300px;
 `
-
 const MenuH3 = Styled.h3`
     font-size:42px;
     margin-top:50px;
@@ -91,10 +83,8 @@ const SellBtn = Styled.button`
         background:white;
         color:#055fec;
         border:1px solid #055fec;
-
     }
 `
-
 const Line = Styled.div`
     background:#bbb;
     margin-top:20px;

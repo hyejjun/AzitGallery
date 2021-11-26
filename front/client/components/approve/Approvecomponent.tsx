@@ -9,6 +9,7 @@ import { RootState } from "../../reducers"
 const Approvecomponent = () => {
 
     const user = useSelector((state:RootState) => state.user);
+    const userList = useSelector((state:RootState) => state.user.userList);
     const dispatch = useDispatch()
     const [Arr, setArr] = useState([])
 
@@ -17,39 +18,45 @@ const Approvecomponent = () => {
         setArr(user.userList)
     },[])
 
+    // useEffect(()=>{
+    //     dispatch(Userlist_REQUEST())
+    // },[userList])
 
-     const nameList: JSX.Element[] = Arr.map((ele, id) =>{
+    console.log("화면에서 ==== ",userList);
+    
+
+     const nameList: JSX.Element[] = userList.map((ele, id) =>{
 
         const ArrID = `Arr${String(id+1)}`
 
         const PullArr = () => {
 
-            var result = confirm("kyc 인증을 하겠습니까?");
+            var result = confirm("kyc 인증을 하겠습니까? \n 승인 => 확인 \n 반려 => 취소 를 눌러주세요");
             if(result){
                 alert("인증되었습니다");
                 document.querySelector(`.${ArrID}`).innerHTML = '승인됨'
-                dispatch(SellerAdminAccess_REQUEST(ele.kaikas_address))
+                dispatch(SellerAdminAccess_REQUEST(ele.user_idx))
             }else{
                 alert("반려되었습니다");
                 document.querySelector(`.${ArrID}`).innerHTML = '반려됨'
-                dispatch(SellerAdminDeny_REQUEST(ele.kaikas_address))
+                dispatch(SellerAdminDeny_REQUEST(ele.user_idx))
             }
         }
 
         return(
-            <tr>
-                <td>{ele.name}</td>
-                <td>{ele.kaikas_address}</td>
+            <tr key={ele.id}>
+                <td>{ele.id}</td>
+                <td>{ele.nick_name}</td>
                 {
-                    ele.kycAuthorized == 3 
-                    ? <td className = {ele.id}>승인됨</td>
+                    ele.admin_approval == 3 
+                    ? <td className = {`Arr${ele.id}`}>승인됨</td>
                     : (
-                        ele.kycAuthorized == 2
-                        ? <td className = {ele.id}>반려됨</td>
+                        ele.admin_approval == 2
+                        ? <td className = {`Arr${ele.id}`}>반려됨</td>
                         : (
-                            ele.kycAuthorized == 1
-                            ? <td className = {ele.id}>대기중</td>
-                            : <td className = {ele.id}>미신청</td>
+                            ele.admin_approval == 1
+                            ? <td className = {`Arr${ele.id}`}>대기중</td>
+                            : <td className = {`Arr${ele.id}`}>미신청</td>
                         )
                     )
                 }
@@ -63,8 +70,8 @@ const Approvecomponent = () => {
         <Table>
             <tbody>
                 <tr>
-                    <TdHead>사용자</TdHead>
-                    <TdHead>주소</TdHead>
+                    <TdHead>순번</TdHead>
+                    <TdHead>닉네임</TdHead>
                     <TdHead>승인상태</TdHead>
                     <TdHead>승인확인</TdHead>
                 </tr>
@@ -106,5 +113,6 @@ const BTN = Styled.div`
         color:white;
         background:#bbb;
     }
+    cursor : pointer;
 
 `
