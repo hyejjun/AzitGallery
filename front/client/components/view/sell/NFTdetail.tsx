@@ -57,8 +57,9 @@ const NFTdetail = ({children}) => {
     const price = useSelector((state:RootState) => state.view.price);
     const currency = useSelector((state:RootState) => state.view.currency);
     const item_img_link = useSelector((state:RootState) => state.view.item_img_link);
+    const orderInfo = useSelector((state:RootState)=>state.deal.orderInfo)
    
-    const colorArr = color.split(",")
+    const colorArr = color.split(",")  
     //const sizeArr = size.split(",")
 
     return (

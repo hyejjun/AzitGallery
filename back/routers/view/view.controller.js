@@ -1,4 +1,4 @@
-const { NftImg, ItemDetail, LikeList, AuctionHistory, Item, ItemInfo, ItemImg, User, Auction, DirectDeal } = require('../../models')
+const { NftImg, ItemDetail, LikeList, AuctionHistory, Item, ItemInfo, ItemImg, User, Auction, DirectDeal, Nft } = require('../../models')
 const Sequelize = require('sequelize')
 const { createHash } = require('crypto')
 const Op = Sequelize.Op
@@ -188,14 +188,20 @@ let get_qty = async (req,res) => {
         let {size,color} = req.body.selected
         console.log(size,color)
         let qty = await ItemDetail.findOne({where:{item_info_idx:item_id,size:size,color:color}})
+        let qtydata = await Nft.findAll({where:{nft_img_idx:qty.nft_idx,product_status:'판매중'}})
+        console.log(qtydata.length,'dataaaaaaaaaqtych======================')
         let qtyArr = []
-        for(let i=1;i<=qty.qty;i++){
-            qtyArr.push(i)
+        if(qtydata.length!==0){
+            for(let i=1;i<=qtydata.length;i++){
+                qtyArr.push(i)
+            }
         }
+
         data = {
             result_msg:'OK',
             result:qtyArr
         }
+        console.log(qtyArr)
     }catch(e){
         data = {
             result_msg:'Fail',

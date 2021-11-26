@@ -11,7 +11,6 @@ function* directDealView(action){
     const result = yield call(directDealAPI, action.idx)
     const {nick_name, title, description, result_msg, qty, msg} = result.data
 
-    console.log(result.data);
 
     if(result_msg==="OK"){
         yield put({
@@ -83,7 +82,6 @@ function* getMatchQty(data){
 }
 
 function* reqGetMatchQty(){
-    console.log('ddddddddddddddd')
     yield takeLatest('GET_MATCH_QTY_REQUEST',getMatchQty)
 }
 
@@ -110,7 +108,6 @@ function* getMatchColor(data){
 }
 
 function* reqGetMatchColor(){
-    console.log('ddddddddddddddd')
     yield takeLatest('GET_MATCH_SIZE_REQUEST',getMatchColor)
 }
 

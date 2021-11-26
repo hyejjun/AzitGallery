@@ -15,7 +15,6 @@ const Category = (props) => {
     const [List, setList] = useState<number>(0);
     const handleList = (e) => {
         setList(e)
-        console.log(`이 떄는 ??${Type.main}`)
     }
 
     // const category = (E) => {
@@ -36,8 +35,6 @@ const Category = (props) => {
         }
         dispatch(sub_category_REQUEST(data))
     }
-    //console.log(Type)
-//onsole.log(Type.main)
     return (
         <CategoryWrapper>
             <H3>전체 카테고리</H3>

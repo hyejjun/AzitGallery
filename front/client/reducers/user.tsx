@@ -249,7 +249,6 @@ export const Userlist_REQUEST = () => {
 }
 
 export const UserList_SUCCESS = (data) => {
-    console.log(data)
     return {
         type: USER_LIST_SUCCESS,
         data: data

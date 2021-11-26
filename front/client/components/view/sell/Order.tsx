@@ -20,7 +20,10 @@ const Order = (props) => {
     const userAddress = useSelector((state:RootState) => state.user.UserAddress);
     const userIdx = useSelector((state:RootState) => state.user.userIdx);
     const creator = useSelector((state:RootState) => state.view.nick_name);
-   
+    const price = useSelector((state:RootState) => state.view.price)
+    const dealOrderdata = useSelector((state:RootState) => state.deal.orderInfo)
+
+
     const dispatch = useDispatch()
     const [checked, setChecked] = useState<boolean>(false);
     const checkAgreement = (checkedState) => {
@@ -39,7 +42,7 @@ const Order = (props) => {
           type: 'VALUE_TRANSFER',
           from: window.klaytn.selectedAddress,
           to: '0xadbEC8669bbfBd1481aaD736f98De590d37b26Ce',
-          value: window.caver.utils.toPeb('1', 'KLAY'),
+          value: window.caver.utils.toPeb(price, 'KLAY'),
           gas: 8000000
         })
         .once('transactionHash', transactionHash => {
@@ -71,9 +74,10 @@ const Order = (props) => {
         dispatch(direct_deal_REQUEST(data))
         dispatch(KipToken_REQUEST())
         alert('EPI로 거래되셨습니다!')
-        console.log(JSON.stringify(window.location.href).split('ell/')[1].replace("\"", ""))
+        // console.log(JSON.stringify(window.location.href).split('ell/')[1].replace("\"", ""))
         let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
         window.location.href = `/ship/${params}`
+       console.log(dealOrderdata)
     }    
 
     return (

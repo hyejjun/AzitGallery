@@ -5,6 +5,7 @@ import { useSelector } from 'react-redux';
 
 const QtySelect = (props) => {
     const selected = useSelector((state:RootState) => state.view.selected);
+    const qtydata = useSelector((state:RootState) => state.view.qtydata);
     const optionArr = [...props.qtyArr]
     optionArr.unshift('QTY')
     let QtyList = optionArr.map((v,k)=>{
@@ -19,6 +20,7 @@ const QtySelect = (props) => {
         props.flagsetqty(e.target.value)
     }
     const onClick = () => {
+
         if(selected.size==''&&selected.color==''){
             alert('색상과 사이즈를 모두 선택해주세요')
         }else if(selected.size==''){
@@ -26,7 +28,10 @@ const QtySelect = (props) => {
         }else if(selected.color==''){
             alert('색상을 선택해주세요')
         }
-        
+        if(qtydata.length==0){
+            alert('색상과 사이즈에 일치하는 상품의 수량이 모두 소진되었습니다.')
+        }
+
     }
     return(
         <QtySelectCSS value={props.flagqty} onChange={handleChange} onClick={onClick}>

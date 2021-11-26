@@ -2,7 +2,6 @@ import Styled from 'styled-components';
 import React, { useEffect, useState } from "react";
 
 const Category = ({handleCategory, category, bigCategory, smallCategory}) => {
-    // console.log(category)
     const loadBigCategory = () => {
 // {id: 2, main_category_idx: 1, item_code: '102', sub_category_code: '2', sub_category_name: '블라우스'}
 

@@ -23,10 +23,7 @@ function selectCategoryAPI(data){
 }
 
 function* selectCategory(action){
-    
-    
     const result = yield call(selectCategoryAPI, action.data)
-    console.log('saga')
     yield put({
         type:'ITEM_GENDER_SUCCESS',
         data:result.data.ARR
@@ -47,7 +44,6 @@ function itemSearchAPI(data){
 function* itemSearch(action){
     
     const result = yield call(itemSearchAPI, action.data)
-     console.log(`saga까지 왔을까?${result.data.ARR}`);
         yield put({
         type:'ITEM_LIST_SEARCH_SUCCESS',
         data:result.data.ARR
@@ -67,7 +63,6 @@ function sortTypeAPI(data){
 }
 
 function* sortType(action){
-    console.log('되는 건가?')
     const result = yield call(sortTypeAPI, action.data)
         yield put({
         type:'ITEM_RECENT_SUCCESS',

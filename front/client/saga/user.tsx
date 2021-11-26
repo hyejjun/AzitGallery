@@ -40,7 +40,6 @@ function* reqLogin(){
 
 /* 로그아웃 */
 function* logout() {
-    console.log('로그아웃 사가 =============');
 
     yield put({
         type: 'USER_LOGOUT_SUCCESS',
@@ -155,10 +154,6 @@ function userListAPI() {
 
 function* userListSaga(){
     const result = yield call(userListAPI)
-    // console.log(result.data)
-    console.log("result ===== ",result);
-    
-    console.log(result.data.ARR)
     yield put({
         type:'USER_LIST_SUCCESS',
         data:result.data.ARR
