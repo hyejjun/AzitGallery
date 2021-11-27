@@ -69,6 +69,9 @@ const Shippingfrom = () => {
     const handelSubmit = ()=>{
         const params = JSON.stringify(window.location.href).split('ip/')[1].replace("\"", "")
         
+        if(orderer == '' || receiver == '' || phoneNum == '' || address == '' || postNumber == '' || addressDetail == '' || memo == '' || inputStatus == '' ){
+            alert('모든 칸을 채워주세요')
+        }else{
         const shippingData = {
             orderer,
             receiver,
@@ -85,12 +88,13 @@ const Shippingfrom = () => {
         // 여기서 dispatch로 날리고
     
         dispatch(shipInfo_REQUEST(shippingData))
+        console.log('왜 안나와?')
         console.log(UserAddress)
 
         
         console.log(params)
         window.location.href = `/paymentend/${params}`
-
+    }
     }
     
     return (
