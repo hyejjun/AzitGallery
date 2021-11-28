@@ -1,14 +1,17 @@
 import { AnyAction } from 'redux'
 import { HYDRATE } from 'next-redux-wrapper';
+import { RootState } from './index'
 
 export interface DealState {
     dealInfo:object,
-    orderInfo:Array<any>
+    orderInfo:Array<any>,
+    orderNum:number
 }
 
 export const initialState: DealState = {
     dealInfo:{},
-    orderInfo:[]
+    orderInfo:[],
+    orderNum:0
 }
 
 export const DIRECT_DEAL_REQUEST = "DIRECT_DEAL_REQUEST"  as const;
@@ -33,6 +36,8 @@ export const direct_deal_ERROR = () => {
     }
 }
 
+
+
 type DirectDealAction =
     | ReturnType<typeof direct_deal_REQUEST>
     | ReturnType<typeof direct_deal_SUCCESS>
@@ -47,11 +52,9 @@ type DirectDealAction =
                     data:action.data
                 }
             case DIRECT_DEAL_SUCCESS:
-                console.log(action.data)
                 return{
                     ...state,
-                    orderInfo:action.data,
-                    
+                    orderNum:action.data,
                 }
             case DIRECT_DEAL_ERROR:
                 return{

@@ -5,14 +5,14 @@ import {url} from './url'
 
 
 
+
+
 function DealAPI(data){
     return axios.post(`${url}/deal/direct`, data.data) 
 }
 function* reqDealSaga(data){
     
     const result = yield call(DealAPI,data)
-    console.log(result)
-    console.log(result.data.result,'deallllllllllllllllllllllllllllllllllllllllllllllll')
     if(result.data.result_msg=='OK'){
         yield put({
             type:'DIRECT_DEAL_SUCCESS',
