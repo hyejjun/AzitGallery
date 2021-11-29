@@ -153,7 +153,7 @@ const Selled = () => {
     const compeltedList: JSX.Element[] = Arr2.map((ele) =>
         <React.Fragment key={ele.id}>
             <NFTFourList>
-                <Alert severity="success">배송 등록 완료!</Alert>
+                <Alert severity="success" onClick={setDelivery}>배송 등록 완료!</Alert>
                 <NFT>
                     <NFTImg>
                         <div><img /></div>

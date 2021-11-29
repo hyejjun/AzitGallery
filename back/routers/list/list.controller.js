@@ -1,4 +1,4 @@
-const {User, Seller, ItemInfo,ItemDetail,ItemImg} = require('../../models');
+const {User, Seller, ItemInfo,ItemDetail,ItemImg, Orders, OrderDetail} = require('../../models');
 const mysql = require('mysql')
 const pool = require('../pool');
 const { user_info } = require('../user/user.controller');
@@ -153,18 +153,24 @@ let mynft_view = async(req,res) => {
 let my_nft_all_post = async (req,res) => {
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
-    let query=
-    `
-    select a.final_order_state,b.item_code,b.size,c.title,c.creator,c.item_hits,d.nick_name 
+    //let {kaikasaddress} = req.body
+    console.log(keyObject,'keyobjectttttttttttt')
+    let user_idx = await User.findOne({where:{kaikas_address:keyObject}})
+    user_idx = user_idx.dataValues.user_idx
+    let query = `
+    select a.order_num,b.item_code, b.item_id, b.price,a.final_order_state, a.order_date,a.memo,c.main_img_link,d.nick_name,b.size,b.color,c.title,b.id,b.sell_Type
     from orders as a join order_detail as b 
     on a.order_num=b.order_num join item_info as c 
-    on c.item_code=substring(b.item_code,1,16) 
-    join user as d on a.user_idx=d.user_idx 
-    where d.user_idx=c.creator 
-    and d.kaikas_address='${keyObject}' 
-    order by c.registered_at;
-    `    
-   queryset(req,res,query)
+    on b.item_id=c.item_id join seller as d 
+    on c.creator=d.user_idx where a.user_idx="${user_idx}";
+    `
+    
+
+
+    
+    queryset(req,res,query)
+   
+    
 }
 
 
@@ -206,56 +212,13 @@ let not_sell_post = async(req,res) => {
     // select distinct a.creator,a.title, a.item_code, a.item_hits from item_info as a join item_detail as b on a.item_id=b.item_info_idx where a.creator=2 and b.product_status=0;
     */
 }
-// 구매한 nft중 조회수 높은 순
-let mynft_hit_post = (req,res) => {
-    let { userAddress } = req.body
-    let query =
-    `
-    select a.final_order_state,b.item_code,b.size,c.title,c.creator,c.item_hits,d.nick_name 
-    from orders as a join order_detail as b 
-    on a.order_num=b.order_num join item_info as c 
-    on c.item_code=substring(b.item_code,1,16) 
-    join user as d on a.user_idx=d.user_idx 
-    where d.user_idx=c.creator 
-    and d.kaikas_address=${userAddress} 
-    order by c.item_hits;
-    `
-    queryset(req,res,query)
-}
 
 
-// `
-// select * from item_detail as a join item_info as b 
-// on a.item_info_idx=b.item_id join user as c 
-// on c.user_idx=b.creator 
-// where c.kaikas_address='0x2618f9b36086912b479ba6a6fff6abcfcc032398' and a.product_status=1 
-// order by b.item_hits desc;
-// `
-// 판매된 nft중 조회수 높은 순
-let sellnft_hit_post = (req,res) => {
-    let { userAddress } = req.body
-    let query =
-    `
-    select * from buyer_list as a join item_info as b on substring(a.item_code,1,16)=b.item_code where a.buyer_idx=1
-    order by b.item_hits desc;
-    `
-    queryset(req,res,query)
-}
 
-// 미판매된 nft중 조회수 높은 순
-let notsellnft_hit_post = (req,res) => {
-    let { userAddress } = req.body
-    let query =
-    `
-    select a.item_code,b.title,b.item_hits from item_detail as a join item_info as b 
-    on a.item_info_idx=b.item_id join user as c 
-    on c.user_idx=b.creator 
-    where c.kaikas_address=${userAddress} and a.product_status=0 
-    order by b.item_hits;
-    `
-    queryset(req,res,query)
 
-}
+
+
+
 
 let queryset = (req,res,query) => {
     let data = {}
@@ -273,6 +236,7 @@ let queryset = (req,res,query) => {
                     result_msg:'OK',
                     result
                 }
+                console.log(data)
                 res.json(data)
             }
             connection.release()
@@ -289,8 +253,5 @@ module.exports = {
     my_nft_all_post,
     sold_nft_post,
     not_sell_post,
-    mynft_hit_post,
-    sellnft_hit_post,
-    notsellnft_hit_post,
     mynft_view,
 }

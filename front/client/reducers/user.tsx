@@ -21,6 +21,8 @@ export interface UserState {
     emailBool: boolean;
     adminApproval : number;
     emailValidation : boolean;
+    itemcode:string;
+    check:boolean;
     data:any
 }
 
@@ -42,6 +44,8 @@ export const initialState: UserState = {
     emailBool: false,
     adminApproval : 0,
     emailValidation : false,
+    itemcode:'',
+    check:false,
     data:[]
 };
 
@@ -90,6 +94,10 @@ export const USER_LIST_ERROR = "USER_LIST_ERROR" as const;
 export const USER_INFO_REQUEST = "USER_INFO_REQUEST" as const;
 export const USER_INFO_SUCCESS = "USER_INFO_SUCCESS" as const;
 export const USER_INFO_ERROR = "USER_INFO_ERROR" as const;
+
+export const UPDATE_SHIP_STATE_REQUEST = "UPDATE_SHIP_STATE_REQUEST" as const;
+export const UPDATE_SHIP_STATE_SUCCESS = "UPDATE_SHIP_STATE_SUCCESS" as const;
+export const UPDATE_SHIP_STATE_ERROR = "UPDATE_SHIP_STATE_ERROR" as const;
 
 
 
@@ -335,6 +343,28 @@ export const UserInfo_ERROR = () => {
     }
 }
 
+export const Update_ship_state_REQUEST = (data) => {
+    return {
+        type: UPDATE_SHIP_STATE_REQUEST,
+        data
+    }
+}
+
+export const Update_ship_state_SUCCESS = (data) => {
+    return {
+        type: UPDATE_SHIP_STATE_SUCCESS,
+        data
+    }
+}
+
+export const Update_ship_state_ERROR = () => {
+    return {
+        type: UPDATE_SHIP_STATE_ERROR,
+        
+        
+    }
+}
+
 
 
 
@@ -383,6 +413,10 @@ type UserAction =
     | ReturnType<typeof UserInfo_REQUEST>
     | ReturnType<typeof UserInfo_SUCCESS>
     | ReturnType<typeof UserInfo_ERROR>
+    
+    | ReturnType<typeof Update_ship_state_REQUEST>
+    | ReturnType<typeof Update_ship_state_SUCCESS>
+    | ReturnType<typeof Update_ship_state_ERROR>
 
 
 const reducer = (state: UserState = initialState, action: UserAction) => {
@@ -570,7 +604,21 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
         case USER_INFO_ERROR: 
             return {
                 ...state,
-            }     
+            }
+        case UPDATE_SHIP_STATE_REQUEST:
+            return{
+                ...state,
+                data:action.data
+            }
+        case UPDATE_SHIP_STATE_SUCCESS:
+            return{
+                ...state,
+                check:action.data            
+            }
+        case UPDATE_SHIP_STATE_ERROR:
+            return{
+                ...state
+            }
 
         default:
             return state;

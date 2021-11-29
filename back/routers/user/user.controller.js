@@ -3,7 +3,7 @@ const qs = require('qs');
 const nodemailer = require('nodemailer');
 const smtpTransporter = require('nodemailer-smtp-transport');
 require('dotenv').config()
-const { auction, deliver, item, User, Seller, OrderDetail } = require("../../models");
+const { auction, deliver, item, User, Seller, OrderDetail, Orders } = require("../../models");
 
 
 
@@ -261,6 +261,58 @@ let user_info = async (req,res) => {
     res.json(data)
 }
 
+let ship_update = async (req,res) => {
+    console.log(req.body.data)
+    let data
+    try{
+        let item_code = req.body.data
+        let order_detail = await OrderDetail.update({
+            sell_Type:1
+            // 주석 sell_Type을 다른 order_state로 변경 할 것
+            },{
+                where:{item_code:item_code}
+            })
+        let order_detail_num = await OrderDetail.findOne({
+                where:{
+                    item_code:item_code
+                }
+            })
+
+        let finalState = await OrderDetail.findAll({
+                where:{
+                    sell_Type:0,
+                    order_num:order_detail_num.order_num
+                }
+            })
+
+        if(finalState.length==0){
+            let orderRes = await Orders.update({
+                    final_order_state:'배송완료'
+                },{
+                    where:{
+                        order_num:order_detail_num.order_num
+                    }
+                })
+        }
+        data = {
+            result_msg:'OK',
+            result:true
+        }
+
+
+    }catch(e){
+        data = {
+            result_msg:'Fail'
+        }
+    }   
+    res.json(data)
+    
+    
+
+
+
+}
+
 module.exports = {
     seller_admin,
     // adduser,
@@ -272,5 +324,6 @@ module.exports = {
     selleradmin_deny,
     selleradmin_wait,
     user_info,
-    email_check
+    email_check,
+    ship_update
 }

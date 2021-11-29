@@ -19,12 +19,18 @@ const MyNftComponent = () => {
     const [sellerChk, setSellerChk] = useState<boolean>(false);
     const user:UserState = useSelector((state:RootState) => state.user);
     const list:ListState = useSelector((state:RootState) => state.list);
+    const itemcode_db = useSelector((state:RootState)=>state.user.itemcode)
+
 
     useEffect(()=>{
         if(list.view){
             setSellerChk(true);
         }
     },[list.view])
+
+    // useEffect(()=>{
+        
+    // },[check])
 
     const btn1 = () => {
         dispatch(myNft_all_REQUEST(user.UserAddress))

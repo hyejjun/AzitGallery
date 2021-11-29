@@ -219,6 +219,37 @@ function* reqUesrInfo(){
     yield takeLatest('USER_INFO_REQUEST',userInfoSaga)
 }
 
+
+
+
+
+function reqUpdateShipAPI(data){
+    console.log(data.data)
+    return axios.post(`${url}/user/shipch`, data) 
+}
+function* reqUpdateShipSaga(data){
+    
+    const result = yield call(reqUpdateShipAPI,data)
+    if(result.data.result_msg=='OK'){
+        yield put({
+            type:'UPDATE_SHIP_STATE_SUCCESS',
+            data:result.data.result
+        })
+    }else{
+        yield put({
+            type:'UPDATE_SHIP_STATE_ERROR'
+        })
+    }
+
+
+}
+
+function* reqUpdateShip(){
+    console.log('update')
+    yield takeLatest('UPDATE_SHIP_STATE_REQUEST',reqUpdateShipSaga)
+}
+
+
 export default function* userSaga(){
     yield all([
         fork(reqLogin),
@@ -231,6 +262,7 @@ export default function* userSaga(){
         fork(reqWaitEmail),
         fork(reqUesrInfo),
         fork(reqNickname),
-        fork(reqEmail), 
+        fork(reqEmail),
+        fork(reqUpdateShip) 
     ])
 }
