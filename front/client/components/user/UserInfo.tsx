@@ -19,9 +19,6 @@ const UserInfo = () => {
     const adminApproval = useSelector((state: RootState) => state.user.adminApproval);
     const emailValidation = useSelector((state: RootState) => state.user.emailValidation);
 
-
-    console.log("adminApproval ====", adminApproval);
-    console.log("emailValidation ====", emailValidation);
     
 
     useEffect(() => {

@@ -21,11 +21,16 @@ const Order = (props) => {
     const userIdx = useSelector((state:RootState) => state.user.userIdx);
     const creator = useSelector((state:RootState) => state.view.nick_name);
     const price = useSelector((state:RootState) => state.view.price)
-    const dealOrderdata = useSelector((state:RootState) => state.deal.orderInfo)
+    const user = useSelector((state:RootState) => state.user)
+    const orderNum = useSelector((state:RootState)=>state.deal.orderNum)
+    
+ 
+    
 
 
     const dispatch = useDispatch()
     const [checked, setChecked] = useState<boolean>(false);
+    const [ch, setCh] = useState<boolean>(false);
     const checkAgreement = (checkedState) => {
         setChecked(checkedState)
     }
@@ -54,8 +59,8 @@ const Order = (props) => {
         .once('error', error => {
           console.log('error', error)
         })
-
     }
+
     let data 
     data = {
         item_id:props.item_id,
@@ -64,21 +69,32 @@ const Order = (props) => {
         selected,
         userAddress:userAddress,
         userIdx:userIdx,
-        creator:creator
-        
-        
+        creator:creator 
     }
-    //dispatch(direct_deal_REQUEST(data))
+
 
     const Purchase = () => {
+        
+        dispatch(KipToken_REQUEST())       
         dispatch(direct_deal_REQUEST(data))
-        dispatch(KipToken_REQUEST())
-        alert('EPI로 거래되셨습니다!')
-        // console.log(JSON.stringify(window.location.href).split('ell/')[1].replace("\"", ""))
-        let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
-        window.location.href = `/ship/${params}`
-       console.log(dealOrderdata)
-    }    
+        setCh(true)
+        
+    }
+
+    useEffect(()=>{
+        if(ch==true){
+            alert('EPI로 거래되셨습니다.')
+            window.location.href = `/ship/${orderNum}`
+        }
+        
+    },[orderNum])
+    
+   
+  
+    
+    
+
+    
 
     return (
         <>

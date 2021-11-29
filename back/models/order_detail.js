@@ -25,8 +25,6 @@ module.exports = class OrderDetail extends Sequelize.Model{
             },
             order_num:{
                 type:Sequelize.INTEGER,
-                autoIncrement:true,
-                primaryKey:true,
             },
             sell_Type:{
                 type:Sequelize.BOOLEAN,
@@ -43,7 +41,7 @@ module.exports = class OrderDetail extends Sequelize.Model{
         })
     }
     static associate(db){
-        db.OrderDetail.hasOne(db.Orders,{foreignKey:'order_num',targetKey:'order_num'}),
+        db.OrderDetail.belongsTo(db.Orders,{foreignKey:'order_num',targetKey:'order_num'}),
         db.OrderDetail.belongsTo(db.ItemInfo,{foreignKey:'item_id',targetKey:'item_id'})
     }
 }

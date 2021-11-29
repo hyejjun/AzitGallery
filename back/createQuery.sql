@@ -20,7 +20,7 @@ insert into auction (auction_idx) value(22);
 insert into auction (auction_idx) value(23);
 insert into auction (auction_idx) value(24);
 insert into auction (auction_idx) value(25);
-insert into auction (auction_idx) value(26);
+insert into auction (auction_idx) value(26); 
 
 insert into item_info (creator, item_id, item_code, description, title, registered_at, sell_type, item_hits, category_id) values (1, 1, CONCAT(UNIX_TIMESTAMP(NOW()),101), '기능성 스웨터1', '기능성 스웨터1', now(), false, 5, 01);
 insert into item_info (creator, item_id, item_code, description, title, registered_at, sell_type, item_hits, category_id) values (1, 2, CONCAT(UNIX_TIMESTAMP(NOW()),102), '기능성 스웨터2', '기능성 스웨터2', now(), false, 5, 01);

@@ -5,38 +5,40 @@ const pool = require('../pool');
 let deal_post = async (req,res) => {
     console.log('eeeeeeeeeeeeeeeeeeee',req.body,'reeeeeeeeeeeeeeeeeeeeeee')
     let data
+    let total_order_num = []
     try{
         let {size,color,qty} = req.body.selected
         let {item_id,price,currency,userAddress,userIdx,creator} = req.body
         let data = {}
         let orderdata = []
+        let result4 = await Orders.create({
+            total_price:price,
+            order_date:null,
+            buyer:userIdx,
+            order_num:null,
+            final_order_state:0,
+            user_idx:userIdx
+        })
         for(let i=1; i<=qty; i++){
             let result1 = await ItemDetail.findOne({where:{item_info_idx:item_id,size:size,color:color}})
             let result2 = await Nft.findAll({where:{nft_img_idx:result1.nft_idx,product_status:'판매중'}})
             let nft_idx = Math.min(result2[0].id)
-            console.log(result2,'resulttttttttttttttttttttttttt')
-            console.log(nft_idx,'nft_idx')
-            console.log(result2[0].dataValues.id)
+
+
             let result3 = await OrderDetail.create({
                 size,
                 color,
                 shipper_idx:userIdx,
                 item_code:`${result1.item_code}-${nft_idx}`,
                 price:price,
-                order_num:null,
+                order_num:result4.order_num,
                 item_id,
                 sell_type:0
             })
             
+            console.log(result3,'order_detail=====================')
             orderdata.push(result3.dataValues)
-            let result4 = await Orders.create({
-                total_price:price,
-                order_date:null,
-                buyer:userIdx,
-                order_num:result3.order_num,
-                final_order_state:0,
-                user_idx:userIdx
-            })
+
             let result5 = await Nft.update({
                 product_status:'판매완료'
             },{
@@ -47,9 +49,9 @@ let deal_post = async (req,res) => {
      
             data = {
                 result_msg:'OK',
-                result:orderdata
+                result:result4.order_num
             }
-            console.log(orderdata,'orderdataaaaaaaaaaaaaaaaaaaaaaaaaaa')
+            console.log(result4.order_num,'orderdataaaaaaaaaaaaaaaaaaaaaaaaaaa')
         } 
         
        
