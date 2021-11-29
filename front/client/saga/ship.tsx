@@ -9,7 +9,6 @@ function shipAPI(data){
 
 function* shipInfo(action){  
     const result = yield call(shipAPI, action.data)
-    console.log(result.data.result_msg,'asdfffffffffffffff')
     if(result.data.result_msg=='OK'){
         yield put({
             type:'SHIPINFO_INSERT_SUCCESS',

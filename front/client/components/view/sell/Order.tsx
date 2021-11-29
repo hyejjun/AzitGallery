@@ -78,13 +78,7 @@ const Order = (props) => {
         dispatch(KipToken_REQUEST())       
         dispatch(direct_deal_REQUEST(data))
         setCh(true)
-        //alertClick()
-        // if(ch==true){
-        //     window.location.href = `/ship/${orderNum}`
-        // }
-        //let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
-        //window.location.href = `/ship/${orderNum}`
-        // console.log(JSON.stringify(window.location.href).split('ell/')[1].replace("\"", ""))
+        
     }
 
     useEffect(()=>{

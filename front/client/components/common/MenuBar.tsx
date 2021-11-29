@@ -111,9 +111,7 @@ const MenuBar = () => {
             }
         }catch(err){
             alert('로그인 실패')
-        }
-        
-        
+        }  
         
     }
     useEffect(() => {
