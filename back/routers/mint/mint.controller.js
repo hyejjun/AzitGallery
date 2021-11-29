@@ -231,9 +231,9 @@ let mint_nft_post = async (req, res) => {
     for (let i = 0; i < nft_insert_result.length; i++) {
       let colot_nft = nft_color_arr[i]
       let size_nft = nft_size_arr[i]
-      let idx_nft = parseInt(idx_all[i])+1
+      let idx_nft = parseInt(idx_all[i]) + 1
       let name_nft = `${name}_${nft_color_arr[i]}_${nft_size_arr[i]}_${idx_nft}`
-      
+
       setTimeout(() => {
         // 동시에 실행되면 known transaction 오류가 나기 때문에 setTimeout을 통해 딜레이를 줌
         // 500ms정도면 괜찮은 것 같음..
@@ -325,7 +325,7 @@ let mint_nft_post = async (req, res) => {
 
     const kip17 = await caver.kct.kip17.deploy(
       {
-        title : strname,
+        title: strname,
         name: name_nft,
         symbol: 'EPI',
       },
@@ -351,7 +351,7 @@ let mint_nft_post = async (req, res) => {
       // 본 예제에서는 임의의 sellerID와 productID를 json 형태로 저장합니다.
       // 토큰 이미지 URL이나 기타 정보를 tokenURI에 저장할 수 있습니다.
       tokenURI = JSON.stringify({
-        title : strname,
+        title: strname,
         color: colot_nft,
         size: size_nft,
         idx: stridx
@@ -405,7 +405,7 @@ let KIP7Token_transfer = async () => {
     );
     caver.wallet.add(singleKeyRing);
   }
- console.log(`이르음 제데ㅐ로 나오겠지 ${kip7Instance.name().then(console.log)}`)
+  console.log(`이르음 제데ㅐ로 나오겠지 ${kip7Instance.name().then(console.log)}`)
   const kip7Instance = new caver.kct.kip7('0xbd929FED827F26E84ca8b66A35Ef694F5829f9De')
   kip7Instance.name().then(console.log)
   const opts = { from: keyring.address }

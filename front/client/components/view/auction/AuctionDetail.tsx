@@ -10,8 +10,9 @@ import { RootState } from "../../../reducers"
 
 const AuctionDetail = (props) => {
     const dispatch = useDispatch()
-    const User = useSelector((state:RootState) => state.user);    
-    const Auction = useSelector((state:RootState) => state.auction);    
+    const User = useSelector((state: RootState) => state.user);
+    const Auction = useSelector((state: RootState) => state.auction);
+    const view = useSelector((state: RootState) => state.view);
     const [num, setNum] = useState<number>(5);
     const [price, setPrice] = useState<number>(0);
 
@@ -33,32 +34,18 @@ const AuctionDetail = (props) => {
     const [balacne, setBalance] = useState<number>(0);
     const [balanceCheck, setBalanceCheck] = useState<boolean>(false);       // 잔액확인
 
-    useEffect (()=>{
+    useEffect(() => {
         setBalance(yourBalance)
-    },[])
+    }, [])
 
     const lowBalance = () => {
-        // if (balacne <= maxPrice){
-        //     alert('잔액을 확인해주세요')
-        // }else{
-        //     if(auctionPrice <= maxPrice || auctionPrice > yourBalance){
-        //         alert('입찰 금액을 확인해주세요')
-        //     } else {
-        //         setBalanceCheck(prev => !prev)
-        //         alert('입찰 되었습니다')
-        //         // 입찰하고 어떻게 처리할지...
-        //         setAuctionPrice(0)
-        //         window.location.reload();
-        //     }
-        // }
-
-        if(Number(auctionPrice) <= Number(Auction.current)){
+        if (Number(auctionPrice) <= Number(Auction.current)) {
             alert('현재가보다 높게 제시해주세요')
             setOpenAuction(prev => !prev)
         } else {
-            
+
             let params = JSON.stringify(window.location.href).split('ion/')[1].replace("\"", "")
-                    let data = {
+            let data = {
                 params: params,
                 user: User.UserAddress,
                 price: auctionPrice
@@ -76,44 +63,43 @@ const AuctionDetail = (props) => {
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         let params = JSON.stringify(window.location.href).split('ion/')[1].replace("\"", "")
         let data = {
             params: params,
         }
         dispatch(Auction_Current_REQUEST(data))
-        console.log(`호로로로롤로로 종료 일 ${Auction.endDate}`)
-        console.log(`호로로로롤로로 종료 일 ${Auction.buyer}`)
+
         setEndBool(Auction.endDate)
         console.log(`호로로로롤로로 불리언 값변화 ${endBool}`)
-        if(Auction.buyer != undefined && Auction.buyer == window.klaytn.selectedAddress){
+        if (Auction.buyer != undefined && Auction.buyer == window.klaytn.selectedAddress) {
             window.caver.klay
-            .sendTransaction({
-              type: 'VALUE_TRANSFER',
-              from: window.klaytn.selectedAddress,
-              to: '0x325B6d2a7eE98a868ad576fD261f561E36F097B1',
-              value: window.caver.utils.toPeb('1', 'KLAY'),
-              gas: 8000000
-            })
-            .once('transactionHash', transactionHash => {
-              console.log('txHash', transactionHash)
-            })
-            .once('receipt', receipt => {
-              console.log('receipt', receipt)
-            })
-            .once('error', error => {
-              console.log('error', error)
-            })
-    
-            console.log(JSON.stringify(window.location.href).split('ell/')[1].replace("\"", ""))
+                .sendTransaction({
+                    type: 'VALUE_TRANSFER',
+                    from: window.klaytn.selectedAddress,
+                    to: '0x325B6d2a7eE98a868ad576fD261f561E36F097B1',
+                    value: window.caver.utils.toPeb('1', 'KLAY'),
+                    gas: 8000000
+                })
+                .once('transactionHash', transactionHash => {
+                    console.log('txHash', transactionHash)
+                })
+                .once('receipt', receipt => {
+                    console.log('receipt', receipt)
+                })
+                .once('error', error => {
+                    console.log('error', error)
+                })
+
+            // console.log(JSON.stringify(window.location.href).split('ell/')[1].replace("\"", ""))
             let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
             window.location.href = `/ship/${params}`
         }
-        if(Auction.endDate == true){
+        if (Auction.endDate == true) {
             alert('경매 종료')
 
         }
-    },[])
+    }, [])
 
 
     const auctionValue = {
@@ -137,20 +123,20 @@ const AuctionDetail = (props) => {
                 </ul>
                 <ul className="auctionContent">
                     <li>{num}</li>
-                    <li>{Auction.current}ETH</li>
-                    <li>{Auction.endDate.toString()}</li>
+                    <li>{Auction.current}KLAY</li>
+                    <li>{view.kr_end_date}</li>
                 </ul>
                 <BtnWrap>
                     {endBool == false
-                    ? 
-                    <BuyBtnCSS className="auctionBtn" onClick={auctionOpen}>
-                        <button>경매 참여</button>
-                    </BuyBtnCSS>
-                    : 
-                    <EndBtnCSS className="auctionBtn">
-                        <button>경매 종료</button>
-                    </EndBtnCSS>}
-                    <JoinAcution openAuction={openAuction} auctionOpen={auctionOpen} auctionValue={auctionValue} bid_price={props.bid_price}/>
+                        ?
+                        <BuyBtnCSS className="auctionBtn" onClick={auctionOpen}>
+                            <button>경매 참여</button>
+                        </BuyBtnCSS>
+                        :
+                        <EndBtnCSS className="auctionBtn">
+                            <button>경매 종료</button>
+                        </EndBtnCSS>}
+                    <JoinAcution openAuction={openAuction} auctionOpen={auctionOpen} auctionValue={auctionValue} bid_price={props.bid_price} />
                 </BtnWrap>
             </AuctionDetailWrap>
         </>
@@ -178,7 +164,7 @@ const AuctionDetailWrap = Styled.div`
 
     .auctionContent{
         & > li {
-            width: 150px;
+            width: 400px;
             height : 50px;
             font-size : 20px;
             font-weight : bold;
@@ -187,9 +173,9 @@ const AuctionDetailWrap = Styled.div`
 `
 
 const BtnWrap = Styled.div`
-    width: 100%;
-    padding: 2% 2% 2% 55%;
-    box-sizing: border-box;
+    width: 200px;
+    height: 100px;
+    margin-left: 33%;
 
     .auctionBtn{
 

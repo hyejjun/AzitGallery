@@ -8,7 +8,7 @@ export interface ViewState {
     error: string;
     UserAddress: string;
     verify: number;
-    nick_name, title, description,size,color,price,bid_price, currency, left_time: string;
+    nick_name, title, description,size,color,price,bid_price, currency, left_time, kr_end_date: string;
     item_img_link : Array<string>,
     directView: {};
 
@@ -30,6 +30,7 @@ export const initialState: ViewState = {
     bid_price : '',
     currency : '',
     left_time : '',
+    kr_end_date : '',
     item_img_link: [],
     directView: {},
 };
@@ -146,7 +147,7 @@ const reducer = (state: ViewState = initialState, action: ViewAction) => {
                 color : action.list.color,
                 bid_price : action.list.bid_price,
                 currency : action.list.currency,
-                // left_time : action.list.left_time,
+                kr_end_date : action.list.kr_end_date,
                 item_img_link: action.list.item_img_link,
             }
         case AUCTION_VIEW_ERROR:

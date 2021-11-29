@@ -219,7 +219,7 @@ const AddItemComponent = () => {
     // 통화 선택
     const handleCurrency = (e: any) => {
         let { value } = e.target
-        setCurrency(value)
+        setCurrency('KLAY')
     }
     // 옷 카테고리 선택
     function handleCategory(e: any, type: string) {
