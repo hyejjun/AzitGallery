@@ -14,8 +14,8 @@ router.post('/mynftview',controller.mynft_view)
 router.post('/mynftall',controller.my_nft_all_post)
 router.post('/soldnft',controller.sold_nft_post)
 router.post('/notsellnft',controller.not_sell_post)
-router.post('/mynftbyhits',controller.mynft_hit_post)
-router.post('/sellnftbyhits',controller.sellnft_hit_post)
-router.post('/notsellnftbyhits',controller.notsellnft_hit_post)
+// router.post('/mynftbyhits',controller.mynft_hit_post)
+// router.post('/sellnftbyhits',controller.sellnft_hit_post)
+// router.post('/notsellnftbyhits',controller.notsellnft_hit_post)
 
 module.exports = router

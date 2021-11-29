@@ -23,4 +23,6 @@ router.post('/selleradminwait',controller.selleradmin_wait)
 
 router.post('/userinfo',controller.user_info)
 
+router.post ('/shipch',controller.ship_update)
+
 module.exports = router

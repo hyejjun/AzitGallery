@@ -32,8 +32,8 @@ module.exports = class Orders extends Sequelize.Model{
                 primaryKey:true,
             },
             final_order_state:{
-                type:Sequelize.BOOLEAN,
-                comment:'true -> 전체 배송완료시'
+                type:Sequelize.STRING(30),
+                comment:'배송준비중/송장접수/배송시작/배송중/배송완료'
             },
             memo:{
                 type:Sequelize.STRING(50),

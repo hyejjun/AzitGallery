@@ -14,6 +14,7 @@ let deal_post = async (req,res) => {
         let result4 = await Orders.create({
             total_price:price,
             order_date:null,
+            final_order_state:'배송준비중',
             buyer:userIdx,
             order_num:null,
             final_order_state:0,
