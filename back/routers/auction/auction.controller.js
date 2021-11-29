@@ -1,58 +1,27 @@
 // const { now } = require('sequelize/types/lib/utils')
 const { AuctionHistory, Auction, ItemInfo, User, BuyerList } = require('../../models')
-const option = {
-    headers: [
-        {
-            name: "Authorization",
-            //https://console.klaytnapi.com/ko/security/credential 여기서 발급
-            value: "Basic " + Buffer.from("KASKBA2AA6QQ75FNV05WDEZE" + ":" + "9Yh7tA0GwS7h6aUxUYIbEee5oQUtXpPdHbKLj-ga").toString("base64"),
-        },
-        { name: "x-krn", value: "krn:1001:node" },
-    ],
-};
 
-const Caver = require("caver-js");
-const caver = new Caver(
-    new Caver.providers.HttpProvider(
-        "https://node-api.klaytnapi.com/v1/klaytn",
-        option
-    )
-);
+const {sendKlay} = require('../../klaytn/kip7_deploy')
+const config = require('../../klaytn/config');
+const caver = config.caver;
+const developerKey = config.developerKey;
+
+const keyring = caver.wallet.keyring.createFromPrivateKey(developerKey);
+if (!caver.wallet.getKeyring(keyring.address)) {
+  const singleKeyRing = caver.wallet.keyring.createFromPrivateKey(developerKey);
+  caver.wallet.add(singleKeyRing);
+}
+
+
 /* 배송 정보 */
 
 let auction_price_post = async (req, res) => {
-
-    const { params, user, price } = req.body
+    console.log(req.body);
+    const { params, user, price, prevWallet, prevAmount } = req.body
     console.log("유저 === ", user)
     let result = await AuctionHistory.create({ auc_history_idx: params, bidder: user, bid_price: price, currency: 'KLAY' })
-    const { id } = result.dataValues
 
-    let result2 = await AuctionHistory.findAll({ where: { auc_history_idx: params } })
-    console.log(result2);
-    let walletArr = []
-    result2.forEach((v, k) => {
-        if (v.dataValues.id === id - 1){
-            walletArr.push(v.dataValues.bidder)
-            walletArr.push(v.dataValues.bid_price)
-        }
-    })
-    console.log("walletArr === ", walletArr);
-
-
-    const refund = (wallet, amount) => {
-        caver.klay
-            .sendTransaction({
-                type: 'VALUE_TRANSFER',
-                from: '0x62B8769D6eDc718d90CB8884cA7F390e9b9C7466',
-                to: `${wallet}`,
-                value: caver.utils.toPeb(`${amount}`, 'KLAY'),
-                gas: 8000000
-            })
-    }
-    if (walletArr[0] !== 1) {
-        refund(walletArr[0], walletArr[1])
-    }
-
+    sendKlay(prevWallet, prevAmount)
 
     let iteminfo = await ItemInfo.findOne({ where: { item_id: params } })
     let userinfo = await User.findOne({ where: { kaikas_address: user } })
@@ -67,7 +36,6 @@ let auction_price_post = async (req, res) => {
         await BuyerList.update({ item_code: iteminfo.item_code, buyer_idx: userinfo.user_idx, sender_idx: iteminfo.creator }, { where: { item_code: iteminfo.item_code } })
     }
 
-    res.json()
 }
 
 
@@ -109,6 +77,12 @@ let auction_current_post = async (req, res) => {
     }
 
     let auction_boolean2 = await Auction.findOne({ where: { auction_idx: params } })
+
+    let getprevbidder = await AuctionHistory.findOne({ where: { auc_history_idx: params }, order: [['bid_date', 'desc']] })
+    // console.log(getprevbidder);
+
+    const prev_bidder = getprevbidder.dataValues.bidder
+    const prev_price = getprevbidder.dataValues.bid_price
 
     console.log(`이거 `)
     if (auction_boolean2.bid_boolean == 1) {
@@ -180,7 +154,9 @@ let auction_current_post = async (req, res) => {
             current: bid_price,
             endDate: endBool,
             bid_boolean: result2.bid_boolean,
-            buyer: buyer
+            buyer: buyer,
+            prev_bidder,
+            prev_price
         }
         res.json(data)
     } else {
@@ -188,6 +164,8 @@ let auction_current_post = async (req, res) => {
             current: bid_price,
             endDate: endBool,
             bid_boolean: result2.bid_boolean,
+            prev_bidder,
+            prev_price
         }
         res.json(data)
     }

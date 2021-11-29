@@ -11,8 +11,6 @@ function AuctionPriceAPI(data) {
 
 function* AuctionPriceSaga(action){
     const result = yield call(AuctionPriceAPI, action.data)
-
- 
 }
 
 function* reqAuctionPrice(){
@@ -28,11 +26,15 @@ function AuctionCurrentAPI(data) {
 
 function* AuctionCurrentSaga(action){
     const result = yield call(AuctionCurrentAPI, action.data)
+    console.log('답 옴 -===', result);
+    
         yield put({
             type:'AUCTION_CURRENT_SUCCESS',
             current:result.data.current,
             endDate:result.data.endDate,
-            buyer:result.data.buyer
+            buyer:result.data.buyer,
+            prevWallet : result.data.prev_bidder,
+            prevAmount : result.data.prev_price,
         })
 
  

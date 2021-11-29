@@ -53,26 +53,7 @@ let get_shipinfo = async (req,res)=>{
 
 
 
-    
-    //const USERRESULT = await User.findOne({where:{kaikas_address:UserAddress}})
-    //const params_item = await ItemInfo.findOne({where:{item_id :params}})
 
-    //console.log(params)
-
-    //     await OrderDetail.create({
-    //         size:'blue',color:'orderer',order_qty:45,shipper_idx:45,item_code:'phoneNum',price:1,item_id:params
-    //     })
-
-    //    const result =  await Orders.create({
-    //         total_price:55500,buyer:orderer,receiver:receiver,receiver_address:buyerAddress,receiver_contact:phoneNum,final_order_state:true,memo:memo,user_idx:USERRESULT.user_idx
-    //     })
-
-    //     await ShipInfo.create({
-    //         delivery_company:'55500',post_num:'orderer',item_delivery_state:'배송 중'
-    //     })
-
-    //     res.json()
-    res.json('asdf')
 }
 
 /* 구매 정보 */
@@ -96,8 +77,25 @@ let send_shipinfo = async (req,res)=>{
 
 
 let get_delivery_info = async (req,res)=>{
+    console.log(req.body,'req.bodyyyyyyyyyyyyyy=')
+    let { selectDeliveryCompany,deliveryNum,itemcode } = req.body
+    let orderidx = await OrderDetail.findOne({
+        where:{
+            item_code:itemcode
+        }
+    })
+    let shipinsert = await ShipInfo.update({
+        delivery_company:selectDeliveryCompany,
+        post_num:deliveryNum,
+        item_delivery_state:'송장등록완료'
+    },{
+        where:{
+            order_detail_num:orderidx.id
+        }
+    })
+
     // item id 도 필요함
-  
+    /*
     const {useridx} = req.body
     let USERIDX = await User.findOne({where:{kaikas_address:useridx}})
     console.log(useridx)
@@ -115,6 +113,7 @@ let get_delivery_info = async (req,res)=>{
 
     console.log(ARR[0].total_price)
     res.json(data)
+    */
 }
 
 module.exports = {

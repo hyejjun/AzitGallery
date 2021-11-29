@@ -74,10 +74,16 @@ const Order = (props) => {
 
 
     const Purchase = () => {
+        if(checked==false){
+            alert('동의란을 확인해주세요')
+        }else{
+            dispatch(direct_deal_REQUEST(data))
+            setCh(true)
+        }
+    
         
-        dispatch(KipToken_REQUEST())       
-        dispatch(direct_deal_REQUEST(data))
-        setCh(true)
+        //dispatch(KipToken_REQUEST())       
+        
         
     }
 
@@ -90,8 +96,11 @@ const Order = (props) => {
     },[orderNum])
     
    
-  
-    
+    const chClick = () => {
+        setChecked(prev=>!prev)
+
+    }
+    console.log(checked)
     
 
     
@@ -122,23 +131,24 @@ const Order = (props) => {
                             <div>{props.price}{props.currency}</div>
                         </div>
                         <div className="orderAgreement">
-                            <input type="checkbox" id="agreementBuy" onChange={e=>{checkAgreement(e.target.checked)}}/>
+                            {/* <input type="checkbox" id="agreementBuy" onChange={e=>{checkAgreement(e.target.checked)}}/> */}
+                            <input type="checkbox" id="agreementBuy" onClick={()=>{chClick()}}/>
                             <label htmlFor="agreementBuy">
                                 By checking this box, I agree to 회사명's <span>Tearms of Service</span>
                             </label>
-                                <Payment onClick = {Klaytn}>
+                                {/* <Payment onClick = {Klaytn}>
                                     klaytn으로 결제
                                 </Payment>
                                 <Payment onClick = {Purchase}>
                                     EPI(자체 토큰)으로 결제
-                                </Payment>
+                                </Payment> */}
                         </div>
                     </OrderContent>
                     <OrderBtn>
                         {
                             checked 
                             ? <button onClick = {Purchase}>Checkout</button>
-                            : <button className="unChecked" onClick={unCheckedClick}>Checkout</button>
+                            : <button className="unChecked" onClick={Purchase}>Checkout</button>
 
                         }
                     </OrderBtn>

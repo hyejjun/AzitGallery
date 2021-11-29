@@ -158,7 +158,7 @@ let my_nft_all_post = async (req,res) => {
     let user_idx = await User.findOne({where:{kaikas_address:keyObject}})
     user_idx = user_idx.dataValues.user_idx
     let query = `
-    select a.order_num,b.item_code, b.item_id, b.price,a.final_order_state, a.order_date,a.memo,c.main_img_link,d.nick_name,b.size,b.color,c.title,b.id,b.sell_Type
+    select a.order_num,b.item_code, b.item_id, b.price,a.final_order_state, a.order_date, a.memo, c.main_img_link, d.nick_name, b.size, b.color, c.title, b.id, b.delivery_state
     from orders as a join order_detail as b 
     on a.order_num=b.order_num join item_info as c 
     on b.item_id=c.item_id join seller as d 
@@ -181,7 +181,7 @@ let sold_nft_post = async (req,res) => {
 
     let query = 
     `
-    select a.id,a.item_code,a.price,a.size,a.color,c.nick_name,a.sell_Type,b.main_img_link,d.final_order_state from order_detail as a join item_info as b on a.item_id=b.item_id join seller as c on a.shipper_idx=c.user_idx join orders as d on a.order_num=d.order_num where a.shipper_idx=${user_idx};
+    select b.title, a.id,a.item_code,a.price,a.size,a.color,c.nick_name,a.delivery_state,b.main_img_link,d.final_order_state,e.item_delivery_state from order_detail as a join item_info as b on a.item_id=b.item_id join seller as c on a.shipper_idx=c.user_idx join orders as d on a.order_num=d.order_num join ship_info as e on a.id=e.order_detail_num where a.shipper_idx=${user_idx};
     `
     queryset(req,res,query)
     
@@ -193,13 +193,11 @@ let not_sell_post = async(req,res) => {
 
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
+    let user_idx = await User.findOne({where:{kaikas_address:keyObject}})
+    user_idx = user_idx.dataValues.user_idx
     let query =
     `
-    select a.item_code,b.title,b.item_hits from item_detail as a join item_info as b 
-    on a.item_info_idx=b.item_id join user as c 
-    on c.user_idx=b.creator 
-    where c.kaikas_address='${keyObject}' and a.product_status=0 
-    order by b.registered_at;
+    select a.id,b.size,b.color,a.nft,c.title,c.main_img_link,d.nick_name,b.item_code,left(c.registered_at,10)as date  from nft as a join item_detail as b on a.nft_img_idx=b.nft_idx join item_info as c on c.item_id=b.item_info_idx join user as d on d.user_idx=c.creator where a.product_status='판매중' and d.user_idx=${user_idx};
     `
 
     queryset(req,res,query)

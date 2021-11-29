@@ -75,14 +75,14 @@ const Own = () => {
         <React.Fragment key={ele.id}>
             <NFTFourList>
                 {
-                    ele.final_order_state!=='배송완료'
-                    ? ele.sell_Type
+                    ele.final_order_state=='배송준비중'
+                    ? ele.delivery_state=='배송준비중'
                         ?
-                        <Alert severity="success">배송 완료!</Alert>
-                        :
                         <Alert severity="error">
                         <a className={ele.item_code} id={`${ele.title}/${ele.size}/${ele.color}`} onClick={(e)=>{chDeliveryBtn(e)}} >배송 완료 확인 중!</a>
                         </Alert>
+                        :
+                        <Alert severity="success">배송 완료!</Alert>
 
 
                     :
@@ -111,11 +111,10 @@ const Own = () => {
                         <NFTDeclaration>
                             <NFTSubject>
                                 {
-                                ele.final_order_state!=='배송완료'
-                                ? ele.sell_Type=='0'
+                                ele.final_order_state=='배송준비중'
+                                ? ele.delivery_state=='배송준비중'
                                     ? 'nft발행요청'
                                     : 'nft발행완료'
-                                    
                                 :'nft발행완료'
                                 }
                             </NFTSubject>

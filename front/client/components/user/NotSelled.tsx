@@ -17,59 +17,28 @@ const NotSelled = () => {
 
     const notsellednftList = useSelector((state:RootState)=>state.list.notsellnftList)
 
-    const [Arr, setArr] = React.useState<ArrEle[]>([
-        {
-            id: 1,
-            subject: 'see',
-            artist: 'daminal',
-            Like: 0,
-            alert: '신고하기'
-        },
-        {   id: 2,
-            subject: 'se',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
-        {
-            id: 3,
-            subject: 'adssef',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
-        {
-            id: 4,
-            subject: 'sefesfase',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
-      ]);
+    
 
 
     const nameList: JSX.Element[] = notsellednftList.map((ele) =>
-        <React.Fragment key={ele.item_code}>
+        <React.Fragment key={ele.id}>
             <NFTFourList>
                 <NFT>
                     <NFTImg>
                         {/* <div><img src={require('../../src/지도.jpg').default} /></div> */}
-                        <div><img/></div>
+                        <div><img src={ele.main_img_link}/></div>
                     </NFTImg>
                     <Line></Line>
                     <NFTOne>
                         <NFTOneList>
-                            <NFTSubject>{ele.title}</NFTSubject>
+                            <NFTSubject>{ele.title}/{ele.color}/{ele.size}</NFTSubject>
                             {/* 여기 a 빠졌는데 동작되는 이유.. a 추가하면 오류남 */}
-                            <NFTartist>{ele.item_code}</NFTartist>
+                            <NFTartist>{ele.date}</NFTartist>
                         </NFTOneList>
-                        <NFTOneImg>
-                            <img></img>
-                        </NFTOneImg>
                     </NFTOne>
                     <NFTOne>
                         <NFTOneList>
-                            <NFTSubject>@ {ele.hits}</NFTSubject>
+                            <NFTSubject>{ele.item_code}-{ele.id}</NFTSubject>
                         </NFTOneList>
                         <NFTDeclaration>
                             <NFTSubject>* * *</NFTSubject>
@@ -113,6 +82,11 @@ const NFTImg = Styled.div`
     width:200px;
     height:200px;
     cursor:pointer;
+    div > img {
+        width:200px;
+        height:200px;
+        cursor:pointer;
+    }
 `
 
 const NFTOne = Styled.ul`

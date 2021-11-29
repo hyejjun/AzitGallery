@@ -24,7 +24,7 @@ const Waybill = (props) => {
                                     <option value="CJ대한통운">CJ대한통운</option>
                                     <option value="우체국택배">우체국택배</option>
                                     <option value="한진택배">한진택배</option>
-                                    <option value="롯데택배">롯데택배</option>
+                                    <option value="롯데택배">롯데택배</option>tt
                                     <option value="로젠택배">로젠택배</option>
                                     <option value="편의점택배(GS25)">CVSnet 편의점택배(GS25)</option>
                                 </select>
