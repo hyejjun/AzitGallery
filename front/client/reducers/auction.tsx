@@ -5,7 +5,9 @@ export interface AuctionState {
     current: number
     endDate: Boolean
     now: Date
-    buyer: string
+    buyer: string,
+    prevWallet : string,
+    prevAmount : string
 }
 
 export const initialState: AuctionState = {
@@ -13,6 +15,8 @@ export const initialState: AuctionState = {
     endDate: false,
     now: new Date(),
     buyer: 'kai',
+    prevWallet : '',
+    prevAmount : ''
 };
 
 /* 경매 가격 */
@@ -40,12 +44,14 @@ export const Auction_Current_REQUEST = (data) => {
     }
 }
 
-export const Auction_Current_SUCCESS = (current, endDate, buyer) => {
+export const Auction_Current_SUCCESS = (current, endDate, buyer, prevWallet,prevAmount) => {
     return {
         type: AUCTION_CURRENT_SUCCESS,
         current: current,
         endDate: endDate,
-        buyer: buyer
+        buyer: buyer,
+        prevWallet,
+        prevAmount
     }
 }
 
@@ -63,9 +69,10 @@ export const Auction_Price_REQUEST = (data) => {
     }
 }
 
-export const Auction_Price_SUCCESS = () => {
+export const Auction_Price_SUCCESS = (data) => {
     return {
         type: AUCTION_PRICE_SUCCESS,
+        data
     }
 }
 
@@ -123,7 +130,6 @@ const reducer = (state: AuctionState = initialState, action: AuctionAction) => {
         case AUCTION_PRICE_SUCCESS:
             return {
                 ...state,
-
             }
         case AUCTION_PRICE_ERROR:
             return {
@@ -137,11 +143,14 @@ const reducer = (state: AuctionState = initialState, action: AuctionAction) => {
                 data: action.data
             }
         case AUCTION_CURRENT_SUCCESS:
+
             return {
                 ...state,
                 current: action.current,
                 endDate: action.endDate,
-                buyer: action.buyer
+                buyer: action.buyer,
+                prevWallet: action.prevWallet,
+                prevAmount: action.prevAmount,
             }
         case AUCTION_CURRENT_ERROR:
             return {
