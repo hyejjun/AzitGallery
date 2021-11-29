@@ -44,58 +44,6 @@ let get_directdeal_view = async (req, res) => {
     }catch(e){
 
     }
-    /*
-
-    try {
-        let result = await ItemInfo.findOne({ where: { item_id: idx, sell_type: 0 } })
-        const { creator, description, title, registered_at, size, color, main_img_link } = result.dataValues
-
-        let result2 = await User.findOne({ where: { user_idx: creator }, attributes: ['nick_name'] })
-        const { nick_name } = result2.dataValues
-
-        let result3 = await DirectDeal.findOne({ where: { direct_deal_idx: idx } })
-        const { price, currency } = result3.dataValues
-
-        let result5 = await ItemDetail.findOne({where:{color:color,size:size,item_info_idx:result.item_id},attributes:['qty']})
-        const { qty } = result5.dataValues
-
-        let pic_array = [...result4]
-        let item_img_link = []
-
-        pic_array.forEach((v, k) => {
-            item_img_link.push(v.dataValues.item_img_link)
-        })
-
-        let qtyArr = []
-        for(i=1;i<=qty;i++){
-            qtyArr.push(i)
-        }
-        
-        console.log(color)
-        console.log(size)
-        console.log(result.item_id)
-        console.log(qtyArr)
-
-        data = {
-            result_msg: 'OK',
-            nick_name,
-            description,
-            title,
-            size,
-            color,
-            price,
-            currency,
-            item_img_link,
-            qty:qtyArr
-        }
-
-    } catch (error) {
-        data = {
-            result_msg: 'Fail',
-            msg: '해당 페이지가 없어요'
-        }
-    }
-    */
     res.json(data)
 }
 
@@ -130,6 +78,7 @@ let get_auction_view = async (req, res) => {
             item_img_link.push(v.dataValues.item_img_link)
         })
 
+        let kr_end_date = end_date.toLocaleString()
        
         data = {
             result_msg: 'OK',

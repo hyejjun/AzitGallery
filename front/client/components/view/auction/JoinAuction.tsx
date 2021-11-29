@@ -49,10 +49,10 @@ const JoinAcution = (props) => {
                             <div>현재 최고가</div>
                             <div>{props.bid_price} KLAY</div>
                         </div>
-                        <div className="yourBalance">
+                        {/* <div className="yourBalance">
                             <div>잔액</div>
                             <div>{yourBalance} KLAY</div>
-                        </div>
+                        </div> */}
                         <div className="joinAuction">
                             <div>입찰가</div>
                             <div>

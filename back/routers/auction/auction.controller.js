@@ -1,42 +1,70 @@
 // const { now } = require('sequelize/types/lib/utils')
-const {AuctionHistory, Auction, ItemInfo, User, BuyerList} = require('../../models')
+const { AuctionHistory, Auction, ItemInfo, User, BuyerList } = require('../../models')
 const option = {
     headers: [
-      {
-        name: "Authorization",
-        //https://console.klaytnapi.com/ko/security/credential 여기서 발급
-        value: "Basic " + Buffer.from("KASKH4VQRJ9MD3757G20ND9M" + ":" + "tX4x44sLAHD96i0sOHNobNXe7Q5znluuWyFR_po9").toString("base64"),
-      },
-      { name: "x-krn", value: "krn:1001:node" },
+        {
+            name: "Authorization",
+            //https://console.klaytnapi.com/ko/security/credential 여기서 발급
+            value: "Basic " + Buffer.from("KASKH4VQRJ9MD3757G20ND9M" + ":" + "tX4x44sLAHD96i0sOHNobNXe7Q5znluuWyFR_po9").toString("base64"),
+        },
+        { name: "x-krn", value: "krn:1001:node" },
     ],
-  };
-  
-  const Caver = require("caver-js");
-  const caver = new Caver(
+};
+
+const Caver = require("caver-js");
+const caver = new Caver(
     new Caver.providers.HttpProvider(
-      "https://node-api.klaytnapi.com/v1/klaytn",
-      option
+        "https://node-api.klaytnapi.com/v1/klaytn",
+        option
     )
-  );
+);
 /* 배송 정보 */
 
-let auction_price_post = async (req,res)=>{
+let auction_price_post = async (req, res) => {
 
-    const {params,user,price} = req.body
-    console.log(price)
-    let result = await AuctionHistory.create({auc_history_idx:params,bidder:user,bid_price:price,currency:price})
+    const { params, user, price } = req.body
+    console.log("유저 === ", user)
+    let result = await AuctionHistory.create({ auc_history_idx: params, bidder: user, bid_price: price, currency: 'KLAY' })
+    const { id } = result.dataValues
 
-    let iteminfo = await ItemInfo.findOne({where:{item_id:params}})
-    let userinfo = await User.findOne({where:{kaikas_address:user}})
-    
-    let buyerlist = await BuyerList.findAll({where:{item_code:iteminfo.item_code}})
+    let result2 = await AuctionHistory.findAll({ where: { auc_history_idx: params } })
+    console.log(result2);
+    let walletArr = []
+    result2.forEach((v, k) => {
+        if (v.dataValues.id === id - 1){
+            walletArr.push(v.dataValues.bidder)
+            walletArr.push(v.dataValues.bid_price)
+        }
+    })
+    console.log("walletArr === ", walletArr);
+
+
+    const refund = (wallet, amount) => {
+        caver.klay
+            .sendTransaction({
+                type: 'VALUE_TRANSFER',
+                from: '0x62B8769D6eDc718d90CB8884cA7F390e9b9C7466',
+                to: `${wallet}`,
+                value: caver.utils.toPeb(`${amount}`, 'KLAY'),
+                gas: 8000000
+            })
+    }
+    if (walletArr[0] !== 1) {
+        refund(walletArr[0], walletArr[1])
+    }
+
+
+    let iteminfo = await ItemInfo.findOne({ where: { item_id: params } })
+    let userinfo = await User.findOne({ where: { kaikas_address: user } })
+
+    let buyerlist = await BuyerList.findAll({ where: { item_code: iteminfo.item_code } })
     console.log(iteminfo.item_code)
     console.log(userinfo.user_idx)
     console.log(iteminfo.creator)
-    if(buyerlist.length == 0 ){
-        await BuyerList.create({item_code:iteminfo.item_code, buyer_idx:userinfo.user_idx, sender_idx:iteminfo.creator})
-    }else{
-        await BuyerList.update({item_code:iteminfo.item_code, buyer_idx:userinfo.user_idx, sender_idx:iteminfo.creator},{where:{item_code:iteminfo.item_code}})
+    if (buyerlist.length == 0) {
+        await BuyerList.create({ item_code: iteminfo.item_code, buyer_idx: userinfo.user_idx, sender_idx: iteminfo.creator })
+    } else {
+        await BuyerList.update({ item_code: iteminfo.item_code, buyer_idx: userinfo.user_idx, sender_idx: iteminfo.creator }, { where: { item_code: iteminfo.item_code } })
     }
 
     res.json()
@@ -55,18 +83,29 @@ let auction_current_post = async (req, res) => {
     let bid_price = result[result.length - 1].bid_price
 
     let endBool;
-   
+
     let now = new Date()
     console.log(`종료시간${result2.end_date.getTime() / 1000}`)
     console.log(`현재시간${now.getTime() / 1000}`)
 
-    if(Number(result2.end_date.getTime() / 1000) < Number(now.getTime() / 1000) && result2.bid_boolean == 0){
+    if (Number(result2.end_date.getTime() / 1000) < Number(now.getTime() / 1000) && result2.bid_boolean == 0) {
         await Auction.update({ bid_boolean: 1 }, { where: { auction_idx: params } })
         endBool = true;
-    } else if(Number(result2.end_date.getTime() / 1000) < Number(now.getTime() / 1000)){
+    } else if (Number(result2.end_date.getTime() / 1000) < Number(now.getTime() / 1000)) {
         endBool = true;
     } else {
         endBool = false;
+    }
+
+    if (endBool) {
+        let id = parseInt(params)
+        let result = await ItemInfo.update({
+            product_status: 1
+        }, {
+            where: {
+                item_id: id
+            }
+        })
     }
 
     let auction_boolean2 = await Auction.findOne({ where: { auction_idx: params } })
@@ -74,10 +113,10 @@ let auction_current_post = async (req, res) => {
     console.log(`이거 `)
     if (auction_boolean2.bid_boolean == 1) {
         let UpdateAuction = await Auction.update({ bid_boolean: 2 }, { where: { auction_idx: params } })
-        let result3 = await ItemInfo.findOne({ where: { item_id : params } })
-        let result4 = await BuyerList.findOne({ where: { item_code : result3.item_code}})
+        let result3 = await ItemInfo.findOne({ where: { item_id: params } })
+        let result4 = await BuyerList.findOne({ where: { item_code: result3.item_code } })
 
-        let result5 = await User.findOne({where : { user_idx : result4.buyer_idx }})
+        let result5 = await User.findOne({ where: { user_idx: result4.buyer_idx } })
         console.log(result5.kaikas_address)
         let buyer = result5.kaikas_address
         // let seller = await User.findOne({where : { id : result4.seller_idx }})
@@ -141,7 +180,7 @@ let auction_current_post = async (req, res) => {
             current: bid_price,
             endDate: endBool,
             bid_boolean: result2.bid_boolean,
-            buyer:buyer
+            buyer: buyer
         }
         res.json(data)
     } else {
@@ -155,7 +194,22 @@ let auction_current_post = async (req, res) => {
 
 }
 
+
+let auction_close = async (req, res) => {
+    console.log("여기 ==== ", req.body);
+    const { params } = req.body
+    let id = parseInt(params)
+    let result = await ItemInfo.update({
+        product_status: 1
+    }, {
+        where: {
+            item_id: id
+        }
+    })
+}
+
 module.exports = {
     auction_price_post,
-    auction_current_post
+    auction_current_post,
+    auction_close
 }

@@ -151,6 +151,7 @@ let mint_nft_post = async (req, res) => {
       size: size.join(','),
       color: color.join(','),
       category_id: bigCategory,
+      product_status : 0,
       main_img_link: mainImgLink
     })
 

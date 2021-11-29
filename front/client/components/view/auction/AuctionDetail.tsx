@@ -5,7 +5,7 @@ import { BuyBtnCSS } from '../sell/NFTdetail';
 import { EndBtnCSS } from '../sell/NFTdetail';
 import JoinAcution from './JoinAuction';
 import { Auction_Price_REQUEST } from "../../../reducers/auction"
-import { Auction_Current_REQUEST } from "../../../reducers/auction"
+import { Auction_Current_REQUEST, AuctionClose_REQUEST } from "../../../reducers/auction"
 import { RootState } from "../../../reducers"
 
 const AuctionDetail = (props) => {
@@ -49,12 +49,30 @@ const AuctionDetail = (props) => {
                 user: User.UserAddress,
                 price: auctionPrice
             }
-           
 
-            dispatch(Auction_Price_REQUEST(data))
-            alert('입찰 되셨습니다!')
-            setOpenAuction(prev => !prev)
+            window.caver.klay
+                .sendTransaction({
+                    type: 'VALUE_TRANSFER',
+                    from: window.klaytn.selectedAddress,
+                    to: '0x62B8769D6eDc718d90CB8884cA7F390e9b9C7466',
+                    value: window.caver.utils.toPeb(`${auctionPrice}`, 'KLAY'),
+                    gas: 8000000
+                })
+                .once('transactionHash', transactionHash => {
+                    console.log('txHash', transactionHash)
 
+                    dispatch(Auction_Price_REQUEST(data))
+                    alert('입찰 되셨습니다!')
+                    setOpenAuction(prev => !prev)
+        
+                })
+                .once('receipt', receipt => {
+                    console.log('receipt', receipt)
+                })
+                .once('error', error => {
+                    console.log('error', error)
+                    alert('결제 에러 발생')
+                })
             let data2 = {
                 params: params,
             }
@@ -69,35 +87,40 @@ const AuctionDetail = (props) => {
         }
         dispatch(Auction_Current_REQUEST(data))
 
-        setEndBool(Auction.endDate)
-        console.log(`호로로로롤로로 불리언 값변화 ${endBool}`)
+        // setEndBool(Auction.endDate)
+        // console.log(`호로로로롤로로 불리언 값변화 ${endBool}`)
         if (Auction.buyer != undefined && Auction.buyer == window.klaytn.selectedAddress) {
-            window.caver.klay
-                .sendTransaction({
-                    type: 'VALUE_TRANSFER',
-                    from: window.klaytn.selectedAddress,
-                    to: '0x325B6d2a7eE98a868ad576fD261f561E36F097B1',
-                    value: window.caver.utils.toPeb('1', 'KLAY'),
-                    gas: 8000000
-                })
-                .once('transactionHash', transactionHash => {
-                    console.log('txHash', transactionHash)
-                })
-                .once('receipt', receipt => {
-                    console.log('receipt', receipt)
-                })
-                .once('error', error => {
-                    console.log('error', error)
-                })
+            // window.caver.klay
+            //     .sendTransaction({
+            //         type: 'VALUE_TRANSFER',
+            //         from: window.klaytn.selectedAddress,
+            //         to: '0x325B6d2a7eE98a868ad576fD261f561E36F097B1',
+            //         value: window.caver.utils.toPeb(`${auctionPrice}`, 'KLAY'),
+            //         gas: 8000000
+            //     })
+            //     .once('transactionHash', transactionHash => {
+            //         console.log('txHash', transactionHash)
+            //     })
+            //     .once('receipt', receipt => {
+            //         console.log('receipt', receipt)
+            //     })
+            //     .once('error', error => {
+            //         console.log('error', error)
+            //     })
 
-            // console.log(JSON.stringify(window.location.href).split('ell/')[1].replace("\"", ""))
-            let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
-            window.location.href = `/ship/${params}`
+            // // console.log(JSON.stringify(window.location.href).split('ell/')[1].replace("\"", ""))
+            // let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
+            // window.location.href = `/ship/${params}`
         }
-        if (Auction.endDate == true) {
-            alert('경매 종료')
 
-        }
+        // console.log("끝남?? === ", Auction.endDate);
+
+        // if (Auction.endDate == true) {
+        //     // 여기서 dispatch 로 item info - product state 1로 바꿔줌
+        //     // dispatch(AuctionClose_REQUEST(data))
+        //     alert('경매 종료')
+
+        // }
     }, [])
 
 

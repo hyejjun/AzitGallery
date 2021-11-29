@@ -2,7 +2,7 @@ import axios from 'axios';
 import {all,put,takeEvery,takeLatest,fork,call} from "redux-saga/effects";
 import {url} from './url'
 
-/* mintNFT */
+/* 경매 가격 */
 
 function AuctionPriceAPI(data) {
     return axios.post(`${url}/auction/auctionprice`, data)
@@ -19,7 +19,7 @@ function* reqAuctionPrice(){
     yield takeLatest('AUCTION_PRICE_REQUEST',AuctionPriceSaga)
 }
 
-/* mintNFT */
+/* 경매 참여 */
 
 function AuctionCurrentAPI(data) {
     return axios.post(`${url}/auction/auctioncurrent`, data)
@@ -42,10 +42,28 @@ function* reqAuctionCurrent(){
     yield takeLatest('AUCTION_CURRENT_REQUEST',AuctionCurrentSaga)
 }
 
+
+
+/* 경매 마감 */
+
+function AuctionCloseAPI(data) {
+    return axios.post(`${url}/auction/auctionclose`, data)
+}
+
+
+function* AuctionCloseSaga(action){    
+    const result = yield call(AuctionCloseAPI, action.data)
+}
+
+function* reqAuctionClose(){
+    yield takeLatest('AUCTION_CLOSE_REQUEST',AuctionCloseSaga)
+}
+
 export default function* auctionsaga(){
         yield all([
             fork(reqAuctionPrice),
-            fork(reqAuctionCurrent)
+            fork(reqAuctionCurrent),
+            fork(reqAuctionClose),
         ])
 
 }
