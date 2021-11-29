@@ -1,4 +1,4 @@
-const {OrderDetail, ItemDetail, Nft, Orders, ItemInfo} = require('../../models')
+const {OrderDetail, ItemDetail, Nft, Orders, ItemInfo, ShipInfo} = require('../../models')
 const mysql = require('mysql')
 const pool = require('../pool');
 
@@ -25,7 +25,10 @@ let deal_post = async (req,res) => {
             let result2 = await Nft.findAll({where:{nft_img_idx:result1.nft_idx,product_status:'판매중'}})
             let nft_idx = Math.min(result2[0].id)
 
-
+            let ship_info = await ShipInfo.create({
+                order_num:result4.order_num,
+                item_delivery_state:'배송준비중'
+            })
             let result3 = await OrderDetail.create({
                 size,
                 color,

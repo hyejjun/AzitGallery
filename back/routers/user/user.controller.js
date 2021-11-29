@@ -3,15 +3,15 @@ const qs = require('qs');
 const nodemailer = require('nodemailer');
 const smtpTransporter = require('nodemailer-smtp-transport');
 require('dotenv').config()
-const { auction, deliver, item, User, Seller, OrderDetail, Orders } = require("../../models");
+const { auction, deliver, item, User, Seller, OrderDetail, Orders, ItemInfo } = require("../../models");
+
 
 
 
 /* 이메일 보내기 */
 
 let seller_admin = async (req,res) => {
-    console.log('왓다')
-    console.log("이메일 =====",req.body);
+
     const {userEmail, UserAddress, NickName} = req.body
     let transporter = nodemailer.createTransport({
         service: 'Gmail',
@@ -285,6 +285,17 @@ let ship_update = async (req,res) => {
                 }
             })
 
+        let creator = await ItemInfo.findOne({where:{item_id:order_detail_num.item_id}})
+
+        let creator_kaikas = await User.findOne({where:{user_idx:creator.creator}})
+        
+        let creator_address =  reator_kaikas.kaikas_address
+        try{
+            //payed(creator_address,0.5)
+        }catch(e){
+            console.log(e,'errrrrrrrrrrrrrrrrrrrrrrrrrrrorrrrrrrrrrrrrrrrrrrr')
+        }
+        
         if(finalState.length==0){
             let orderRes = await Orders.update({
                     final_order_state:'배송완료'
@@ -294,6 +305,7 @@ let ship_update = async (req,res) => {
                     }
                 })
         }
+        
         data = {
             result_msg:'OK',
             result:true

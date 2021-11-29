@@ -163,14 +163,9 @@ let my_nft_all_post = async (req,res) => {
     on a.order_num=b.order_num join item_info as c 
     on b.item_id=c.item_id join seller as d 
     on c.creator=d.user_idx where a.user_idx="${user_idx}";
-    `
-    
-
-
-    
+    ` 
     queryset(req,res,query)
-   
-    
+     
 }
 
 
@@ -179,10 +174,14 @@ let sold_nft_post = async (req,res) => {
     
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
+    console.log(keyObject,'keyobjectttttttttttt')
+    let user_idx = await User.findOne({where:{kaikas_address:keyObject}})
+    user_idx = user_idx.dataValues.user_idx
+    console.log(user_idx,'useridxxxxxxxxxxxxxxxxxxxxxx')
+
     let query = 
     `
-    select * from buyer_list as a join item_info as b on substring(a.item_code,1,16)=b.item_code where a.buyer_idx=1
-    order by b.registered_at;
+    select a.id,a.item_code,a.price,a.size,a.color,c.nick_name,a.sell_Type,b.main_img_link,d.final_order_state from order_detail as a join item_info as b on a.item_id=b.item_id join seller as c on a.shipper_idx=c.user_idx join orders as d on a.order_num=d.order_num where a.shipper_idx=${user_idx};
     `
     queryset(req,res,query)
     
@@ -236,7 +235,7 @@ let queryset = (req,res,query) => {
                     result_msg:'OK',
                     result
                 }
-                console.log(data)
+                
                 res.json(data)
             }
             connection.release()

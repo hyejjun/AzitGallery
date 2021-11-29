@@ -110,28 +110,73 @@ const Selled = () => {
         selectDeliveryCompany,
         deliveryNum
     }
-
-    const nameList: JSX.Element[] = soldnftList.map((ele) =>
-        <React.Fragment key={ele.item_code}>
-            <NFTFourList>
-                {ele.state==0
-                ?
+    console.log(soldnftList)
+    // const nameList: JSX.Element[] = soldnftList.map((ele) =>
+    //     <React.Fragment key={ele.item_code}>
+    //         <NFTFourList>
+    //             {ele.state==0
+    //             ?
                 
-                <Alert severity="error">
-                    <a className="deliverySet" onClick={setDelivery}>배송 등록 하기!</a>
-                </Alert>
-                :
-                <Alert severity="success">배송 등록 완료!</Alert>
+    //             <Alert severity="error">
+    //                 <a className="deliverySet" onClick={setDelivery}>배송 등록 하기!</a>
+    //             </Alert>
+    //             :
+    //             <Alert severity="success">배송 등록 완료!</Alert>
+    //             }
+    //             <NFT>
+    //                 <NFTImg>
+    //                     <div><img /></div>
+    //                 </NFTImg>
+    //                 <Line></Line>
+    //                 <NFTOne>
+    //                     <NFTOneList>
+    //                         <NFTSubject>{ele.title}</NFTSubject>
+    //                         <NFTartist>{ele.state}</NFTartist>
+    //                     </NFTOneList>
+    //                     <NFTOneImg>
+    //                         <img></img>
+    //                     </NFTOneImg>
+    //                 </NFTOne>
+    //                 <NFTOne>
+    //                     <NFTOneList>
+    //                         <NFTSubject>@ {ele.hits}</NFTSubject>
+    //                     </NFTOneList>
+    //                     <NFTDeclaration>
+    //                         <NFTSubject>* * *</NFTSubject>
+    //                     </NFTDeclaration>
+    //                 </NFTOne>
+    //             </NFT>
+    //         </NFTFourList>
+    //     </React.Fragment>
+    // );
+
+    const compeltedList: JSX.Element[] = soldnftList.map((ele) =>
+        <React.Fragment key={ele.id}>
+            <NFTFourList>
+                {/* <Alert severity="success" onClick={setDelivery}>배송 등록 완료!</Alert> */}
+                {
+                    ele.final_order_state!=='배송완료'
+                    ? ele.sell_Type
+                        ?
+                        <Alert severity="success">배송 완료!</Alert>
+                        :
+                        <Alert severity="error">
+                        <a className={ele.item_code} id={`${ele.title}/${ele.size}/${ele.color}`} onClick={(e)=>{chDeliveryBtn(e)}} >배송 완료 확인 중!</a>
+                        </Alert>
+
+
+                    :
+                    <Alert severity="success">배송 완료!</Alert>
                 }
                 <NFT>
                     <NFTImg>
-                        <div><img /></div>
+                        <div><img src={ele.main_img_link}/></div>
                     </NFTImg>
                     <Line></Line>
                     <NFTOne>
                         <NFTOneList>
-                            <NFTSubject>{ele.title}</NFTSubject>
-                            <NFTartist>{ele.state}</NFTartist>
+                            <NFTSubject>{ele.title}/{ele.color}/{ele.size}</NFTSubject>
+                            <NFTartist>{ele.nick_name}</NFTartist>
                         </NFTOneList>
                         <NFTOneImg>
                             <img></img>
@@ -139,41 +184,19 @@ const Selled = () => {
                     </NFTOne>
                     <NFTOne>
                         <NFTOneList>
-                            <NFTSubject>@ {ele.hits}</NFTSubject>
+                            <NFTSubject>$ {ele.price}</NFTSubject>
                         </NFTOneList>
                         <NFTDeclaration>
-                            <NFTSubject>* * *</NFTSubject>
-                        </NFTDeclaration>
-                    </NFTOne>
-                </NFT>
-            </NFTFourList>
-        </React.Fragment>
-    );
-
-    const compeltedList: JSX.Element[] = Arr2.map((ele) =>
-        <React.Fragment key={ele.id}>
-            <NFTFourList>
-                <Alert severity="success" onClick={setDelivery}>배송 등록 완료!</Alert>
-                <NFT>
-                    <NFTImg>
-                        <div><img /></div>
-                    </NFTImg>
-                    <Line></Line>
-                    <NFTOne>
-                        <NFTOneList>
-                            <NFTSubject>{ele.subject}</NFTSubject>
-                            <NFTartist>{ele.artist}</NFTartist>
-                        </NFTOneList>
-                        <NFTOneImg>
-                            <img></img>
-                        </NFTOneImg>
-                    </NFTOne>
-                    <NFTOne>
-                        <NFTOneList>
-                            <NFTSubject>@ {ele.Like}</NFTSubject>
-                        </NFTOneList>
-                        <NFTDeclaration>
-                            <NFTSubject>* * *</NFTSubject>
+                            <NFTSubject>
+                            {
+                                ele.final_order_state!=='배송완료'
+                                ? ele.sell_Type=='0'
+                                    ? 'nft발행요청'
+                                    : 'nft발행완료'
+                                    
+                                :'nft발행완료'
+                            }
+                            </NFTSubject>
                         </NFTDeclaration>
                     </NFTOne>
                 </NFT>
@@ -183,13 +206,14 @@ const Selled = () => {
 
     return (
         <>
+        <div>송장을 등록해주세요.</div>
             {
                 deliveryForm
                     ? <Waybill setClose={setDelivery} deliveryCompnay={deliveryCompnay} deliveryNum={deliveryNum} onChangeDeliveryNum={onChangeDeliveryNum} />
                     : <></>
             }
 
-            <NonCompleted>{nameList}</NonCompleted>
+            
             <div>{compeltedList}</div>
         </>
     )
@@ -235,6 +259,11 @@ const NFTImg = Styled.div`
     width:200px;
     height:200px;
     cursor:pointer;
+    div > img {
+        width:200px;
+        height:200px;
+        cursor:pointer;
+    }
     
 `
 
