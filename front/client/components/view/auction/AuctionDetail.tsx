@@ -47,7 +47,9 @@ const AuctionDetail = (props) => {
             let data = {
                 params: params,
                 user: User.UserAddress,
-                price: auctionPrice
+                price: auctionPrice,
+                prevWallet : Auction.prevWallet,
+                prevAmount : Auction.prevAmount,
             }
 
             window.caver.klay
@@ -64,15 +66,17 @@ const AuctionDetail = (props) => {
                     dispatch(Auction_Price_REQUEST(data))
                     alert('입찰 되셨습니다!')
                     setOpenAuction(prev => !prev)
-        
+
                 })
                 .once('receipt', receipt => {
-                    console.log('receipt', receipt)
+                    // console.log('receipt', receipt)
                 })
                 .once('error', error => {
                     console.log('error', error)
                     alert('결제 에러 발생')
                 })
+
+
             let data2 = {
                 params: params,
             }
