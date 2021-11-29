@@ -5,18 +5,19 @@ import { BuyBtnCSS } from '../sell/NFTdetail';
 import { EndBtnCSS } from '../sell/NFTdetail';
 import JoinAcution from './JoinAuction';
 import { Auction_Price_REQUEST } from "../../../reducers/auction"
-import { Auction_Current_REQUEST } from "../../../reducers/auction"
+import { Auction_Current_REQUEST, AuctionClose_REQUEST } from "../../../reducers/auction"
 import { RootState } from "../../../reducers"
 
 const AuctionDetail = (props) => {
     const dispatch = useDispatch()
-    const User = useSelector((state:RootState) => state.user);    
-    const Auction = useSelector((state:RootState) => state.auction);    
+    const User = useSelector((state: RootState) => state.user);
+    const Auction = useSelector((state: RootState) => state.auction);
+    const view = useSelector((state: RootState) => state.view);
     const [num, setNum] = useState<number>(5);
     const [price, setPrice] = useState<number>(0);
 
     const [limitTime, setlimitTime] = useState<number>(5);
-    const [endBool, setEndBool] = useState<boolean>(false)
+    const [endBool, setEndBool] = useState<Boolean>(false);
     const [openAuction, setOpenAuction] = useState<boolean>(false);
     const auctionOpen = () => {
         setOpenAuction(prev => !prev)
@@ -33,41 +34,45 @@ const AuctionDetail = (props) => {
     const [balacne, setBalance] = useState<number>(0);
     const [balanceCheck, setBalanceCheck] = useState<boolean>(false);       // 잔액확인
 
-    useEffect (()=>{
+    useEffect(() => {
         setBalance(yourBalance)
-    },[])
+    }, [])
 
     const lowBalance = () => {
-        // if (balacne <= maxPrice){
-        //     alert('잔액을 확인해주세요')
-        // }else{
-        //     if(auctionPrice <= maxPrice || auctionPrice > yourBalance){
-        //         alert('입찰 금액을 확인해주세요')
-        //     } else {
-        //         setBalanceCheck(prev => !prev)
-        //         alert('입찰 되었습니다')
-        //         // 입찰하고 어떻게 처리할지...
-        //         setAuctionPrice(0)
-        //         window.location.reload();
-        //     }
-        // }
-
-        if(auctionPrice <= Auction.current){
+        if (Number(auctionPrice) <= Number(Auction.current)) {
             alert('현재가보다 높게 제시해주세요')
             setOpenAuction(prev => !prev)
         } else {
             let params = JSON.stringify(window.location.href).split('ion/')[1].replace("\"", "")
-                    let data = {
+            let data = {
                 params: params,
                 user: User.UserAddress,
                 price: auctionPrice
             }
-           
 
-            dispatch(Auction_Price_REQUEST(data))
-            alert('입찰 되셨습니다!')
-            setOpenAuction(prev => !prev)
+            window.caver.klay
+                .sendTransaction({
+                    type: 'VALUE_TRANSFER',
+                    from: window.klaytn.selectedAddress,
+                    to: '0x62B8769D6eDc718d90CB8884cA7F390e9b9C7466',
+                    value: window.caver.utils.toPeb(`${auctionPrice}`, 'KLAY'),
+                    gas: 8000000
+                })
+                .once('transactionHash', transactionHash => {
+                    console.log('txHash', transactionHash)
 
+                    dispatch(Auction_Price_REQUEST(data))
+                    alert('입찰 되셨습니다!')
+                    setOpenAuction(prev => !prev)
+        
+                })
+                .once('receipt', receipt => {
+                    console.log('receipt', receipt)
+                })
+                .once('error', error => {
+                    console.log('error', error)
+                    alert('결제 에러 발생')
+                })
             let data2 = {
                 params: params,
             }
@@ -75,20 +80,50 @@ const AuctionDetail = (props) => {
         }
     }
 
-    useEffect(()=>{
+    useEffect(() => {
         let params = JSON.stringify(window.location.href).split('ion/')[1].replace("\"", "")
         let data = {
             params: params,
         }
         dispatch(Auction_Current_REQUEST(data))
-        console.log(`종료 일 ${Auction.endDate}`)
-          console.log(`현재 일 ${Auction.now.toISOString()}`)
-          
-    //    if(Auction.endDate < Auction.now.toISOString()){
-    //        alert('경매 종료')
-    //        setEndBool(true)
-    //    }
-    },[Auction.endDate])
+
+        // setEndBool(Auction.endDate)
+        // console.log(`호로로로롤로로 불리언 값변화 ${endBool}`)
+        if (Auction.buyer != undefined && Auction.buyer == window.klaytn.selectedAddress) {
+            // window.caver.klay
+            //     .sendTransaction({
+            //         type: 'VALUE_TRANSFER',
+            //         from: window.klaytn.selectedAddress,
+            //         to: '0x325B6d2a7eE98a868ad576fD261f561E36F097B1',
+            //         value: window.caver.utils.toPeb(`${auctionPrice}`, 'KLAY'),
+            //         gas: 8000000
+            //     })
+            //     .once('transactionHash', transactionHash => {
+            //         console.log('txHash', transactionHash)
+            //     })
+            //     .once('receipt', receipt => {
+            //         console.log('receipt', receipt)
+            //     })
+            //     .once('error', error => {
+            //         console.log('error', error)
+            //     })
+
+            // // console.log(JSON.stringify(window.location.href).split('ell/')[1].replace("\"", ""))
+            // let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
+            // window.location.href = `/ship/${params}`
+        }
+
+        // console.log("끝남?? === ", Auction.endDate);
+
+        // if (Auction.endDate == true) {
+        //     // 여기서 dispatch 로 item info - product state 1로 바꿔줌
+        //     // dispatch(AuctionClose_REQUEST(data))
+        //     alert('경매 종료')
+
+        // }
+    }, [])
+
+
     const auctionValue = {
         maxPrice,
         yourBalance,
@@ -110,20 +145,20 @@ const AuctionDetail = (props) => {
                 </ul>
                 <ul className="auctionContent">
                     <li>{num}</li>
-                    <li>{Auction.current}ETH</li>
-                    <li>{Auction.endDate.toString()}</li>
+                    <li>{Auction.current}KLAY</li>
+                    <li>{view.kr_end_date}</li>
                 </ul>
                 <BtnWrap>
                     {endBool == false
-                    ? 
-                    <BuyBtnCSS className="auctionBtn" onClick={auctionOpen}>
-                        <button>경매 참여</button>
-                    </BuyBtnCSS>
-                    : 
-                    <EndBtnCSS className="auctionBtn">
-                        <button>경매 종료</button>
-                    </EndBtnCSS>}
-                    <JoinAcution openAuction={openAuction} auctionOpen={auctionOpen} auctionValue={auctionValue} bid_price={props.bid_price}/>
+                        ?
+                        <BuyBtnCSS className="auctionBtn" onClick={auctionOpen}>
+                            <button>경매 참여</button>
+                        </BuyBtnCSS>
+                        :
+                        <EndBtnCSS className="auctionBtn">
+                            <button>경매 종료</button>
+                        </EndBtnCSS>}
+                    <JoinAcution openAuction={openAuction} auctionOpen={auctionOpen} auctionValue={auctionValue} bid_price={props.bid_price} />
                 </BtnWrap>
             </AuctionDetailWrap>
         </>
@@ -151,7 +186,7 @@ const AuctionDetailWrap = Styled.div`
 
     .auctionContent{
         & > li {
-            width: 150px;
+            width: 400px;
             height : 50px;
             font-size : 20px;
             font-weight : bold;
@@ -160,9 +195,9 @@ const AuctionDetailWrap = Styled.div`
 `
 
 const BtnWrap = Styled.div`
-    width: 100%;
-    padding: 2% 2% 2% 55%;
-    box-sizing: border-box;
+    width: 200px;
+    height: 100px;
+    margin-left: 33%;
 
     .auctionBtn{
 

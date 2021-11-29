@@ -92,7 +92,6 @@ let address_db_check = async (req,res) => {
     console.log('this is db check',"2222222")
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
-    console.log(keyObject)
 
     //let result = await User.findAll({where:{kaikas_address:keyObject}})
     let data = {}
