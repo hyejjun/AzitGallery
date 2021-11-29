@@ -197,7 +197,7 @@ const AddItemComponent = () => {
     function setMainImage(index: number) {
         if (file.length > 0) {
             setMainImgIdx(index)
-            console.log(mainImgIdx, 'idxwhenchoosing')
+            .log(mainImgIdx, 'idxwhenchoosing')
         }
     }
     // 직판/경매 선택
@@ -308,7 +308,7 @@ const AddItemComponent = () => {
     }
     
     useEffect(()=>{
-        console.log(totalColorSizeQty);
+   
         
     },[totalColorSizeQty])
 

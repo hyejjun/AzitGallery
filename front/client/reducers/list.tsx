@@ -108,7 +108,6 @@ export const PlusItemlist_REQUEST = (data) => {
 }
 
 export const PlusItemlist_SUCCESS = (data,Pluslength) => {
-    console.log(data)
     return {
         type: PLUS_ITEM_LIST_SUCCESS,
         data: data,
@@ -132,7 +131,6 @@ export const ItemAuction_REQUEST = () => {
 }
 
 export const ItemAuction_SUCCESS = (data) => {
-    console.log(data)
     return {
         type: ITEM_AUCTION_SUCCESS,
         data: data
@@ -153,7 +151,6 @@ export const PlusAuctionlist_REQUEST = (data) => {
 }
 
 export const PlusAuctionlist_SUCCESS = (data,Pluslength) => {
-    console.log(data)
     return {
         type: PLUS_AUCTION_LIST_SUCCESS,
         data: data,
@@ -200,7 +197,6 @@ export const SetQuery_REQUEST = (data) => {
 }
 
 export const SetQuery_SUCCESS = (data) => {
-    console.log(data)
     return {
         type: SET_QUERY_SUCCESS,
 
@@ -302,7 +298,6 @@ export const ItemGender_REQUEST = () => {
 }
 
 export const ItemGender_SUCCESS = (data) => {
-    console.log(data)
     return {
         type: ITEM_GENDER_SUCCESS,
         data: data
@@ -324,7 +319,6 @@ export const ItemRecent_REQUEST = () => {
 }
 
 export const ItemRecent_SUCCESS = (data) => {
-    console.log(data)
     return {
         type: ITEM_RECENT_SUCCESS,
         data: data
@@ -346,7 +340,6 @@ export const Item_List_Search_REQUEST = () => {
 }
 
 export const Item_List_Search_SUCCESS = (data) => {
-    console.log(data)
     return {
         type: ITEM_LIST_SEARCH_SUCCESS,
         data: data
@@ -421,7 +414,6 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
          
             }
         case PLUS_ITEM_LIST_SUCCESS:
-            //console.log(action.Pluslength)
             return{
                 ...state,
                 itemList: action.data,
@@ -457,8 +449,6 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
          
             }
         case PLUS_AUCTION_LIST_SUCCESS:
-            console.log(`작동하는지 여부${action.Pluslength}`)
-
             return{
                 ...state,
                 auctionList: action.data,
@@ -487,7 +477,6 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
          
             }
         case ITEM_GENDER_SUCCESS:
-            console.log(action.data)
             return{
                 ...state,
                 itemList: action.data
@@ -503,7 +492,6 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
          
             }
         case ITEM_RECENT_SUCCESS:
-            console.log(action.type)
             return{
                 ...state,
                 itemList: action.data
@@ -568,7 +556,7 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
                 data:action.data
             }
         case NOT_SELLED_SUCCESS:
-            console.log(action.data,'action.dataaaaaaaaaaaaaa')
+    
             return{
                 ...state,
                 notsellnftList:action.data
@@ -584,7 +572,7 @@ const reducer = (state:ListState=initialState, action:ListAction) => {
          
             }
         case ITEM_LIST_SEARCH_SUCCESS:
-            console.log(`back에서 return 값까지 front에 왔나요?${action.data}`)
+
             return{
                 ...state,
                 itemList: action.data

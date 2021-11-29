@@ -43,7 +43,7 @@ const ItemListAuction = (props) => {
                     <Line></Line>
                     <NFTOne>
                         <NFTOneList>
-                        <Link href = {`sell/${ele.item_id}`}><AStyle><NFTSubject>{ele.title}</NFTSubject></AStyle></Link>
+                        <Link href = {`auction/${ele.item_id}`}><AStyle><NFTSubject>{ele.title}</NFTSubject></AStyle></Link>
                         <NFTartist>{ele.nick_name}</NFTartist>
                         </NFTOneList>
                         <NFTDeclaration>

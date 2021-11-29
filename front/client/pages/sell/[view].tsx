@@ -8,16 +8,7 @@ import { useEffect, useState } from 'react'
 
 const View = ({children}) => {
 
-    // const router = useRouter()
-    // const {view} = router.query // 카테고리 이름
-    // console.log(view);
-    
-    
-    // const dispatch = useDispatch()
-    
-    // useEffect(()=>{
-    //     dispatch(directDealView_REQUEST(view))
-    // },[])
+
 
 
 
@@ -26,7 +17,7 @@ const View = ({children}) => {
         <>
             <BackBtn />
             <NFTPic />
-            <NFTdetail>
+            <NFTdetail >
                 구매하기
             </NFTdetail>
 

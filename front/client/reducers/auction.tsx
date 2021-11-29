@@ -105,8 +105,6 @@ const reducer = (state: AuctionState = initialState, action: AuctionAction) => {
                 data:action.data
             }
         case AUCTION_CURRENT_SUCCESS:
-        console.log(`여기까지도 되나?${action.endDate}`)
-        console.log(`여기까지도 되나?${action.buyer}`)
             return {
                 ...state,
                 current:action.current,

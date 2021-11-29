@@ -51,7 +51,7 @@ module.exports = class Orders extends Sequelize.Model{
         })
     }
     static associate(db){
-        db.Orders.belongsTo(db.OrderDetail,{foreignKey:'order_num',sourceKey:'order_num'}),
+        db.Orders.hasMany(db.OrderDetail,{foreignKey:'order_num',sourceKey:'order_num'}),
         db.Orders.belongsTo(db.User,{foreignKey:'user_idx',targetKey:'user_idx'}),
         db.Orders.hasMany(db.ShipInfo,{foreignKey:'order_num',sourceKey:'order_num'})
     }

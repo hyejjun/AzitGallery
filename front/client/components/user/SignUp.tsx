@@ -147,7 +147,7 @@ const SignUp = () => {
         }
         dispatch(SignUp_REQUEST(data))
         dispatch(Userlist_REQUEST())
-        console.log(data, "55555");
+
     }
 
 

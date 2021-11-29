@@ -1,51 +1,126 @@
-const {OrderDetail} = require('../../models')
+const {OrderDetail, ItemDetail, Nft, Orders, ItemInfo} = require('../../models')
 const mysql = require('mysql')
 const pool = require('../pool');
 
-let deal_post = (req,res) => {
-    console.log(req.body,'reeeeeeeeeeeeeeeeeeeeeee')
-    let {size,color,item_id,price,currency} = req.body
+let deal_post = async (req,res) => {
+    console.log('eeeeeeeeeeeeeeeeeeee',req.body,'reeeeeeeeeeeeeeeeeeeeeee')
+    let data
+    let total_order_num = []
+    try{
+        let {size,color,qty} = req.body.selected
+        let {item_id,price,currency,userAddress,userIdx,creator} = req.body
+        let data = {}
+        let orderdata = []
+        let result4 = await Orders.create({
+            total_price:price,
+            order_date:null,
+            buyer:userIdx,
+            order_num:null,
+            final_order_state:0,
+            user_idx:userIdx
+        })
+        for(let i=1; i<=qty; i++){
+            let result1 = await ItemDetail.findOne({where:{item_info_idx:item_id,size:size,color:color}})
+            let result2 = await Nft.findAll({where:{nft_img_idx:result1.nft_idx,product_status:'판매중'}})
+            let nft_idx = Math.min(result2[0].id)
 
-    let data = {}
-    pool.getConnection((err,connection)=>{
-        connection.query(            
-            `
-            insert into order_detail values('${size}','${color}',3,(select a.item_code from item_detail as a where a.item_info_idx=${item_id} and a.size='${size}' and a.color='${color}'),3000,default,'${item_id}');
-            `     
-        ,function(err,result,fields){
-            if(err) throw err;
-            connection.query(`
-            insert into orders(total_price,order_num) values('${price}',(select max(order_num) from order_detail));
-            `,function(error,result2,fields){
-                if(error) throw error
-                if(result2==undefined){
 
-                data = {
-                    result_msg:'Fail'
-                }
-                }else{
-                    connection.query(`
-                        update item_detail set product_status=1
-                         where item_code=(select a.item_code from item_detail as a 
-                            where a.item_info_idx='${item_id} and a.size='${size}' and a.color='${color}');
-                    `,function(errr,result3,fields){
-                        console.log(result3)
-                    })
-                    console.log(result2)
-                    data = {
-                        result_msg:'OK',
-                        result
-                    }
-                
+            let result3 = await OrderDetail.create({
+                size,
+                color,
+                shipper_idx:userIdx,
+                item_code:`${result1.item_code}-${nft_idx}`,
+                price:price,
+                order_num:result4.order_num,
+                item_id,
+                sell_type:0
+            })
+            
+            console.log(result3,'order_detail=====================')
+            orderdata.push(result3.dataValues)
+
+            let result5 = await Nft.update({
+                product_status:'판매완료'
+            },{
+                where:{
+                    id:nft_idx
                 }
             })
-            connection.release()
-        })
-    }) 
-    res.json({data:'test'})
+     
+            data = {
+                result_msg:'OK',
+                result:result4.order_num
+            }
+            console.log(result4.order_num,'orderdataaaaaaaaaaaaaaaaaaaaaaaaaaa')
+        } 
+        
+       
+        // 판매완료 업데이트
+        let item_detail_data = await ItemDetail.findOne({where:{item_info_idx:item_id,size:size,color:color}})
+        let nft_idx_data = item_detail_data.nft_idx
+        let ch = await Nft.findAll({where:{nft_img_idx:nft_idx_data,product_status:'판매중'}})
+        if(ch.length==0){
+            await ItemDetail.update({
+                product_status:'판매완료'
+            },{
+                where:{
+                    item_info_idx:item_id,
+                    size:size,
+                    color:color
+                }
+            })
+        }
+        ch2 = await ItemDetail.findAll({where:{item_info_idx:item_id,product_status:'판매중'}})
+        console.log(ch2.length,'length==============================================')
+        if(ch2.length==0){
+            await ItemInfo.update({
+                product_status:1
+            },{
+                where:{
+                    item_id:item_id
+                }
+            })
+        }
+        res.json(data)
+    }catch(e){
+        console.log(e,'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+        data = {
+            result_msg:'Fail'
+        }
+        res.json(data)
+    }
+    
 
 }
 
+
+
 module.exports = {
-    deal_post
+    deal_post,
+    
+}
+
+let queryset = (req,res,query) => {
+    let data = {}
+    pool.getConnection((err,connection)=>{
+        connection.query(            
+            query            
+        ,function(err,result,fields){
+            if(err) throw err;
+            if(result==undefined){
+                data = {
+                    result_msg:'Fail',
+                    msg:'상품이 존재하지 않습니다.'
+                }
+            }else{
+                data = {
+                    result_msg:'OK',
+                    result
+                }
+                //console.log(result)
+                res.json(data)
+            }
+            connection.release()
+        })
+    })   
 }

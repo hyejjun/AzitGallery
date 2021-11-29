@@ -21,6 +21,7 @@ export interface UserState {
     emailBool: boolean;
     adminApproval : number;
     emailValidation : boolean;
+    data:any
 }
 
 export const initialState: UserState = {
@@ -41,6 +42,7 @@ export const initialState: UserState = {
     emailBool: false,
     adminApproval : 0,
     emailValidation : false,
+    data:[]
 };
 
 
@@ -88,6 +90,8 @@ export const USER_LIST_ERROR = "USER_LIST_ERROR" as const;
 export const USER_INFO_REQUEST = "USER_INFO_REQUEST" as const;
 export const USER_INFO_SUCCESS = "USER_INFO_SUCCESS" as const;
 export const USER_INFO_ERROR = "USER_INFO_ERROR" as const;
+
+
 
 /* User Login req */
 export const UserLogin_REQUEST = (UserAddress) => {
@@ -333,6 +337,8 @@ export const UserInfo_ERROR = () => {
 
 
 
+
+
 type UserAction =
     | ReturnType<typeof UserLogin_REQUEST>
     | ReturnType<typeof UserLogin_SUCCESS>
@@ -377,6 +383,7 @@ type UserAction =
     | ReturnType<typeof UserInfo_REQUEST>
     | ReturnType<typeof UserInfo_SUCCESS>
     | ReturnType<typeof UserInfo_ERROR>
+
 
 const reducer = (state: UserState = initialState, action: UserAction) => {
     switch (action.type) {
@@ -563,8 +570,7 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
         case USER_INFO_ERROR: 
             return {
                 ...state,
-            
-            }      
+            }     
 
         default:
             return state;

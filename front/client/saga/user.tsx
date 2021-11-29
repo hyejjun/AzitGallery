@@ -40,7 +40,6 @@ function* reqLogin(){
 
 /* 로그아웃 */
 function* logout() {
-    console.log('로그아웃 사가 =============');
 
     yield put({
         type: 'USER_LOGOUT_SUCCESS',

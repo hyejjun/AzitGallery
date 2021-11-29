@@ -1,30 +1,78 @@
 const {User,Orders, OrderDetail, ShipInfo, ItemInfo} = require('../../models')
+const { update, findAll } = require('../../models/auction_history')
 
 /* 배송 정보 */
 
 let get_shipinfo = async (req,res)=>{
-
-    const {orderer,receiver,phoneNum,address,postNumber,addressDetail,memo,inputStatus,UserAddress,params} = req.body
-
-    const buyerAddress = address+addressDetail
-    const USERRESULT = await User.findOne({where:{kaikas_address:UserAddress}})
-    // const params_item = await ItemInfo.findOne({where:{item_id :params}})
-
-    console.log(params)
-
-        await OrderDetail.create({
-            size:'blue',color:'orderer',order_qty:45,shipper_idx:45,item_code:'phoneNum',price:1,item_id:params
+    let data
+    try{
+        const {orderer,receiver,phoneNum,address,postNumber,addressDetail,memo,inputStatus,UserAddress,params} = req.body
+        const receiver_address = address+addressDetail
+        let orderRecord = await OrderDetail.findAll({
+            where:{
+                order_num:params
+            }
         })
+        let total_cost = 0
+        let updatedRes
+        for(i=0;i<orderRecord.length;i++){
+            total_cost = total_cost + orderRecord[i].dataValues.price
+            updatedRes = await Orders.update({
+                total_price:total_cost,
+                order_date:null,
+                receiver:receiver,
+                receiver_address:receiver_address,
+                receiver_contact:phoneNum,
+                memo:memo
+           },{
+               where:{
+                   order_num:params
+               }
+           })
+        }
+        data = {
+            result_msg:'OK',
+            result:updatedRes
+        }
 
-       const result =  await Orders.create({
-            total_price:55500,buyer:orderer,receiver:receiver,receiver_address:buyerAddress,receiver_contact:phoneNum,final_order_state:true,memo:memo,user_idx:USERRESULT.user_idx
-        })
+    }catch(e){
+        data = {
+            result_msg:'Fail'
+        }
 
-        await ShipInfo.create({
-            delivery_company:'55500',post_num:'orderer',item_delivery_state:'배송 중'
-        })
+    }
+    res.json(data)
 
-        res.json()
+
+
+    
+    // let 
+
+
+
+
+
+
+    
+    //const USERRESULT = await User.findOne({where:{kaikas_address:UserAddress}})
+    //const params_item = await ItemInfo.findOne({where:{item_id :params}})
+
+    //console.log(params)
+
+    //     await OrderDetail.create({
+    //         size:'blue',color:'orderer',order_qty:45,shipper_idx:45,item_code:'phoneNum',price:1,item_id:params
+    //     })
+
+    //    const result =  await Orders.create({
+    //         total_price:55500,buyer:orderer,receiver:receiver,receiver_address:buyerAddress,receiver_contact:phoneNum,final_order_state:true,memo:memo,user_idx:USERRESULT.user_idx
+    //     })
+
+    //     await ShipInfo.create({
+    //         delivery_company:'55500',post_num:'orderer',item_delivery_state:'배송 중'
+    //     })
+
+    //     res.json()
+    res.json('asdf')
 }
 
 /* 구매 정보 */

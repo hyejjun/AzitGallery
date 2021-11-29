@@ -16,13 +16,13 @@ const ItemList = () => {
     const Main = useSelector((state:RootState) => state.main);
     
 
-    useEffect(()=>{
-        if(sellState){
-            console.log('경매')
-        }else if(sellState==false){
-            dispatch(main_all_direct_REQUEST(sendData))
-        }
-    },[sellState])
+    // useEffect(()=>{
+    //     if(sellState){
+    //         console.log('경매')
+    //     }else if(sellState==false){
+    //         dispatch(main_all_direct_REQUEST(sendData))
+    //     }
+    // },[sellState])
 
 
     

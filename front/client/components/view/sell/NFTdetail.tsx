@@ -6,6 +6,7 @@ import Like from "../../common/Like";
 import NFTTitle from "../NFTTitle";
 import SizeSelect from "../SizeSelect";
 import ColorSelect from "../ColorSelect";
+import QtySelect from '../QtySelect'
 import { RootState } from "../../../reducers";
 import {useRouter} from 'next/router'
 import { useSelector, useDispatch } from 'react-redux'
@@ -13,14 +14,16 @@ import { directDealView_REQUEST } from '../../../reducers/view'
 
 
 
-const NFTdetail = ({children}) => {
 
+const NFTdetail = ({children}) => {
+    const selected = useSelector((state:RootState) => state.view.selected);
     const [colorpic,setColor] = useState<string>('')
     const [sizepic,setSize] = useState<string>('')
+    const [qtypic,setQty] = useState<string>('')
 
     const router = useRouter()
     const {view} = router.query // 카테고리 이름
-    console.log(view);
+ 
     
     
     const dispatch = useDispatch()
@@ -33,7 +36,14 @@ const NFTdetail = ({children}) => {
     
     const [open, setOpen] = useState<boolean>(false);
     const orderOpen = () => {
-        setOpen(prev => !prev)
+        if(selected.qty!==0&&selected.color!==''&&selected.size!==''){
+            setOpen(prev => !prev)
+        }else{
+            if(selected.color=='') alert('색상을 체크해주세요')
+            if(selected.color!==''&&selected.size=='') alert('사이즈를 체크해주세요')
+            if(selected.color!==''&&selected.size!==''&&selected.qty==0) alert('수량을 체크해주세요')
+        }
+       // setOpen(prev => !prev)
     }
 
     const nickname = useSelector((state:RootState) => state.view.nick_name);
@@ -41,22 +51,26 @@ const NFTdetail = ({children}) => {
     const description = useSelector((state:RootState) => state.view.description);
     const color = useSelector((state:RootState) => state.view.color);
     const size = useSelector((state:RootState) => state.view.size);
+    const sizedata = useSelector((state:RootState) => state.view.sizedata)
+    const qty = useSelector((state:RootState) => state.view.qty);
+    const qtydata = useSelector((state:RootState) => state.view.qtydata);
     const price = useSelector((state:RootState) => state.view.price);
     const currency = useSelector((state:RootState) => state.view.currency);
     const item_img_link = useSelector((state:RootState) => state.view.item_img_link);
+    const orderInfo = useSelector((state:RootState)=>state.deal.orderInfo)
+   
+    const colorArr = color.split(",")  
+    //const sizeArr = size.split(",")
 
-    const colorArr = color.split(",")
-    const sizeArr = size.split(",")
-
-    
-    console.log(colorpic)
-    console.log(sizepic)
     return (
+        
         <>
             <NFTdetailWrap>
                 <NFTBuy>
                     <ColorSelect colorArr={colorArr} flagsetcolor={setColor} flagcolor={colorpic}/>
-                    <SizeSelect sizeArr={sizeArr} flagsetsize={setSize} flagsize={sizepic}/>
+                    <SizeSelect sizeArr={sizedata} flagsetsize={setSize} flagsize={sizepic}/>
+                    <QtySelect qtyArr={qtydata} flagsetqty={setQty} flagqty={qtypic}/>
+                   
                     <Like/>
                     <BuyBtnCSS onClick={orderOpen}>
                         <button>{children}</button>
