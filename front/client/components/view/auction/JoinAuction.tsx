@@ -6,6 +6,7 @@ import Router from "next/router"
 import { ModalWrapper, OrderTitle, OrderContent, OrderForm, OrderBtn } from "../sell/Order";
 // import useInput from "../../../hooks/useInput";
 import { useSelector } from "react-redux";
+import { RootState } from "../../../reducers";
 
 
 const JoinAcution = (props) => {

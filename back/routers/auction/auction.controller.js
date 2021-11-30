@@ -124,7 +124,7 @@ let auction_current_post = async (req, res) => {
                 size,
                 color,
                 shipper_idx: seller_idx,
-                item_code: `${item_code}-${nft_idx}`,
+                item_code: `${item_code}00-${nft_idx}`,
                 price: final_price,
                 order_num: result4.dataValues.order_num,
                 item_id: id,
