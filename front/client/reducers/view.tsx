@@ -20,6 +20,7 @@ export interface ViewState {
         color:string,
         size:string
     };
+    sellerKaikasAddress : string;
 
 }
 
@@ -50,7 +51,8 @@ export const initialState: ViewState = {
         color:'',
         size:''
     },
-    directIdx:0
+    directIdx:0,
+    sellerKaikasAddress : ''
     
 };
 
@@ -160,12 +162,15 @@ type ViewAction =
     | ReturnType<typeof directDealView_REQUEST>
     | ReturnType<typeof directDealView_SUCCESS>
     | ReturnType<typeof directDealView_ERROR>
+
     | ReturnType<typeof auctionView_REQUEST>
     | ReturnType<typeof auctionView_SUCCESS>
     | ReturnType<typeof auctionView_ERROR>
+
     | ReturnType<typeof getMatchQty_REQUEST>
     | ReturnType<typeof getMatchQty_SUCCESS>
     | ReturnType<typeof getMatchQty_ERROR>
+
     | ReturnType<typeof getMatchSize_REQUEST>
     | ReturnType<typeof getMatchSize_SUCCESS>
     | ReturnType<typeof getMatchSize_ERROR>
@@ -180,6 +185,7 @@ const reducer = (state: ViewState = initialState, action: ViewAction) => {
                 directIdx: action.idx
             }
         case DIRECTDEAL_VIEW_SUCCESS:
+            
             return {
                 ...state,
                 directView: action.list,
@@ -191,7 +197,8 @@ const reducer = (state: ViewState = initialState, action: ViewAction) => {
                 price : action.list.price,
                 currency : action.list.currency,
                 item_img_link: action.list.item_img_link,
-                qty:action.list.qty
+                qty:action.list.qty,
+                sellerKaikasAddress:action.list.seller_kaikas_address
             }
 
 
@@ -207,6 +214,8 @@ const reducer = (state: ViewState = initialState, action: ViewAction) => {
                 auctionIdx:action.idx
             }
         case AUCTION_VIEW_SUCCESS:
+            console.log("이부불 === ",action.list);
+
             return {
                 ...state,
                 directView: action.list,
@@ -219,6 +228,8 @@ const reducer = (state: ViewState = initialState, action: ViewAction) => {
                 currency : action.list.currency,
                 kr_end_date : action.list.kr_end_date,
                 item_img_link: action.list.item_img_link,
+                sellerKaikasAddress:action.list.seller_kaikas_address
+
             }
         case AUCTION_VIEW_ERROR:
             return {

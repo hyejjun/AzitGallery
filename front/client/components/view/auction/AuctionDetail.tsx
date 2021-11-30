@@ -90,6 +90,11 @@ const AuctionDetail = (props) => {
             params: params,
         }
         dispatch(Auction_Current_REQUEST(data))
+
+
+        console.log(view.sellerKaikasAddress," ,,,,,,,,,,, ",window.klaytn.selectedAddress);
+        
+        
     }, [])
 
 
@@ -118,14 +123,14 @@ const AuctionDetail = (props) => {
                     <li>{view.kr_end_date}</li>
                 </ul>
                 <BtnWrap>
-                    {endBool == false
+                    { view.sellerKaikasAddress !== window.klaytn.selectedAddress
                         ?
                         <BuyBtnCSS className="auctionBtn" onClick={auctionOpen}>
                             <button>경매 참여</button>
                         </BuyBtnCSS>
                         :
                         <EndBtnCSS className="auctionBtn">
-                            <button>경매 종료</button>
+                            <button>경매 불가</button>
                         </EndBtnCSS>}
                     <JoinAcution openAuction={openAuction} auctionOpen={auctionOpen} auctionValue={auctionValue} bid_price={props.bid_price} />
                 </BtnWrap>

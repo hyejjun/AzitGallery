@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import Styled from 'styled-components'
 import Order from "./Order";
 import NFTexplanation from "../NFTexplanation";
@@ -8,77 +8,92 @@ import SizeSelect from "../SizeSelect";
 import ColorSelect from "../ColorSelect";
 import QtySelect from '../QtySelect'
 import { RootState } from "../../../reducers";
-import {useRouter} from 'next/router'
+import { useRouter } from 'next/router'
 import { useSelector, useDispatch } from 'react-redux'
 import { directDealView_REQUEST } from '../../../reducers/view'
 
 
 
 
-const NFTdetail = ({children}) => {
-    const selected = useSelector((state:RootState) => state.view.selected);
-    const [colorpic,setColor] = useState<string>('')
-    const [sizepic,setSize] = useState<string>('')
-    const [qtypic,setQty] = useState<string>('')
+const NFTdetail = ({ children }) => {
+    const selected = useSelector((state: RootState) => state.view.selected);
+    const [colorpic, setColor] = useState<string>('')
+    const [sizepic, setSize] = useState<string>('')
+    const [qtypic, setQty] = useState<string>('')
 
     const router = useRouter()
-    const {view} = router.query // 카테고리 이름
- 
-    
-    
+    const { view } = router.query // 카테고리 이름
+
+
+
     const dispatch = useDispatch()
     let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
-    
-    useEffect(()=>{
-        dispatch(directDealView_REQUEST(params))
-    },[])
 
-    
+    useEffect(() => {
+        dispatch(directDealView_REQUEST(params))
+        console.log("여기 === ",sellerKaikasAddress , "-----", window.klaytn.selectedAddress);
+        
+    }, [])
+
+
     const [open, setOpen] = useState<boolean>(false);
     const orderOpen = () => {
-        if(selected.qty!==0&&selected.color!==''&&selected.size!==''){
+        if (selected.qty !== 0 && selected.color !== '' && selected.size !== '') {
             setOpen(prev => !prev)
-        }else{
-            if(selected.color=='') alert('색상을 체크해주세요')
-            if(selected.color!==''&&selected.size=='') alert('사이즈를 체크해주세요')
-            if(selected.color!==''&&selected.size!==''&&selected.qty==0) alert('수량을 체크해주세요')
+        } else {
+            if (selected.color == '') alert('색상을 체크해주세요')
+            if (selected.color !== '' && selected.size == '') alert('사이즈를 체크해주세요')
+            if (selected.color !== '' && selected.size !== '' && selected.qty == 0) alert('수량을 체크해주세요')
         }
-       // setOpen(prev => !prev)
+        // setOpen(prev => !prev)
     }
 
-    const nickname = useSelector((state:RootState) => state.view.nick_name);
-    const title = useSelector((state:RootState) => state.view.title);
-    const description = useSelector((state:RootState) => state.view.description);
-    const color = useSelector((state:RootState) => state.view.color);
-    const size = useSelector((state:RootState) => state.view.size);
-    const sizedata = useSelector((state:RootState) => state.view.sizedata)
-    const qty = useSelector((state:RootState) => state.view.qty);
-    const qtydata = useSelector((state:RootState) => state.view.qtydata);
-    const price = useSelector((state:RootState) => state.view.price);
-    const currency = useSelector((state:RootState) => state.view.currency);
-    const item_img_link = useSelector((state:RootState) => state.view.item_img_link);
-    const orderInfo = useSelector((state:RootState)=>state.deal.orderInfo)
-   
-    const colorArr = color.split(",")  
+    const nickname = useSelector((state: RootState) => state.view.nick_name);
+    const title = useSelector((state: RootState) => state.view.title);
+    const description = useSelector((state: RootState) => state.view.description);
+    const color = useSelector((state: RootState) => state.view.color);
+    const size = useSelector((state: RootState) => state.view.size);
+    const sizedata = useSelector((state: RootState) => state.view.sizedata)
+    const qty = useSelector((state: RootState) => state.view.qty);
+    const qtydata = useSelector((state: RootState) => state.view.qtydata);
+    const price = useSelector((state: RootState) => state.view.price);
+    const currency = useSelector((state: RootState) => state.view.currency);
+    const item_img_link = useSelector((state: RootState) => state.view.item_img_link);
+    const sellerKaikasAddress = useSelector((state: RootState) => state.view.sellerKaikasAddress);
+    const orderInfo = useSelector((state: RootState) => state.deal.orderInfo)
+    const User = useSelector((state: RootState) => state.user)
+
+    const colorArr = color.split(",")
     //const sizeArr = size.split(",")
 
     return (
-        
+
         <>
             <NFTdetailWrap>
                 <NFTBuy>
-                    <ColorSelect colorArr={colorArr} flagsetcolor={setColor} flagcolor={colorpic}/>
-                    <SizeSelect sizeArr={sizedata} flagsetsize={setSize} flagsize={sizepic}/>
-                    <QtySelect qtyArr={qtydata} flagsetqty={setQty} flagqty={qtypic}/>
-                   
-                    <Like/>
-                    <BuyBtnCSS onClick={orderOpen}>
-                        <button>{children}</button>
-                    </BuyBtnCSS>
-                    <Order open={open} orderOpen={orderOpen} price={price} currency={currency} flagcolor={colorpic} flagsize={sizepic} item_id={params} item_img_link={item_img_link}/>
+                    <ColorSelect colorArr={colorArr} flagsetcolor={setColor} flagcolor={colorpic} />
+                    <SizeSelect sizeArr={sizedata} flagsetsize={setSize} flagsize={sizepic} />
+                    <QtySelect qtyArr={qtydata} flagsetqty={setQty} flagqty={qtypic} />
+
+                    <Like />
+                    {
+                        sellerKaikasAddress !== window.klaytn.selectedAddress
+                            ?
+                            <BuyBtnCSS onClick={orderOpen}>
+                                <button>{children}</button>
+                            </BuyBtnCSS>
+                            :
+                            <BuyBtnCSS>
+                                <button className="unbuyable">
+                                    구매불가
+                                </button>
+                            </BuyBtnCSS>
+                    }
+
+                    <Order open={open} orderOpen={orderOpen} price={price} currency={currency} flagcolor={colorpic} flagsize={sizepic} item_id={params} item_img_link={item_img_link} />
                 </NFTBuy>
-                <NFTTitle title={title}/>
-                <NFTexplanation nickname={nickname} description={description}/>
+                <NFTTitle title={title} />
+                <NFTexplanation nickname={nickname} description={description} />
             </NFTdetailWrap>
         </>
     )
@@ -123,7 +138,12 @@ export const BuyBtnCSS = Styled.span`
         cursor: pointer;
     }
 
-` 
+    .unbuyable {
+        background-color: #bbb;
+        border: 1px solid #bbb;
+    }
+
+`
 export const EndBtnCSS = Styled.span`
     width: 246px;
     height : 60px;
@@ -146,4 +166,4 @@ export const EndBtnCSS = Styled.span`
         cursor: pointer;
     }
 
-` 
+`
