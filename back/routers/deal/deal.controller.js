@@ -1,4 +1,4 @@
-const {OrderDetail, ItemDetail, Nft, Orders, ItemInfo} = require('../../models')
+const {OrderDetail, ItemDetail, Nft, Orders, ItemInfo, ShipInfo} = require('../../models')
 const mysql = require('mysql')
 const pool = require('../pool');
 
@@ -17,15 +17,16 @@ let deal_post = async (req,res) => {
             final_order_state:'배송준비중',
             buyer:userIdx,
             order_num:null,
-            final_order_state:0,
             user_idx:userIdx
         })
+        
         for(let i=1; i<=qty; i++){
             let result1 = await ItemDetail.findOne({where:{item_info_idx:item_id,size:size,color:color}})
-            let result2 = await Nft.findAll({where:{nft_img_idx:result1.nft_idx,product_status:'판매중'}})
-            let nft_idx = Math.min(result2[0].id)
+            let result2 = await Nft.findOne({where:{nft_img_idx:result1.nft_idx,product_status:'판매중'}})
+            let nft_idx = result2.id
+            console.log(result2,'resulttttttttttttttttttttttttttttt')
 
-
+            
             let result3 = await OrderDetail.create({
                 size,
                 color,
@@ -34,7 +35,12 @@ let deal_post = async (req,res) => {
                 price:price,
                 order_num:result4.order_num,
                 item_id,
-                sell_type:0
+                delivery_state:'배송준비중'
+            })
+            let ship_info = await ShipInfo.create({
+                order_num:result4.order_num,
+                item_delivery_state:'배송준비중',
+                order_detail_num:result3.id
             })
             
             console.log(result3,'order_detail=====================')

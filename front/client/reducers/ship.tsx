@@ -8,7 +8,8 @@ export interface ShipState {
     error: string;
     UserAddress: string;
     verify: number;
-    DeliveryArr:Array<any>
+    DeliveryArr:Array<any>;
+    itemcode:string;
 }
 
 export const initialState: ShipState = {
@@ -18,7 +19,8 @@ export const initialState: ShipState = {
     error: '',
     UserAddress: 'kaikasAddress',
     verify: 200,
-    DeliveryArr:[{total_price:'d', buyer:'d', receiver:'d', receiver_address:'d', receiver_contact:'d', final_order_state:'d', memo:'d',item_code:'d'}]
+    DeliveryArr:[{total_price:'d', buyer:'d', receiver:'d', receiver_address:'d', receiver_contact:'d', final_order_state:'d', memo:'d',item_code:'d'}],
+    itemcode:''
 };
 
 /* 구매자 :  배송 정보 입력하기 */

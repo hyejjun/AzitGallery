@@ -124,7 +124,7 @@ let auction_current_post = async (req, res) => {
             price: final_price,
             order_num: result4.dataValues.order_num,
             item_id: id,
-            sell_type: 1
+            delivery_state: '배송준비중'
         })
 
         // 판매자에게 돈 보내기
