@@ -21,7 +21,7 @@ const NFTAuction = () => {
     return (
         <>
             <NFTTitle title={title}/>
-            <AuctionDetail bid_price={bid_price} currency={currency} left_time={left_time}/>
+            <AuctionDetail bid_price={bid_price} currency={currency} left_time={left_time} nickname={nickname}/>
             <NFTexplanation nickname={nickname} description={description}/>
         </>
     )
