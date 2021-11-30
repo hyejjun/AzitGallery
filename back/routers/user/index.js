@@ -25,4 +25,6 @@ router.post('/userinfo',controller.user_info)
 
 router.post ('/shipch',controller.ship_update)
 
+router.post ('/selleradmincheck',controller.seller_admin_check)
+
 module.exports = router

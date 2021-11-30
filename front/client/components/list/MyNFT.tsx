@@ -4,18 +4,13 @@ import Styled from 'styled-components'
 import Link from 'next/link'
 import Button from '@mui/material/Button';
 
-const MyNFT = ()=>{
-
-    const onClick = () => {
-
-    }
-    return(
+const MyNFT = () => {
+    return (
         <>
             <MyNFTAll>
                 <Menu>
                     <MenuH3>나만의 NFT를 발행해보세요</MenuH3>
-                    <div>KrafterSpace에서는 누구나 쉽고 간편하게<br/>NFT를 발행하고 관리할 수 있어요.</div>
-                    <Link href = "/item/additem"><a><Button variant="contained" size="large">NFT 발행하기</Button></a></Link>
+                    <div>KrafterSpace에서는 누구나 쉽고 간편하게<br />NFT를 발행하고 관리할 수 있어요.</div>
                 </Menu>
 
                 <MenuImg> <img /> </MenuImg>

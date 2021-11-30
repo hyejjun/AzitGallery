@@ -9,7 +9,6 @@ import {url} from './url'
 /* 로그인 중복 확인 */
 function loginAPI(action){
     return axios.post(`${url}/user/addressdbcheck`,JSON.stringify(action.data))
-    
 }
 
 function* login(action){
@@ -18,15 +17,15 @@ function* login(action){
 
     if(result.data.signupBool == true){
         yield put({
-            //type:'SIGNUP_POST_SUCCESS',
             type: 'USER_LOGIN_SUCCESS',
             signupBool : result.data.signupBool,
-            UserAddress : result.data.kaikas_address   ,
-            userIdx : result.data.user_idx   
+            UserAddress : result.data.kaikas_address,
+            userIdx : result.data.user_idx,   
+            adminApproval : result.data.admin_approval,   
+            sellerBool : result.data.sellerBool,   
         })
     }else{
         yield put({
-            //type:'SIGNUP_POST_ERROR',
             type: 'USER_LOGIN_ERROR',
             signupBool : result.data.signupBool
         
@@ -249,6 +248,31 @@ function* reqUpdateShip(){
     yield takeLatest('UPDATE_SHIP_STATE_REQUEST',reqUpdateShipSaga)
 }
 
+// 판매자 체크
+function reqAdminApprovalAPI(data){
+    return axios.post(`${url}/user/selleradmincheck`, JSON.stringify(data)) 
+}
+function* reqAdminApprovalSaga(action){
+    
+    const result = yield call(reqAdminApprovalAPI, action.data)
+    console.log("결과 === ",result);
+    
+    if(result.data.result_msg=='OK'){
+        yield put({
+            type:'ADMIN_APPROVAL_CHECK_SUCCESS',
+            adminApproval : result.data.admin_approval
+        })
+    }else{
+        yield put({
+            type:'ADMIN_APPROVAL_CHECK_ERROR'
+        })
+    }
+}
+
+function* reqAdminApproval(){
+    yield takeLatest('ADMIN_APPROVAL_CHECK_REQUEST',reqAdminApprovalSaga)
+}
+
 
 export default function* userSaga(){
     yield all([
@@ -263,6 +287,7 @@ export default function* userSaga(){
         fork(reqUesrInfo),
         fork(reqNickname),
         fork(reqEmail),
-        fork(reqUpdateShip) 
+        fork(reqUpdateShip), 
+        fork(reqAdminApproval), 
     ])
 }
