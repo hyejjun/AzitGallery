@@ -24,8 +24,10 @@ let deal_post = async (req,res) => {
             let result1 = await ItemDetail.findOne({where:{item_info_idx:item_id,size:size,color:color}})
             let result2 = await Nft.findOne({where:{nft_img_idx:result1.nft_idx,product_status:'판매중'}})
             let nft_idx = result2.id
-            console.log(result2,'resulttttttttttttttttttttttttttttt')
-
+            //console.log(result1,'resultt11111111111111111111111111111111')
+            //console.log(result1.item_code,'itemoddddddddddddddddddddddddddddddddddddddd')
+            price = parseFloat(price)
+            //console.log(parseFloat(price),'priceeeeeeeeeeeeeeeeeeee')
             
             let result3 = await OrderDetail.create({
                 size,

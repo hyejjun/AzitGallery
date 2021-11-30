@@ -7,13 +7,31 @@ import { RootState } from "../../reducers"
 const OrderInfo = () => {
     const User = useSelector((state:RootState) => state.user);
     const Ship = useSelector((state:RootState) => state.ship);
+    const deliveryinfo = useSelector((state:RootState) => state.ship.DeliveryArr)
+    console.log(deliveryinfo)
+    
+    
     const dispatch = useDispatch()
-    const useridx = {
-        useridx:User.UserAddress
-    }
+
+    
+
+
+
+
+    let linkdata = Ship.itemcode
+
     useEffect(()=>{ 
-        dispatch(delivery_customer_REQUEST(useridx))
-    },[])
+        if(params[0]=='a'){
+            dispatch(delivery_customer_REQUEST(data))
+        }
+    },[linkdata])
+
+    let params = window.location.href.split('d/')[1]
+    Ship.itemcode = params 
+    const data = {
+        useridx:User.UserAddress,
+        params:Ship.itemcode
+    }
 
     return(
         <>
@@ -24,28 +42,28 @@ const OrderInfo = () => {
                         <tbody>
                             <tr>
                                 <td>주문하신 분</td>
-                                <td>{Ship.DeliveryArr[0].buyer}</td>
+                                <td>{deliveryinfo[0].username}</td>
                             </tr>
                             <tr>
                                 <td>받으시는 분</td>
-                                <td>{Ship.DeliveryArr[0].receiver}</td>
+                                <td>{deliveryinfo[0].receiver}</td>
                             </tr>
                             <tr>
                                 <td>배송주소</td>
                                 <td>
-                                    {Ship.DeliveryArr[0].receiver_address}
+                                    {deliveryinfo[0].receiver_address}
                                 </td>
                             </tr>
                             <tr>
                                 <td>휴대번호</td>
                                 <td>
-                                    {Ship.DeliveryArr[0].receiver_contact}
+                                    {deliveryinfo[0].receiver_contact}
                                 </td>
                             </tr>
                             <tr>
                                 <td>배송메세지</td>
                                 <td>
-                                    {Ship.DeliveryArr[0].memo}
+                                    {deliveryinfo[0].memo}
                                 </td>
                             </tr> 
                         </tbody>
