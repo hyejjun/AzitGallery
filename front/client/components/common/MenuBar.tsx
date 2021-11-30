@@ -9,7 +9,7 @@ import Link from 'next/link';
 import AddItemComponent from '../item/AddItemComponent';
 import Btn from './Btn';
 import { useDispatch, useSelector } from 'react-redux';
-import { UserLogin_REQUEST, UserLogout_REQUEST } from '../../reducers/user';
+import { UserLogin_REQUEST, UserLogout_REQUEST, AdminApprovalCheck_REQUEST } from '../../reducers/user';
 // reducer 확인
 import { RootState } from '../../reducers';
 import axios from 'axios';
@@ -22,7 +22,8 @@ declare global {
 }
 
 const MenuBar = () => {
-    /*
+    const dispatch = useDispatch()
+
     const [loginState, setLoginState] = useState<boolean>(false)
     const [flag, setFlag] = useState<boolean>(false)
     const [Login, setLogin] = useState<boolean>(false)
@@ -33,28 +34,12 @@ const MenuBar = () => {
     }
     const createBtn = () => {
         loginState == true ? setFlag(false) : setFlag(true)
-    }
-    const requireOpenBtn = () => {
-        setFlag(prev => !prev)
-    }
-    const loginOpenBtn = () => {
-        setFlag(prev => !prev)
-        setLogin(prev => !prev)
-    }
-    const closeLoginForm = () => {
-        setLogin(prev => !prev)
-    }
-*/
-    const [loginState, setLoginState] = useState<boolean>(false)
-    const [flag, setFlag] = useState<boolean>(false)
-    const [Login, setLogin] = useState<boolean>(false)
 
-    const loginClick = () => {
-        loginState ? setLoginState(false) : setLoginState(true);
-        setLogin(true)
-    }
-    const createBtn = () => {
-        loginState == true ? setFlag(false) : setFlag(true)
+        dispatch(AdminApprovalCheck_REQUEST(User.NickName))
+
+        if(User.adminApproval !== 3 || User.sellerBool !== true){
+            alert('판매자 인증 완료가 되지 않았습니다.')
+        }
     }   
     const requireOpenBtn = () => {
         setFlag(prev => !prev)
@@ -72,7 +57,6 @@ const MenuBar = () => {
     const [kaikasAddress, setKaikasAddress] = React.useState<string[]>([])
     const [Load, setLoad] = React.useState<boolean>(false)
     const User = useSelector((state: RootState) => state.user);
-    const dispatch = useDispatch()
 
     const signupBool = useSelector((state: RootState) => state.user.signupBool) 
 
@@ -86,11 +70,6 @@ const MenuBar = () => {
                 let AddressArr = []
                 AddressArr.push(klaytnAddress)
                 setKaikasAddress(AddressArr)
-
-
-                //dispatch(UserLogin_REQUEST(klaytnAddress))
-                //console.log("signupBoolean ===== ", User.signupBool);
-
 
                 // 카이카스 로그인 후 서명
                 const account = window.klaytn.selectedAddress
@@ -116,7 +95,6 @@ const MenuBar = () => {
     }
     useEffect(() => {
         const klaytnAddress = window.klaytn.selectedAddress
-        // dispatch(UserLogin_REQUEST(klaytnAddress))
         if(window.klaytn.autoRefreshOnNetworkChange==false){
             alert('계정이 변경되었습니다.')
         }
@@ -139,18 +117,14 @@ const MenuBar = () => {
             setLogin(false)
             setFlag(false)
         }
-
     }, [])
 
     const login = () => {
-        
-        //setLoginState(true)
         setLogin(true)
         setFlag(false)
 
         const klaytnAddress = window.klaytn.selectedAddress
         dispatch(UserLogin_REQUEST(klaytnAddress))
-
     }
 
     const logout = () => {
@@ -175,7 +149,7 @@ const MenuBar = () => {
                 <span><Link href="/"><a>Azit Gallery</a></Link></span>
                 <ul>
                     <li><Link href="/"><a>탐색하기</a></Link></li>
-                    {loginState ? <LOG onClick={() => createBtn()}><Link href="/item/additem"><a>발행하기</a></Link></LOG> : <LOG onClick={() => createBtn()}>발행하기</LOG>}
+                    {loginState && User.adminApproval === 3 && User.sellerBool ? <LOG onClick={() => createBtn()}><Link href="/item/additem"><a>발행하기</a></Link></LOG> : <LOG onClick={() => createBtn()}>발행하기</LOG>}
                     {loginState ? <LOG><Link href="/user/mynftall"><a>나의NFT</a></Link></LOG> : <LOG></LOG>}
                     {loginState ? <Link href="/"><LOG onClick={() => { logout() }}>LogOut</LOG></Link> : <LOG onClick={() => { login() }}>Login</LOG>}
                 </ul>

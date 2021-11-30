@@ -16,14 +16,15 @@ export interface UserState {
     userList: Array<any>;
     loginBool: boolean;
     nicknameChkBool: boolean;
-    userInfo:{};
-    userIdx : number;
+    userInfo: {};
+    userIdx: number;
     emailBool: boolean;
-    adminApproval : number;
-    emailValidation : boolean;
-    itemcode:string;
-    check:boolean;
-    data:any
+    adminApproval: number;
+    emailValidation: boolean;
+    sellerBool : boolean;
+    itemcode: string;
+    check: boolean;
+    data: any
 }
 
 export const initialState: UserState = {
@@ -39,14 +40,15 @@ export const initialState: UserState = {
     userList: [],
     loginBool: false,
     nicknameChkBool: false,
-    userInfo:{},
-    userIdx : 0,
+    userInfo: {},
+    userIdx: 0,
     emailBool: false,
-    adminApproval : 0,
-    emailValidation : false,
-    itemcode:'',
-    check:false,
-    data:[]
+    adminApproval: 0,
+    emailValidation: false,
+    sellerBool : false,
+    itemcode: '',
+    check: false,
+    data: []
 };
 
 
@@ -63,7 +65,7 @@ export const SELLER_ADMIN_REQUEST = "SELLER_ADMIN_REQUEST" as const;
 export const SELLER_ADMIN_SUCCESS = "SELLER_ADMIN_SUCCESS" as const;
 export const SELLER_ADMIN_ERROR = "SELLER_ADMIN_ERROR" as const;
 
-export const SELLER_ADMIN_WAIT_REQUEST= "SELLER_ADMIN_WAIT_REQUEST" as const;
+export const SELLER_ADMIN_WAIT_REQUEST = "SELLER_ADMIN_WAIT_REQUEST" as const;
 export const SELLER_ADMIN_WAIT_SUCCESS = "SELLER_ADMIN_WAIT_SUCCESS" as const;
 export const SELLER_ADMIN_WAIT_ERROR = "SELLER_ADMIN_WAIT_ERROR" as const;
 
@@ -99,6 +101,9 @@ export const UPDATE_SHIP_STATE_REQUEST = "UPDATE_SHIP_STATE_REQUEST" as const;
 export const UPDATE_SHIP_STATE_SUCCESS = "UPDATE_SHIP_STATE_SUCCESS" as const;
 export const UPDATE_SHIP_STATE_ERROR = "UPDATE_SHIP_STATE_ERROR" as const;
 
+export const ADMIN_APPROVAL_CHECK_REQUEST = "ADMIN_APPROVAL_CHECK_REQUEST" as const;
+export const ADMIN_APPROVAL_CHECK_SUCCESS = "ADMIN_APPROVAL_CHECK_SUCCESS" as const;
+export const ADMIN_APPROVAL_CHECK_ERROR = "ADMIN_APPROVAL_CHECK_ERROR" as const;
 
 
 /* User Login req */
@@ -106,25 +111,27 @@ export const UserLogin_REQUEST = (UserAddress) => {
     return {
         type: USER_LOGIN_REQUEST,
         data: UserAddress,
-        loginBool : false,
+        loginBool: false,
     }
 }
 export const UserLogin_SUCCESS = (data) => {
     return {
         type: USER_LOGIN_SUCCESS,
         //data: klaytnAddress.UserAddress
-        loginBool : true,
-        UserAddress : data.UserAddress,
-        signupBool : data.signupBool,
-        userIdx : data.userIdx
+        loginBool: true,
+        UserAddress: data.UserAddress,
+        signupBool: data.signupBool,
+        userIdx: data.userIdx,
+        adminApproval: data.adminApproval,
+        sellerBool: data.sellerBool,
     }
 }
 export const UserLogin_ERROR = (data) => {
     return {
         type: USER_LOGIN_ERROR,
         //error: error,
-        signupBool : data.signupBool,
-        
+        signupBool: data.signupBool,
+
     }
 }
 
@@ -137,9 +144,9 @@ export const UserLogout_REQUEST = () => {
 export const UserLogout_SUCCESS = (data) => {
     return {
         type: USER_LOGOUT_SUCCESS,
-        UserAddress : 'kaikasAddress',
-        loginBool : false,
-        signupBool : false,
+        UserAddress: 'kaikasAddress',
+        loginBool: false,
+        signupBool: false,
     }
 }
 export const UserLogout_ERROR = () => {
@@ -220,16 +227,16 @@ export const Nickname_REQUEST = (data) => {
 export const Nickname_SUCCESS = () => {
 
     return {
-        
+
         type: NICKNAME_POST_SUCCESS,
-        
+
     }
 }
 
 export const Nickname_ERROR = () => {
     return {
         type: NICKNAME_POST_ERROR,
-        
+
     }
 }
 
@@ -245,14 +252,14 @@ export const Email_SUCCESS = (data) => {
     return {
 
         type: EMAIL_POST_SUCCESS,
-        data:data
+        data: data
     }
 }
 
 export const Email_ERROR = (data) => {
     return {
         type: EMAIL_POST_ERROR,
-        data:data
+        data: data
     }
 }
 
@@ -260,14 +267,14 @@ export const Email_ERROR = (data) => {
 /* user list req */
 export const Userlist_REQUEST = () => {
     console.log('요청됨 =====');
-    
+
     return {
         type: USER_LIST_REQUEST,
     }
 }
 
 export const UserList_SUCCESS = (data) => {
-    console.log("관리자 인증을 위한 ",data)
+    console.log("관리자 인증을 위한 ", data)
     return {
         type: USER_LIST_SUCCESS,
         data: data
@@ -284,7 +291,7 @@ export const UserList_ERROR = () => {
 export const SellerAdminAccess_REQUEST = (data) => {
     return {
         type: SELLER_ADMIN_ACCESS_REQUEST,
-        data:data
+        data: data
     }
 }
 export const SellerAdminAccess_SUCCESS = () => {
@@ -304,7 +311,7 @@ export const SellerAdminAccess_ERROR = () => {
 export const SellerAdminDeny_REQUEST = (data) => {
     return {
         type: SELLER_ADMIN_DENY_REQUEST,
-        data:data
+        data: data
     }
 }
 export const SellerAdminDeny_SUCCESS = () => {
@@ -324,16 +331,16 @@ export const SellerAdminDeny_ERROR = () => {
 export const UserInfo_REQUEST = (data) => {
     return {
         type: USER_INFO_REQUEST,
-        data:data
+        data: data
     }
 }
 
 export const UserInfo_SUCCESS = (userInfo) => {
-    console.log("성공 =====",userInfo);
-    
+    console.log("성공 =====", userInfo);
+
     return {
         type: USER_INFO_SUCCESS,
-        data : userInfo
+        data: userInfo
     }
 }
 
@@ -360,8 +367,31 @@ export const Update_ship_state_SUCCESS = (data) => {
 export const Update_ship_state_ERROR = () => {
     return {
         type: UPDATE_SHIP_STATE_ERROR,
-        
-        
+
+
+    }
+}
+
+
+/* 인증받은 판매자인지 체크 */
+
+export const AdminApprovalCheck_REQUEST = (data) => {
+    return {
+        type: ADMIN_APPROVAL_CHECK_REQUEST,
+        data
+    }
+}
+
+export const AdminApprovalCheck_SUCCESS = (data) => {
+    return {
+        type: ADMIN_APPROVAL_CHECK_SUCCESS,
+        adminApproval : data
+    }
+}
+
+export const AdminApprovalCheck_ERROR = () => {
+    return {
+        type: ADMIN_APPROVAL_CHECK_ERROR,
     }
 }
 
@@ -413,10 +443,14 @@ type UserAction =
     | ReturnType<typeof UserInfo_REQUEST>
     | ReturnType<typeof UserInfo_SUCCESS>
     | ReturnType<typeof UserInfo_ERROR>
-    
+
     | ReturnType<typeof Update_ship_state_REQUEST>
     | ReturnType<typeof Update_ship_state_SUCCESS>
     | ReturnType<typeof Update_ship_state_ERROR>
+
+    | ReturnType<typeof AdminApprovalCheck_REQUEST>
+    | ReturnType<typeof AdminApprovalCheck_SUCCESS>
+    | ReturnType<typeof AdminApprovalCheck_ERROR>
 
 
 const reducer = (state: UserState = initialState, action: UserAction) => {
@@ -431,17 +465,19 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
             return {
                 ...state,
                 //data: action.data
-                loginBool : true,
-                UserAddress : action.UserAddress,
-                signupBool : action.signupBool,
-                userIdx : action.userIdx
+                loginBool: true,
+                UserAddress: action.UserAddress,
+                signupBool: action.signupBool,
+                userIdx: action.userIdx,
+                adminApproval: action.adminApproval,
+                sellerBool : action.sellerBool
             }
 
         case USER_LOGIN_ERROR:
             return {
                 ...state,
                 //data: action.error
-                signupBool : action.signupBool
+                signupBool: action.signupBool
             }
 
         case USER_LOGOUT_REQUEST:
@@ -451,8 +487,8 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
         case USER_LOGOUT_SUCCESS:
             return {
                 ...state,
-                UserAddress : action.UserAddress,
-                loginBool : false
+                UserAddress: action.UserAddress,
+                loginBool: false
             }
 
         case USER_LOGOUT_ERROR:
@@ -460,7 +496,7 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
                 ...state,
             }
 
-                    /********* */
+        /********* */
         case SELLER_ADMIN_WAIT_REQUEST:
             return {
                 ...state,
@@ -481,11 +517,11 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
 
         /*********** */
         case SELLER_ADMIN_REQUEST:
-            console.log("이메일 인증 ==== ",action.data);
-            
+            console.log("이메일 인증 ==== ", action.data);
+
             return {
                 ...state,
-                data : action.data
+                data: action.data
             }
         case SELLER_ADMIN_SUCCESS:
             return {
@@ -499,16 +535,16 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
         case SELLER_ADMIN_ACCESS_REQUEST:
             return {
                 ...state,
-                data : action.data
+                data: action.data
             }
         case SELLER_ADMIN_ACCESS_SUCCESS:
             return {
                 ...state,
-            } 
+            }
         case SELLER_ADMIN_ACCESS_ERROR:
             return {
                 ...state,
-            } 
+            }
         /*********** */
         case SELLER_ADMIN_DENY_REQUEST:
             return {
@@ -517,11 +553,11 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
         case SELLER_ADMIN_DENY_SUCCESS:
             return {
                 ...state,
-            } 
+            }
         case SELLER_ADMIN_DENY_ERROR:
             return {
-                 ...state,
-            } 
+                ...state,
+            }
         /* 회원가입 */
         case SIGNUP_POST_REQUEST:
             return {
@@ -564,7 +600,7 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
         case EMAIL_POST_SUCCESS:
             return {
                 ...state,
-                emailBool:action.data.flag
+                emailBool: action.data.flag
             }
         case EMAIL_POST_ERROR:
             return {
@@ -577,7 +613,7 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
             return {
                 ...state,
             }
-        case USER_LIST_SUCCESS:            
+        case USER_LIST_SUCCESS:
             return {
                 ...state,
                 userList: action.data
@@ -592,32 +628,49 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
                 ...state,
                 data: action.data
             }
-        case USER_INFO_SUCCESS: 
+        case USER_INFO_SUCCESS:
             return {
                 ...state,
-                adminApproval : action.data.admin_approval,
-                emailValidation : action.data.email_validation,
-                NickName:action.data.result.nick_name,
-                Address:action.data.result.kaikas_address,
-                Email:action.data.result.email
+                adminApproval: action.data.admin_approval,
+                emailValidation: action.data.email_validation,
+                NickName: action.data.result.nick_name,
+                Address: action.data.result.kaikas_address,
+                Email: action.data.result.email
             }
-        case USER_INFO_ERROR: 
+        case USER_INFO_ERROR:
             return {
                 ...state,
             }
+
         case UPDATE_SHIP_STATE_REQUEST:
-            return{
+            return {
                 ...state,
-                data:action.data
+                data: action.data
             }
         case UPDATE_SHIP_STATE_SUCCESS:
-            return{
+            return {
                 ...state,
-                check:action.data            
+                check: action.data
             }
         case UPDATE_SHIP_STATE_ERROR:
-            return{
+            return {
                 ...state
+            }
+
+        case ADMIN_APPROVAL_CHECK_REQUEST:
+            return {
+                ...state,
+                data : action.data
+            }
+        case ADMIN_APPROVAL_CHECK_SUCCESS:
+     
+            return {
+                ...state,
+                adminApproval : action.adminApproval
+            }
+        case ADMIN_APPROVAL_CHECK_ERROR:
+            return {
+                ...state,
             }
 
         default:

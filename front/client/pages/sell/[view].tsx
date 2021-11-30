@@ -7,12 +7,6 @@ import { directDealView_REQUEST } from '../../reducers/view'
 import { useEffect, useState } from 'react'
 
 const View = ({children}) => {
-
-
-
-
-
-
     return (
         <>
             <BackBtn />

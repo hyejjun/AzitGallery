@@ -10,7 +10,6 @@ let get_directdeal_view = async (req, res) => {
     // @ user 에 대한 정보 가져와서 like 조회해야함.
     // @ idx 로 해당 view 조회하기
     let directView = await ItemInfo.findOne({where:{item_id:idx}})
-    console.log(directView)
     let price = await DirectDeal.findOne({where:{direct_deal_idx:idx}})
     let user = await User.findOne({where:{user_idx:directView.creator}})
     let img = await ItemImg.findAll({where:{item_img_idx:idx}})
@@ -26,6 +25,7 @@ let get_directdeal_view = async (req, res) => {
         data = {
             result_msg: 'OK',
             nick_name:user.nick_name,
+            seller_kaikas_address:user.kaikas_address,
             description:directView.description,
             title:directView.title,
             size:directView.size,
@@ -57,8 +57,8 @@ let get_auction_view = async (req, res) => {
             let result = await ItemInfo.findOne({ where: { item_id: idx, sell_type: 1 } })
             const { creator, description, title, registered_at, size, color } = result.dataValues
     
-            let result2 = await User.findOne({ where: { user_idx: creator }, attributes: ['nick_name'] })
-            const { nick_name } = result2.dataValues
+            let result2 = await User.findOne({ where: { user_idx: creator }, attributes: ['nick_name', 'kaikas_address'] })
+            const { nick_name, kaikas_address } = result2.dataValues
     
             // @ 경매 정보
             let result3 = await AuctionHistory.findOne({ where: { auc_history_idx: idx }, order: [['bid_price', 'DESC']] })
@@ -78,7 +78,7 @@ let get_auction_view = async (req, res) => {
             })
     
             let kr_end_date = end_date.toLocaleString()
-           
+
             data = {
                 result_msg: 'OK',
                 nick_name,
@@ -89,7 +89,8 @@ let get_auction_view = async (req, res) => {
                 bid_price,
                 currency,
                 item_img_link,
-                kr_end_date
+                kr_end_date,
+                seller_kaikas_address : kaikas_address
             }
     
         } catch (error) {
