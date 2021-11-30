@@ -104,6 +104,7 @@ const UserWrapper = Styled.div`
     margin-top:3%;
     margin:auto;
     border-radius:2%;
+    display : block;
     a{
         text-decoration:none;
         font-weight:500;
@@ -181,7 +182,7 @@ const UserWrapper = Styled.div`
     }
     div>span>ul>li:nth-child(5)>button{
         box-sizing:border-box;
-        border:1px solid #e1f0ff;
+        /* border:1px solid #e1f0ff; */
         border-radius: .25rem;
         padding: 12px 24px;
         height: 50px;
@@ -190,7 +191,7 @@ const UserWrapper = Styled.div`
         font-weight: 800;
         text-align: center;
         vertical-align: middle;
-        background-color: #e1f0ff;
+        /* background-color: #e1f0ff; */
     }
     div>span>ul>li:nth-child(5)>button:nth-child(1) a{
         background-color: #e1f0ff;

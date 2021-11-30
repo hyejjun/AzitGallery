@@ -90,41 +90,6 @@ const AuctionDetail = (props) => {
             params: params,
         }
         dispatch(Auction_Current_REQUEST(data))
-
-        // setEndBool(Auction.endDate)
-        // console.log(`호로로로롤로로 불리언 값변화 ${endBool}`)
-        if (Auction.buyer != undefined && Auction.buyer == window.klaytn.selectedAddress) {
-            // window.caver.klay
-            //     .sendTransaction({
-            //         type: 'VALUE_TRANSFER',
-            //         from: window.klaytn.selectedAddress,
-            //         to: '0x325B6d2a7eE98a868ad576fD261f561E36F097B1',
-            //         value: window.caver.utils.toPeb(`${auctionPrice}`, 'KLAY'),
-            //         gas: 8000000
-            //     })
-            //     .once('transactionHash', transactionHash => {
-            //         console.log('txHash', transactionHash)
-            //     })
-            //     .once('receipt', receipt => {
-            //         console.log('receipt', receipt)
-            //     })
-            //     .once('error', error => {
-            //         console.log('error', error)
-            //     })
-
-            // // console.log(JSON.stringify(window.location.href).split('ell/')[1].replace("\"", ""))
-            // let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
-            // window.location.href = `/ship/${params}`
-        }
-
-        // console.log("끝남?? === ", Auction.endDate);
-
-        // if (Auction.endDate == true) {
-        //     // 여기서 dispatch 로 item info - product state 1로 바꿔줌
-        //     // dispatch(AuctionClose_REQUEST(data))
-        //     alert('경매 종료')
-
-        // }
     }, [])
 
 
@@ -143,12 +108,12 @@ const AuctionDetail = (props) => {
         <>
             <AuctionDetailWrap>
                 <ul className="auctionTitle">
-                    <li>경매 입찰 수</li>
+                    {/* <li>경매 입찰 수</li> */}
                     <li>현재 입찰가</li>
                     <li>마감시간</li>
                 </ul>
                 <ul className="auctionContent">
-                    <li>{num}</li>
+                    {/* <li>{num}</li> */}
                     <li>{Auction.current}KLAY</li>
                     <li>{view.kr_end_date}</li>
                 </ul>

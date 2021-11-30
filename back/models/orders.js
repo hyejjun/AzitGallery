@@ -7,7 +7,7 @@ module.exports = class Orders extends Sequelize.Model{
     static init(sequelize){
         return super.init({ 
             total_price:{
-                type:Sequelize.INTEGER(30),
+                type:Sequelize.STRING(20),
                 allowNull:false,
             },
             order_date:{

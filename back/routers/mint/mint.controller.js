@@ -72,12 +72,12 @@ let mint_nft_post = async (req, res) => {
   // keyring에 대한 자세한 내용은 https://ko.docs.klaytn.com/bapp/sdk/Caver-js/api-references/Caver.wallet/keyring 를 참고하세요.
   // https://baobab.wallet.klaytn.com/access/0xdfaf037869bb807239e8c46d3b3472ac72adbaef  개인키
   const keyring = caver.wallet.keyring.createFromPrivateKey(
-    "0xd22e0cc154ed32abcd8e13cb5ba24bba940205509824b57f4220e944eee8d075"
+    "0x6aaf5c8af80503a0737f02f107e7a38ef1474abf32d2c8df0e36ddc53fd8ef97"
   );
   // wallet에 keyring이 추가되지 않은 경우에만 keyring을 추가합니다.
   if (!caver.wallet.getKeyring(keyring.address)) {
     const singleKeyRing = caver.wallet.keyring.createFromPrivateKey(
-      "0xd22e0cc154ed32abcd8e13cb5ba24bba940205509824b57f4220e944eee8d075"
+      "0x6aaf5c8af80503a0737f02f107e7a38ef1474abf32d2c8df0e36ddc53fd8ef97"
     );
     caver.wallet.add(singleKeyRing);
   }
@@ -116,7 +116,7 @@ let mint_nft_post = async (req, res) => {
     // 자세한 내용은 https://ko.docs.klaytn.com/bapp/sdk/caver-js/api-references/caver.kct/KIP-17#KIP-17-mintwithtokenuri 를 참고하세요.
     mintResult = await kip_17.mintWithTokenURI(
       // https://baobab.wallet.klaytn.com/access/0xdfaf037869bb807239e8c46d3b3472ac72adbaef  account주소를 넣는다
-      "0x89e204fcbad4c4197a9e3971c7bb3c32f46cc458",
+      "0x62b8769d6edc718d90cb8884ca7f390e9b9c7466",
       randomTokenID,
       tokenURI,
       { from: keyring.address }
@@ -248,7 +248,7 @@ let mint_nft_post = async (req, res) => {
       await DirectDeal.create({
         direct_deal_idx: add_to_item_info.dataValues.item_id,
         price: Number(price),
-        currency
+        currency : 'klay'
       })
 
       data = {
@@ -272,7 +272,7 @@ let mint_nft_post = async (req, res) => {
         auc_history_idx: add_to_item_info.dataValues.item_id,
         bidder: get_user_id.dataValues.user_idx,
         bid_price: Number(aucPrice),
-        currency
+        currency:'klay'
       })
 
       data = {
@@ -406,7 +406,6 @@ let KIP7Token_transfer = async () => {
     );
     caver.wallet.add(singleKeyRing);
   }
-  console.log(`이르음 제데ㅐ로 나오겠지 ${kip7Instance.name().then(console.log)}`)
   const kip7Instance = new caver.kct.kip7('0xbd929FED827F26E84ca8b66A35Ef694F5829f9De')
   kip7Instance.name().then(console.log)
   const opts = { from: keyring.address }
