@@ -21,7 +21,7 @@ const MyNftComponent = () => {
     const user:UserState = useSelector((state:RootState) => state.user);
     const list:ListState = useSelector((state:RootState) => state.list);
     const itemcode_db = useSelector((state:RootState)=>state.user.itemcode)
-
+    console.log(list.view,'llisttttttttttttttttt')
 
     useEffect(()=>{
         if(list.view){
