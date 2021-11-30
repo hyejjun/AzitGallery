@@ -99,13 +99,12 @@ const MyNftComponent = () => {
     return(
         <>  
             <MyInfo> 
-                <MyAddress>{user.UserAddress}</MyAddress>
+                {/* <MyAddress>{user.UserAddress}</MyAddress> */}
                 {/* <MySwap onClick = {FROMklayToEPI}>klay에서 EPI로 토큰 스왑</MySwap> */}
+                {/* <Link href="/user/user"><a><button>내 정보</button></a></Link> */}
                 
-                {/* <UserInfo/> */}
+                <UserInfo/>
                 
-                
-                <Link href="/user/user"><a><button>내 정보</button></a></Link>
             </MyInfo>
             <MyNft>
                 <Header>
@@ -154,8 +153,8 @@ export default MyNftComponent
 
 const MyInfo = Styled.div`
     margin:0 auto;
-    width:300px;
-    height:330px;
+    width:auto;
+    height:auto;
 `
 
 const MyIMG = Styled.div`
