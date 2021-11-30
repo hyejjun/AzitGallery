@@ -10,6 +10,7 @@ import {UserState} from "../../reducers/user"
 import {ListState} from "../../reducers/list"
 import { KipSwap_REQUEST } from "../../reducers/mint";
 import { myNft_view_REQUEST, myNft_all_REQUEST,sold_nft_REQUEST,not_selled_REQUEST} from '../../reducers/list'
+import UserInfo from './UserInfo'
 
 const MyNftComponent = () => {
 
@@ -52,10 +53,6 @@ const MyNftComponent = () => {
     const handleChange = (e) => {
         setLikeBtn(e.target.value)
     }
-    const test = () => {        
-        
-    }
-    let data:{}
 
 
     // 판매자 구매자별 뷰 화면 
@@ -102,9 +99,12 @@ const MyNftComponent = () => {
     return(
         <>  
             <MyInfo> 
-                <MyName onClick = {test}>원금회복</MyName>
                 <MyAddress>{user.UserAddress}</MyAddress>
-                <MySwap onClick = {FROMklayToEPI}>klay에서 EPI로 토큰 스왑</MySwap>
+                {/* <MySwap onClick = {FROMklayToEPI}>klay에서 EPI로 토큰 스왑</MySwap> */}
+                
+                {/* <UserInfo/> */}
+                
+                
                 <Link href="/user/user"><a><button>내 정보</button></a></Link>
             </MyInfo>
             <MyNft>

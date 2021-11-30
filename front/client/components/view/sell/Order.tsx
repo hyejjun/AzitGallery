@@ -199,6 +199,10 @@ export const OrderTitle = Styled.div`
         float: right;
         color: #434343de;
     }
+
+    .klay {
+        width : 100px;
+    }
 `
 
 export const OrderContent = Styled.div`

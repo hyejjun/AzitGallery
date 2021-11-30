@@ -109,11 +109,27 @@ const sendKlay = async (recipient, amount) => {
 }
 
 
+const mintNFT = async(contractAddr,tokenID,tokenURI,toAddr)=>{
+
+  const kip17 = new caver.kct.kip17(contractAddr);
+  const mintResult = await kip17.mintWithTokenURI(
+    toAddr,
+    tokenID,
+    tokenURI,
+    { from: keyring.address
+    }
+  )
+
+  return mintResult; 
+}
+
+
 
 
 module.exports = {
   send_Token,
   send_Klay,
-  sendKlay
+  sendKlay,
+  mintNFT
 }
 

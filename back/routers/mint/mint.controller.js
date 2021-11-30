@@ -248,7 +248,7 @@ let mint_nft_post = async (req, res) => {
       await DirectDeal.create({
         direct_deal_idx: add_to_item_info.dataValues.item_id,
         price: Number(price),
-        currency
+        currency : 'klay'
       })
 
       data = {
@@ -272,7 +272,7 @@ let mint_nft_post = async (req, res) => {
         auc_history_idx: add_to_item_info.dataValues.item_id,
         bidder: get_user_id.dataValues.user_idx,
         bid_price: Number(aucPrice),
-        currency
+        currency:'klay'
       })
 
       data = {
@@ -406,7 +406,6 @@ let KIP7Token_transfer = async () => {
     );
     caver.wallet.add(singleKeyRing);
   }
-  console.log(`이르음 제데ㅐ로 나오겠지 ${kip7Instance.name().then(console.log)}`)
   const kip7Instance = new caver.kct.kip7('0xbd929FED827F26E84ca8b66A35Ef694F5829f9De')
   kip7Instance.name().then(console.log)
   const opts = { from: keyring.address }

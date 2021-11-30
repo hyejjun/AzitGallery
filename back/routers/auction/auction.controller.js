@@ -1,15 +1,15 @@
 // const { now } = require('sequelize/types/lib/utils')
-const { AuctionHistory, Auction, ItemInfo, User, BuyerList } = require('../../models')
+const { AuctionHistory, Auction, ItemInfo, User, BuyerList, Orders } = require('../../models')
 
-const {sendKlay} = require('../../klaytn/kip7_deploy')
+const { sendKlay } = require('../../klaytn/kip7_deploy')
 const config = require('../../klaytn/config');
 const caver = config.caver;
 const developerKey = config.developerKey;
 
 const keyring = caver.wallet.keyring.createFromPrivateKey(developerKey);
 if (!caver.wallet.getKeyring(keyring.address)) {
-  const singleKeyRing = caver.wallet.keyring.createFromPrivateKey(developerKey);
-  caver.wallet.add(singleKeyRing);
+    const singleKeyRing = caver.wallet.keyring.createFromPrivateKey(developerKey);
+    caver.wallet.add(singleKeyRing);
 }
 
 
@@ -18,8 +18,7 @@ if (!caver.wallet.getKeyring(keyring.address)) {
 let auction_price_post = async (req, res) => {
     console.log(req.body);
     const { params, user, price, prevWallet, prevAmount } = req.body
-    console.log("유저 === ", user)
-    let result = await AuctionHistory.create({ auc_history_idx: params, bidder: user, bid_price: price, currency: 'KLAY' })
+    let result = await AuctionHistory.create({ auc_history_idx: params, bidder: user, bid_price: price, currency: 'klay' })
 
     sendKlay(prevWallet, prevAmount)
 
@@ -67,13 +66,55 @@ let auction_current_post = async (req, res) => {
 
     if (endBool) {
         let id = parseInt(params)
-        let result = await ItemInfo.update({
+        let soldout = await ItemInfo.update({
             product_status: 1
         }, {
             where: {
                 item_id: id
             }
         })
+
+        // 최종 금액 조회
+        let result2 = await AuctionHistory.findOne({
+            where: {
+                auc_history_idx: id
+            },
+            attributes: ['bid_price','bidder'],
+            order: [['bid_date', 'desc']]
+        })
+
+        let result3 = await User.findOne({
+            where:{
+                kaikas_address : result2.dataValues.bidder
+            }
+        })
+
+        // 배송 테이블로 옮기고
+        let final_price = parseFloat(result2.dataValues.bid_price)
+        let result4 = await Orders.create({
+            total_price: `${final_price}`,
+            final_order_state: '배송준비중',
+            user_idx : result3.dataValues.user_idx
+        })
+
+        // 판매자에게 돈 보내기
+        let seller_idx = soldout[0]
+
+        let result5 = await User.findOne({
+            where : {
+                user_idx : seller_idx
+            }
+        })
+
+        let seller_wallet = result5.dataValues.kaikas_address
+
+        sendKlay(`${seller_wallet}`, `${final_price}`)
+
+
+        //구매자한테 NFT 보내주기.
+        
+        // mintNFT(contractAddr, tokenID, tokenURI, buyer_wallet)
+        
     }
 
     let auction_boolean2 = await Auction.findOne({ where: { auction_idx: params } })
