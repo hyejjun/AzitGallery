@@ -1,4 +1,4 @@
-const {User,Orders, OrderDetail, ShipInfo, ItemInfo} = require('../../models')
+const {User,Orders, OrderDetail, ShipInfo, ItemInfo, Nft, ItemDetail} = require('../../models')
 const { update, findAll } = require('../../models/auction_history')
 
 /* 배송 정보 */
@@ -6,34 +6,72 @@ const { update, findAll } = require('../../models/auction_history')
 let get_shipinfo = async (req,res)=>{
     let data
     try{
+        
         const {orderer,receiver,phoneNum,address,postNumber,addressDetail,memo,inputStatus,UserAddress,params} = req.body
         const receiver_address = address+addressDetail
-        let orderRecord = await OrderDetail.findAll({
-            where:{
-                order_num:params
-            }
-        })
-        let total_cost = 0
-        let updatedRes
-        for(i=0;i<orderRecord.length;i++){
-            total_cost = total_cost + orderRecord[i].dataValues.price
-            updatedRes = await Orders.update({
-                total_price:total_cost,
+        if((params.substring(0,1))=='a'){
+            let nftid = (params.substring(1,2))
+            const nftdata = await Nft.findOne({
+                where:{
+                    id:nftid
+                }
+            })
+            console.log(nftdata.nft_img_idx,'nftdataaaaaaaaaaaaaaaaaaaaaaaaa')
+            const itemcode = await ItemDetail.findOne({
+                where:{
+                    nft_idx:nftdata.nft_img_idx
+                }
+            })
+            const orderdetail = await OrderDetail.findOne({
+                where:{
+                    where:`${itemcode.item_code}-${nftdata.id}`
+                    //item_code:'163823352291620100-8'
+                }
+            })
+            const insertorders = await Orders.update({
+                total_price:orderdetail.price,
                 order_date:null,
                 receiver:receiver,
                 receiver_address:receiver_address,
                 receiver_contact:phoneNum,
                 memo:memo
-           },{
-               where:{
-                   order_num:params
-               }
-           })
+            },{
+                where:{
+                    order_num:orderdetail.order_num
+                }
+            })
+
+        }else{
+            
+            let orderRecord = await OrderDetail.findAll({
+                where:{
+                    order_num:params
+                }
+            })
+            let total_cost = 0
+            let updatedRes
+            for(i=0;i<orderRecord.length;i++){
+                total_cost = total_cost + orderRecord[i].dataValues.price
+                updatedRes = await Orders.update({
+                    total_price:total_cost,
+                    order_date:null,
+                    receiver:receiver,
+                    receiver_address:receiver_address,
+                    receiver_contact:phoneNum,
+                    memo:memo
+            },{
+                where:{
+                    order_num:params
+                }
+            })
+            }
+            data = {
+                result_msg:'OK',
+                result:updatedRes
+            }
+
         }
-        data = {
-            result_msg:'OK',
-            result:updatedRes
-        }
+        
 
     }catch(e){
         data = {
