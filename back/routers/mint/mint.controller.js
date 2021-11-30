@@ -6,7 +6,7 @@ const option = {
     {
       name: "Authorization",
       //https://console.klaytnapi.com/ko/security/credential 여기서 발급
-      value: "Basic " + Buffer.from("KASKH4VQRJ9MD3757G20ND9M" + ":" + "tX4x44sLAHD96i0sOHNobNXe7Q5znluuWyFR_po9").toString("base64"),
+      value: "Basic " + Buffer.from("KASKX0EA08C6X4X2EJ2VYJJB" + ":" + "vilV-HLyneRjPvTElJrHI4LmBezq5GynX3JIHr36").toString("base64"),
     },
     { name: "x-krn", value: "krn:1001:node" },
   ],
@@ -72,12 +72,12 @@ let mint_nft_post = async (req, res) => {
   // keyring에 대한 자세한 내용은 https://ko.docs.klaytn.com/bapp/sdk/Caver-js/api-references/Caver.wallet/keyring 를 참고하세요.
   // https://baobab.wallet.klaytn.com/access/0xdfaf037869bb807239e8c46d3b3472ac72adbaef  개인키
   const keyring = caver.wallet.keyring.createFromPrivateKey(
-    "0x07ea3560faca009fdbaf6cee2ea6ee87aaf22bd1f381f3afd312e79ff45f122b"
+    "0xd22e0cc154ed32abcd8e13cb5ba24bba940205509824b57f4220e944eee8d075"
   );
   // wallet에 keyring이 추가되지 않은 경우에만 keyring을 추가합니다.
   if (!caver.wallet.getKeyring(keyring.address)) {
     const singleKeyRing = caver.wallet.keyring.createFromPrivateKey(
-      "0x07ea3560faca009fdbaf6cee2ea6ee87aaf22bd1f381f3afd312e79ff45f122b"
+      "0xd22e0cc154ed32abcd8e13cb5ba24bba940205509824b57f4220e944eee8d075"
     );
     caver.wallet.add(singleKeyRing);
   }

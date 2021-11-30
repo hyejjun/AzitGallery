@@ -1,5 +1,5 @@
 import Styled from 'styled-components'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Alert from '@mui/material/Alert';
 import Waybill from '../view/Waybill';
@@ -20,160 +20,102 @@ const Selled = () => {
     // @ 나중에 가라데이터 지우고 back 에서 가져옴
 
     const soldnftList = useSelector((state:RootState)=>state.list.soldnftList)
+    const code = useSelector((state:RootState)=>state.ship)
 
 
-    // @ 배송 등록 전, 판매된 NFT 리스트들
-    const [Arr, setArr] = React.useState<ArrEle[]>([
-        {
-            id: 1,
-            subject: 'ffffffffff',
-            artist: 'daminal',
-            Like: 0,
-            alert: '신고하기'
-        },
-        {
-            id: 2,
-            subject: 'asdg',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
-        {
-            id: 3,
-            subject: 'asdg',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
-
-    ]);
-
-    // @ 배송 등록 후, 판매된 NFT 리스트들
-    const [Arr2, setArr2] = React.useState<ArrEle[]>([
-        {
-            id: 4,
-            subject: 'ffffffffff',
-            artist: 'daminal',
-            Like: 0,
-            alert: '신고하기'
-        },
-        {
-            id: 5,
-            subject: 'asdg',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
-        {
-            id: 6,
-            subject: 'gahhfdsh',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
-        {
-            id: 7,
-            subject: 'gahhfdsh',
-            artist: 'daminal',
-            Like: 5,
-            alert: '신고하기'
-        },
-    ]);
 
     // @ 배송등록하기
     const dispatch = useDispatch()
 
     const [deliveryForm, setDeliveryForm] = useState<boolean>(false)
+    const [itemcode,setItemCode] = useState<string>('')
 
-    const setDelivery = () => {
+    const setDelivery = (e) => {
+        console.log(e.target.id,'itemcodeeeeeeeeeeee')
         setDeliveryForm(prev => !prev)
-
+        //setItemCode(e.target.id)
         if(selectDeliveryCompany && deliveryNum !== ''){
+           
             dispatch(deliveryInfo_REQUEST(deliveryInfo))
         }
         setDeliveryCompany('')
         setDeliveryNum('')
+        setItemCode('')
+        alert('송장입력이 완료되었습니다.')
     }
 
     // @ 배송 관련 정보들
     const [selectDeliveryCompany, setDeliveryCompany] = useState<string>('')
     const deliveryCompnay = (e) => {
         setDeliveryCompany(e.target.value)
+
     }
     const [deliveryNum, setDeliveryNum] = useState<string>('')
     const onChangeDeliveryNum = (e) => {
+
         setDeliveryNum(e.target.value)
+
+    }
+    const setopenship = (e) => {
+        code.itemcode = e.target.id
+        setDeliveryForm(prev => !prev)
     }
 
     // @ 나중에 item id 도 보내줘야함
     const deliveryInfo = {
         selectDeliveryCompany,
-        deliveryNum
+        deliveryNum,
+        itemcode:code.itemcode
     }
+    console.log(soldnftList)
 
-    const nameList: JSX.Element[] = soldnftList.map((ele) =>
-        <React.Fragment key={ele.item_code}>
+
+
+    const compeltedList: JSX.Element[] = soldnftList.map((ele) =>
+        <React.Fragment key={ele.id}>
             <NFTFourList>
-                {ele.state==0
-                ?
-                
-                <Alert severity="error">
-                    <a className="deliverySet" onClick={setDelivery}>배송 등록 하기!</a>
-                </Alert>
-                :
-                <Alert severity="success">배송 등록 완료!</Alert>
+                {/* <Alert severity="success" onClick={setDelivery}>배송 등록 완료!</Alert> */}
+                {
+                    ele.final_order_state=='배송준비중'
+                    ? ele.item_delivery_state=='배송준비중'
+                        ?
+                        <Alert severity="error" >
+                            <a id={ele.item_code} onClick={(e)=>{setopenship(e)}}>송장등록필요!</a>
+                        </Alert>
+                        :
+                        <Alert severity="success">
+                        <a>송장등록완료!</a>
+                        </Alert>
+                    :
+                    <Alert severity="success">송장등록완료</Alert>
                 }
                 <NFT>
                     <NFTImg>
-                        <div><img /></div>
+                        <div><img src={ele.main_img_link}/></div>
                     </NFTImg>
                     <Line></Line>
                     <NFTOne>
                         <NFTOneList>
-                            <NFTSubject>{ele.title}</NFTSubject>
-                            <NFTartist>{ele.state}</NFTartist>
+                            <NFTSubject>{ele.title}/{ele.color}/{ele.size}</NFTSubject>
+                            <NFTartist>{ele.nick_name}</NFTartist>
                         </NFTOneList>
-                        <NFTOneImg>
-                            <img></img>
-                        </NFTOneImg>
+                        
                     </NFTOne>
                     <NFTOne>
                         <NFTOneList>
-                            <NFTSubject>@ {ele.hits}</NFTSubject>
+                            <NFTSubject>$ {ele.price}</NFTSubject>
                         </NFTOneList>
                         <NFTDeclaration>
-                            <NFTSubject>* * *</NFTSubject>
-                        </NFTDeclaration>
-                    </NFTOne>
-                </NFT>
-            </NFTFourList>
-        </React.Fragment>
-    );
-
-    const compeltedList: JSX.Element[] = Arr2.map((ele) =>
-        <React.Fragment key={ele.id}>
-            <NFTFourList>
-                <Alert severity="success" onClick={setDelivery}>배송 등록 완료!</Alert>
-                <NFT>
-                    <NFTImg>
-                        <div><img /></div>
-                    </NFTImg>
-                    <Line></Line>
-                    <NFTOne>
-                        <NFTOneList>
-                            <NFTSubject>{ele.subject}</NFTSubject>
-                            <NFTartist>{ele.artist}</NFTartist>
-                        </NFTOneList>
-                        <NFTOneImg>
-                            <img></img>
-                        </NFTOneImg>
-                    </NFTOne>
-                    <NFTOne>
-                        <NFTOneList>
-                            <NFTSubject>@ {ele.Like}</NFTSubject>
-                        </NFTOneList>
-                        <NFTDeclaration>
-                            <NFTSubject>* * *</NFTSubject>
+                            <NFTSubject>
+                            {
+                                ele.final_order_state=='배송준비중'
+                                ? ele.item_delivery_state=='배송준비중'
+                                    ? '송장준비중'
+                                    : '송장등록완료'
+                                    
+                                :'송장등록완료'
+                            }
+                            </NFTSubject>
                         </NFTDeclaration>
                     </NFTOne>
                 </NFT>
@@ -183,13 +125,14 @@ const Selled = () => {
 
     return (
         <>
+        <div>송장을 등록해주세요.</div>
             {
                 deliveryForm
                     ? <Waybill setClose={setDelivery} deliveryCompnay={deliveryCompnay} deliveryNum={deliveryNum} onChangeDeliveryNum={onChangeDeliveryNum} />
                     : <></>
             }
 
-            <NonCompleted>{nameList}</NonCompleted>
+            
             <div>{compeltedList}</div>
         </>
     )
@@ -235,6 +178,11 @@ const NFTImg = Styled.div`
     width:200px;
     height:200px;
     cursor:pointer;
+    div > img {
+        width:200px;
+        height:200px;
+        cursor:pointer;
+    }
     
 `
 
@@ -254,7 +202,7 @@ const NFTOneImg = Styled.li`
     display:inline-block;
     list-style:none;
     float:right;
-    margin-top:18px;
+    margin-top:18px;    
     background:#bbb;
     width:35px;
     height:35px;
@@ -266,7 +214,7 @@ const NFTDeclaration = Styled.li`
     list-style:none;
     float:right;
     margin-top:22px;
-    width:35px;
+    width:100px;
     height:35px;
     color:grey;
     font-weight:bold;

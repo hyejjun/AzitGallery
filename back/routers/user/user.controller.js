@@ -3,15 +3,24 @@ const qs = require('qs');
 const nodemailer = require('nodemailer');
 const smtpTransporter = require('nodemailer-smtp-transport');
 require('dotenv').config()
-const { auction, deliver, item, User, Seller, OrderDetail, Orders } = require("../../models");
+const { auction, deliver, item, User, Seller, OrderDetail, Orders, ItemInfo, ShipInfo } = require("../../models");
 
 
+const {sendKlay} = require('../../klaytn/kip7_deploy')
+const config = require('../../klaytn/config');
+const caver = config.caver;
+const developerKey = config.developerKey;
+
+const keyring = caver.wallet.keyring.createFromPrivateKey(developerKey);
+if (!caver.wallet.getKeyring(keyring.address)) {
+  const singleKeyRing = caver.wallet.keyring.createFromPrivateKey(developerKey);
+  caver.wallet.add(singleKeyRing);
+}
 
 /* 이메일 보내기 */
 
 let seller_admin = async (req,res) => {
-    console.log('왓다')
-    console.log("이메일 =====",req.body);
+
     const {userEmail, UserAddress, NickName} = req.body
     let transporter = nodemailer.createTransport({
         service: 'Gmail',
@@ -267,7 +276,7 @@ let ship_update = async (req,res) => {
     try{
         let item_code = req.body.data
         let order_detail = await OrderDetail.update({
-            sell_Type:1
+            delivery_state:'배송완료'
             // 주석 sell_Type을 다른 order_state로 변경 할 것
             },{
                 where:{item_code:item_code}
@@ -280,11 +289,31 @@ let ship_update = async (req,res) => {
 
         let finalState = await OrderDetail.findAll({
                 where:{
-                    sell_Type:0,
+                    delivery_state:'배송준비중',
                     order_num:order_detail_num.order_num
                 }
             })
 
+        let shipupdate = await ShipInfo.update({
+            item_delivery_state:'배송완료'
+        },{
+            where:{
+                order_detail_num:order_detail_num.id
+            }
+        })
+
+        let creator = await ItemInfo.findOne({where:{item_id:order_detail_num.item_id}})
+
+        let creator_kaikas = await User.findOne({where:{user_idx:creator.creator}})
+        
+        let creator_address = creator_kaikas.kaikas_address
+        console.log(creator_address)
+        
+        //sendKlay(creator_address,order_detail.price)
+        sendKlay(creator_address,1)
+        // 주석 가격 소수점 처리후 위의 주석처리한 부분으로 대체
+
+        
         if(finalState.length==0){
             let orderRes = await Orders.update({
                     final_order_state:'배송완료'
@@ -294,6 +323,7 @@ let ship_update = async (req,res) => {
                     }
                 })
         }
+        
         data = {
             result_msg:'OK',
             result:true

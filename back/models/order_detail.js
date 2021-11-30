@@ -26,8 +26,8 @@ module.exports = class OrderDetail extends Sequelize.Model{
             order_num:{
                 type:Sequelize.INTEGER,
             },
-            sell_Type:{
-                type:Sequelize.BOOLEAN,
+            delivery_state:{
+                type:Sequelize.STRING(10),
             }
         },{
             sequelize,
