@@ -162,7 +162,7 @@ let my_nft_all_post = async (req,res) => {
     from orders as a join order_detail as b 
     on a.order_num=b.order_num join item_info as c 
     on b.item_id=c.item_id join seller as d 
-    on c.creator=d.user_idx where a.user_idx="${user_idx}";
+    on c.creator=d.user_idx where a.buyer="${user_idx}";
     ` 
     queryset(req,res,query)
      
