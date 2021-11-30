@@ -1,5 +1,5 @@
 // const { now } = require('sequelize/types/lib/utils')
-const { AuctionHistory, Auction, ItemInfo, User, BuyerList, Orders } = require('../../models')
+const { AuctionHistory, Auction, ItemInfo, User, BuyerList, Orders, Nft, OrderDetail } = require('../../models')
 
 const { sendKlay } = require('../../klaytn/kip7_deploy')
 const config = require('../../klaytn/config');
@@ -53,13 +53,16 @@ let auction_current_post = async (req, res) => {
 
     let now = new Date()
     console.log(`종료시간${result2.end_date.getTime() / 1000}`)
+    console.log(`종료시간${result2.end_date}`)
     console.log(`현재시간${now.getTime() / 1000}`)
 
     if (Number(result2.end_date.getTime() / 1000) < Number(now.getTime() / 1000) && result2.bid_boolean == 0) {
         await Auction.update({ bid_boolean: 1 }, { where: { auction_idx: params } })
         endBool = true;
-    } else if (Number(result2.end_date.getTime() / 1000) < Number(now.getTime() / 1000)) {
-        endBool = true;
+    } else if (Number(result2.end_date.getTime() / 1000) < Number(now.getTime() / 1000) && result2.if_extened == 1) {
+        let extended_time = ((result2.end_date.getTime() / 1000) + 300) * 1000
+        await Auction.update({ bid_boolean: 0, end_date: extended_time }, { where: { auction_idx: params } })
+        endBool = false;
     } else {
         endBool = false;
     }
@@ -79,42 +82,69 @@ let auction_current_post = async (req, res) => {
             where: {
                 auc_history_idx: id
             },
-            attributes: ['bid_price','bidder'],
+            attributes: ['bid_price', 'bidder'],
             order: [['bid_date', 'desc']]
         })
 
         let result3 = await User.findOne({
-            where:{
-                kaikas_address : result2.dataValues.bidder
+            where: {
+                kaikas_address: result2.dataValues.bidder
             }
         })
 
         // 배송 테이블로 옮기고
         let final_price = parseFloat(result2.dataValues.bid_price)
-        let result4 = await Orders.create({
-            total_price: `${final_price}`,
-            final_order_state: '배송준비중',
-            user_idx : result3.dataValues.user_idx
-        })
-
-        // 판매자에게 돈 보내기
+        // 판매자
         let seller_idx = soldout[0]
 
-        let result5 = await User.findOne({
-            where : {
-                user_idx : seller_idx
+        let find_item_info = await ItemInfo.findOne({
+            where: {
+                item_id: id
             }
         })
 
-        let seller_wallet = result5.dataValues.kaikas_address
+        console.log("찾음 ===== ", find_item_info.dataValues);
+        const { item_code, sell_type, size, color } = find_item_info.dataValues
 
-        sendKlay(`${seller_wallet}`, `${final_price}`)
+        let find_nft_idx = await Nft.findAll({ where: { nft_img_idx: id, product_status: '판매중' } })
+        let nft_idx = Math.min(find_nft_idx[0].id)
+
+
+        let result4 = await Orders.create({
+            total_price: `${final_price}`,
+            final_order_state: '배송정보필요',
+            user_idx: result3.dataValues.user_idx
+        })
+
+        let result5 = await OrderDetail.create({
+            size,
+            color,
+            shipper_idx: seller_idx,
+            item_code: `${item_code}-${nft_idx}`,
+            price: final_price,
+            order_num: result4.dataValues.order_num,
+            item_id: id,
+            sell_type: 1
+        })
+
+        // 판매자에게 돈 보내기
+        // let seller_idx = soldout[0]
+
+        let find_seller = await User.findOne({
+            where: {
+                user_idx: seller_idx
+            }
+        })
+
+        let seller_wallet = find_seller.dataValues.kaikas_address
+
+        // sendKlay(`${seller_wallet}`, `${final_price}`)
 
 
         //구매자한테 NFT 보내주기.
-        
+
         // mintNFT(contractAddr, tokenID, tokenURI, buyer_wallet)
-        
+
     }
 
     let auction_boolean2 = await Auction.findOne({ where: { auction_idx: params } })

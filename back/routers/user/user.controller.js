@@ -88,51 +88,34 @@ let signup_post = async (req,res) => {
 /* 이미 회원가입 했는지, 아니면 새로운 회원인지 */
 
 let address_db_check = async (req,res) => {
-    console.log(req.body,"3333333")
-    console.log('this is db check',"2222222")
     let key = Object.keys(req.body)
-    let keyObject = JSON.parse(key)
 
-    //let result = await User.findAll({where:{kaikas_address:keyObject}})
-    let data = {}
+    if(key.length !== 0){
+        let keyObject = JSON.parse(key)
+        let data = {}
 
-    // if(result.length != 0) {
-    //     console.log(result.length)
-    //     let data = {
-    //         signupBoolean:true
-    //     }
-
-    //     res.json(data)
-    // }else{
-    //     console.log(result.length)
-    //     let data = {
-    //         signupBoolean:false
-    //     }
-    //     res.json(data)
-    // }
-    // console.log(result)
-    try {
-        let result = await User.findOne({where:{kaikas_address:keyObject}})
-        if(result !== null){
-            data = {
-                signupBool: true,
-                kaikas_address: result.dataValues.kaikas_address,
-                user_idx: result.dataValues.user_idx
+        try {
+            let result = await User.findOne({where:{kaikas_address:keyObject}})
+            if(result !== null){
+                data = {
+                    signupBool: true,
+                    kaikas_address: result.dataValues.kaikas_address,
+                    user_idx: result.dataValues.user_idx
+                }
+            }else{
+                data = {
+                    signupBool: false
+                }
             }
-        }else{
+        } catch(error){
+            console.log(error);
             data = {
-                signupBool: false
+                signupBool: false,
+                msg : 'Error'
             }
         }
-    } catch(error){
-        console.log(error);
-        data = {
-            signupBool: false,
-            msg : 'Error'
-        }
+        res.json(data)
     }
-    res.json(data)
-
 }
 
 let nickname_check = async(req,res) => {

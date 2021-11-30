@@ -20,13 +20,13 @@ module.exports = class OrderDetail extends Sequelize.Model{
                 type:Sequelize.STRING(100),
             },
             price:{
-                type:Sequelize.INTEGER,
+                type:Sequelize.STRING(100),
                 comment:'상품당가격'
             },
             order_num:{
                 type:Sequelize.INTEGER,
             },
-            sell_Type:{
+            sell_type:{
                 type:Sequelize.BOOLEAN,
             }
         },{
