@@ -30,52 +30,14 @@ const Own = () => {
     const dispatch = useDispatch()
     
 
-
-    // const [Arr, setArr] = React.useState<ArrEle[]>([
-    //     {
-    //         id: 1,
-    //         subject: 'adsfdasdfasdfs',
-    //         artist: 'daminal',
-    //         Like: 0,
-    //         alert: '신고하기asdfasf'
-    //     },
-    //     {   id: 2,
-    //         subject: 'adsfdsf',
-    //         artist: 'daminal',
-    //         Like: 5,
-    //         alert: '신고하기'
-    //     },
-    //     {
-    //         id: 3,
-    //         subject: 'adsff',
-    //         artist: 'daminal',
-    //         Like: 5,
-    //         alert: '신고하기'
-    //     },
-    //     {
-    //         id: 4,
-    //         subject: 'adsff',
-    //         artist: 'daminal',
-    //         Like: 5,
-    //         alert: '신고하기'
-    //     },
-    //   ]);
-    // const chDelivery = () => {
-    //     // 
-    //     // se
-    // }
     
     const chDeliveryBtn = (e) => {
-        console.log(e.target)
         setTitle(e.target.id)
         setItemCode(e.target.className)
         setchDelivery(true)
     }
     const insertshipinfoBtn = (e) => {
-        console.log(e.target.className,'e.targetttttttttttttttttttttt')
-        console.log(e.target.className.split('-')[1])
         let linkdata = e.target.className.split('-')[1]
-        
         window.location.href=`/ship/a${linkdata}`
     }
 
@@ -175,12 +137,6 @@ const Own = () => {
         alert('nft 발행 요청이 접수되었습니다.')
         window.location.href='/user/mynftall'
     }
-    // useEffect(()=>{
-
-    // },[check])
-    // if(check==true){
-    //     window.location.href='/user/mynftall'
-    // }
 
     return (
         <>

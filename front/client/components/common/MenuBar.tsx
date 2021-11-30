@@ -13,6 +13,7 @@ import { UserLogin_REQUEST, UserLogout_REQUEST, AdminApprovalCheck_REQUEST } fro
 // reducer 확인
 import { RootState } from '../../reducers';
 import axios from 'axios';
+import logo from '../../src/logo.png'
 
 declare global {
     interface Window {
@@ -146,7 +147,7 @@ const MenuBar = () => {
                         : <></>
             }
             <MenubarWrapper>
-                <span><Link href="/"><a>Azit Gallery</a></Link></span>
+                <span><Link href="/"><a></a></Link></span>
                 <ul>
                     <li><Link href="/"><a>탐색하기</a></Link></li>
                     {loginState && User.adminApproval === 3 && User.sellerBool ? <LOG onClick={() => createBtn()}><Link href="/item/additem"><a>발행하기</a></Link></LOG> : <LOG onClick={() => createBtn()}>발행하기</LOG>}

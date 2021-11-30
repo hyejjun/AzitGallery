@@ -266,15 +266,12 @@ export const Email_ERROR = (data) => {
 
 /* user list req */
 export const Userlist_REQUEST = () => {
-    console.log('요청됨 =====');
-
     return {
         type: USER_LIST_REQUEST,
     }
 }
 
 export const UserList_SUCCESS = (data) => {
-    console.log("관리자 인증을 위한 ", data)
     return {
         type: USER_LIST_SUCCESS,
         data: data
@@ -336,8 +333,6 @@ export const UserInfo_REQUEST = (data) => {
 }
 
 export const UserInfo_SUCCESS = (userInfo) => {
-    console.log("성공 =====", userInfo);
-
     return {
         type: USER_INFO_SUCCESS,
         data: userInfo
@@ -517,8 +512,6 @@ const reducer = (state: UserState = initialState, action: UserAction) => {
 
         /*********** */
         case SELLER_ADMIN_REQUEST:
-            console.log("이메일 인증 ==== ", action.data);
-
             return {
                 ...state,
                 data: action.data

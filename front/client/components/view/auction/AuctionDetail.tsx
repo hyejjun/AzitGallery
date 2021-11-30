@@ -89,12 +89,7 @@ const AuctionDetail = (props) => {
         let data = {
             params: params,
         }
-        dispatch(Auction_Current_REQUEST(data))
-
-
-        console.log(view.sellerKaikasAddress," ,,,,,,,,,,, ",window.klaytn.selectedAddress);
-        
-        
+        dispatch(Auction_Current_REQUEST(data))     
     }, [])
 
 

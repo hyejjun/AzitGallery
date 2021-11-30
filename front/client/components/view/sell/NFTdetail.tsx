@@ -30,11 +30,8 @@ const NFTdetail = ({ children }) => {
     let params = JSON.stringify(window.location.href).split('ell/')[1].replace("\"", "")
 
     useEffect(() => {
-        dispatch(directDealView_REQUEST(params))
-        console.log("여기 === ",sellerKaikasAddress , "-----", window.klaytn.selectedAddress);
-        
+        dispatch(directDealView_REQUEST(params))       
     }, [])
-
 
     const [open, setOpen] = useState<boolean>(false);
     const orderOpen = () => {
@@ -45,7 +42,6 @@ const NFTdetail = ({ children }) => {
             if (selected.color !== '' && selected.size == '') alert('사이즈를 체크해주세요')
             if (selected.color !== '' && selected.size !== '' && selected.qty == 0) alert('수량을 체크해주세요')
         }
-        // setOpen(prev => !prev)
     }
 
     const nickname = useSelector((state: RootState) => state.view.nick_name);

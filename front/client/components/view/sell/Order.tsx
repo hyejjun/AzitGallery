@@ -25,12 +25,6 @@ const Order = (props) => {
     const orderNum = useSelector((state:RootState)=>state.deal.orderNum)
 
     let finalprice = price * selected.qty
-    console.log(finalprice)
-    
-    
- 
-    
-
 
     const dispatch = useDispatch()
     const [checked, setChecked] = useState<boolean>(false);
@@ -71,10 +65,6 @@ const Order = (props) => {
         window.location.href = `/ship/${orderNum}`
     }
 
-
-
-
-
     let data 
     data = {
         item_id:props.item_id,
@@ -86,7 +76,6 @@ const Order = (props) => {
         creator:creator 
     }
 
-
     const Purchase = () => {
         if(checked==false){
             alert('동의란을 확인해주세요')
@@ -95,30 +84,11 @@ const Order = (props) => {
             dispatch(direct_deal_REQUEST(data))
             
         }
-    
-        
-        //dispatch(KipToken_REQUEST())       
-        
-        
     }
 
-    // useEffect(()=>{
-    //     if(ch==true){
-    //         alert('EPI로 거래되셨습니다.')
-    //         window.location.href = `/ship/${orderNum}`
-    //     }
-        
-    // },[orderNum])
-    
-   
     const chClick = () => {
         setChecked(prev=>!prev)
-
     }
-    console.log(checked)
-    
-
-    
 
     return (
         <>

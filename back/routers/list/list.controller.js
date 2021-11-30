@@ -8,35 +8,46 @@ const { user_info } = require('../user/user.controller');
 /* 일반 상품 */
 
 let all_list_get =  async (req,res) => {
-    console.log(req.body)
     let result = await ItemInfo.findAll({ where:{sell_type:false}, limit:3 })
     let result2 = await ItemImg.findAll({ limit:3 })
     const ARR = []
-
     for(let i=0; i<result.length; i++){
-        ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url: `/sell/${result[i].item_id}`,img:result2[i].item_img_link})
+        ARR.push({
+            id:result[i].item_id,subject:result[i].description, 
+            artist:result[i].title, Like:5, 
+            alert:result[i].item_code, 
+            url: `/sell/${result[i].item_id}`,
+            img:result2[i].item_img_link})
     }
-    console.log(ARR)
     let data = {
         ARR:ARR
     }
-
     res.json(data)
 }
 
 let plus_list_get =  async (req,res) => {
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
-    console.log(req.body)
-    let result = await ItemInfo.findAll({ where:{sell_type:false}, limit:keyObject })
+    let result = await ItemInfo.findAll({ 
+        where:{
+            sell_type:false
+        }, 
+        limit:keyObject 
+    })
     let result2 = await ItemImg.findAll({ limit:keyObject })
     let Pluslength = keyObject + 3
     const ARR = []
 
     for(let i=0; i<result.length; i++){
-        ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url:`/sell/${result[i].item_id}`,img:result2[i].item_img_link})
+        ARR.push({
+            id:result[i].item_id,
+            subject:result[i].description, 
+            artist:result[i].title, 
+            Like:5, 
+            alert:result[i].item_code, 
+            url:`/sell/${result[i].item_id}`,
+            img:result2[i].item_img_link})
     }
-    console.log(Pluslength)
 
     let data = {
         ARR:ARR,
@@ -50,15 +61,22 @@ let plus_list_get =  async (req,res) => {
 /* 경매 상품 */
 
 let all_auction_get =  async (req,res) => {
-    console.log('this')
+
     let result = await ItemInfo.findAll({ where:{sell_type:true}, limit:3 })
      let result2 = await ItemImg.findAll({ limit:3 })
     const ARR = []
 
     for(let i=0; i<result.length; i++){
-        ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url: `/auction/${result[i].item_id}`,img:result2[i].item_img_link})
+        ARR.push({
+            id:result[i].item_id,
+            subject:result[i].description, 
+            artist:result[i].title, 
+            Like:5, 
+            alert:result[i].item_code, 
+            url: `/auction/${result[i].item_id}`,
+            img:result2[i].item_img_link})
     }
-    console.log(ARR)
+
     let data = {
         ARR:ARR
     }
@@ -71,22 +89,28 @@ let plus_auction_get =  async (req,res) => {
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
 
-    let result = await ItemInfo.findAll({ where:{sell_type:1}, limit:keyObject })
-     let result2 = await ItemImg.findAll({ limit:keyObject })
-    console.log(result)
+    let result = await ItemInfo.findAll({ 
+        where:{
+            sell_type:1
+        }, 
+        limit:keyObject 
+    })
+    let result2 = await ItemImg.findAll({ limit:keyObject })
     let Pluslength = keyObject + 3
     const ARR = []
 
     for(let i=0; i<result.length; i++){
-        ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url:`/auction/${result[i].item_id}`,img:result2[i].item_img_link})
+        ARR.push({id:result[i].item_id,
+            subject:result[i].description, 
+            artist:result[i].title, Like:5, 
+            alert:result[i].item_code, 
+            url:`/auction/${result[i].item_id}`,
+            img:result2[i].item_img_link})
     }
-    console.log(Pluslength)
-
     let data = {
         ARR:ARR,
         Pluslength:Pluslength
     }
-
     res.json(data)
 }
 
@@ -97,9 +121,14 @@ let query_item_post =  async (req,res) => {
     const ARR = []
 
     for(let i=0; i<result.length; i++){
-        ARR.push({id:result[i].item_id,subject:result[i].description, artist:result[i].title, Like:5, alert:result[i].item_code, url:`/auction/${result[i].item_id}`})
+        ARR.push({
+            id:result[i].item_id,
+            subject:result[i].description, 
+            artist:result[i].title, 
+            Like:5, 
+            alert:result[i].item_code, 
+            url:`/auction/${result[i].item_id}`})
     }
-    console.log(Pluslength)
 
     let data = {
         ARR:ARR,
@@ -117,7 +146,6 @@ let mynft_view = async(req,res) => {
         let keyObject = JSON.parse(key)
         let user = await User.findAll({where:{kaikas_address:keyObject}})
         let user_idx = user[0].dataValues.user_idx
-
         let seller = await Seller.findAll({where:{user_idx}})
         let approval = seller[0].dataValues.admin_approval
         if( approval == 2){
@@ -153,19 +181,17 @@ let mynft_view = async(req,res) => {
 let my_nft_all_post = async (req,res) => {
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
-    //let {kaikasaddress} = req.body
-    console.log(keyObject,'keyobjectttttttttttt')
     let user_idx = await User.findOne({where:{kaikas_address:keyObject}})
     user_idx = user_idx.dataValues.user_idx
     let query = `
-    select c.sell_type,a.order_num,b.item_code, b.item_id, b.price,a.final_order_state, a.order_date, a.memo, c.main_img_link, d.nick_name, b.size, b.color, c.title, b.id, b.delivery_state
+    select c.sell_type,a.order_num,b.item_code, b.item_id, b.price,a.final_order_state, 
+    a.order_date, a.memo, c.main_img_link, d.nick_name, b.size, b.color, c.title, b.id, b.delivery_state
     from orders as a join order_detail as b 
     on a.order_num=b.order_num join item_info as c 
     on b.item_id=c.item_id join seller as d 
-    on c.creator=d.user_idx where a.user_idx="${user_idx}";
+    on c.creator=d.user_idx where a.buyer="${user_idx}";
     ` 
-    queryset(req,res,query)
-     
+    queryset(req,res,query)   
 }
 
 
@@ -174,48 +200,40 @@ let sold_nft_post = async (req,res) => {
     
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
-    console.log(keyObject,'keyobjectttttttttttt')
     let user_idx = await User.findOne({where:{kaikas_address:keyObject}})
     user_idx = user_idx.dataValues.user_idx
-    console.log(user_idx,'useridxxxxxxxxxxxxxxxxxxxxxx')
 
     let query = 
     `
-    select b.title, a.id,a.item_code,a.price,a.size,a.color,c.nick_name,a.delivery_state,b.main_img_link,d.final_order_state,e.item_delivery_state from order_detail as a join item_info as b on a.item_id=b.item_id join seller as c on a.shipper_idx=c.user_idx join orders as d on a.order_num=d.order_num join ship_info as e on a.id=e.order_detail_num where a.shipper_idx=${user_idx};
+    select b.title, a.id,a.item_code,a.price,a.size,a.color,c.nick_name,
+    a.delivery_state,b.main_img_link,d.final_order_state,e.item_delivery_state 
+    from order_detail as a join item_info as b 
+    on a.item_id=b.item_id join seller as c 
+    on a.shipper_idx=c.user_idx join orders as d 
+    on a.order_num=d.order_num join ship_info as e 
+    on a.id=e.order_detail_num where a.shipper_idx=${user_idx};
     `
     queryset(req,res,query)
-    
 }
+
 // 미판매된 nft
 let not_sell_post = async(req,res) => {
-
-    //let data = {}
-
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
     let user_idx = await User.findOne({where:{kaikas_address:keyObject}})
     user_idx = user_idx.dataValues.user_idx
     let query =
     `
-    select a.id,b.size,b.color,a.nft,c.title,c.main_img_link,d.nick_name,b.item_code,left(c.registered_at,10)as date  from nft as a join item_detail as b on a.nft_img_idx=b.nft_idx join item_info as c on c.item_id=b.item_info_idx join user as d on d.user_idx=c.creator where a.product_status='판매중' and d.user_idx=${user_idx};
+    select a.id,b.size,b.color,a.nft,c.title,c.main_img_link,d.nick_name,
+    b.item_code,left(c.registered_at,10)as date  
+    from nft as a join item_detail as b 
+    on a.nft_img_idx=b.nft_idx join item_info as c 
+    on c.item_id=b.item_info_idx join user as d 
+    on d.user_idx=c.creator where a.product_status='판매중' 
+    and d.user_idx=${user_idx};
     `
-
     queryset(req,res,query)
-    /*
-    // 미판매된 제품에 대한 쿼리
-    // item_Detail에서 색상과 사이즈를 기준으로 해서 개별로 각각 보여줄 경우
-    // select a.creator,a.title, b.item_code, a.item_hits from item_info as a join item_detail as b on a.item_id=b.item_info_idx where a.creator=2 and b.product_status=0;
-    // item_info에서 색상과 사이즈를 아우르는 제품 자체에 대해 보여줄 경우
-    // select distinct a.creator,a.title, a.item_code, a.item_hits from item_info as a join item_detail as b on a.item_id=b.item_info_idx where a.creator=2 and b.product_status=0;
-    */
 }
-
-
-
-
-
-
-
 
 let queryset = (req,res,query) => {
     let data = {}

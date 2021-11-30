@@ -5,9 +5,18 @@ const { update, findAll, findOne } = require('../../models/auction_history')
 
 let get_shipinfo = async (req,res)=>{
     let data
-    try{
-        
-        const {orderer,receiver,phoneNum,address,postNumber,addressDetail,memo,inputStatus,UserAddress,params} = req.body
+    try{        
+        const {
+            orderer,
+            receiver,
+            phoneNum,
+            address,
+            postNumber,
+            addressDetail,
+            memo,
+            inputStatus,
+            UserAddress,
+            params} = req.body
         const receiver_address = address+addressDetail
         if((params.substring(0,1))=='a'){
             let nftid = (params.substring(1,2))
@@ -16,7 +25,6 @@ let get_shipinfo = async (req,res)=>{
                     id:nftid
                 }
             })
-            console.log(nftdata.nft_img_idx,'nftdataaaaaaaaaaaaaaaaaaaaaaaaa')
             const itemcode = await ItemDetail.findOne({
                 where:{
                     nft_idx:nftdata.nft_img_idx
@@ -25,7 +33,7 @@ let get_shipinfo = async (req,res)=>{
 
             const orderdetail = await OrderDetail.findOne({
                 where:{
-                    item_code:`${itemcode.item_code}-${nftdata.id}`
+                    item_code:`${itemcode.item_code}00-${nftdata.id}`
                 }
             })
 
@@ -41,9 +49,7 @@ let get_shipinfo = async (req,res)=>{
                     order_num:orderdetail.order_num
                 }
             })
-
-        }else{
-            
+        }else{            
             let orderRecord = await OrderDetail.findAll({
                 where:{
                     order_num:params
@@ -70,39 +76,25 @@ let get_shipinfo = async (req,res)=>{
                 result_msg:'OK',
                 result:updatedRes
             }
-
         }
-        
-
     }catch(e){
         data = {
             result_msg:'Fail'
         }
-
     }
     res.json(data)
-
-
-
 }
 
 /* 구매 정보 */
 
 let order_detail_post = async (req,res) => {
-
     const {size,color,order_qty,shipper_idx,item_code,price} = req.body
-
-    console.log(result)
     await OrderDetail.create({
         size:'55500',color:'orderer',order_qty:45,shipper_idx:45,item_code:'phoneNum',price:1
     })
 
     res.json()
 
-}
-
-let send_shipinfo = async (req,res)=>{
-    
 }
 
 
@@ -176,7 +168,6 @@ let get_delivery_info = async (req,res)=>{
                 username:user.nick_name,
                 title:item_info.title
             }]
-            console.log(result,'orderrrrrrrrrrrrrr')
             data = {
                 result_msg:'OK',
                 result:result,
@@ -207,7 +198,6 @@ let queryset = (req,res,query) => {
                     result_msg:'OK',
                     result
                 }
-                //console.log(result)
                 res.json(data)
             }
             connection.release()
@@ -217,6 +207,5 @@ let queryset = (req,res,query) => {
 module.exports = {
     get_shipinfo,
     order_detail_post,
-    send_shipinfo,
     get_delivery_info
 }

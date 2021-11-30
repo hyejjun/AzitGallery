@@ -214,8 +214,6 @@ const reducer = (state: ViewState = initialState, action: ViewAction) => {
                 auctionIdx:action.idx
             }
         case AUCTION_VIEW_SUCCESS:
-            console.log("이부불 === ",action.list);
-
             return {
                 ...state,
                 directView: action.list,
@@ -229,7 +227,6 @@ const reducer = (state: ViewState = initialState, action: ViewAction) => {
                 kr_end_date : action.list.kr_end_date,
                 item_img_link: action.list.item_img_link,
                 sellerKaikasAddress:action.list.seller_kaikas_address
-
             }
         case AUCTION_VIEW_ERROR:
             return {

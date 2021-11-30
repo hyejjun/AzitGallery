@@ -62,11 +62,8 @@ const AddItemComponent = () => {
     const [smallCategory, setSmallCategory] = useState<string>('')
 
     const User = useSelector((state: RootState) => state.user);
-    // console.log("User 어드레스ㅡ ----",User.UserAddress);
 
     const [totalColorSizeQty, setTotalColorSizeQty] = useState<Array<string>>([])
-
-
 
     useEffect(() => {
         let categoryArr = []
@@ -78,13 +75,8 @@ const AddItemComponent = () => {
         getCategory().then(() => {
             setCategory(categoryArr[0])
         })
-
-        // console.log("User 어드레스ㅡ ----",User.UserAddress);
-
     }, [])
     useEffect(() => {
-        // 카테고리 변경 시 오차없이 변경되도록
-        // console.log(bigCategory, smallCategory,'카테고리변경됨')
     }, [smallCategory, bigCategory])
     useEffect(() => {
         // 마지막 순서의 이미지 삭제시 대표사진을 하나 민다

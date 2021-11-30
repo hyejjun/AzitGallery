@@ -3,7 +3,6 @@ const { generate_url } = require('../../s3')
 const express = require('express')
 
 const upload_pics = async (req, res) => {
-    console.log('uploadpics')
     try{
         const link = await generate_url();
         res.json({ link })
@@ -14,16 +13,11 @@ const upload_pics = async (req, res) => {
     }
 }
 
-const get_uploaded_pics = async (req, res) => {
-    console.log("여기 =======",req.body)
-
-}
 
 const get_category = async (req, res) => {
     try{
         let get_category = await Category.findAll({})
         let get_subcategory = await SubCategory.findAll({})
-        console.log('get_category')
         res.send([get_category, get_subcategory])
     }catch(e){
         console.log(e)
@@ -36,5 +30,6 @@ const get_category = async (req, res) => {
 
 
 module.exports = {
-    upload_pics, get_uploaded_pics, get_category
+    upload_pics,
+    get_category
 }

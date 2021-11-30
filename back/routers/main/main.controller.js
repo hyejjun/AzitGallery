@@ -16,7 +16,6 @@ let insert_data = async (req, res) => {
     // 입력한 경매 정보를 DB에 입력
     const {price, time, ifExtended} = req.body
     let result = await Item.create({price, dueDate:time, ifExtended})
-    console.log(result)
     res.send({success: true})
 }
 
@@ -26,9 +25,6 @@ let main = (req, res) => {
 }
 
 let main_data = async (req, res) => {
-    // 유저들이 입력한 비딩 정보를 화면에 출력하기 위함(새로고침 시에도 가능하도록)
-    // 쿼리든 뭐든 링크를 누르면 id값을 전송할 수 있어야 함
-
     let {productId} = req.body
     let bid_list = await Auction.findAll({
         where:{
@@ -110,7 +106,13 @@ let auction = async (req, res) => {
 
 // 새로운 주문 들어오면.
 let sendNoti = (req, res) => {
-    console.log('asd', req.body)
     res.json({message:'unread'})
 }
-module.exports = {insert, insert_data, main, main_data, auction, sendNoti}
+module.exports = {
+    insert, 
+    insert_data, 
+    main, 
+    main_data, 
+    auction, 
+    sendNoti
+}
