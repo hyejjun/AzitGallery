@@ -59,11 +59,22 @@ function* reqOrderdetail(){
 }
 
 function* DeliveryCustomerSaga(action){
+
     const result = yield call(DeliveryCustomerAPI, action.data)
-    yield put({
-        type:'DELIVERY_CUSTOMER_SUCCESS',
-        data:result.data.ARR
-    })
+
+    console.log(result,'resultttttttttttttttttt')
+    if(result.data.result_msg=='OK'){
+        yield put({
+            type:'DELIVERY_CUSTOMER_SUCCESS',
+            data:result.data.result
+        })
+    }else{
+        yield put({
+            type:'DELIVERY_CUSTOMER_ERROR'
+        })
+    }
+
+
 }
 
 function* reqDeliveryCustomer(){

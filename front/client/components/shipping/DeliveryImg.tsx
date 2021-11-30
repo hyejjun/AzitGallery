@@ -54,7 +54,7 @@ const DelieryImgWrapper = Styled.div`
         border:1px solid #dadce0;
         text-align:center;
     }
-    ul>li:nth-child(4){
+    ul>li:nth-child(3){
         background-color:#dbe4ff;
     }
     ul>li>p svg {

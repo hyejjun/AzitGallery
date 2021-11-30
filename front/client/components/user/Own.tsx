@@ -9,6 +9,7 @@ import { ClickAwayListener } from '@mui/material'
 import ModalBackground from '../common/ModalBackground'
 import ModalForm from '../common/ModalForm'
 import {Update_ship_state_REQUEST} from '../../reducers/user'
+import { loadDefaultErrorComponents } from 'next/dist/server/load-components'
 
 const Own = () => {
 
@@ -70,6 +71,13 @@ const Own = () => {
         setItemCode(e.target.className)
         setchDelivery(true)
     }
+    const insertshipinfoBtn = (e) => {
+        console.log(e.target.className,'e.targetttttttttttttttttttttt')
+        console.log(e.target.className.split('-')[1])
+        let linkdata = e.target.className.split('-')[1]
+        
+        window.location.href=`/ship/a${linkdata}`
+    }
 
     const nameList: JSX.Element[] = mynftList.map((ele) =>
         <React.Fragment key={ele.id}>
@@ -77,18 +85,30 @@ const Own = () => {
                 {   ele.sell_type==0
                     ?
                         ele.final_order_state=='배송준비중'
-                        ? ele.delivery_state=='배송준비중'
+                        ? 
+                            ele.delivery_state=='배송준비중'
                             ?
                             <Alert severity="error">
-                            <a className={ele.item_code} id={`${ele.title}/${ele.size}/${ele.color}`} onClick={(e)=>{chDeliveryBtn(e)}} >배송 완료 확인 중!</a>
+                            <a className={ele.item_code} id={`${ele.title}/${ele.size}/${ele.color}`} onClick={(e)=>{chDeliveryBtn(e)}} >배송 완료 요청</a>
                             </Alert>
                             :
                             <Alert severity="success">배송 완료!</Alert>
-
-
                         :
                         <Alert severity="success">배송 완료!</Alert>
-                    : '경매부분'
+                    :  
+                        ele.final_order_state=='배송정보필요'|| ele.final_order_state=='배송준비중'
+                        ? 
+                            <Alert severity="error">
+                                <a className={ele.item_code} id={`${ele.title}/${ele.size}/${ele.color}`} onClick={(e)=>{insertshipinfoBtn(e)}}>배송정보입력!</a>
+                            </Alert>
+                        : 
+                            ele.delivery_state='배송준비중'
+                            ?
+                            <Alert severity="error">
+                                <a className={ele.item_code} id={`${ele.title}/${ele.size}/${ele.color}`} >배송 완료 확인 중!</a>
+                            </Alert>
+                            :
+                            <Alert severity="success">배송 완료!</Alert>
                 }
                 <NFT>
                     <NFTImg>
@@ -98,7 +118,7 @@ const Own = () => {
                     <Line></Line>
                     <NFTOne>
                         <NFTOneList>
-                            <NFTSubject>{ele.title}/{ele.color}/{ele.size}</NFTSubject>
+                            <NFTSubject>{ele.sell_type==1?'경매 | ':''}{ele.title} | {ele.color} | {ele.size}</NFTSubject>
                             {/* 여기 a 빠졌는데 동작되는 이유.. a 추가하면 오류남 */}
                             <NFTartist>{ele.nick_name}</NFTartist>
                         </NFTOneList>
@@ -113,11 +133,27 @@ const Own = () => {
                         <NFTDeclaration>
                             <NFTSubject>
                                 {
-                                ele.final_order_state=='배송준비중'
-                                ? ele.delivery_state=='배송준비중'
-                                    ? 'nft발행요청'
-                                    : 'nft발행완료'
-                                :'nft발행완료'
+                                    ele.sell_type==0
+                                    ?
+                                        ele.final_order_state=='배송준비중'
+                                        ? 
+                                            ele.delivery_state=='배송준비중'
+                                            ? 
+                                                'nft발행요청'
+                                            : 
+                                                'nft발행완료'
+                                        :
+                                            'nft발행완료'
+                                    : 
+                                    ele.final_order_state=='배송정보필요' || ele.final_order_state=='배송준비중'
+                                        ? 
+                                            'nft발행요청'
+                                        :
+                                            ele.delivery_state=='배송준비중'
+                                            ?
+                                                'nft발행요청'
+                                            :   
+                                                'nft발행완료'
                                 }
                             </NFTSubject>
                         </NFTDeclaration>

@@ -1,39 +1,78 @@
-const {User,Orders, OrderDetail, ShipInfo, ItemInfo} = require('../../models')
-const { update, findAll } = require('../../models/auction_history')
+const {User,Orders, OrderDetail, ShipInfo, ItemInfo, Nft, ItemDetail} = require('../../models')
+const { update, findAll, findOne } = require('../../models/auction_history')
 
 /* 배송 정보 */
 
 let get_shipinfo = async (req,res)=>{
     let data
     try{
+        
         const {orderer,receiver,phoneNum,address,postNumber,addressDetail,memo,inputStatus,UserAddress,params} = req.body
         const receiver_address = address+addressDetail
-        let orderRecord = await OrderDetail.findAll({
-            where:{
-                order_num:params
-            }
-        })
-        let total_cost = 0
-        let updatedRes
-        for(i=0;i<orderRecord.length;i++){
-            total_cost = total_cost + orderRecord[i].dataValues.price
-            updatedRes = await Orders.update({
-                total_price:total_cost,
+        if((params.substring(0,1))=='a'){
+            let nftid = (params.substring(1,2))
+            const nftdata = await Nft.findOne({
+                where:{
+                    id:nftid
+                }
+            })
+            console.log(nftdata.nft_img_idx,'nftdataaaaaaaaaaaaaaaaaaaaaaaaa')
+            const itemcode = await ItemDetail.findOne({
+                where:{
+                    nft_idx:nftdata.nft_img_idx
+                }
+            })
+
+            const orderdetail = await OrderDetail.findOne({
+                where:{
+                    item_code:`${itemcode.item_code}-${nftdata.id}`
+                }
+            })
+
+            const insertorders = await Orders.update({
+                total_price:orderdetail.price,
                 order_date:null,
                 receiver:receiver,
                 receiver_address:receiver_address,
                 receiver_contact:phoneNum,
                 memo:memo
-           },{
-               where:{
-                   order_num:params
-               }
-           })
+            },{
+                where:{
+                    order_num:orderdetail.order_num
+                }
+            })
+
+        }else{
+            
+            let orderRecord = await OrderDetail.findAll({
+                where:{
+                    order_num:params
+                }
+            })
+            let total_cost = 0
+            let updatedRes
+            for(i=0;i<orderRecord.length;i++){
+                total_cost = total_cost + orderRecord[i].dataValues.price
+                updatedRes = await Orders.update({
+                    total_price:total_cost,
+                    order_date:null,
+                    receiver:receiver,
+                    receiver_address:receiver_address,
+                    receiver_contact:phoneNum,
+                    memo:memo
+            },{
+                where:{
+                    order_num:params
+                }
+            })
+            }
+            data = {
+                result_msg:'OK',
+                result:updatedRes
+            }
+
         }
-        data = {
-            result_msg:'OK',
-            result:updatedRes
-        }
+        
 
     }catch(e){
         data = {
@@ -68,51 +107,113 @@ let send_shipinfo = async (req,res)=>{
 
 
 let get_delivery_info = async (req,res)=>{
-    if(req.body.itemcode){
-        let { selectDeliveryCompany,deliveryNum,itemcode } = req.body
-        let orderidx = await OrderDetail.findOne({
-            where:{
-                item_code:itemcode
+    let data
+    try{
+        if(req.body.itemcode){
+            let { selectDeliveryCompany,deliveryNum,itemcode } = req.body
+            let orderidx = await OrderDetail.findOne({
+                where:{
+                    item_code:itemcode
+                }
+            })
+            let shipinsert = await ShipInfo.update({
+                delivery_company:selectDeliveryCompany,
+                post_num:deliveryNum,
+                item_delivery_state:'송장등록완료'
+            },{
+                where:{
+                    order_detail_num:orderidx.id
+                }
+            })
+            data = {
+                result_msg:'OK',
+                result:shipinsert
             }
-        })
-        let shipinsert = await ShipInfo.update({
-            delivery_company:selectDeliveryCompany,
-            post_num:deliveryNum,
-            item_delivery_state:'송장등록완료'
-        },{
-            where:{
-                order_detail_num:orderidx.id
-            }
-        })
-
-    }else{
-        const {useridx} = req.body
-        let USERIDX = await User.findOne({where:{kaikas_address:useridx}})
-        console.log(useridx)
-        let result = await Orders.findAll({where:{user_idx:USERIDX.user_idx}})
-        let result2 = await OrderDetail.findAll({where:{order_num:result[result.length-1].order_num}})
-        let result3 = await ItemInfo.findOne({where:{item_id:result2[result2.length-1].item_id}})
-        const ARR = []
-        console.log(result3.item_code)
-        ARR.push({total_price:result[result.length-1].total_price, buyer:result[result.length-1].buyer, receiver:result[result.length-1].receiver, receiver_address:result[result.length-1].receiver_address, receiver_contact:result[result.length-1].receiver_contact, final_order_state:result[result.length-1].final_order_state, memo:result[result.length-1].memo, item_code:result3.title})
-
-
-        let data = {
-            ARR:ARR
-        }
-
-        console.log(ARR[0].total_price)
-        res.json(data)
-
-    }
-
-
-    // item id 도 필요함
-    /*
     
-    */
+        }else if(req.body.params){
+            const {useridx,params} = req.body
+            let nftid = (params.substring(1,2))
+            const nftdata = await Nft.findOne({
+                where:{
+                    id:nftid
+                }
+            })
+            const itemcode = await ItemDetail.findOne({
+                where:{
+                    nft_idx:nftdata.nft_img_idx
+                }
+            })
+            const orderdetail = await OrderDetail.findOne({
+                where:{
+                    item_code:`${itemcode.item_code}-${nftdata.id}`
+                }
+            })
+            const item_info = await ItemInfo.findOne({
+                where:{
+                    item_id:orderdetail.item_id
+                }
+            })
+            const orders = await Orders.findOne({
+                where:{
+                    order_num:orderdetail.order_num
+                }
+            })
+            const user = await User.findOne({
+                where:{
+                    user_idx:orders.buyer
+                }
+            })
+            let result = [{
+                total_price:orders.total_price,
+                order_date:orders.order_date,
+                buyer:orders.buyer,
+                receiver:orders.receiver,
+                receiver_address:orders.receiver_address,
+                receiver_contact:orders.receiver_contact,
+                order_num:orders.order_num,
+                final_order_state:orders.final_order_state,
+                memo:orders.memo,
+                username:user.nick_name,
+                title:item_info.title
+            }]
+            console.log(result,'orderrrrrrrrrrrrrr')
+            data = {
+                result_msg:'OK',
+                result:result,
+            }
+        }
+    }catch(e){
+        data = {
+            result_msg:'Fail'
+        }
+    }
+    res.json(data)
 }
 
+let queryset = (req,res,query) => {
+    let data = {}
+    pool.getConnection((err,connection)=>{
+        connection.query(            
+            query            
+        ,function(err,result,fields){
+            if(err) throw err;
+            if(result==undefined){
+                data = {
+                    result_msg:'Fail',
+                    msg:'상품이 존재하지 않습니다.'
+                }
+            }else{
+                data = {
+                    result_msg:'OK',
+                    result
+                }
+                //console.log(result)
+                res.json(data)
+            }
+            connection.release()
+        })
+    })   
+}
 module.exports = {
     get_shipinfo,
     order_detail_post,

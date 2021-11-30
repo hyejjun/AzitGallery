@@ -8,8 +8,18 @@ export interface ShipState {
     error: string;
     UserAddress: string;
     verify: number;
-    DeliveryArr:Array<any>;
+    DeliveryArr:[{
+        total_price:number,
+        buyer:string,
+        receiver:string,
+        receiver_address:string,
+        receiver_contact:string,
+        memo:string,
+        username:string,
+        title:string
+    }];
     itemcode:string;
+    
 }
 
 export const initialState: ShipState = {
@@ -19,7 +29,16 @@ export const initialState: ShipState = {
     error: '',
     UserAddress: 'kaikasAddress',
     verify: 200,
-    DeliveryArr:[{total_price:'d', buyer:'d', receiver:'d', receiver_address:'d', receiver_contact:'d', final_order_state:'d', memo:'d',item_code:'d'}],
+    DeliveryArr:[{
+        total_price:0,
+        buyer:'algml',
+        receiver:'algml',
+        receiver_address:'강동구 천호 3동 21-125 102호',
+        receiver_contact:'010-1222-2562',
+        memo:'집앞에 놓아주세요',
+        username:'미희',
+        title:'따뜻한 겨울 패딩'
+    }],
     itemcode:''
 };
 
