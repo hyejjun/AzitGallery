@@ -89,7 +89,7 @@ const AuctionDetail = (props) => {
         let data = {
             params: params,
         }
-        dispatch(Auction_Current_REQUEST(data))     
+        dispatch(Auction_Current_REQUEST(data))        
     }, [])
 
 

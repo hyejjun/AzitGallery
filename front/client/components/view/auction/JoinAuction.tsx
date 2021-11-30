@@ -5,9 +5,12 @@ import Link from 'next/link'
 import Router from "next/router"
 import { ModalWrapper, OrderTitle, OrderContent, OrderForm, OrderBtn } from "../sell/Order";
 // import useInput from "../../../hooks/useInput";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../reducers";
 
 
 const JoinAcution = (props) => {
+    const item_img_link = useSelector((state: RootState) => state.view.item_img_link)
     const [checked, setChecked] = useState<boolean>(false);                 // 동의확인 
     const checkAgreement = (checkedState) => {
         setChecked(checkedState)
@@ -42,7 +45,7 @@ const JoinAcution = (props) => {
                         </div>
                         <div className="orderContentImage">
                             <div>
-                                <img alt="상품 이미지" />
+                                <img src={item_img_link[0]} />
                             </div>
                         </div>
                         <div className="orderTotalPrice">

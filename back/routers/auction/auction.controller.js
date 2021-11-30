@@ -85,85 +85,85 @@ let auction_current_post = async (req, res) => {
             attributes: ['bid_price', 'bidder'],
             order: [['bid_date', 'desc']]
         })
+        console.log('여기 ========');
+        console.log(result2.dataValues.bidder.length)
 
-        let result3 = await User.findOne({
-            where: {
-                kaikas_address: result2.dataValues.bidder
-            }
-        })
+        if (result2.dataValues.bidder.length !== 1) {
+            let result3 = await User.findOne({
+                where: {
+                    kaikas_address: result2.dataValues.bidder
+                }
+            })
 
-        // 배송 테이블로 옮기고
-        let final_price = parseFloat(result2.dataValues.bid_price)
-        // 판매자
-        let seller_idx = soldout[0]
+            // 배송 테이블로 옮기고
+            let final_price = parseFloat(result2.dataValues.bid_price)
+            // 판매자
+            let seller_idx = soldout[0]
 
-        let find_item_info = await ItemInfo.findOne({
-            where: {
-                item_id: id
-            }
-        })
+            let find_item_info = await ItemInfo.findOne({
+                where: {
+                    item_id: id
+                }
+            })
 
-        console.log("찾음 ===== ", find_item_info.dataValues);
-        const { item_code, sell_type, size, color } = find_item_info.dataValues
+            console.log("찾음 ===== ", find_item_info.dataValues);
+            const { item_code, sell_type, size, color } = find_item_info.dataValues
 
-        let find_nft_idx = await Nft.findAll({ where: { nft_img_idx: id, product_status: '판매중' } })
-        let nft_idx = Math.min(find_nft_idx[0].id)
+            let find_nft_idx = await Nft.findAll({ where: { nft_img_idx: id, product_status: '판매중' } })
+            let nft_idx = Math.min(find_nft_idx[0].id)
+
+            console.log("경매 시 == ", result3);
+            let result4 = await Orders.create({
+                total_price: `${final_price}`,
+                buyer: result3.dataValues.user_idx,
+                final_order_state: '배송정보필요',
+                user_idx: find_item_info.dataValues.creator
+            })
+
+            let result5 = await OrderDetail.create({
+                size,
+                color,
+                shipper_idx: seller_idx,
+                item_code: `${item_code}00-${nft_idx}`,
+                price: final_price,
+                order_num: result4.dataValues.order_num,
+                item_id: id,
+                delivery_state: '배송준비중'
+            })
+
+            // 판매자에게 돈 보내기
+            let find_seller = await User.findOne({
+                where: {
+                    user_idx: find_item_info.dataValues.creator
+                }
+            })
+
+            let seller_wallet = find_seller.dataValues.kaikas_address
+
+            sendKlay(`${seller_wallet}`, `${final_price}`)
 
 
-        let result4 = await Orders.create({
-            total_price: `${final_price}`,
-            final_order_state: '배송정보필요',
-            user_idx: result3.dataValues.user_idx
-        })
+            //구매자한테 NFT 보내주기.
 
-        let result5 = await OrderDetail.create({
-            size,
-            color,
-            shipper_idx: seller_idx,
-            item_code: `${item_code}-${nft_idx}`,
-            price: final_price,
-            order_num: result4.dataValues.order_num,
-            item_id: id,
-            delivery_state: '배송준비중'
-        })
-
-        // 판매자에게 돈 보내기
-        // let seller_idx = soldout[0]
-
-        let find_seller = await User.findOne({
-            where: {
-                user_idx: seller_idx
-            }
-        })
-
-        let seller_wallet = find_seller.dataValues.kaikas_address
-
-        // sendKlay(`${seller_wallet}`, `${final_price}`)
-
-
-        //구매자한테 NFT 보내주기.
-
-        // mintNFT(contractAddr, tokenID, tokenURI, buyer_wallet)
-
+            // mintNFT(contractAddr, tokenID, tokenURI, buyer_wallet)
+        }
     }
 
     let auction_boolean2 = await Auction.findOne({ where: { auction_idx: params } })
 
     let getprevbidder = await AuctionHistory.findOne({ where: { auc_history_idx: params }, order: [['bid_date', 'desc']] })
-    // console.log(getprevbidder);
 
     const prev_bidder = getprevbidder.dataValues.bidder
     const prev_price = getprevbidder.dataValues.bid_price
 
-    console.log(`이거 `)
     if (auction_boolean2.bid_boolean == 1) {
-        let UpdateAuction = await Auction.update({ bid_boolean: 2 }, { where: { auction_idx: params } })
-        let result3 = await ItemInfo.findOne({ where: { item_id: params } })
-        let result4 = await BuyerList.findOne({ where: { item_code: result3.item_code } })
+        // let UpdateAuction = await Auction.update({ bid_boolean: 2 }, { where: { auction_idx: params } })
+        // let result3 = await ItemInfo.findOne({ where: { item_id: params } })
+        // let result4 = await BuyerList.findOne({ where: { item_code: result3.item_code } })
 
-        let result5 = await User.findOne({ where: { user_idx: result4.buyer_idx } })
-        console.log(result5.kaikas_address)
-        let buyer = result5.kaikas_address
+        // let result5 = await User.findOne({ where: { user_idx: result4.buyer_idx } })
+        // console.log(result5.kaikas_address)
+        // let buyer = result5.kaikas_address
         // let seller = await User.findOne({where : { id : result4.seller_idx }})
         // console.log(`구매자 ${buyer.kaikas_address}`)
 
@@ -221,15 +221,15 @@ let auction_current_post = async (req, res) => {
         // );
         // console.log(transferResult);
 
-        let data = {
-            current: bid_price,
-            endDate: endBool,
-            bid_boolean: result2.bid_boolean,
-            buyer: buyer,
-            prev_bidder,
-            prev_price
-        }
-        res.json(data)
+        // let data = {
+        //     current: bid_price,
+        //     endDate: endBool,
+        //     bid_boolean: result2.bid_boolean,
+        //     buyer: buyer,
+        //     prev_bidder,
+        //     prev_price
+        // }
+        // res.json(data)
     } else {
         let data = {
             current: bid_price,

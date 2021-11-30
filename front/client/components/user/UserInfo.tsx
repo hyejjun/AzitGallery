@@ -100,7 +100,7 @@ export default UserInfo
 const UserWrapper = Styled.div`
     box-sizing:border-box;
     width:50%;
-    height:100vh;
+    height:60vh;
     margin-top:3%;
     margin:auto;
     border-radius:2%;

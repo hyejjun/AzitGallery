@@ -30,7 +30,7 @@ let get_shipinfo = async (req,res)=>{
                     nft_idx:nftdata.nft_img_idx
                 }
             })
-
+            console.log("여기 ======= ",`${itemcode.item_code}-${nftdata.id}`);
             const orderdetail = await OrderDetail.findOne({
                 where:{
                     item_code:`${itemcode.item_code}00-${nftdata.id}`
@@ -39,10 +39,10 @@ let get_shipinfo = async (req,res)=>{
 
             const insertorders = await Orders.update({
                 total_price:orderdetail.price,
-                order_date:null,
                 receiver:receiver,
                 receiver_address:receiver_address,
                 receiver_contact:phoneNum,
+                final_order_state : '배송준비중',
                 memo:memo
             },{
                 where:{
