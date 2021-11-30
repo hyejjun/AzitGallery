@@ -74,19 +74,21 @@ const Own = () => {
     const nameList: JSX.Element[] = mynftList.map((ele) =>
         <React.Fragment key={ele.id}>
             <NFTFourList>
-                {
-                    ele.final_order_state=='배송준비중'
-                    ? ele.delivery_state=='배송준비중'
-                        ?
-                        <Alert severity="error">
-                        <a className={ele.item_code} id={`${ele.title}/${ele.size}/${ele.color}`} onClick={(e)=>{chDeliveryBtn(e)}} >배송 완료 확인 중!</a>
-                        </Alert>
+                {   ele.sell_type==0
+                    ?
+                        ele.final_order_state=='배송준비중'
+                        ? ele.delivery_state=='배송준비중'
+                            ?
+                            <Alert severity="error">
+                            <a className={ele.item_code} id={`${ele.title}/${ele.size}/${ele.color}`} onClick={(e)=>{chDeliveryBtn(e)}} >배송 완료 확인 중!</a>
+                            </Alert>
+                            :
+                            <Alert severity="success">배송 완료!</Alert>
+
+
                         :
                         <Alert severity="success">배송 완료!</Alert>
-
-
-                    :
-                    <Alert severity="success">배송 완료!</Alert>
+                    : '경매부분'
                 }
                 <NFT>
                     <NFTImg>

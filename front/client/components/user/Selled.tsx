@@ -1,5 +1,5 @@
 import Styled from 'styled-components'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Link from 'next/link'
 import Alert from '@mui/material/Alert';
 import Waybill from '../view/Waybill';
@@ -41,6 +41,7 @@ const Selled = () => {
         setDeliveryCompany('')
         setDeliveryNum('')
         setItemCode('')
+        alert('송장입력이 완료되었습니다.')
     }
 
     // @ 배송 관련 정보들
