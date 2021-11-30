@@ -130,24 +130,25 @@ const AddItemComponent = () => {
         } else if (item == "price") {
             // isNaN의 결과값이 false인 경우는 숫자, true는 문자열 포함
             // 입력값에 따라 달라지는 것이지 string/integer와는 관계 없음. 
-            if (isNaN(value) !== false || handleChk(value) == false) {
-                alert('숫자만 입력해주세요.')
-                // 이유는 모르지만 value로 적으면 작동하지 않음(이하 나오는 경우도 동일)
-                e.target.value = ''
-                setPrice('')
-            } else {
-                setPrice(value)
-            }
+            // if (isNaN(value) !== false || handleChk(value) == false) {
+            //     alert('숫자만 입력해주세요.')
+            //     // 이유는 모르지만 value로 적으면 작동하지 않음(이하 나오는 경우도 동일)
+            //     e.target.value = ''
+            //     setPrice('')
+            // } else {
+            //     setPrice(value)
+            // }
+            setPrice(value)
         } else if (item == "name") {
             setName(value)
         } else if (item == "desc") {
             setDesc(value)
         } else if (item == "aucPrice") {
-            if (isNaN(value) !== false || handleChk(value) == false) {
-                alert('숫자만 입력해주세요.')
-                e.target.value = ''
-                setPrice('')
-            }
+            // if (isNaN(value) !== false || handleChk(value) == false) {
+            //     alert('숫자만 입력해주세요.')
+            //     e.target.value = ''
+            //     setPrice('')
+            // }
             setAucPrice(value)
         } else if (item == "aucTime") {
             if (new Date(value) > new Date()) {
@@ -197,7 +198,6 @@ const AddItemComponent = () => {
     function setMainImage(index: number) {
         if (file.length > 0) {
             setMainImgIdx(index)
-            .log(mainImgIdx, 'idxwhenchoosing')
         }
     }
     // 직판/경매 선택
@@ -219,7 +219,7 @@ const AddItemComponent = () => {
     // 통화 선택
     const handleCurrency = (e: any) => {
         let { value } = e.target
-        setCurrency('KLAY')
+        setCurrency('klay')
     }
     // 옷 카테고리 선택
     function handleCategory(e: any, type: string) {

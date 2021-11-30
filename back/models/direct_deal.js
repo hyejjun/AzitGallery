@@ -9,7 +9,7 @@ module.exports = class DirectDeal extends Sequelize.Model{
                 unique:true
             },
             price:{
-                type:Sequelize.INTEGER,
+                type:Sequelize.STRING,
             },
             start_date:{
                 type:Sequelize.DATE,
