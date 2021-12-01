@@ -285,8 +285,7 @@ let queryset = (req,res,query) => {
                     result_msg:'OK',
                     result
                 }
-                console.log(result)
-                
+
                 res.json(data)
             }
             connection.release()

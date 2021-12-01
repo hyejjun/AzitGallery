@@ -24,8 +24,6 @@ let mint_nft_post = async (req, res) => {
 
   console.log('NFT')
 
-  // 나중에는 creator 도 가져와야함..
-  // console.log("body ==========", req.body);
   const { ifSell, price, currency, name, desc, itemType, aucPrice, aucTime, extension, gender, bigCategory, smallCategory, mainImgIdx, totalColorSizeQty, userAddress } = req.body[0]
 
   let color_all = []
