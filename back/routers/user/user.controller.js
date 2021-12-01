@@ -274,8 +274,8 @@ let ship_update = async (req, res) => {
         let creator_kaikas = await User.findOne({ where: { user_idx: creator.creator } })
 
         let creator_address = creator_kaikas.kaikas_address
-
-        sendKlay(creator_address,order_detail.price)
+        
+        sendKlay(creator_address,order_detail_num.price)
 
         if (finalState.length == 0) {
             let orderRes = await Orders.update({
