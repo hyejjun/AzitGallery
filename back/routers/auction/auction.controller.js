@@ -13,7 +13,7 @@ if (!caver.wallet.getKeyring(keyring.address)) {
 }
 
 
-/* 배송 정보 */
+/* 입찰 내역 db insert */
 
 let auction_price_post = async (req, res) => {
     console.log(req.body);
@@ -106,13 +106,12 @@ let auction_current_post = async (req, res) => {
                 }
             })
 
-            console.log("찾음 ===== ", find_item_info.dataValues);
             const { item_code, sell_type, size, color } = find_item_info.dataValues
 
             let find_nft_idx = await Nft.findAll({ where: { nft_img_idx: id, product_status: '판매중' } })
             let nft_idx = Math.min(find_nft_idx[0].id)
+            let nftAddress = find_nft_idx[0].nft
 
-            console.log("경매 시 == ", result3);
             let result4 = await Orders.create({
                 total_price: `${final_price}`,
                 buyer: result3.dataValues.user_idx,
@@ -143,9 +142,15 @@ let auction_current_post = async (req, res) => {
             sendKlay(`${seller_wallet}`, `${final_price}`)
 
 
-            //구매자한테 NFT 보내주기.
+            // nft 테이블에서 판매 완료로 바꿔주기
+            let soldoutNFT = await Nft.update({
+                product_status: '판매완료'
+            }, {
+                where: {
+                    nft: `${nftAddress}`
+                }
+            })
 
-            // mintNFT(contractAddr, tokenID, tokenURI, buyer_wallet)
         }
     }
 
