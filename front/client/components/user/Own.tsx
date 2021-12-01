@@ -84,7 +84,7 @@ const Own = () => {
                     <Line></Line>
                     <NFTOne>
                         <NFTOneList>
-                            <NFTSubject>{ele.sell_type==1?'경매 | ':''}{ele.title} | {ele.color} | {ele.size}</NFTSubject>
+                            <NFTSubject>{ele.sell_type==1?'경매 | ':''}{ele.title} | {ele.color} | {ele.size} {ele.item_code}</NFTSubject>
                             {/* 여기 a 빠졌는데 동작되는 이유.. a 추가하면 오류남 */}
                             <NFTartist>{ele.nick_name}</NFTartist>
                         </NFTOneList>

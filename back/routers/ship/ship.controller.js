@@ -4,6 +4,7 @@ const { update, findAll, findOne } = require('../../models/auction_history')
 /* 배송 정보 */
 
 let get_shipinfo = async (req,res)=>{
+    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
     let data
     try{        
         const {
@@ -16,23 +17,26 @@ let get_shipinfo = async (req,res)=>{
             memo,
             inputStatus,
             UserAddress,
-            params} = req.body
+            params
+        } = req.body
         const receiver_address = address+addressDetail
         if((params.substring(0,1))=='a'){
-            let nftid = (params.substring(1,2))
+            let nftid = (params.substring(1))
             const nftdata = await Nft.findOne({
                 where:{
                     id:nftid
                 }
             })
+            console.log(nftid,'nftiddd')
             const itemcode = await ItemDetail.findOne({
                 where:{
                     nft_idx:nftdata.nft_img_idx
                 }
             })
+            console.log(nftdata.nft_img_idx,'imgidsxxx')
             const orderdetail = await OrderDetail.findOne({
                 where:{
-                    item_code:`${itemcode.item_code}00-${nftdata.id}`
+                    item_code:`${itemcode.item_code}-${nftdata.id}`
                 }
             })
             const price2 = parseFloat(orderdetail.price)
@@ -48,30 +52,28 @@ let get_shipinfo = async (req,res)=>{
                     order_num:orderdetail.order_num
                 }
             })
-        }else{            
+        }else{
             let orderRecord = await OrderDetail.findAll({
                 where:{
                     order_num:params
                 }
             })
-            let total_cost = 0
-            let updatedRes
-            for(i=0;i<orderRecord.length;i++){
-                total_cost = total_cost + orderRecord[i].dataValues.price
-                total_coat = parseFloat(total_cost)
-                updatedRes = await Orders.update({
-                    total_price:total_cost,
-                    order_date:null,
-                    receiver:receiver,
-                    receiver_address:receiver_address,
-                    receiver_contact:phoneNum,
-                    memo:memo
+
+            let total_cost = orderRecord.length * orderRecord[0].price
+            console.log(total_cost);
+
+            updatedRes = await Orders.update({
+                total_price:total_cost,
+                receiver:receiver,
+                order_date:new Date(),
+                receiver_address:receiver_address,
+                receiver_contact:phoneNum,
+                memo:memo
             },{
                 where:{
                     order_num:params
                 }
             })
-            }
             data = {
                 result_msg:'OK',
                 result:updatedRes

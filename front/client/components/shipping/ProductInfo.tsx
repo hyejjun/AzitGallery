@@ -33,7 +33,7 @@ const ProductInfo = () => {
                             </tr>
                             <tr>
                                 <td>총 주문금액</td>
-                                <td>{Number(Ship[0].total_price) + Number(3000)} 원 (상품가격 {Ship[0].total_price}원 + 배송료 3000원)</td>
+                                <td> 상품가격 {Ship[0].total_price} klay</td>
                             </tr>
                             <tr>
                                 <td>결제 방법</td>
