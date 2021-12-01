@@ -17,14 +17,7 @@ const Approvecomponent = () => {
         dispatch(Userlist_REQUEST())
         setArr(user.userList)
     },[])
-
-    // useEffect(()=>{
-    //     dispatch(Userlist_REQUEST())
-    // },[userList])
-
-    console.log("화면에서 ==== ",userList);
-    
-
+   
      const nameList: JSX.Element[] = userList.map((ele, id) =>{
 
         const ArrID = `Arr${String(id+1)}`

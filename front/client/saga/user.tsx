@@ -59,9 +59,7 @@ function sellerAdminAPI(action) {
 }
 
 function* sellerAdminSaga(action){
-    const result = yield call(sellerAdminAPI,action)   
-    console.log("이메일 인증 결과  ===== ",result);
-          
+    const result = yield call(sellerAdminAPI,action)         
 }
 
 function* reqAdminEmail(){
@@ -151,9 +149,6 @@ function userListAPI() {
 
 function* userListSaga(){
     const result = yield call(userListAPI)
-    console.log("유저리스트 ===== ",result);
-    
-    console.log(result.data)
     yield put({
         type:'USER_LIST_SUCCESS',
         data:result.data
@@ -201,7 +196,6 @@ function userInfoAPI(action){
 
 function* userInfoSaga(action){
     const userinfo = yield call(userInfoAPI,action)
-    console.log("사가 응답 ===",userinfo);
     const {admin_approval,email_validation,result } =userinfo.data
 
     let userdata = {
@@ -223,7 +217,6 @@ function* reqUesrInfo(){
 
 
 function reqUpdateShipAPI(data){
-    console.log(data.data)
     return axios.post(`${url}/user/shipch`, data) 
 }
 function* reqUpdateShipSaga(data){
@@ -244,7 +237,6 @@ function* reqUpdateShipSaga(data){
 }
 
 function* reqUpdateShip(){
-    console.log('update')
     yield takeLatest('UPDATE_SHIP_STATE_REQUEST',reqUpdateShipSaga)
 }
 
@@ -255,8 +247,6 @@ function reqAdminApprovalAPI(data){
 function* reqAdminApprovalSaga(action){
     
     const result = yield call(reqAdminApprovalAPI, action.data)
-    console.log("결과 === ",result);
-    
     if(result.data.result_msg=='OK'){
         yield put({
             type:'ADMIN_APPROVAL_CHECK_SUCCESS',

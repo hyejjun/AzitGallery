@@ -31,11 +31,9 @@ const Selled = () => {
     const [itemcode,setItemCode] = useState<string>('')
 
     const setDelivery = (e) => {
-        console.log(e.target.id,'itemcodeeeeeeeeeeee')
         setDeliveryForm(prev => !prev)
         //setItemCode(e.target.id)
         if(selectDeliveryCompany && deliveryNum !== ''){
-           
             dispatch(deliveryInfo_REQUEST(deliveryInfo))
         }
         setDeliveryCompany('')
@@ -67,7 +65,6 @@ const Selled = () => {
         deliveryNum,
         itemcode:code.itemcode
     }
-    console.log(soldnftList)
 
 
 

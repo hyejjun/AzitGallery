@@ -153,7 +153,9 @@ function* getsoldnftSaga(data){
             data:result.data.result
         })
     }else{
-        console.log('err')
+        yield put({
+            type:'SOLD_NFT_ERROR'
+        })
     }
 }
 

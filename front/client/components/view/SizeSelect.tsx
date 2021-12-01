@@ -22,16 +22,12 @@ const SizeSelect = (props) => {
     })   
 
     const handleChange = (e) =>{
-        
         selected.size = e.target.value
         props.flagsetsize(e.target.value)
-        dispatch(getMatchQty_REQUEST({selected,item_id}))
- 
-        
+        dispatch(getMatchQty_REQUEST({selected,item_id}))  
     } 
 
     const onClick = () => {
-        //console.log(selected)
         if(selected.color == ''){
             alert('색상을 먼저 선택해주세요')
         }

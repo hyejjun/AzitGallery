@@ -15,32 +15,15 @@ const ItemList = () => {
     const dispatch = useDispatch()
     const Main = useSelector((state:RootState) => state.main);
     
-
-    // useEffect(()=>{
-    //     if(sellState){
-    //         console.log('경매')
-    //     }else if(sellState==false){
-    //         dispatch(main_all_direct_REQUEST(sendData))
-    //     }
-    // },[sellState])
-
-
-    
     useEffect(()=>{
         if(sellState==true){
             // 경매인 경우
-            console.log('경매')
             dispatch(main_all_direct_REQUEST(sendData))
         }
         if(sellState==false){
             // 즉시판매인 경우
-            console.log('즉시판매')
             dispatch(main_all_direct_REQUEST(sendData))
-        }
-        
-        
-        //dispatch(main_all_REQUEST({sell:'asdf'}))
-        
+        }        
     },[sellState])
 
     let sendData = {

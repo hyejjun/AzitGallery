@@ -30,52 +30,14 @@ const Own = () => {
     const dispatch = useDispatch()
     
 
-
-    // const [Arr, setArr] = React.useState<ArrEle[]>([
-    //     {
-    //         id: 1,
-    //         subject: 'adsfdasdfasdfs',
-    //         artist: 'daminal',
-    //         Like: 0,
-    //         alert: '신고하기asdfasf'
-    //     },
-    //     {   id: 2,
-    //         subject: 'adsfdsf',
-    //         artist: 'daminal',
-    //         Like: 5,
-    //         alert: '신고하기'
-    //     },
-    //     {
-    //         id: 3,
-    //         subject: 'adsff',
-    //         artist: 'daminal',
-    //         Like: 5,
-    //         alert: '신고하기'
-    //     },
-    //     {
-    //         id: 4,
-    //         subject: 'adsff',
-    //         artist: 'daminal',
-    //         Like: 5,
-    //         alert: '신고하기'
-    //     },
-    //   ]);
-    // const chDelivery = () => {
-    //     // 
-    //     // se
-    // }
     
     const chDeliveryBtn = (e) => {
-        console.log(e.target)
         setTitle(e.target.id)
         setItemCode(e.target.className)
         setchDelivery(true)
     }
     const insertshipinfoBtn = (e) => {
-        console.log(e.target.className,'e.targetttttttttttttttttttttt')
-        console.log(e.target.className.split('-')[1])
         let linkdata = e.target.className.split('-')[1]
-        
         window.location.href=`/ship/a${linkdata}`
     }
 
@@ -95,20 +57,24 @@ const Own = () => {
                             <Alert severity="success">배송 완료!</Alert>
                         :
                         <Alert severity="success">배송 완료!</Alert>
+                        
                     :  
-                        ele.final_order_state=='배송정보필요'|| ele.final_order_state=='배송준비중'
+                        ele.final_order_state=='배송정보필요'
+                        
                         ? 
-                            <Alert severity="error">
-                                <a className={ele.item_code} id={`${ele.title}/${ele.size}/${ele.color}`} onClick={(e)=>{insertshipinfoBtn(e)}}>배송정보입력!</a>
-                            </Alert>
+                             <Alert severity="error">
+                                 <a className={ele.item_code} id={`${ele.title}/${ele.size}/${ele.color}`} onClick={(e)=>{insertshipinfoBtn(e)}}>배송정보입력!</a>
+                             </Alert>
                         : 
-                            ele.delivery_state='배송준비중'
+                            ele.delivery_state=='배송준비중'
                             ?
                             <Alert severity="error">
-                                <a className={ele.item_code} id={`${ele.title}/${ele.size}/${ele.color}`} >배송 완료 확인 중!</a>
+                                <a className={ele.item_code} id={`${ele.title}/${ele.size}/${ele.color}`} onClick={(e)=>{chDeliveryBtn(e)}} >배송 완료 요청</a>
                             </Alert>
                             :
                             <Alert severity="success">배송 완료!</Alert>
+
+                        
                 }
                 <NFT>
                     <NFTImg>
@@ -141,24 +107,29 @@ const Own = () => {
                                             ? 
                                                 'nft발행요청'
                                             : 
-                                                'nft발행완료'
+                                                'nft발행요청'
                                         :
                                             'nft발행완료'
                                     : 
-                                    ele.final_order_state=='배송정보필요' || ele.final_order_state=='배송준비중'
-                                        ? 
-                                            'nft발행요청'
-                                        :
-                                            ele.delivery_state=='배송준비중'
-                                            ?
-                                                'nft발행요청'
-                                            :   
-                                                'nft발행완료'
+                                        ele.final_order_state=='배송정보필요'
+                                            ? 
+                                                ele.delivery_state=='배송준비중'
+                                                ?
+                                                    'nft발행요청'
+                                                :   
+                                                    'nft발행요청'
+                                            :
+                                                ele.final_order_state=='배송완료'
+                                                ?
+                                                    'nft발행완료'
+                                                :
+                                                    'nft발행요청'
+                                        
                                 }
                             </NFTSubject>
                         </NFTDeclaration>
                     </NFTOne>
-                </NFT>
+                </NFT>  
             </NFTFourList>
         </React.Fragment>
     );
@@ -175,12 +146,6 @@ const Own = () => {
         alert('nft 발행 요청이 접수되었습니다.')
         window.location.href='/user/mynftall'
     }
-    // useEffect(()=>{
-
-    // },[check])
-    // if(check==true){
-    //     window.location.href='/user/mynftall'
-    // }
 
     return (
         <>

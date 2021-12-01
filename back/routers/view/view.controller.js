@@ -6,20 +6,14 @@ const Op = Sequelize.Op
 let get_directdeal_view = async (req, res) => {
     let key = Object.keys(req.body)
     let idx = JSON.parse(key)
-    console.log("idx =====", idx)
-    // @ user 에 대한 정보 가져와서 like 조회해야함.
-    // @ idx 로 해당 view 조회하기
     let directView = await ItemInfo.findOne({where:{item_id:idx}})
     let price = await DirectDeal.findOne({where:{direct_deal_idx:idx}})
     let user = await User.findOne({where:{user_idx:directView.creator}})
     let img = await ItemImg.findAll({where:{item_img_idx:idx}})
-
     let imgArr = []
     for(let i=0;i<img.length;i++){
         imgArr.push(img[i].item_img_link)
     } 
-
-
     let data = {};
     try{
         data = {
@@ -34,11 +28,7 @@ let get_directdeal_view = async (req, res) => {
             currency:price.currency,
             item_img_link:imgArr,
             qty:[]
-            
-            //qty:qtyArr
-            //qty:[1,2,3,4,5,6]
         }
-
     }catch(e){
 
     }
@@ -49,19 +39,39 @@ let get_auction_view = async (req, res) => {
     let key = Object.keys(req.body)
     if(key.length !== 0){
         let idx = JSON.parse(key)
-
         let data = {};
-    
         try {
     
-            let result = await ItemInfo.findOne({ where: { item_id: idx, sell_type: 1 } })
-            const { creator, description, title, registered_at, size, color } = result.dataValues
+            let result = await ItemInfo.findOne({
+                 where: { 
+                     item_id: idx, sell_type: 1 
+                    } 
+                })
+            const { 
+                creator, 
+                description, 
+                title, 
+                registered_at, 
+                size, 
+                color } = result.dataValues
     
-            let result2 = await User.findOne({ where: { user_idx: creator }, attributes: ['nick_name', 'kaikas_address'] })
+            let result2 = await User.findOne({ 
+                where: { 
+                    user_idx: creator 
+                }, 
+                attributes: 
+                    ['nick_name', 'kaikas_address'] 
+            })
             const { nick_name, kaikas_address } = result2.dataValues
     
             // @ 경매 정보
-            let result3 = await AuctionHistory.findOne({ where: { auc_history_idx: idx }, order: [['bid_price', 'DESC']] })
+            let result3 = await AuctionHistory.findOne({ 
+                where: { 
+                    auc_history_idx: idx 
+                },
+                order: 
+                    [['bid_price', 'DESC']] 
+            })
             const { bid_date, bid_price, currency } = result3.dataValues
     
             // @ 경매 종료 시간
@@ -110,22 +120,18 @@ let get_qty = async (req,res) => {
     try{
         let {item_id} = req.body
         let {size,color} = req.body.selected
-        console.log(size,color)
         let qty = await ItemDetail.findOne({where:{item_info_idx:item_id,size:size,color:color}})
         let qtydata = await Nft.findAll({where:{nft_img_idx:qty.nft_idx,product_status:'판매중'}})
-        console.log(qtydata.length,'dataaaaaaaaaqtych======================')
         let qtyArr = []
         if(qtydata.length!==0){
             for(let i=1;i<=qtydata.length;i++){
                 qtyArr.push(i)
             }
         }
-
         data = {
             result_msg:'OK',
             result:qtyArr
         }
-        console.log(qtyArr)
     }catch(e){
         data = {
             result_msg:'Fail',
