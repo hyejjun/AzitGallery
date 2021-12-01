@@ -277,7 +277,7 @@ let ship_update = async (req, res) => {
         let creator_kaikas = await User.findOne({ where: { user_idx: creator.creator } })
 
         let creator_address = creator_kaikas.kaikas_address
-        
+
         sendKlay(creator_address,order_detail_num.price)
 
         if (finalState.length == 0) {
@@ -302,12 +302,15 @@ let ship_update = async (req, res) => {
             let senderPrivateKey = `${developerKey}`
 
             const kip17Instance = new caver.klay.KIP17(`${nftlink}`)
+            const kip17Instance2 = new caver.klay.accounts.wallet.KIP17(`${nftlink}`)
+            console.log(kip17Instance2,'kipsssssssssssssss222222222222222222222')
             const tokenid = kip17Instance.tokenByIndex(0).then()
             async function test (){
                 return await kip17Instance.tokenByIndex(0)
             }
             let realtokenid = await test()
-
+            console.log(realtokenid,'tokenidddddddddddddd')
+            console.log(nftlink,'adddddddddddddddddddddd')
             const senderKeyring = caver.wallet.keyring.createFromPrivateKey(
                 senderPrivateKey
             );
