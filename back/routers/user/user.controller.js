@@ -297,10 +297,9 @@ let ship_update = async (req, res) => {
                 id:nftidx
             }
         })
+        
         const nftlink = nft.nft
-
             let senderPrivateKey = `${developerKey}`
-
             const kip17Instance = new caver.klay.KIP17(`${nftlink}`)
             const tokenid = kip17Instance.tokenByIndex(0).then()
             async function test (){

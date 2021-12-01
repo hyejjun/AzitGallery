@@ -221,12 +221,13 @@ let my_nft_all_post = async (req,res) => {
     a.order_date, a.memo, c.main_img_link, d.nick_name, b.size, b.color, c.title, b.id, b.delivery_state
     from orders as a join order_detail as b 
     on a.order_num=b.order_num join item_info as c 
-    on b.item_id=c.item_id join seller as d 
+    on b.item_id=c.item_id join user as d 
     on c.creator=d.user_idx where a.buyer="${user_idx}";
     ` 
 
     queryset(req,res,query)   
 }
+
 
 
 // 판매된 nft
