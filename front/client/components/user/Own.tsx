@@ -51,7 +51,7 @@ const Own = () => {
                             ele.delivery_state=='배송준비중'
                             ?
                             <Alert severity="error">
-                            <a className={`${ele.item_code} delivered_req`} id={`${ele.title}/${ele.size}/${ele.color}`} onClick={(e)=>{chDeliveryBtn(e)}} >배송 완료 요청</a>
+                            <a className={`${ele.item_code}`} id={`${ele.title}/${ele.size}/${ele.color}`} onClick={(e)=>{chDeliveryBtn(e)}} >배송 완료 요청</a>
                             </Alert>
                             :
                             <Alert severity="success">배송 완료!</Alert>
@@ -69,7 +69,7 @@ const Own = () => {
                             ele.delivery_state=='배송준비중'
                             ?
                             <Alert severity="error">
-                                <a className={`${ele.item_code} delivered_req`} id={`${ele.title}/${ele.size}/${ele.color}`} onClick={(e)=>{chDeliveryBtn(e)}} >배송 완료 요청</a>
+                                <a className={`${ele.item_code}`} id={`${ele.title}/${ele.size}/${ele.color}`} onClick={(e)=>{chDeliveryBtn(e)}} >배송 완료 요청</a>
                             </Alert>
                             :
                             <Alert severity="success">배송 완료!</Alert>

@@ -59,14 +59,14 @@ let signup_post = async (req, res) => {
     let join_date = new Date()
     let contact = '일단 비움'
     let address = '일단 비움'
-    let result = await User.create({ 
-                                nick_name, 
-                                kaikas_address, 
-                                contact, 
-                                address, 
-                                join_date, 
-                                email 
-                            })
+    let result = await User.create({
+        nick_name,
+        kaikas_address,
+        contact,
+        address,
+        join_date,
+        email
+    })
 }
 
 /* 이미 회원가입 했는지, 아니면 새로운 회원인지 */
@@ -81,11 +81,11 @@ let address_db_check = async (req, res) => {
             let result = await User.findOne({ where: { kaikas_address: keyObject } })
 
             // seller의 승인을 확인함
-            let result2 = await Seller.findOne({ 
+            let result2 = await Seller.findOne({
                 where: {
-                     user_idx: result.dataValues.user_idx 
-                    }, attributes: ['admin_approval'] 
-                })
+                    user_idx: result.dataValues.user_idx
+                }, attributes: ['admin_approval']
+            })
 
             if (result !== null && result2 !== null) {
                 data = {
@@ -93,14 +93,14 @@ let address_db_check = async (req, res) => {
                     kaikas_address: result.dataValues.kaikas_address,
                     user_idx: result.dataValues.user_idx,
                     admin_approval: result2.dataValues.admin_approval,
-                    sellerBool : true
+                    sellerBool: true
                 }
             } else if (result2 === null) {
                 data = {
                     signupBool: true,
                     kaikas_address: result.dataValues.kaikas_address,
                     user_idx: result.dataValues.user_idx,
-                    sellerBool : false,
+                    sellerBool: false,
                 }
             } else {
                 data = {
@@ -211,15 +211,15 @@ let user_info = async (req, res) => {
     let data = {}
 
     try {
-        let result = await User.findOne({ 
-            where: { 
-                kaikas_address: keyObject 
-            } 
+        let result = await User.findOne({
+            where: {
+                kaikas_address: keyObject
+            }
         })
-        let result2 = await Seller.findOne({ 
-            where: { 
-                user_idx: result.dataValues.user_idx 
-            } 
+        let result2 = await Seller.findOne({
+            where: {
+                user_idx: result.dataValues.user_idx
+            }
         })
         if (result2 !== null) {
             const { admin_approval, email_validation } = result2.dataValues
@@ -243,8 +243,8 @@ let user_info = async (req, res) => {
 }
 
 let ship_update = async (req, res) => {
-    console.log('dhskkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')
-    let data
+    console.log('들어옴 ========')
+    let data = {}
     try {
         let item_code = req.body.data
         let order_detail = await OrderDetail.update({
@@ -264,7 +264,7 @@ let ship_update = async (req, res) => {
                 order_num: order_detail_num.order_num
             }
         })
-        console.log(finalState,'finalsstate다음')
+        console.log(finalState, 'finalsstate다음')
 
         let shipupdate = await ShipInfo.update({
             item_delivery_state: '배송완료'
@@ -273,12 +273,12 @@ let ship_update = async (req, res) => {
                 order_detail_num: order_detail_num.id
             }
         })
- 
+
         let creator = await ItemInfo.findOne({ where: { item_id: order_detail_num.item_id } })
-        let useraddress = await User.findOne({where:{user_idx:creator.creator}}) 
+        let useraddress = await User.findOne({ where: { user_idx: creator.creator } })
         let creator_kaikas = useraddress.kaikas_address
 
-        sendKlay(creator_address,order_detail_num.price)
+        sendKlay(creator_address, order_detail_num.price)
 
         if (finalState.length == 0) {
             let orderRes = await Orders.update({
@@ -293,42 +293,46 @@ let ship_update = async (req, res) => {
         let nftidx = Number(order_detail_num.item_code.split('-')[1])
 
         const nft = await Nft.findOne({
-            where:{
-                id:nftidx
+            where: {
+                id: nftidx
             }
         })
         const nftlink = nft.nft
 
-            let senderPrivateKey = `${developerKey}`
+        console.log('여기 ====== ');
+        console.log(`${developerKey}`);
+        console.log(`${nftlink}`);
 
-            const kip17Instance = new caver.klay.KIP17(`${nftlink}`)
-            const tokenid = kip17Instance.tokenByIndex(0).then()
-            async function test (){
-                return await kip17Instance.tokenByIndex(0)
-            }
-            let realtokenid = await test()
-            const senderKeyring = caver.wallet.keyring.createFromPrivateKey(
+        let senderPrivateKey = `${developerKey}`
+
+        const kip17Instance = new caver.klay.KIP17(`${nftlink}`)
+        const tokenid = kip17Instance.tokenByIndex(0).then()
+        async function test() {
+            return await kip17Instance.tokenByIndex(0)
+        }
+        let realtokenid = await test()
+        const senderKeyring = caver.wallet.keyring.createFromPrivateKey(
+            senderPrivateKey
+        );
+
+        if (!caver.wallet.getKeyring(senderKeyring.address)) {
+            const singleKeyRing = caver.wallet.keyring.createFromPrivateKey(
                 senderPrivateKey
             );
-            
-            if (!caver.wallet.getKeyring(senderKeyring.address)) {
-                const singleKeyRing = caver.wallet.keyring.createFromPrivateKey(
-                    senderPrivateKey
-                );
-                caver.wallet.add(singleKeyRing);
-            }
-            let contractAddr = `${nftlink}`;
+            caver.wallet.add(singleKeyRing);
+        }
+        let contractAddr = `${nftlink}`;
 
-            const kip17 = new caver.kct.kip17(contractAddr);
+        const kip17 = new caver.kct.kip17(contractAddr);
 
-            transferResult = await kip17.transferFrom(
-                senderKeyring.address,
-                `${creator_kaikas}`,
-                `${realtokenid}`,
-                { from: senderKeyring.address, gas: 200000 }
-            );
-            console.log('여기 ===== ');
-            console.log(transferResult);
+        transferResult = await kip17.transferFrom(
+            senderKeyring.address,
+            `${creator_kaikas}`,
+            `${realtokenid}`,
+            { from: senderKeyring.address, gas: 200000 }
+        );
+        console.log('여기 결과 ===== ');
+        console.log(transferResult);
 
 
 
@@ -352,27 +356,27 @@ let seller_admin_check = async (req, res) => {
     let keyObject = JSON.parse(key)
     let data = {}
     try {
-        let result = await Seller.findOne({ 
-            where: { 
-                nick_name: `${keyObject}` 
-            }, 
-            attributes: 
-            ['admin_approval'] 
+        let result = await Seller.findOne({
+            where: {
+                nick_name: `${keyObject}`
+            },
+            attributes:
+                ['admin_approval']
         })
         if (result !== null) {
             data = {
                 result_msg: "OK",
                 admin_approval: result.dataValues.admin_approval,
-                sellerBool : true
+                sellerBool: true
             }
         } else if (result2 === null) {
             data = {
                 result_msg: "OK",
                 admin_approval: result.dataValues.admin_approval,
-                sellerBool : false
+                sellerBool: false
             }
         }
-        
+
     } catch (error) {
         data = {
             result_msg: "Fail"
