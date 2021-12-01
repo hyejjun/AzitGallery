@@ -129,7 +129,7 @@ const MyNftComponent = () => {
                             : <></> }
                     </MenuBar>
                     <SelectBoxHeader>
-                        <Notice>*KraftSpace에서 발행한 NFT만 표시합니다.</Notice>
+                        <Notice>* NFT STORE 에서 발행한 NFT만 표시합니다.</Notice>
                     </SelectBoxHeader>
                 </Header>
                 <Content>
@@ -227,7 +227,7 @@ const Menu1 = Styled.div`
     font-size:20px;
     cursor:pointer;
     &:hover{
-        color:#055fec;
+        color:#2d3741;
     }
 `
 

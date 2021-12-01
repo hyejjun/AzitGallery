@@ -83,7 +83,7 @@ const Line = Styled.div`
 `
 
 const TextItemWrapper = Styled.div`
-    background-color: #e1f0fe;
+    background-color: #9597981f;
     width: 1150px;
     height: auto;
     padding: 30px;

@@ -126,20 +126,21 @@ const Line = Styled.div`
 `
 
 const MoreNFT = Styled.div`
-    text-align:center;
-    padding:10px;
-    font-size:26px;
-    box-sizing:border-box;
-    width:150px;
-    height:60px;
-    color:grey;
-    border:1px solid #bbb;
-    border-radius:5px;
-    background:white;
-    margin:0 auto;
-    margin-bottom:120px;
-    margin-top:50px;
-    cursor:pointer;
+    text-align: center;
+    padding: 15px;
+    font-size: 20px;
+    box-sizing: border-box;
+    width: 150px;
+    height: 60px;
+    color: #fffffff5;
+    border-radius: 5px;
+    background: #232323;
+    margin: 0 auto;
+    margin-bottom: 120px;
+    margin-top: 100px;
+    cursor: pointer;
+    font-weight: bold;
+
     &:hover{
         background:#bbb;
         color:white;
