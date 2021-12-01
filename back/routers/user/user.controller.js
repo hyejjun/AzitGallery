@@ -16,6 +16,9 @@ if (!caver.wallet.getKeyring(keyring.address)) {
     caver.wallet.add(singleKeyRing);
 }
 
+const front_url = `http://localhost:3000`
+// const front_url = `http://localhost:3000`
+
 /* 이메일 보내기 */
 let seller_admin = async (req, res) => {
     const { userEmail, UserAddress, NickName } = req.body
@@ -27,7 +30,7 @@ let seller_admin = async (req, res) => {
         }
     });
 
-    let url = `http://localhost:3000/admin/approvebtn`;
+    let url = `${front_url}/admin/approvebtn`;
     let options = {
         from: 'simbianartist@gmail.com',
         to: `${userEmail}`,//임시로, 나중에는 body에서 가져오게끔한다

@@ -376,7 +376,9 @@ let mint_nft_post = async (req, res) => {
               id: idx
             }
           })
-          //console.log(data.events.Transfer.address)
+          // console.log(data.events.Transfer.address)
+          // console.log("토큰 아이디 확인하기 ==== ");
+          console.log(data.events.Transfer)
         } catch (e) { console.log(e, 'then 안에서') }
         // }, 10);
       })
