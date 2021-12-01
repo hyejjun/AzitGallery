@@ -243,6 +243,7 @@ let user_info = async (req, res) => {
 }
 
 let ship_update = async (req, res) => {
+    console.log('dhskkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk')
     let data
     try {
         let item_code = req.body.data
@@ -263,6 +264,7 @@ let ship_update = async (req, res) => {
                 order_num: order_detail_num.order_num
             }
         })
+        console.log(finalState,'finalsstate다음')
 
         let shipupdate = await ShipInfo.update({
             item_delivery_state: '배송완료'
@@ -271,12 +273,10 @@ let ship_update = async (req, res) => {
                 order_detail_num: order_detail_num.id
             }
         })
-
+ 
         let creator = await ItemInfo.findOne({ where: { item_id: order_detail_num.item_id } })
-
-        let creator_kaikas = await User.findOne({ where: { user_idx: creator.creator } })
-
-        let creator_address = creator_kaikas.kaikas_address
+        let useraddress = await User.findOne({where:{user_idx:creator.creator}}) 
+        let creator_kaikas = useraddress.kaikas_address
 
         sendKlay(creator_address,order_detail_num.price)
 
@@ -302,19 +302,15 @@ let ship_update = async (req, res) => {
             let senderPrivateKey = `${developerKey}`
 
             const kip17Instance = new caver.klay.KIP17(`${nftlink}`)
-            const kip17Instance2 = new caver.klay.accounts.wallet.KIP17(`${nftlink}`)
-            console.log(kip17Instance2,'kipsssssssssssssss222222222222222222222')
             const tokenid = kip17Instance.tokenByIndex(0).then()
             async function test (){
                 return await kip17Instance.tokenByIndex(0)
             }
             let realtokenid = await test()
-            console.log(realtokenid,'tokenidddddddddddddd')
-            console.log(nftlink,'adddddddddddddddddddddd')
             const senderKeyring = caver.wallet.keyring.createFromPrivateKey(
                 senderPrivateKey
             );
-
+            
             if (!caver.wallet.getKeyring(senderKeyring.address)) {
                 const singleKeyRing = caver.wallet.keyring.createFromPrivateKey(
                     senderPrivateKey
@@ -327,7 +323,7 @@ let ship_update = async (req, res) => {
 
             transferResult = await kip17.transferFrom(
                 senderKeyring.address,
-                `${creator.id}`,
+                `${creator_kaikas}`,
                 `${realtokenid}`,
                 { from: senderKeyring.address, gas: 200000 }
             );
