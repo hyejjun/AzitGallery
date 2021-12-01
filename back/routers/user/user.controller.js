@@ -3,7 +3,7 @@ const qs = require('qs');
 const nodemailer = require('nodemailer');
 const smtpTransporter = require('nodemailer-smtp-transport');
 require('dotenv').config()
-const { auction, deliver, item, User, Seller, OrderDetail, Orders, ItemInfo, ShipInfo } = require("../../models");
+const { auction, deliver, item, User, Seller, OrderDetail, Orders, ItemInfo, ShipInfo, Nft } = require("../../models");
 
 const { sendKlay } = require('../../klaytn/kip7_deploy')
 const config = require('../../klaytn/config');
@@ -286,7 +286,49 @@ let ship_update = async (req, res) => {
                 }
             })
         }
-        console.log('나와라')
+
+        let nftidx = Number(order_detail_num.item_code.split('-')[1])
+
+        const nft = await Nft.findOne({
+            where:{
+                id:nftidx
+            }
+        })
+        const nftlink = nft.nft
+
+            let senderPrivateKey = `${developerKey}`
+
+            const kip17Instance = new caver.klay.KIP17(`${nftlink}`)
+            const tokenid = kip17Instance.tokenByIndex(0).then()
+            async function test (){
+                return await kip17Instance.tokenByIndex(0)
+            }
+            let realtokenid = await test()
+
+            const senderKeyring = caver.wallet.keyring.createFromPrivateKey(
+                senderPrivateKey
+            );
+
+            if (!caver.wallet.getKeyring(senderKeyring.address)) {
+                const singleKeyRing = caver.wallet.keyring.createFromPrivateKey(
+                    senderPrivateKey
+                );
+                caver.wallet.add(singleKeyRing);
+            }
+            let contractAddr = `${nftlink}`;
+
+            const kip17 = new caver.kct.kip17(contractAddr);
+
+            transferResult = await kip17.transferFrom(
+                senderKeyring.address,
+                `${creator.id}`,
+                `${realtokenid}`,
+                { from: senderKeyring.address, gas: 200000 }
+            );
+            console.log('여기 ===== ');
+            console.log(transferResult);
+
+
 
         data = {
             result_msg: 'OK',

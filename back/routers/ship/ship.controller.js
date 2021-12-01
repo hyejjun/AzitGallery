@@ -30,7 +30,6 @@ let get_shipinfo = async (req,res)=>{
                     nft_idx:nftdata.nft_img_idx
                 }
             })
-            console.log("여기 ======= ",`${itemcode.item_code}-${nftdata.id}`);
             const orderdetail = await OrderDetail.findOne({
                 where:{
                     item_code:`${itemcode.item_code}00-${nftdata.id}`
@@ -100,7 +99,6 @@ let order_detail_post = async (req,res) => {
 
 
 let get_delivery_info = async (req,res)=>{
-    console.log(req.body)
     let data
     try{
         
@@ -135,22 +133,18 @@ let get_delivery_info = async (req,res)=>{
                         id:nftid
                     }
                 })
-                console.log(nftdata.id,'iddddddddddddddddd')
                 const itemcode = await ItemDetail.findOne({
                     where:{
                         nft_idx:nftdata.nft_img_idx
                     }
                 })
                 let itemcodereal= itemcode.item_code.substring(0,16)
-                console.log(itemcodereal)
                
                 const orderdetail = await OrderDetail.findOne({
                     where:{
                         item_code:`${itemcode.item_code}-${nftdata.id}`
                     }
                 })
-                console.log(itemcode.item_code)
-                console.log(orderdetail,'orderdetail')
                 const item_info = await ItemInfo.findOne({
                     where:{
                         item_id:orderdetail.item_id
@@ -222,9 +216,7 @@ let get_delivery_info = async (req,res)=>{
                     result_msg:'OK',
                     result:result,
                 }
-
             }
-
         }
     }catch(e){
         data = {

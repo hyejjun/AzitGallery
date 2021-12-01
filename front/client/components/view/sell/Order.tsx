@@ -38,7 +38,6 @@ const Order = (props) => {
         alert('동의란을 확인해주세요')
     }
     const Klaytn = () => {
-        console.log(finalprice,'finalpriceeeeeeeeeeeeeee')
         window.caver.klay
         .sendTransaction({
           type: 'VALUE_TRANSFER',
