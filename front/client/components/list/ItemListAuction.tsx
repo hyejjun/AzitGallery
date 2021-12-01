@@ -59,7 +59,7 @@ const ItemListAuction = (props) => {
         <>
             <div>
                 <PictureNumberNotice>
-                    전체 NFT 리스트 (총 {/*count*/}개 발행됨)
+                    {/* 전체 NFT 리스트 (총 count개 발행됨) */}
                 </PictureNumberNotice>
             </div>
             <NFTComponent>
