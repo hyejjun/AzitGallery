@@ -129,7 +129,7 @@ const MyNftComponent = () => {
                             : <></> }
                     </MenuBar>
                     <SelectBoxHeader>
-                        <Notice>*KraftSpace에서 발행한 NFT만 표시합니다.</Notice>
+                        <Notice>* NFT STORE 에서 발행한 NFT만 표시합니다.</Notice>
                     </SelectBoxHeader>
                 </Header>
                 <Content>

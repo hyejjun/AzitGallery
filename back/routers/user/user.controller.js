@@ -30,7 +30,7 @@ let seller_admin = async (req, res) => {
         }
     });
 
-    let url = `${front_url}/admin/approvebtn`;
+    let url = `http://localhost:3000/admin/approvebtn`;
     let options = {
         from: 'simbianartist@gmail.com',
         to: `${userEmail}`,//임시로, 나중에는 body에서 가져오게끔한다

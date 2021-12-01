@@ -58,9 +58,9 @@ const ItemListAuction = (props) => {
     return (
         <>
             <div>
-                <PictureNumberNotice>
-                    {/* 전체 NFT 리스트 (총 count개 발행됨) */}
-                </PictureNumberNotice>
+                {/* <PictureNumberNotice>
+                    전체 NFT 리스트 (총 count개 발행됨)
+                </PictureNumberNotice> */}
             </div>
             <NFTComponent>
                 <Category sell_type={props.sell_type} sendData ={props.sendData} setCategory={props.setCategory} setSubCategory={props.setSubCategory}/>

@@ -72,14 +72,15 @@ const Menu = Styled.li`
     float:left;
 
     .bar {
-        cursor : default;
-        font-size: 20px;
+        cursor: default;
+        font-size: 23px;
+        color: #e8e8e9;
     }
 `
 
 const MenuBar = Styled.ul`
-    clear:both;
-    height: 100px;
+    clear: both;
+    height: 125px;
 `
 
 const SellTab = Styled.div<{flag:boolean}>`
