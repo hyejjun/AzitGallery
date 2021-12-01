@@ -146,7 +146,7 @@ const MenuBar = () => {
                         : <></>
             }
             <MenubarWrapper>
-                <span><Link href="/"><a>Azit Gallery</a></Link></span>
+                <span><Link href="/"><a><img src="https://dfassf-bucket-test.s3.ap-northeast-2.amazonaws.com/09ae0de8cad4e723505830df97f35348" /></a></Link></span>
                 <ul>
                     <li><Link href="/"><a>탐색하기</a></Link></li>
                     {loginState && User.adminApproval === 3 && User.sellerBool ? <LOG onClick={() => createBtn()}><Link href="/item/additem"><a>발행하기</a></Link></LOG> : <LOG onClick={() => createBtn()}>발행하기</LOG>}
@@ -165,7 +165,7 @@ export default MenuBar
 const MenubarWrapper = Styled.div`
     box-sizing:border-box;
     height:90px;
-    padding: 1.4% 0;
+    padding: 1.1% 0;
     display:flex;
     flex-direction:row;
     justify-content:space-around;
@@ -180,8 +180,8 @@ const MenubarWrapper = Styled.div`
         height : auto;
     }
 
-    span{
-        margin-right:400px;
+    ul{
+        margin-top:10px;
     }
     ul li {
         list-style:none;
@@ -219,6 +219,10 @@ const MenubarWrapper = Styled.div`
     }
     a{
         text-decoration:none;
+    }
+    img{
+        width: 170px;
+        height: 47px;
     }
 
     @media screen and (max-width : 1095px) {
@@ -281,8 +285,14 @@ const MenubarWrapper = Styled.div`
     a{
         text-decoration:none;
     }
+    
+    img{
+        width: 170px;
+        height: 47px;
+    }
 }
 `
 const LOG = Styled.li`
     cursor:pointer;
 `
+
