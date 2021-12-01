@@ -189,9 +189,13 @@ const MenubarWrapper = Styled.div`
         float:left;
     }
     ul>li, a{
-        margin-right:20px;
+        /* margin-right:20px;
         color:rgba(0,0,0,.5);
+        background: #fafafa; */
+        color: rgba(0,0,0,.5);
         background: #fafafa;
+        text-align: center;
+        width: 110px;
 
     }
     ul>li:hover, a:hover{
