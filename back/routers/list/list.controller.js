@@ -239,13 +239,14 @@ let sold_nft_post = async (req,res) => {
 
     let query = 
     `
-    select b.title, a.id,a.item_code,a.price,a.size,a.color,c.nick_name,
+    select b.title,a.item_id, a.id,a.item_code,a.price,a.size,a.color,c.nick_name,
     a.delivery_state,b.main_img_link,d.final_order_state,e.item_delivery_state 
     from order_detail as a join item_info as b 
-    on a.item_id=b.item_id join seller as c 
+    on a.item_id=b.item_id join user as c 
     on a.shipper_idx=c.user_idx join orders as d 
     on a.order_num=d.order_num join ship_info as e 
-    on a.id=e.order_detail_num where d.user_idx=${user_idx};
+    on a.id=e.order_detail_num 
+    where c.user_idx=${user_idx};
     `
     queryset(req,res,query)
 }
@@ -285,7 +286,8 @@ let queryset = (req,res,query) => {
                     result_msg:'OK',
                     result
                 }
-
+                console.log(result)
+                
                 res.json(data)
             }
             connection.release()
