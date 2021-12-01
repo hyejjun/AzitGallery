@@ -38,10 +38,10 @@ const MenuBar = () => {
 
         dispatch(AdminApprovalCheck_REQUEST(User.NickName))
 
-        if(User.adminApproval !== 3 || User.sellerBool !== true){
+        if (User.adminApproval !== 3 || User.sellerBool !== true) {
             alert('판매자 인증 완료가 되지 않았습니다.')
         }
-    }   
+    }
     const requireOpenBtn = () => {
         setFlag(prev => !prev)
     }
@@ -59,10 +59,10 @@ const MenuBar = () => {
     const [Load, setLoad] = React.useState<boolean>(false)
     const User = useSelector((state: RootState) => state.user);
 
-    const signupBool = useSelector((state: RootState) => state.user.signupBool) 
+    const signupBool = useSelector((state: RootState) => state.user.signupBool)
 
     const kaikasLogin = async () => {
-        
+
         try {
             const wallet = await window.klaytn.enable()
             const klaytnAddress = window.klaytn.selectedAddress
@@ -89,14 +89,14 @@ const MenuBar = () => {
 
                 }
             }
-        }catch(err){
+        } catch (err) {
             alert('로그인 실패')
-        }  
-        
+        }
+
     }
     useEffect(() => {
         const klaytnAddress = window.klaytn.selectedAddress
-        if(window.klaytn.autoRefreshOnNetworkChange==false){
+        if (window.klaytn.autoRefreshOnNetworkChange == false) {
             alert('계정이 변경되었습니다.')
         }
     }, [Load])
@@ -140,7 +140,7 @@ const MenuBar = () => {
             {
                 flag
                     ?
-                    <RequireLogin flag={flag} openBtn={requireOpenBtn} loginOpenBtn={loginOpenBtn} />   
+                    <RequireLogin flag={flag} openBtn={requireOpenBtn} loginOpenBtn={loginOpenBtn} />
                     : Login
                         ?
                         <LoginForm closeLogin={Login} closeLoginBtn={closeLoginForm} onClick={onClick} />
@@ -152,7 +152,7 @@ const MenuBar = () => {
                     <li><Link href="/"><a>탐색하기</a></Link></li>
                     {loginState && User.adminApproval === 3 && User.sellerBool ? <LOG onClick={() => createBtn()}><Link href="/item/additem"><a>발행하기</a></Link></LOG> : <LOG onClick={() => createBtn()}>발행하기</LOG>}
                     {loginState ? <LOG><Link href="/user/mynftall"><a>나의NFT</a></Link></LOG> : <LOG></LOG>}
-                    {loginState ? <Link href="/"><LOG onClick={() => { logout() }}>LogOut</LOG></Link> : <LOG onClick={() => { login() }}>Login</LOG>}
+                    {loginState ? <Link href="/"><LOG onClick={() => { logout() }}>로그아웃</LOG></Link> : <LOG onClick={() => { login() }}>로그인</LOG>}
                 </ul>
             </MenubarWrapper>
 
@@ -182,45 +182,45 @@ const MenubarWrapper = Styled.div`
     }
 
     ul{
-        margin-top:10px;
+        /* margin-top:10px; */
     }
     ul li {
         list-style:none;
         float:left;
     }
     ul>li, a{
-        /* margin-right:20px;
-        color:rgba(0,0,0,.5);
-        background: #fafafa; */
         color: rgba(0,0,0,.5);
         background: #fafafa;
         text-align: center;
         width: 110px;
+        font-size: 16px;
+        font-weight: bold;
 
     }
     ul>li:hover, a:hover{
         color:#343a40;
     }
     ul a:hover{
-        color:#1e73fa;
-        border-bottom: 4px solid #1e73fa;
+        color:#2d3741;
+        border-bottom: 4px solid #2d3741;
         padding-bottom:31px;
     }
     ul>li:nth-child(4){
-        width:60px;
-        text-align:center;
-        padding:13px;
-        padding-top:7px;
-        margin-bottom:3px;
-        line-height:15px;
-        border:1px solid #007bff;
-        background-color:#007bff;
-        border-radius:5%;
-        color:#fff;
-        margin-left:15px;
+        width: 95px;
+        height: 25px;
+        text-align: center;
+        padding-top: 10px;
+        line-height: 12px;
+        border: 1px solid #2d3741;
+        background-color: #2d3741;
+        border-radius: 5%;
+        color: #fff;
+        margin-left: 30px;
     }
     ul>li:nth-child(4):hover{
-        background-color:#1e73fa;
+        background-color:#2e3033b8;
+        border: 1px solid #2e3033b8;
+
     }
     a{
         text-decoration:none;
