@@ -13,6 +13,7 @@ import { UserLogin_REQUEST, UserLogout_REQUEST, AdminApprovalCheck_REQUEST } fro
 // reducer 확인
 import { RootState } from '../../reducers';
 import axios from 'axios';
+import logo from '../../src/logo.png'
 
 declare global {
     interface Window {

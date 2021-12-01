@@ -25,12 +25,6 @@ const Order = (props) => {
     const orderNum = useSelector((state:RootState)=>state.deal.orderNum)
 
     let finalprice = price * selected.qty
-    console.log(finalprice)
-    
-    
- 
-    
-
 
     const dispatch = useDispatch()
     const [checked, setChecked] = useState<boolean>(false);
@@ -44,18 +38,17 @@ const Order = (props) => {
         alert('동의란을 확인해주세요')
     }
     const Klaytn = () => {
-
+        console.log(finalprice,'finalpriceeeeeeeeeeeeeee')
         window.caver.klay
         .sendTransaction({
           type: 'VALUE_TRANSFER',
           from: window.klaytn.selectedAddress,
           to: '0xB0C467eF1B902d0C852C500334ef0C47d6bbDFAE',
-          value: window.caver.utils.toPeb(finalprice, 'KLAY'),
+          value: window.caver.utils.toPeb(`${finalprice}`, 'KLAY'),
           gas: 8000000
         })
         .once('transactionHash', transactionHash => {
-          console.log('txHash', transactionHash)
-         
+          console.log('txHash', transactionHash)         
         })
         .once('receipt', receipt => {
           console.log('receipt', receipt)
@@ -71,10 +64,6 @@ const Order = (props) => {
         window.location.href = `/ship/${orderNum}`
     }
 
-
-
-
-
     let data 
     data = {
         item_id:props.item_id,
@@ -86,7 +75,6 @@ const Order = (props) => {
         creator:creator 
     }
 
-
     const Purchase = () => {
         if(checked==false){
             alert('동의란을 확인해주세요')
@@ -95,30 +83,11 @@ const Order = (props) => {
             dispatch(direct_deal_REQUEST(data))
             
         }
-    
-        
-        //dispatch(KipToken_REQUEST())       
-        
-        
     }
 
-    // useEffect(()=>{
-    //     if(ch==true){
-    //         alert('EPI로 거래되셨습니다.')
-    //         window.location.href = `/ship/${orderNum}`
-    //     }
-        
-    // },[orderNum])
-    
-   
     const chClick = () => {
         setChecked(prev=>!prev)
-
     }
-    console.log(checked)
-    
-
-    
 
     return (
         <>

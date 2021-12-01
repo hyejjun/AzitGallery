@@ -3,7 +3,6 @@ const mysql = require('mysql')
 const pool = require('../pool');
 
 let deal_post = async (req,res) => {
-    console.log('eeeeeeeeeeeeeeeeeeee',req.body,'reeeeeeeeeeeeeeeeeeeeeee')
     let data
     let total_order_num = []
     try{
@@ -11,23 +10,26 @@ let deal_post = async (req,res) => {
         let {item_id,price,currency,userAddress,userIdx,creator} = req.body
         let data = {}
         let orderdata = []
+        let buyerid = await ItemInfo.findOne({
+            where:{
+                item_id:item_id
+            }
+        })
         let result4 = await Orders.create({
             total_price:price,
             order_date:null,
             final_order_state:'배송준비중',
             buyer:userIdx,
             order_num:null,
-            user_idx:userIdx
+            user_idx:buyerid.creator
         })
+        
         
         for(let i=1; i<=qty; i++){
             let result1 = await ItemDetail.findOne({where:{item_info_idx:item_id,size:size,color:color}})
             let result2 = await Nft.findOne({where:{nft_img_idx:result1.nft_idx,product_status:'판매중'}})
             let nft_idx = result2.id
-            //console.log(result1,'resultt11111111111111111111111111111111')
-            //console.log(result1.item_code,'itemoddddddddddddddddddddddddddddddddddddddd')
             price = parseFloat(price)
-            //console.log(parseFloat(price),'priceeeeeeeeeeeeeeeeeeee')
             
             let result3 = await OrderDetail.create({
                 size,
@@ -45,7 +47,6 @@ let deal_post = async (req,res) => {
                 order_detail_num:result3.id
             })
             
-            console.log(result3,'order_detail=====================')
             orderdata.push(result3.dataValues)
 
             let result5 = await Nft.update({
@@ -60,10 +61,8 @@ let deal_post = async (req,res) => {
                 result_msg:'OK',
                 result:result4.order_num
             }
-            console.log(result4.order_num,'orderdataaaaaaaaaaaaaaaaaaaaaaaaaaa')
         } 
         
-       
         // 판매완료 업데이트
         let item_detail_data = await ItemDetail.findOne({where:{item_info_idx:item_id,size:size,color:color}})
         let nft_idx_data = item_detail_data.nft_idx
@@ -80,7 +79,6 @@ let deal_post = async (req,res) => {
             })
         }
         ch2 = await ItemDetail.findAll({where:{item_info_idx:item_id,product_status:'판매중'}})
-        console.log(ch2.length,'length==============================================')
         if(ch2.length==0){
             await ItemInfo.update({
                 product_status:1
@@ -92,14 +90,11 @@ let deal_post = async (req,res) => {
         }
         res.json(data)
     }catch(e){
-        console.log(e,'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
         data = {
             result_msg:'Fail'
         }
         res.json(data)
     }
-    
-
 }
 
 
@@ -126,7 +121,6 @@ let queryset = (req,res,query) => {
                     result_msg:'OK',
                     result
                 }
-                //console.log(result)
                 res.json(data)
             }
             connection.release()

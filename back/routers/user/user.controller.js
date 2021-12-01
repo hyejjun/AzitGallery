@@ -5,22 +5,19 @@ const smtpTransporter = require('nodemailer-smtp-transport');
 require('dotenv').config()
 const { auction, deliver, item, User, Seller, OrderDetail, Orders, ItemInfo, ShipInfo } = require("../../models");
 
-
 const { sendKlay } = require('../../klaytn/kip7_deploy')
 const config = require('../../klaytn/config');
 const caver = config.caver;
 const developerKey = config.developerKey;
-
 const keyring = caver.wallet.keyring.createFromPrivateKey(developerKey);
+
 if (!caver.wallet.getKeyring(keyring.address)) {
     const singleKeyRing = caver.wallet.keyring.createFromPrivateKey(developerKey);
     caver.wallet.add(singleKeyRing);
 }
 
 /* 이메일 보내기 */
-
 let seller_admin = async (req, res) => {
-
     const { userEmail, UserAddress, NickName } = req.body
     let transporter = nodemailer.createTransport({
         service: 'Gmail',
@@ -53,14 +50,20 @@ let seller_admin = async (req, res) => {
 let signup_post = async (req, res) => {
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
-    console.log(keyObject, 'keyobject')
     let nick_name = keyObject.NickName
     let kaikas_address = keyObject.Address
     let email = keyObject.Email
     let join_date = new Date()
     let contact = '일단 비움'
     let address = '일단 비움'
-    let result = await User.create({ nick_name, kaikas_address, contact, address, join_date, email })
+    let result = await User.create({ 
+                                nick_name, 
+                                kaikas_address, 
+                                contact, 
+                                address, 
+                                join_date, 
+                                email 
+                            })
 }
 
 /* 이미 회원가입 했는지, 아니면 새로운 회원인지 */
@@ -71,12 +74,15 @@ let address_db_check = async (req, res) => {
     if (key.length !== 0) {
         let keyObject = JSON.parse(key)
         let data = {}
-
         try {
             let result = await User.findOne({ where: { kaikas_address: keyObject } })
 
             // seller의 승인을 확인함
-            let result2 = await Seller.findOne({ where: { user_idx: result.dataValues.user_idx }, attributes: ['admin_approval'] })
+            let result2 = await Seller.findOne({ 
+                where: {
+                     user_idx: result.dataValues.user_idx 
+                    }, attributes: ['admin_approval'] 
+                })
 
             if (result !== null && result2 !== null) {
                 data = {
@@ -98,8 +104,6 @@ let address_db_check = async (req, res) => {
                     signupBool: false
                 }
             }
-
-
         } catch (error) {
             console.log(error);
             data = {
@@ -112,10 +116,8 @@ let address_db_check = async (req, res) => {
 }
 
 let nickname_check = async (req, res) => {
-
     let key = Object.keys(req.body)
     let nick_name = JSON.parse(key)
-
     let result = await User.findAll({ where: { nick_name } })
     if (result.length == 0) {
         res.json(true)
@@ -125,7 +127,6 @@ let nickname_check = async (req, res) => {
 }
 
 let email_check = async (req, res) => {
-
     try {
         let key = Object.keys(req.body);
         let email = JSON.parse(key);
@@ -163,12 +164,10 @@ let email_check = async (req, res) => {
 
 let userlist_get = async (req, res) => {
     let result = await Seller.findAll({})
-
     let data = []
     result.forEach(async (v) => {
         data.push(v.dataValues)
     });
-
     res.json(data)
 }
 
@@ -177,14 +176,12 @@ let userlist_get = async (req, res) => {
 let selleradmin_access = async (req, res) => {
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
-
     let result = await Seller.update({ admin_approval: 3 }, { where: { user_idx: keyObject } })
 }
 
 let selleradmin_deny = async (req, res) => {
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
-
     let result = await Seller.update({ admin_approval: 2 }, { where: { user_idx: keyObject } })
 }
 
@@ -193,10 +190,8 @@ let selleradmin_deny = async (req, res) => {
 let selleradmin_wait = async (req, res) => {
     let key = Object.keys(req.body)
     const keyObject = JSON.parse(key)
-
     let find_user = await User.findOne({ where: { kaikas_address: keyObject } })
     const { user_idx, nick_name } = find_user.dataValues
-
     let seller_insert = await Seller.create({
         user_idx,
         nick_name,
@@ -209,12 +204,20 @@ let user_info = async (req, res) => {
 
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
-    console.log(keyObject, 'user_info')
+
     let data = {}
 
     try {
-        let result = await User.findOne({ where: { kaikas_address: keyObject } })
-        let result2 = await Seller.findOne({ where: { user_idx: result.dataValues.user_idx } })
+        let result = await User.findOne({ 
+            where: { 
+                kaikas_address: keyObject 
+            } 
+        })
+        let result2 = await Seller.findOne({ 
+            where: { 
+                user_idx: result.dataValues.user_idx 
+            } 
+        })
         if (result2 !== null) {
             const { admin_approval, email_validation } = result2.dataValues
             data = {
@@ -233,12 +236,10 @@ let user_info = async (req, res) => {
             msg: "Fail"
         }
     }
-
     res.json(data)
 }
 
 let ship_update = async (req, res) => {
-    console.log(req.body.data)
     let data
     try {
         let item_code = req.body.data
@@ -253,7 +254,6 @@ let ship_update = async (req, res) => {
                 item_code: item_code
             }
         })
-
         let finalState = await OrderDetail.findAll({
             where: {
                 delivery_state: '배송준비중',
@@ -274,12 +274,8 @@ let ship_update = async (req, res) => {
         let creator_kaikas = await User.findOne({ where: { user_idx: creator.creator } })
 
         let creator_address = creator_kaikas.kaikas_address
-        console.log(creator_address)
 
-        //sendKlay(creator_address,order_detail.price)
-        sendKlay(creator_address, 1)
-        // 주석 가격 소수점 처리후 위의 주석처리한 부분으로 대체
-
+        sendKlay(creator_address,order_detail.price)
 
         if (finalState.length == 0) {
             let orderRes = await Orders.update({
@@ -290,6 +286,7 @@ let ship_update = async (req, res) => {
                 }
             })
         }
+        console.log('나와라')
 
         data = {
             result_msg: 'OK',
@@ -309,12 +306,15 @@ let ship_update = async (req, res) => {
 let seller_admin_check = async (req, res) => {
     let key = Object.keys(req.body)
     let keyObject = JSON.parse(key)
-    console.log(keyObject);
-
     let data = {}
     try {
-        let result = await Seller.findOne({ where: { nick_name: `${keyObject}` }, attributes: ['admin_approval'] })
-
+        let result = await Seller.findOne({ 
+            where: { 
+                nick_name: `${keyObject}` 
+            }, 
+            attributes: 
+            ['admin_approval'] 
+        })
         if (result !== null) {
             data = {
                 result_msg: "OK",
@@ -339,7 +339,6 @@ let seller_admin_check = async (req, res) => {
 
 module.exports = {
     seller_admin,
-    // adduser,
     signup_post,
     address_db_check,
     nickname_check,
