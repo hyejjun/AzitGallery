@@ -7,25 +7,28 @@ import Button from '@mui/material/Button';
 const MyNFT = () => {
     return (
         <>
+            {/* <MyNFTAll>
+                <MenuH3>당신의 옷을 NFT로 발급해보세요.</MenuH3>
+                <div>NFT STORE 에서는 누구나 쉽고 간편하게<br />NFT를 발행하고 관리할 수 있어요.</div>
+            </MyNFTAll> */}
             <MyNFTAll>
                 <Menu>
-                    <MenuH3>나만의 NFT를 발행해보세요</MenuH3>
-                    <div>KrafterSpace에서는 누구나 쉽고 간편하게<br />NFT를 발행하고 관리할 수 있어요.</div>
+                    <MenuH3>당신의 옷을 NFT로 발급해보세요.</MenuH3>
+                    <div>NFT STORE 에서는 누구나 쉽고 간편하게<br />NFT를 발행하고 관리할 수 있어요.</div>
                 </Menu>
 
-                <MenuImg> <img /> </MenuImg>
+                <MenuImg> <img src={`https://dfassf-bucket-test.s3.ap-northeast-2.amazonaws.com/ada96412ebd121f98653a9cf2198a358`} /> </MenuImg>
             </MyNFTAll>
             <Line></Line>
         </>
     )
 }
 export default MyNFT
-const MyNFTAll = Styled.ul`
-    height:480px;
-    cursor : default;
-    @media screen and (max-width : 1095px) {
-        display:none;
-}
+const MyNFTAll = Styled.div`
+    height: 480px;
+    cursor: default;
+    padding: 7% 0;
+    box-sizing: border-box;
     
 `
 const Menu = Styled.li`
@@ -47,19 +50,18 @@ const Menu = Styled.li`
     }
 `
 const MenuImg = Styled.li`
-    color:#2d3741;
-    font-size:24px;
-    display:inline-block;
-    text-decoration:none;
-    list-style:none;
-    margin-right:20px;
-    float:right;
-    background:#bbb;
-    margin-top:60px;
-    margin-right:50px;
-    box-sizing:border-box;
-    width:280px;
-    height:300px;
+    display: inline-block;
+    -webkit-text-decoration: none;
+    float: right;
+    margin-top: 20px;
+    margin-right: 50px;
+    width: 280px;
+    height: 300px;
+
+    & > img {
+        display: inline-block;
+        width: 100%;
+    }
 `
 const MenuH3 = Styled.h3`
     font-size:42px;
@@ -82,9 +84,8 @@ const SellBtn = Styled.button`
     }
 `
 const Line = Styled.div`
-    background:#bbb;
-    margin-top:20px;
-    height:1px;
-    margin-bottom:50px;
-    box-shadow:3px 3px 10px #bbb;
+    background: #e8e8e9;
+    margin-top: 20px;
+    height: 2px;
+    margin-bottom: 50px;
 `
