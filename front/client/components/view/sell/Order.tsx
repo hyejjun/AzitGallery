@@ -59,7 +59,7 @@ const Order = (props) => {
     }
 
     if(ch==true){
-        alert('EPI로 거래되셨습니다.')
+        alert('거래가 체결되었습니다.')
         window.location.href = `/ship/${orderNum}`
     }
 
@@ -111,7 +111,7 @@ const Order = (props) => {
                         </div>
                         <div className="orderTotalPrice">
                             <div>Total</div>
-                            <div>{props.price}{props.currency}</div>
+                            <div>{props.price*selected.qty}{props.currency}</div>
                         </div>
                         <div className="orderAgreement">
                             {/* <input type="checkbox" id="agreementBuy" onChange={e=>{checkAgreement(e.target.checked)}}/> */}
