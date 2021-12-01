@@ -19,6 +19,7 @@ export interface ShipState {
         title:string
     }];
     itemcode:string;
+    itemimg:number
     
 }
 
@@ -39,7 +40,8 @@ export const initialState: ShipState = {
         username:'미희',
         title:'따뜻한 겨울 패딩'
     }],
-    itemcode:''
+    itemcode:'',
+    itemimg:0
 };
 
 /* 구매자 :  배송 정보 입력하기 */

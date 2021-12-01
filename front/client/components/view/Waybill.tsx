@@ -2,10 +2,15 @@ import Styled from 'styled-components'
 import ModalForm from '../../components/common/ModalForm'
 import ModalBackground from '../../components/common/ModalBackground'
 import useInput from '../../hooks/useInput'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import { useSelector } from 'react-redux'
+import { RootState } from '../../reducers';
 
 const Waybill = (props) => {
-    const { setClose, deliveryCompnay, deliveryNum, onChangeDeliveryNum } = props
+    const code = useSelector((state:RootState)=>state.ship)
+    const { setClose, deliveryCompnay, deliveryNum, onChangeDeliveryNum, img } = props
+
+
 
     return (
         <>
@@ -15,7 +20,7 @@ const Waybill = (props) => {
                         <ul>
                             <li className="productName">상품명</li>
                             <li className="productPic">
-                                <img alt="상품사진" />
+                                <img alt="상품사진" src={props.img} />
                             </li>
                             <li className="company">택배사</li>
                             <li className="companySelect">

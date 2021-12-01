@@ -56,6 +56,7 @@ const Selled = () => {
     }
     const setopenship = (e) => {
         code.itemcode = e.target.id
+        code.itemimg = e.target.className
         setDeliveryForm(prev => !prev)
     }
 
@@ -77,7 +78,7 @@ const Selled = () => {
                     ? ele.item_delivery_state=='배송준비중'
                         ?
                         <Alert severity="error" >
-                            <a id={ele.item_code} onClick={(e)=>{setopenship(e)}}>송장등록필요!</a>
+                            <a id={ele.item_code} className={ele.main_img_link} onClick={(e)=>{setopenship(e)}}>송장등록필요!</a>
                         </Alert>
                         :
                         <Alert severity="success">
@@ -125,7 +126,7 @@ const Selled = () => {
         <div>송장을 등록해주세요.</div>
             {
                 deliveryForm
-                    ? <Waybill setClose={setDelivery} deliveryCompnay={deliveryCompnay} deliveryNum={deliveryNum} onChangeDeliveryNum={onChangeDeliveryNum} />
+                    ? <Waybill img={code.itemimg} setClose={setDelivery} deliveryCompnay={deliveryCompnay} deliveryNum={deliveryNum} onChangeDeliveryNum={onChangeDeliveryNum} />
                     : <></>
             }
 
