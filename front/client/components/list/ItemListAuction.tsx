@@ -72,7 +72,7 @@ const ItemListAuction = (props) => {
                     </div>
                 </div>
             </NFTComponent>
-            <MoreNFT >more</MoreNFT>
+            <MoreNFT >더보기</MoreNFT>
 
         </>
     )

@@ -227,7 +227,7 @@ const Menu1 = Styled.div`
     font-size:20px;
     cursor:pointer;
     &:hover{
-        color:#055fec;
+        color:#2d3741;
     }
 `
 

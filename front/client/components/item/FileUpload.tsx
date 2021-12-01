@@ -105,7 +105,7 @@ const UploadWrapper = Styled.div`
 `
 
 const BlueButton = Styled.label`   
-    background-color: #055fec;
+    background-color: #2d3741;
     border-radius:5px;
     width: 100px;
     height: 40px;

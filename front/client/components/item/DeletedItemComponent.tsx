@@ -38,7 +38,7 @@ const DescText = Styled.div`
 `
 
 const BlueButton = Styled.button`   
-    background-color: #055fec;
+    background-color: #2d3741;
     border-radius:5px;
     width: 120px;
     height: 60px;

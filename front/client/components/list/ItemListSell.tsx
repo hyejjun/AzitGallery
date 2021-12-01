@@ -80,7 +80,7 @@ const ItemListSell = (props) => {
                     </div>
                 </div>
             </NFTComponent>
-            <MoreNFT onClick={()=>{moreClick()}}>more</MoreNFT>
+            <MoreNFT onClick={()=>{moreClick()}}>더보기</MoreNFT>
 
         </>
     )
