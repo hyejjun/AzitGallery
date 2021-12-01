@@ -57,20 +57,24 @@ const Own = () => {
                             <Alert severity="success">배송 완료!</Alert>
                         :
                         <Alert severity="success">배송 완료!</Alert>
+                        
                     :  
-                        ele.final_order_state=='배송정보필요'|| ele.final_order_state=='배송준비중'
+                        ele.final_order_state=='배송정보필요'
+                        
                         ? 
-                            <Alert severity="error">
-                                <a className={ele.item_code} id={`${ele.title}/${ele.size}/${ele.color}`} onClick={(e)=>{insertshipinfoBtn(e)}}>배송정보입력!</a>
-                            </Alert>
+                             <Alert severity="error">
+                                 <a className={ele.item_code} id={`${ele.title}/${ele.size}/${ele.color}`} onClick={(e)=>{insertshipinfoBtn(e)}}>배송정보입력!</a>
+                             </Alert>
                         : 
-                            ele.delivery_state='배송준비중'
+                            ele.delivery_state=='배송준비중'
                             ?
                             <Alert severity="error">
-                                <a className={ele.item_code} id={`${ele.title}/${ele.size}/${ele.color}`} >배송 완료 확인 중!</a>
+                                <a className={ele.item_code} id={`${ele.title}/${ele.size}/${ele.color}`} onClick={(e)=>{chDeliveryBtn(e)}} >배송 완료 요청</a>
                             </Alert>
                             :
                             <Alert severity="success">배송 완료!</Alert>
+
+                        
                 }
                 <NFT>
                     <NFTImg>
@@ -103,24 +107,29 @@ const Own = () => {
                                             ? 
                                                 'nft발행요청'
                                             : 
-                                                'nft발행완료'
+                                                'nft발행요청'
                                         :
                                             'nft발행완료'
                                     : 
-                                    ele.final_order_state=='배송정보필요' || ele.final_order_state=='배송준비중'
-                                        ? 
-                                            'nft발행요청'
-                                        :
-                                            ele.delivery_state=='배송준비중'
-                                            ?
-                                                'nft발행요청'
-                                            :   
-                                                'nft발행완료'
+                                        ele.final_order_state=='배송정보필요'
+                                            ? 
+                                                ele.delivery_state=='배송준비중'
+                                                ?
+                                                    'nft발행요청'
+                                                :   
+                                                    'nft발행요청'
+                                            :
+                                                ele.final_order_state=='배송완료'
+                                                ?
+                                                    'nft발행완료'
+                                                :
+                                                    'nft발행요청'
+                                        
                                 }
                             </NFTSubject>
                         </NFTDeclaration>
                     </NFTOne>
-                </NFT>
+                </NFT>  
             </NFTFourList>
         </React.Fragment>
     );

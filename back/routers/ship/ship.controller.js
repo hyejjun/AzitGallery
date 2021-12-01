@@ -36,9 +36,9 @@ let get_shipinfo = async (req,res)=>{
                     item_code:`${itemcode.item_code}00-${nftdata.id}`
                 }
             })
-
+            const price2 = parseFloat(orderdetail.price)
             const insertorders = await Orders.update({
-                total_price:orderdetail.price,
+                total_price:price2,
                 receiver:receiver,
                 receiver_address:receiver_address,
                 receiver_contact:phoneNum,
@@ -59,6 +59,7 @@ let get_shipinfo = async (req,res)=>{
             let updatedRes
             for(i=0;i<orderRecord.length;i++){
                 total_cost = total_cost + orderRecord[i].dataValues.price
+                total_coat = parseFloat(total_cost)
                 updatedRes = await Orders.update({
                     total_price:total_cost,
                     order_date:null,
@@ -99,9 +100,12 @@ let order_detail_post = async (req,res) => {
 
 
 let get_delivery_info = async (req,res)=>{
+    console.log(req.body)
     let data
     try{
+        
         if(req.body.itemcode){
+            
             let { selectDeliveryCompany,deliveryNum,itemcode } = req.body
             let orderidx = await OrderDetail.findOne({
                 where:{
@@ -121,57 +125,106 @@ let get_delivery_info = async (req,res)=>{
                 result_msg:'OK',
                 result:shipinsert
             }
-    
         }else if(req.body.params){
             const {useridx,params} = req.body
-            let nftid = (params.substring(1,2))
-            const nftdata = await Nft.findOne({
-                where:{
-                    id:nftid
+            let nftid
+            if(params[0]=='a'){
+                nftid =  (params.substring(1))
+                const nftdata = await Nft.findOne({
+                    where:{
+                        id:nftid
+                    }
+                })
+                console.log(nftdata.id,'iddddddddddddddddd')
+                const itemcode = await ItemDetail.findOne({
+                    where:{
+                        nft_idx:nftdata.nft_img_idx
+                    }
+                })
+                let itemcodereal= itemcode.item_code.substring(0,16)
+                console.log(itemcodereal)
+               
+                const orderdetail = await OrderDetail.findOne({
+                    where:{
+                        item_code:`${itemcode.item_code}-${nftdata.id}`
+                    }
+                })
+                console.log(itemcode.item_code)
+                console.log(orderdetail,'orderdetail')
+                const item_info = await ItemInfo.findOne({
+                    where:{
+                        item_id:orderdetail.item_id
+                    }
+                })
+                const orders = await Orders.findOne({
+                    where:{
+                        order_num:orderdetail.order_num
+                    }
+                })
+                const user = await User.findOne({
+                    where:{
+                        user_idx:orders.buyer
+                    }
+                })
+                let result = [{
+                    total_price:orders.total_price,
+                    order_date:orders.order_date,
+                    buyer:orders.buyer,
+                    receiver:orders.receiver,
+                    receiver_address:orders.receiver_address,
+                    receiver_contact:orders.receiver_contact,
+                    order_num:orders.order_num,
+                    final_order_state:orders.final_order_state,
+                    memo:orders.memo,
+                    username:user.nick_name,
+                    title:item_info.title
+                }]
+                data = {
+                    result_msg:'OK',
+                    result:result,
                 }
-            })
-            const itemcode = await ItemDetail.findOne({
-                where:{
-                    nft_idx:nftdata.nft_img_idx
+            }else{
+                nftid = (params.substring(0))
+                const orderdetail = await OrderDetail.findOne({
+                    where:{
+                        order_num:nftid
+                    }
+                })
+                const orders = await Orders.findOne({
+                    where:{
+                        order_num:nftid
+                    }
+                })
+                const user = await User.findOne({
+                    where:{
+                        user_idx:orders.buyer
+                    }
+                })
+                const item_info = await ItemInfo.findOne({
+                    where:{
+                        item_id:orderdetail.item_id
+                    }
+                })
+                let result = [{
+                    total_price:orders.total_price,
+                    order_date:orders.order_date,
+                    buyer:orders.buyer,
+                    receiver:orders.receiver,
+                    receiver_address:orders.receiver_address,
+                    receiver_contact:orders.receiver_contact,
+                    order_num:orders.order_num,
+                    final_order_state:orders.final_order_state,
+                    memo:orders.memo,
+                    username:user.nick_name,
+                    title:item_info.title
+                }]
+                data = {
+                    result_msg:'OK',
+                    result:result,
                 }
-            })
-            const orderdetail = await OrderDetail.findOne({
-                where:{
-                    item_code:`${itemcode.item_code}-${nftdata.id}`
-                }
-            })
-            const item_info = await ItemInfo.findOne({
-                where:{
-                    item_id:orderdetail.item_id
-                }
-            })
-            const orders = await Orders.findOne({
-                where:{
-                    order_num:orderdetail.order_num
-                }
-            })
-            const user = await User.findOne({
-                where:{
-                    user_idx:orders.buyer
-                }
-            })
-            let result = [{
-                total_price:orders.total_price,
-                order_date:orders.order_date,
-                buyer:orders.buyer,
-                receiver:orders.receiver,
-                receiver_address:orders.receiver_address,
-                receiver_contact:orders.receiver_contact,
-                order_num:orders.order_num,
-                final_order_state:orders.final_order_state,
-                memo:orders.memo,
-                username:user.nick_name,
-                title:item_info.title
-            }]
-            data = {
-                result_msg:'OK',
-                result:result,
+
             }
+
         }
     }catch(e){
         data = {

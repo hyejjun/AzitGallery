@@ -38,18 +38,17 @@ const Order = (props) => {
         alert('동의란을 확인해주세요')
     }
     const Klaytn = () => {
-
+        console.log(finalprice,'finalpriceeeeeeeeeeeeeee')
         window.caver.klay
         .sendTransaction({
           type: 'VALUE_TRANSFER',
           from: window.klaytn.selectedAddress,
           to: '0xB0C467eF1B902d0C852C500334ef0C47d6bbDFAE',
-          value: window.caver.utils.toPeb(finalprice, 'KLAY'),
+          value: window.caver.utils.toPeb(`${finalprice}`, 'KLAY'),
           gas: 8000000
         })
         .once('transactionHash', transactionHash => {
-          console.log('txHash', transactionHash)
-         
+          console.log('txHash', transactionHash)         
         })
         .once('receipt', receipt => {
           console.log('receipt', receipt)

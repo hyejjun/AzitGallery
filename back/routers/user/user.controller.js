@@ -286,6 +286,7 @@ let ship_update = async (req, res) => {
                 }
             })
         }
+        console.log('나와라')
 
         data = {
             result_msg: 'OK',

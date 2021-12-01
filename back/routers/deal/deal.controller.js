@@ -10,14 +10,20 @@ let deal_post = async (req,res) => {
         let {item_id,price,currency,userAddress,userIdx,creator} = req.body
         let data = {}
         let orderdata = []
+        let buyerid = await ItemInfo.findOne({
+            where:{
+                item_id:item_id
+            }
+        })
         let result4 = await Orders.create({
             total_price:price,
             order_date:null,
             final_order_state:'배송준비중',
             buyer:userIdx,
             order_num:null,
-            user_idx:userIdx
+            user_idx:buyerid.creator
         })
+        
         
         for(let i=1; i<=qty; i++){
             let result1 = await ItemDetail.findOne({where:{item_info_idx:item_id,size:size,color:color}})

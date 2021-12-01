@@ -140,7 +140,39 @@ let query_item_post =  async (req,res) => {
 
 // 판매자 구매자 뷰 나누기
 let mynft_view = async(req,res) => {
+    let data
+    try{
+        let key = Object.keys(req.body)
+        let keyObject = JSON.parse(key)
+        let user = await User.findOne({
+            where:{
+                kaikas_address:`${keyObject}`
+            }
+        })
+        let seller = await Seller.findOne({
+            where:{
+                user_idx:user.user_idx
 
+            }
+        })
+        if(seller.admin_approval==3){
+            data = {
+                result_msg:'OK',
+                flag:true
+            }
+        }else if(seller.length==0){
+            data = {
+                result_msg:'OK',
+                flag:false
+            }
+        }
+    }catch{
+        data = {
+            result_msg:'Fail'
+        }
+    }
+    res.json(data)
+/*
     try{
         let key = Object.keys(req.body)
         let keyObject = JSON.parse(key)
@@ -174,6 +206,7 @@ let mynft_view = async(req,res) => {
         }
         res.json(data)
     }   
+    */
 }
 
 
@@ -184,13 +217,14 @@ let my_nft_all_post = async (req,res) => {
     let user_idx = await User.findOne({where:{kaikas_address:keyObject}})
     user_idx = user_idx.dataValues.user_idx
     let query = `
-    select c.sell_type,a.order_num,b.item_code, b.item_id, b.price,a.final_order_state, 
+    select c.sell_type,a.order_num,b.item_code, b.item_id, b.price,a.final_order_state,
     a.order_date, a.memo, c.main_img_link, d.nick_name, b.size, b.color, c.title, b.id, b.delivery_state
     from orders as a join order_detail as b 
     on a.order_num=b.order_num join item_info as c 
     on b.item_id=c.item_id join seller as d 
     on c.creator=d.user_idx where a.buyer="${user_idx}";
     ` 
+
     queryset(req,res,query)   
 }
 
@@ -211,7 +245,7 @@ let sold_nft_post = async (req,res) => {
     on a.item_id=b.item_id join seller as c 
     on a.shipper_idx=c.user_idx join orders as d 
     on a.order_num=d.order_num join ship_info as e 
-    on a.id=e.order_detail_num where a.shipper_idx=${user_idx};
+    on a.id=e.order_detail_num where d.user_idx=${user_idx};
     `
     queryset(req,res,query)
 }
@@ -251,6 +285,7 @@ let queryset = (req,res,query) => {
                     result_msg:'OK',
                     result
                 }
+                console.log(result)
                 
                 res.json(data)
             }

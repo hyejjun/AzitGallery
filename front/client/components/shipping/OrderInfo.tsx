@@ -7,10 +7,8 @@ import { RootState } from "../../reducers"
 const OrderInfo = () => {
     const User = useSelector((state:RootState) => state.user);
     const Ship = useSelector((state:RootState) => state.ship);
-    const deliveryinfo = useSelector((state:RootState) => state.ship.DeliveryArr)
-    console.log(deliveryinfo)
-    
-    
+    const deliveryinfo = useSelector((state:RootState) => state.ship.DeliveryArr)  
+
     const dispatch = useDispatch()
 
     
@@ -22,6 +20,8 @@ const OrderInfo = () => {
 
     useEffect(()=>{ 
         if(params[0]=='a'){
+            dispatch(delivery_customer_REQUEST(data))
+        }else{
             dispatch(delivery_customer_REQUEST(data))
         }
     },[linkdata])

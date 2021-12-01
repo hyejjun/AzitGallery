@@ -10,7 +10,8 @@ export interface ViewState {
     error: string;
     UserAddress: string;
     verify: number;
-    nick_name, title, description,size,color,price,bid_price, currency, left_time, kr_end_date: string;
+    nick_name, title, description,size,color,bid_price, currency, left_time, kr_end_date: string;
+    price:number,
     item_img_link : Array<string>,
     directView: {};
     directIdx:number
@@ -38,7 +39,7 @@ export const initialState: ViewState = {
     description : '',
     size : '',
     color : '',
-    price : '',
+    price : 0,
     bid_price : '',
     currency : '',
     left_time : '',

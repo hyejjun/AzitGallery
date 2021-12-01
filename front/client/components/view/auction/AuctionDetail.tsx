@@ -66,7 +66,6 @@ const AuctionDetail = (props) => {
                     dispatch(Auction_Price_REQUEST(data))
                     alert('입찰 되셨습니다!')
                     setOpenAuction(prev => !prev)
-
                 })
                 .once('receipt', receipt => {
                     // console.log('receipt', receipt)

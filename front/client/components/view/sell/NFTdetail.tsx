@@ -59,6 +59,8 @@ const NFTdetail = ({ children }) => {
     const orderInfo = useSelector((state: RootState) => state.deal.orderInfo)
     const User = useSelector((state: RootState) => state.user)
 
+    
+
     const colorArr = color.split(",")
     //const sizeArr = size.split(",")
 
