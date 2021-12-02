@@ -54,7 +54,7 @@ const ItemListSell = (props) => {
                         <NFTartist>{ele.nick_name}</NFTartist>
                         </NFTOneList>
                         <NFTDeclaration>
-                            <NFTSubject>* * *</NFTSubject>
+                            <NFTSubject></NFTSubject>
                         </NFTDeclaration>
                     </NFTOne>
 

@@ -178,6 +178,7 @@ const UserWrapper = Styled.div`
     }
     div>span>ul>li:nth-child(5){
         margin-top:40px;
+        float: right;
     }
     div>span>ul>li:nth-child(5)>button{
         box-sizing:border-box;

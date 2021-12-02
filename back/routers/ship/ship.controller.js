@@ -4,7 +4,8 @@ const { update, findAll, findOne } = require('../../models/auction_history')
 /* 배송 정보 */
 
 let get_shipinfo = async (req,res)=>{
-    console.log('aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa')
+    console.log('옥션 정보 입력 ======')
+    console.log(req.body);
     let data
     try{        
         const {
@@ -27,18 +28,21 @@ let get_shipinfo = async (req,res)=>{
                     id:nftid
                 }
             })
-            console.log(nftid,'nftiddd')
+            console.log(nftid,'첫번째 === ')
             const itemcode = await ItemDetail.findOne({
                 where:{
                     nft_idx:nftdata.nft_img_idx
                 }
             })
             console.log(nftdata.nft_img_idx,'imgidsxxx')
+            console.log("2번쩨 ==== ", itemcode);
+            console.log(`${itemcode.item_code}-${nftdata.id}`);
             const orderdetail = await OrderDetail.findOne({
                 where:{
                     item_code:`${itemcode.item_code}-${nftdata.id}`
                 }
             })
+            console.log("세번째 ---- ",orderdetail);
             const price2 = parseFloat(orderdetail.price)
             const insertorders = await Orders.update({
                 total_price:price2,

@@ -2,6 +2,19 @@
 /* 서영 */
  insert into user (nick_name, kaikas_address, contact, address, join_date, email) values ('epiteom', '0x7a237f4050ae92ced73576f4585b04c05178bdd3', 01066182614, '주소', now(), 'eptieom@gmail.com');
 
+
+insert into category (main_category_code, category_name) values (01, '상의');
+insert into category (main_category_code, category_name) values (02, '하의');
+insert into category (main_category_code, category_name) values (03, '잡화');
+
+insert into sub_category (main_category_idx, item_code, sub_category_code, sub_category_name) values (01, 101, 1, '스웨터');
+insert into sub_category (main_category_idx, item_code, sub_category_code, sub_category_name) values (01, 102, 2, '티셔츠');
+insert into sub_category (main_category_idx, item_code, sub_category_code, sub_category_name) values (01, 103, 3, '패딩');
+insert into sub_category (main_category_idx, item_code, sub_category_code, sub_category_name) values (01, 104, 4, '아우터');
+insert into sub_category (main_category_idx, item_code, sub_category_code, sub_category_name) values (02, 201, 1, '바지');
+insert into sub_category (main_category_idx, item_code, sub_category_code, sub_category_name) values (02, 202, 2, '치마');
+insert into sub_category (main_category_idx, item_code, sub_category_code, sub_category_name) values (03, 301, 1, '악세서리');
+insert into sub_category (main_category_idx, item_code, sub_category_code, sub_category_name) values (03, 302, 2, '신발');
  
 
 insert into auction (auction_idx) value(21);

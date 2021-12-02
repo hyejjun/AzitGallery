@@ -36,6 +36,9 @@ const ItemList = () => {
     return(
         <>
             <MyNft/>
+            <MainExplanation>
+                당신만을 위한 단 하나의 NFT
+            </MainExplanation>
             <MenuBar>
                 <Menu>
                     <SellTab flag={sellState} onClick={()=>{setSellState(false)}}>판매</SellTab>
@@ -62,6 +65,13 @@ const ItemList = () => {
 
 export default ItemList
 
+const MainExplanation = Styled.span`
+    font-size: 22px;
+    font-weight: bold;
+    color: #000000b3;
+    background: #e6e6fa80;
+
+`
 
 const Menu = Styled.li`
     color:#2d3741;
@@ -81,6 +91,7 @@ const Menu = Styled.li`
 const MenuBar = Styled.ul`
     clear: both;
     height: 125px;
+    float : right;
 `
 
 const SellTab = Styled.div<{flag:boolean}>`

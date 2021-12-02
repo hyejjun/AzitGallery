@@ -60,7 +60,8 @@ const NFT = Styled.li`
     box-sizing:border-box;
     padding:19px;
     margin-bottom:20px;
-    &:hover{box-shadow:3px 3px 10px #bbb;}
+    /* &:hover{box-shadow:3px 3px 10px #bbb;} */
+    &:hover{box-shadow:5px 5px 5px 5px #bbb;}
 `
 const NFTImg = Styled.div`
     width: 205px;

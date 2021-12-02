@@ -32,22 +32,14 @@ const SellType = ({ ifSell, extension, sellToggle, extensionToggle, handleTxtCha
                 ?
                 <SellAucWrapper>
                     <SmallerTitle>판매 가격</SmallerTitle>
-                    <input type="text" placeholder="판매가를 입력하세요." onChange={(e) => handleTxtChange(e, "price")} />
-                    {/* <select onChange = {handleCurrency}>
-                            <option value = "won">원화</option>
-                            <option value = "ether">이더리움</option>
-                        </select> */}
+                    <input className="startPrice" type="text" placeholder="판매가를 입력하세요." onChange={(e) => handleTxtChange(e, "price")} />
                     <span className="klay">KLAY</span>
                 </SellAucWrapper>
                 :
                 <>
                     <SellAucWrapper>
                         <SmallerTitle>경매 시작 가격</SmallerTitle>
-                        <input type="text" placeholder="경매 시작가를 입력하세요." onChange={(e) => handleTxtChange(e, "aucPrice")} />
-                        {/* <select onChange = {handleCurrency}>
-                            <option value = "won">원화</option>
-                            <option value = "ether">이더리움</option>
-                        </select> */}
+                        <input className="startPrice" type="text" placeholder="경매 시작가를 입력하세요." onChange={(e) => handleTxtChange(e, "aucPrice")} />
                         <span className="klay">KLAY</span>
                         <SmallerTitle>경매 종료 시간</SmallerTitle>
                         <input type="datetime-local" onChange={(e) => handleTxtChange(e, "aucTime")} className="dateTimeLocal" />
@@ -109,6 +101,22 @@ const SellAucWrapper = Styled.div`
         margin-bottom: 20px;
         width:430px;
     }
+
+    /* .startPrice{
+        margin-top: 20px;
+        margin-right: 20px;
+        display: block;
+        width: 400px;
+        height: 30px;
+        font-size: 23px;
+        width: 400px;
+        float: left;
+        height: 65px;
+        border: 1px solid #70767c9c;
+        border-radius: 15px;
+        padding: 10px;
+        box-sizing: border-box;
+    } */
 
     .klay {
         margin-top: 33px;
