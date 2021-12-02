@@ -41,6 +41,11 @@ const Own = () => {
         window.location.href=`/ship/a${linkdata}`
     }
 
+    const showNftBtn = (e) => {
+        console.log(e.target.className,'==========================')
+        window.open(`https://baobab.scope.klaytn.com/account/${e.target.className}?tabId=txList`)
+    }
+
     const nameList: JSX.Element[] = mynftList.map((ele) =>
         <React.Fragment key={ele.id}>
             <NFTFourList>
@@ -54,9 +59,9 @@ const Own = () => {
                             <a className={`${ele.item_code}`} id={`${ele.title}/${ele.size}/${ele.color}`} onClick={(e)=>{chDeliveryBtn(e)}} >배송 완료 요청</a>
                             </Alert>
                             :
-                            <Alert severity="success">배송 완료!</Alert>
+                            <Alert severity="success"><a className={ele.nft} onClick={(e)=>{showNftBtn(e)}}>NFT확인!</a></Alert>
                         :
-                        <Alert severity="success">배송 완료!</Alert>
+                        <Alert severity="success"><a className={ele.nft} onClick={(e)=>{showNftBtn(e)}}>NFT확인!</a></Alert>
                         
                     :  
                         ele.final_order_state=='배송정보필요'
@@ -72,7 +77,7 @@ const Own = () => {
                                 <a className={`${ele.item_code}`} id={`${ele.title}/${ele.size}/${ele.color}`} onClick={(e)=>{chDeliveryBtn(e)}} >배송 완료 요청</a>
                             </Alert>
                             :
-                            <Alert severity="success">배송 완료!</Alert>
+                            <Alert severity="success"><a className={ele.nft} onClick={(e)=>{showNftBtn(e)}}>NFT확인!</a></Alert>
 
                         
                 }

@@ -216,18 +216,28 @@ let my_nft_all_post = async (req,res) => {
     let keyObject = JSON.parse(key)
     let user_idx = await User.findOne({where:{kaikas_address:keyObject}})
     user_idx = user_idx.dataValues.user_idx
-    let query = `
-    select c.sell_type,a.order_num,b.item_code, b.item_id, b.price,a.final_order_state,
+
+    let query =
+    `
+    select c.sell_type,a.order_num,b.item_code, b.item_id, b.price,a.final_order_state,e.nft,
     a.order_date, a.memo, c.main_img_link, d.nick_name, b.size, b.color, c.title, b.id, b.delivery_state
     from orders as a join order_detail as b 
     on a.order_num=b.order_num join item_info as c 
     on b.item_id=c.item_id join user as d 
-    on c.creator=d.user_idx where a.buyer="${user_idx}";
-    ` 
+    on c.creator=d.user_idx join nft as e on e.id=(substring(b.item_code,20)) where a.buyer="${user_idx}";
+    `
 
     queryset(req,res,query)   
 }
 
+// let query = `
+// select c.sell_type,a.order_num,b.item_code, b.item_id, b.price,a.final_order_state,
+// a.order_date, a.memo, c.main_img_link, d.nick_name, b.size, b.color, c.title, b.id, b.delivery_state
+// from orders as a join order_detail as b 
+// on a.order_num=b.order_num join item_info as c 
+// on b.item_id=c.item_id join user as d 
+// on c.creator=d.user_idx where a.buyer="${user_idx}";
+// ` 
 
 
 // 판매된 nft
