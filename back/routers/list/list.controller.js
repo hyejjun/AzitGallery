@@ -247,7 +247,7 @@ let sold_nft_post = async (req,res) => {
     on a.shipper_idx=c.user_idx join orders as d 
     on a.order_num=d.order_num join ship_info as e 
     on a.id=e.order_detail_num 
-    where c.user_idx=${user_idx};
+    where b.creator=${user_idx};
     `
     queryset(req,res,query)
 }
