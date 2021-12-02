@@ -221,12 +221,13 @@ let my_nft_all_post = async (req,res) => {
     a.order_date, a.memo, c.main_img_link, d.nick_name, b.size, b.color, c.title, b.id, b.delivery_state
     from orders as a join order_detail as b 
     on a.order_num=b.order_num join item_info as c 
-    on b.item_id=c.item_id join seller as d 
+    on b.item_id=c.item_id join user as d 
     on c.creator=d.user_idx where a.buyer="${user_idx}";
     ` 
 
     queryset(req,res,query)   
 }
+
 
 
 // 판매된 nft
@@ -246,7 +247,7 @@ let sold_nft_post = async (req,res) => {
     on a.shipper_idx=c.user_idx join orders as d 
     on a.order_num=d.order_num join ship_info as e 
     on a.id=e.order_detail_num 
-    where c.user_idx=${user_idx};
+    where b.creator=${user_idx};
     `
     queryset(req,res,query)
 }
@@ -286,7 +287,6 @@ let queryset = (req,res,query) => {
                     result_msg:'OK',
                     result
                 }
-                console.log(result)
                 
                 res.json(data)
             }

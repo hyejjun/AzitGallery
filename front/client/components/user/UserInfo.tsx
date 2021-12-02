@@ -112,9 +112,8 @@ const UserWrapper = Styled.div`
     div{
        width:100%;
        height:480px;
-       padding-top:40px;
+       padding-top:20px;
        align-items: stretch;
-       margin-left:-60px;
     }
     div>p:nth-child(1){
         font-size:35px;
@@ -128,7 +127,7 @@ const UserWrapper = Styled.div`
         float:left;
         margin-top:8px;
         margin-right:120px;
-        margin-bottom:300px;
+        margin-bottom:200px;
         line-height:center;
     }
     div>p:nth-child(2)>svg{
@@ -138,7 +137,7 @@ const UserWrapper = Styled.div`
         margin-left:15px;
     }
     li{
-        margin-bottom:27px;
+        margin-bottom:15px;
     }
     div>span>ul>li>p:nth-child(1){
         line-height:28px;
