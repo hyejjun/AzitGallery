@@ -76,11 +76,11 @@ export default SellType
 const RadioWrapper = Styled.div`
     margin-top: 10px;
     input{
-        font-size: 25px;
+        font-size: 23px;
         margin-right: 10px;
     }
     label{
-        font-size: 25px;
+        font-size: 23px;
         margin-right: 10px;
     }
 `
@@ -93,7 +93,7 @@ const SellAucWrapper = Styled.div`
         display: block;
         width: 400px;
         height: 30px;
-        font-size: 25px;
+        font-size: 23px;
         width:400px;
         float: left;
     }
@@ -102,7 +102,7 @@ const SellAucWrapper = Styled.div`
         display: block;
         width: 270px;
         height: 34px;
-        font-size: 25px;
+        font-size: 23px;
     }
     .dateTimeLocal{
         margin-right: 400px;
@@ -112,8 +112,8 @@ const SellAucWrapper = Styled.div`
 
     .klay {
         margin-top: 33px;
-    margin-right: 20px;
-    display: inline-block;
+        margin-right: 20px;
+        display: inline-block;
     }
 `
 
@@ -128,7 +128,7 @@ const Desc = Styled.div`
 
 const SmallTitle = Styled.h4`
     margin-top: 30px;
-    font-size:24px;
+    font-size:20px;
     margin-bottom:20px;
 `
 

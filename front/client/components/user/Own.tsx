@@ -192,7 +192,7 @@ const NFTFourList = Styled.ul`
     }
 `
 const NFT = Styled.li`
-    border: 1px solid #bbb;
+    border: 2px solid #e8e8e9;
     border-radius:7px;
     height:360px;
     width:243px;

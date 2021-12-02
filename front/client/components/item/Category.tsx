@@ -71,13 +71,13 @@ const SectionWrapper = Styled.div`
         display: block;
         width: 400px;
         height: 34px;
-        font-size: 25px;
+        font-size: 20px;
     }
 `
 
 const SmallTitle = Styled.h4`
     margin-top: 30px;
-    font-size:24px;
+    font-size:20px;
     margin-bottom:20px;
     display: block;
 `

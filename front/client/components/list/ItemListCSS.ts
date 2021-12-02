@@ -36,7 +36,8 @@ const SelectOption = Styled.option`
 `
 const NFTComponent = Styled.div`
     clear:both;
-    background:#FAFAFA;
+    /* background:#FAFAFA; */
+    background: white;
     box-sizing:border-box;
     display : flex;
     gap: 10%;
@@ -52,7 +53,7 @@ const NFTFourList = Styled.ul`
     margin: 0 15px;
 `
 const NFT = Styled.li`
-    border: 1px solid #bbb;
+    border: 2px solid #e8e8e9;
     border-radius:7px;
     height:360px;
     width:243px;
@@ -62,15 +63,13 @@ const NFT = Styled.li`
     &:hover{box-shadow:3px 3px 10px #bbb;}
 `
 const NFTImg = Styled.div`
-    background:#bbb;
-    width:200px;
-    height:200px;
+    width: 205px;
+    height: 240px;
     cursor:pointer;
 `
 const IMG = Styled.img`
-    background:#bbb;
-    width:200px;
-    height:200px;
+    width: 205px;
+    height: 240px;
     cursor:pointer;
 `
 const NFTOne = Styled.ul`
@@ -120,7 +119,7 @@ const NFTartist = Styled.div`
 
 `
 const Line = Styled.div`
-    background:#bbb;
+    background:#e8e8e9;
     margin-top:20px;
     height:1px;
 `
