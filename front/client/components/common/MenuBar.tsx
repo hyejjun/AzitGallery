@@ -38,9 +38,16 @@ const MenuBar = () => {
 
         dispatch(AdminApprovalCheck_REQUEST(User.NickName))
 
-        if (User.adminApproval !== 3 || User.sellerBool !== true) {
+        console.log(User.adminApproval, User.sellerBool);
+
+        if (User.adminApproval !== 3) {
             alert('판매자 인증 완료가 되지 않았습니다.')
         }
+        
+        // if (User.adminApproval !== 3 || User.sellerBool !== true) {
+        //     alert('판매자 인증 완료가 되지 않았습니다.')
+        // }
+
     }
     const requireOpenBtn = () => {
         setFlag(prev => !prev)
@@ -150,7 +157,7 @@ const MenuBar = () => {
                 <span><Link href="/"><a><img src="https://dfassf-bucket-test.s3.ap-northeast-2.amazonaws.com/09ae0de8cad4e723505830df97f35348" /></a></Link></span>
                 <ul>
                     <li><Link href="/"><a>탐색하기</a></Link></li>
-                    {loginState && User.adminApproval === 3 && User.sellerBool ? <LOG onClick={() => createBtn()}><Link href="/item/additem"><a>발행하기</a></Link></LOG> : <LOG onClick={() => createBtn()}>발행하기</LOG>}
+                    {loginState && User.adminApproval === 3 ? <LOG onClick={() => createBtn()}><Link href="/item/additem"><a>발행하기</a></Link></LOG> : <LOG onClick={() => createBtn()}>발행하기</LOG>}
                     {loginState ? <LOG><Link href="/user/mynftall"><a>나의NFT</a></Link></LOG> : <LOG></LOG>}
                     {loginState ? <Link href="/"><LOG onClick={() => { logout() }}>로그아웃</LOG></Link> : <LOG onClick={() => { login() }}>로그인</LOG>}
                 </ul>
@@ -220,7 +227,6 @@ const MenubarWrapper = Styled.div`
     ul>li:nth-child(4):hover{
         background-color:#2e3033b8;
         border: 1px solid #2e3033b8;
-
     }
     a{
         text-decoration:none;
@@ -267,8 +273,8 @@ const MenubarWrapper = Styled.div`
         color:#343a40;
     }
     ul a:hover{
-        color:#1e73fa;
-        border-bottom: 4px solid #1e73fa;
+        color:#2d3741;
+        border-bottom: 4px solid #2d3741;
         padding-bottom:31px;
     }
     ul>li:nth-child(4){
@@ -285,7 +291,7 @@ const MenubarWrapper = Styled.div`
         margin-left:15px;
     }
     ul>li:nth-child(4):hover{
-        background-color:#1e73fa;
+        background-color:#2d3741;
     }
     a{
         text-decoration:none;

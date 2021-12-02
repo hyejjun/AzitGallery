@@ -380,16 +380,18 @@ const Css = Styled.div`
 }
 
 .btnBlur{
-    background-color: #e1f0ff;
-    color: #1e73fa;
+    background-color: #9597981f;
+    color: #2d3741;
     
 }
 
 .signUpBtn{
     color: #fff;
-    background-color: #1e73fa;
-    border-color: #1e73fa; 
+    background-color: #2d3741;
+    border-color: #2d3741; 
     font-weight:bold;
+    cursor : pointer;
+
 }
 
 .cancelBtn{
@@ -401,9 +403,10 @@ const Css = Styled.div`
     font-weight:bold;
     font-size: 1rem;
     margin-right: 8px;
-    color: #1e73fa;
-    background-color: #e1f0ff;
-    height:29px
+    color: #2d3741;
+    background-color: #9597981f;
+    height:29px;
+    cursor : pointer;
 
 } 
 
@@ -411,7 +414,7 @@ const Css = Styled.div`
     display:none;
 }
 .underLine{
-    color:#1e73fa;
+    color:#2d3741;
 }
 
 svg{

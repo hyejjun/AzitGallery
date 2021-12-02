@@ -134,7 +134,7 @@ const EditInfoWrapper = Styled.div`
     }
     div button{
         box-sizing:border-box;
-        border:1px solid #e1f0ff;
+        border:1px solid #9597981f;
         border-radius: .25rem;
         padding: 12px 24px;
         height: 50px;
@@ -145,13 +145,13 @@ const EditInfoWrapper = Styled.div`
         vertical-align: middle;
     }
     div button:nth-child(1){
-        background-color: #e1f0ff;
-        color: #1e73fa;
+        background-color: #9597981f;
+        color: #2d3741;
         cursor : pointer;
     }
     div button:nth-child(2){
-        color: #e1f0ff;
-        background-color: #1e73fa;
+        color: #9597981f;
+        background-color: #2d3741;
         cursor : pointer;
     }
 `
