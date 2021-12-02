@@ -57,14 +57,14 @@ const CancelNftWrapper = Styled.div`
         box-sizing: border-box;
     }
     div:nth-child(3)>span:nth-child(1){
-        background-color: #e1f0ff;
-        color: #1e73fa;
+        background-color: #9597981f;
+        color: #2d3741;
         margin-right:5px;
     }
     div:nth-child(3)>span:nth-child(2){
         color: #fff;
-        background-color: #1e73fa;
-        border-color: #1e73fa;
+        background-color: #2d3741;
+        border-color: #2d3741;
     }
 `
 // 아니요 예버튼 사이즈가 조정되지 않음....

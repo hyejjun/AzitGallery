@@ -277,8 +277,8 @@ const DeliverCh = Styled.div`
         margin-top:10px
         width:200px;
         height:50px;
-        background-color:#e1f0ff;
-        color:#1e73fa;
+        background-color:#9597981f;
+        color:#2d3741;
         font-weight:700;
         font-size:16px;
         border:none;
