@@ -2,7 +2,6 @@
 /* 서영 */
  insert into user (nick_name, kaikas_address, contact, address, join_date, email) values ('epiteom', '0x7a237f4050ae92ced73576f4585b04c05178bdd3', 01066182614, '주소', now(), 'eptieom@gmail.com');
 
-
 insert into category (main_category_code, category_name) values (01, '상의');
 insert into category (main_category_code, category_name) values (02, '하의');
 insert into category (main_category_code, category_name) values (03, '잡화');

@@ -191,6 +191,7 @@ const NFTFourList = Styled.ul`
     list-style:none;
     margin-right:18px;
     margin-left:11px;
+    cursor : pointer;
     
     .delivered_req{
         background :#fdeded;

@@ -69,7 +69,7 @@ const MainExplanation = Styled.span`
     font-size: 22px;
     font-weight: bold;
     color: #000000b3;
-    background: #e6e6fa80;
+    /* background: #e6e6fa80; */
 
 `
 

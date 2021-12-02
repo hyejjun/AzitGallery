@@ -1,5 +1,5 @@
 // const { now } = require('sequelize/types/lib/utils')
-const { AuctionHistory, Auction, ItemInfo, User, BuyerList, Orders, Nft, OrderDetail } = require('../../models')
+const { AuctionHistory, Auction, ItemInfo, User, BuyerList, Orders, Nft, OrderDetail,ShipInfo } = require('../../models')
 
 const { sendKlay } = require('../../klaytn/kip7_deploy')
 const config = require('../../klaytn/config');
@@ -128,6 +128,12 @@ let auction_current_post = async (req, res) => {
                 order_num: result4.dataValues.order_num,
                 item_id: id,
                 delivery_state: '배송준비중'
+            })
+
+            let ship_info = await ShipInfo.create({
+                order_num:result4.dataValues.order_num,
+                item_delivery_state:'배송준비중',
+                order_detail_num:result5.dataValues.id
             })
 
             // 판매자에게 돈 보내기

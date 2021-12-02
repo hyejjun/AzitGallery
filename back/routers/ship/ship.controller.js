@@ -22,21 +22,19 @@ let get_shipinfo = async (req,res)=>{
         } = req.body
         const receiver_address = address+addressDetail
         if((params.substring(0,1))=='a'){
+            console.log(params.substring(1),'substring=================================')
             let nftid = (params.substring(1))
+            console.log(nftid,'nftid=======================')
             const nftdata = await Nft.findOne({
                 where:{
                     id:nftid
                 }
             })
-            console.log(nftid,'첫번째 === ')
             const itemcode = await ItemDetail.findOne({
                 where:{
                     nft_idx:nftdata.nft_img_idx
                 }
             })
-            console.log(nftdata.nft_img_idx,'imgidsxxx')
-            console.log("2번쩨 ==== ", itemcode);
-            console.log(`${itemcode.item_code}-${nftdata.id}`);
             const orderdetail = await OrderDetail.findOne({
                 where:{
                     item_code:`${itemcode.item_code}-${nftdata.id}`
