@@ -70,7 +70,7 @@ const MenuH3 = Styled.h3`
 `
 const SellBtn = Styled.button`
     margin-top:80px;
-    background:#055fec;
+    background:#2d3741;
     color:white;
     width:210px;
     height:70px;
@@ -79,8 +79,8 @@ const SellBtn = Styled.button`
     cursor:pointer;
     &:hover{
         background:white;
-        color:#055fec;
-        border:1px solid #055fec;
+        color:#2d3741;
+        border:1px solid #2d3741;
     }
 `
 const Line = Styled.div`

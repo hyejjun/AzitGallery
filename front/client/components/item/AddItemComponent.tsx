@@ -640,13 +640,13 @@ const BottomBtnWrapper = Styled.div`
     position: relative;
 `
 const LeftBtn = Styled.button`   
-    background-color: #e1f0fe;
+    background-color: #9597981f;
     border-radius:5px;
     width: 100px;
     height: 60px;
     border: none;
     outline: none;
-    color: #055fec;   
+    color: #2d3741;   
     position: absolute;
     left: 43%; 
     top: 50%;
@@ -654,7 +654,7 @@ const LeftBtn = Styled.button`
     cursor: pointer;
 `
 const RightBtn = Styled.button`   
-    background-color: #055fec;
+    background-color: #2d3741;
     border-radius:5px;
     width: 150px;
     height: 60px;

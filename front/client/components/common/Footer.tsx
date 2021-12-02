@@ -9,7 +9,7 @@ const Footer = () => {
         <FooterWrapper>
             <div className="footerInner">
                 <div id="topInFooter">
-                    <span>Azit Gallery</span>
+                    <span>NFT STORE</span>
                     <span>
                         {/* <p><Link href="/"><a>한국어</a></Link></p> */}
                     </span>
@@ -17,7 +17,7 @@ const Footer = () => {
                 <div className="footerDetail">
                     <div>
                         <ul>
-                            <li>Copyright © 2021 GroundX. All rights reserved&nbsp;&nbsp;|</li>
+                            <li>Copyright © 2021 NFT STORE. All rights reserved&nbsp;&nbsp;|</li>
                             <li>&nbsp;&nbsp;개인정보처리방침&nbsp;&nbsp;|</li>
                             <li>&nbsp;&nbsp;서비스 이용 약관&nbsp;&nbsp;|</li>
                             <li>&nbsp;&nbsp;서비스 운영정책</li>
@@ -25,8 +25,8 @@ const Footer = () => {
                     </div>
                     <div>
                         <ul>
-                            <li>그라운드엑스 사업자등록번호 : 356-88-00968  &nbsp;&nbsp;| </li>
-                            <li> &nbsp; &nbsp;대표이사 : 한재선 &nbsp;| </li>
+                            <li>NFT STORE 사업자등록번호 : 111-22-33333  &nbsp;&nbsp;| </li>
+                            <li> &nbsp; &nbsp;대표이사 : 이오엄 &nbsp;| </li>
                             <li>&nbsp;&nbsp;서울특별시 강남구 테헤란로98길(대치동) 11 EG빌딩</li>
                         </ul>
                     </div>
@@ -41,7 +41,7 @@ export default Footer
 const FooterWrapper = Styled.div`
     width:100%;
     height:auto;
-    background-color:#141e28;
+    background-color:#171717f2;
     cursor:pointer;
 
     .footerInner{

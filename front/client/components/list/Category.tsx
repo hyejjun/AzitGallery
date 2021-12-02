@@ -54,7 +54,7 @@ const Category = (props) => {
 
     return(
         <CategoryWrapper>
-            <H3>전체 카테고리</H3>
+            {/* <H3>카테고리</H3> */}
             {CategoryType.map((ele,key)=>
             <React.Fragment key={ele.id}>
                 <Ul>
@@ -80,7 +80,6 @@ export default Category
 const CategoryWrapper = Styled.div`
     width: 20%;
     height: auto;
-    /* background: yellow; */
     display : inline-block;
     @media screen and (max-width : 1095px) {
     display:none;
@@ -93,14 +92,19 @@ const H3 = Styled.div`
 `
 
 const Subject = Styled.li`
-    font-size: 15px;
-    margin-bottom:8px;
-    cursor : pointer;
+    font-size: 19px;
+    margin-bottom: 8px;
+    cursor: pointer;
+    font-weight: bold;
+    height: 45px;
+    border-bottom: 1px solid #e8e8e9;
+    color: #2d3741;
+}
 `
 
 const Line = Styled.li`
     height:2px;
-    background:#bbb;
+    /* background:#bbb; */
     margin-bottom:10px;
 `
 
