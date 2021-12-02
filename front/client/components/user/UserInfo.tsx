@@ -81,7 +81,7 @@ const UserInfo = () => {
                             {
                                 adminApproval !== undefined
                                 ? <></>
-                                : <Button variant="contained" onClick={SellerAdmin}>판매 신청</Button>
+                                : <Button variant="contained" className="sellerReqBtn" onClick={SellerAdmin}>판매 신청</Button>
                             }
                         </li>
                         {/* <li>
@@ -182,7 +182,7 @@ const UserWrapper = Styled.div`
     }
     div>span>ul>li:nth-child(5)>button{
         box-sizing:border-box;
-        /* border:1px solid #e1f0ff; */
+        /* border:1px solid #9597981f; */
         border-radius: .25rem;
         padding: 12px 24px;
         height: 50px;
@@ -191,11 +191,11 @@ const UserWrapper = Styled.div`
         font-weight: 800;
         text-align: center;
         vertical-align: middle;
-        /* background-color: #e1f0ff; */
+        /* background-color: #9597981f; */
     }
     div>span>ul>li:nth-child(5)>button:nth-child(1) a{
-        background-color: #e1f0ff;
-        color: #1e73fa;
+        background-color: #9597981f;
+        color: #2d3741;
         font-weight: 800;
     }
     div>span>ul>li:nth-child(5)>button:nth-child(1) :hover{
@@ -205,9 +205,9 @@ const UserWrapper = Styled.div`
         opacity:1;
     }
     div>span>ul>li:nth-child(5)>button:nth-child(2) {
-        background-color:#1e73fa;
+        background-color:#2d3741;
         opacity:0.9;
-        color: #e1f0ff;
+        color: #9597981f;
     }
 
     div>span>ul>li:nth-child(4) {
@@ -217,6 +217,21 @@ const UserWrapper = Styled.div`
 
     div>span>ul>li>p:nth-child(1)>.rejected{
         color : red;
+    }
+
+    .sellerReq{
+        /* margin-top: 50px;
+        padding-left: 79%; */
+    }
+
+    .sellerReqBtn{
+        background: #2d3741;
+        font-family: 'IBMPlexSansKR-Regular';
+    }
+
+    .sellerReqBtn:hover {
+        background-color:#2e3033b8;
+        
     }
 
 `

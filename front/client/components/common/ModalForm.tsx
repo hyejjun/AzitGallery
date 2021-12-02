@@ -34,12 +34,12 @@ const FormWrapper = Styled.div`
     padding: 30px;
     a{
         text-decoration:none;
-        background-color:#1e73fa;
+        background-color:#2d3741;
         color:white;
     }
 
     .btnLeft{
-          background-color:#e1f0ff;
+          background-color:#9597981f;
           color:black;
     }
     div:nth-child(1) p{
@@ -67,16 +67,17 @@ const FormWrapper = Styled.div`
         margin-left:2px;
         margin-right:2px;
         border-radius:7%;
-        line-height:35px;        
+        line-height:35px;
+        color: #2d3741;        
     }
     div:nth-child(3)>span:nth-child(1){
-        background-color:#e1f0ff;
-        color:#1e73fa;
+        background-color:#9597981f;
+        color:#2d3741;
         font-weight:500;
 
     }
     div:nth-child(3)>span:nth-child(2){
-        background-color:#1e73fa;
+        background-color:#2d3741;
         color:white;
         font-weight:500;
         
