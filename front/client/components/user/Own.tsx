@@ -191,13 +191,14 @@ const NFTFourList = Styled.ul`
     list-style:none;
     margin-right:18px;
     margin-left:11px;
+    cursor : pointer;
     
     .delivered_req{
         background :#fdeded;
     }
 `
 const NFT = Styled.li`
-    border: 1px solid #bbb;
+    border: 2px solid #e8e8e9;
     border-radius:7px;
     height:360px;
     width:243px;

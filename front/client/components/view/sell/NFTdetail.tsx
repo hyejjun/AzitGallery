@@ -130,8 +130,8 @@ export const BuyBtnCSS = Styled.span`
         font-size: 16px;
         font-weight: 600;
         padding: 12px 20px;
-        background-color: rgb(32, 129, 226);
-        border: 1px solid rgb(32, 129, 226);
+        background-color: #2d3741;
+        border: 1px solid #2d3741;
         color: rgb(255, 255, 255);
         cursor: pointer;
     }

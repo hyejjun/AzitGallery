@@ -25,8 +25,6 @@ dotenv.config()
 const admin_email = process.env.USER
 const admin_pass = process.env.PASS
 
-console.log("이멜 인증",admin_email, admin_pass);
-
 /* 이메일 보내기 */
 let seller_admin = async (req, res) => {
     const { userEmail, UserAddress, NickName } = req.body
@@ -336,8 +334,8 @@ let ship_update = async (req, res) => {
     
 
 
-        console.log('여기 결과 ===== ');
-        console.log(transferResult);
+        // console.log('여기 결과 ===== ');
+        // console.log(transferResult);
         sendKlay(creator_address, order_detail_num.price)
 
 

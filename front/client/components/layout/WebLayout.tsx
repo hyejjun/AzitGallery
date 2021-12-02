@@ -26,7 +26,9 @@ const WebWrap = Styled.div`
     width : 100%;
     height: auto;
     overflow: hidden;
-    background:#FAFAFA;
+    /* background:#FAFAFA; */
+    background: white;
+
 
     
 `
@@ -35,7 +37,9 @@ const WebInnerWrap = Styled.div`
     width : 1200px;
     height: auto;
     margin : 0 auto;
-    background : #FAFAFA;
+    /* background : #FAFAFA; */
+    background: white;
+
 `
 
 const WebHeight = Styled.div`

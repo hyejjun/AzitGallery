@@ -592,7 +592,7 @@ const InputBox = Styled.input`
 const ItemDetailBox = Styled.input`
     width: 150px;
     height: 30px;
-    font-size: 25px;
+    font-size: 20px;
     margin-right: 20px;
     margin-bottom: 20px;
     float: left;
@@ -631,6 +631,7 @@ const AddRmvBtn = Styled.div`
 const TextBox = Styled.textarea`
     width:690px;
     height: 200px;
+    font-size : 22px;
 `
 const BottomBtnWrapper = Styled.div`
     display: block;

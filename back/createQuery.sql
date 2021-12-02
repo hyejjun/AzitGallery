@@ -14,6 +14,7 @@ insert into sub_category (main_category_idx, item_code, sub_category_code, sub_c
 insert into sub_category (main_category_idx, item_code, sub_category_code, sub_category_name) values (02, 202, 2, '치마');
 insert into sub_category (main_category_idx, item_code, sub_category_code, sub_category_name) values (03, 301, 1, '악세서리');
 insert into sub_category (main_category_idx, item_code, sub_category_code, sub_category_name) values (03, 302, 2, '신발');
+ 
 
 insert into auction (auction_idx) value(21);
 insert into auction (auction_idx) value(22);

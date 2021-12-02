@@ -25,14 +25,12 @@ const NotSelled = () => {
             <NFTFourList>
                 <NFT>
                     <NFTImg>
-                        {/* <div><img src={require('../../src/지도.jpg').default} /></div> */}
                         <div><img src={ele.main_img_link}/></div>
                     </NFTImg>
                     <Line></Line>
                     <NFTOne>
                         <NFTOneList>
                             <NFTSubject>{ele.title}/{ele.color}/{ele.size}</NFTSubject>
-                            {/* 여기 a 빠졌는데 동작되는 이유.. a 추가하면 오류남 */}
                             <NFTartist>{ele.date}</NFTartist>
                         </NFTOneList>
                     </NFTOne>
@@ -41,7 +39,7 @@ const NotSelled = () => {
                             <NFTSubject>{ele.item_code}-{ele.id}</NFTSubject>
                         </NFTOneList>
                         <NFTDeclaration>
-                            <NFTSubject>* * *</NFTSubject>
+                            <NFTSubject></NFTSubject>
                         </NFTDeclaration>
                     </NFTOne>
                 </NFT>
@@ -68,7 +66,7 @@ const NFTFourList = Styled.ul`
     
 `
 const NFT = Styled.li`
-    border: 1px solid #bbb;
+    border: 2px solid #e8e8e9;
     border-radius:7px;
     height:360px;
     width:243px;

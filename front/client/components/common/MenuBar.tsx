@@ -197,7 +197,8 @@ const MenubarWrapper = Styled.div`
     }
     ul>li, a{
         color: rgba(0,0,0,.5);
-        background: #fafafa;
+        /* background: #fafafa; */
+        background: white;
         text-align: center;
         width: 110px;
         font-size: 16px;
@@ -266,7 +267,8 @@ const MenubarWrapper = Styled.div`
     ul>li, a{
         margin-right:20px;
         color:rgba(0,0,0,.5);
-        background: #fafafa;
+        /* background: #fafafa; */
+        background: white;
 
     }
     ul>li:hover, a:hover{
